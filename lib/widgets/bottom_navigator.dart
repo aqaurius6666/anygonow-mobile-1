@@ -38,7 +38,7 @@ Container bottomNavigator() {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
-                              "assets/images/home.svg",
+                              "assets/icons/home.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 0
                                   ? Color(0xFF61B3FF)
@@ -68,7 +68,7 @@ Container bottomNavigator() {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
-                              "assets/images/share.svg",
+                              "assets/icons/share.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 5
                                   ? Color(0xFF61B3FF)
@@ -98,7 +98,7 @@ Container bottomNavigator() {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
-                              "assets/images/view.svg",
+                              "assets/icons/chat.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 5
                                   ? Color(0xFF61B3FF)

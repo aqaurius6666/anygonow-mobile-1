@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/dropdown.dart';
 import 'package:untitled/widgets/input.dart';
+import 'package:us_states/us_states.dart';
 
 class AccountScreen extends StatelessWidget {
   AccountController accountController = Get.put(AccountController());
@@ -65,11 +67,12 @@ class AccountScreen extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 48,
-                  child: inputRegular(
-                    context,
-                    hintText: "First name*",
-                    textEditingController: accountController.firstName,
-                  ),
+                  child: Obx(() => inputRegular(
+                        context,
+                        hintText: "First name*",
+                        textEditingController: accountController.firstName,
+                        enabled: accountController.isEditting.value,
+                      )),
                 ),
                 Expanded(
                   flex: 4,
@@ -77,30 +80,33 @@ class AccountScreen extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 48,
-                  child: inputRegular(
-                    context,
-                    hintText: "Last name*",
-                    textEditingController: accountController.lastName,
-                  ),
+                  child: Obx(() => inputRegular(
+                        context,
+                        hintText: "Last name*",
+                        textEditingController: accountController.lastName,
+                        enabled: accountController.isEditting.value,
+                      )),
                 ),
               ],
             ),
             SizedBox(
               height: getHeight(8),
             ),
-            inputRegular(
-              context,
-              hintText: "Your email address*",
-              textEditingController: accountController.email,
-            ),
+            Obx(() => inputRegular(
+                  context,
+                  hintText: "Your email address*",
+                  textEditingController: accountController.email,
+                  enabled: accountController.isEditting.value,
+                )),
             SizedBox(
               height: getHeight(8),
             ),
-            inputRegular(
-              context,
-              hintText: "Your phone number*",
-              textEditingController: accountController.phoneNumber,
-            ),
+            Obx(() => inputRegular(
+                  context,
+                  hintText: "Your phone number*",
+                  textEditingController: accountController.phoneNumber,
+                  enabled: accountController.isEditting.value,
+                )),
             SizedBox(
               height: getHeight(15),
             ),
@@ -114,43 +120,56 @@ class AccountScreen extends StatelessWidget {
             SizedBox(
               height: getHeight(15),
             ),
-            inputRegular(
-              context,
-              hintText: "Address 1*",
-              textEditingController: accountController.address1,
-            ),
+            Obx(() => inputRegular(
+                  context,
+                  hintText: "Address 1*",
+                  textEditingController: accountController.address1,
+                  enabled: accountController.isEditting.value,
+                )),
             SizedBox(
               height: getHeight(8),
             ),
-            inputRegular(
-              context,
-              hintText: "Address 2",
-              textEditingController: accountController.address2,
-            ),
+            Obx(() => inputRegular(
+                  context,
+                  hintText: "Address 2",
+                  textEditingController: accountController.address2,
+                  enabled: accountController.isEditting.value,
+                )),
             SizedBox(
               height: getHeight(8),
             ),
-            inputRegular(
-              context,
-              hintText: "State*",
-              textEditingController: accountController.state,
-            ),
+            Stack(children: [
+              inputRegular(
+                context,
+                hintText: "State*",
+                textEditingController: accountController.state,
+                // enabled: accountController.isEditting.value,
+              ),
+              Obx(() => accountController.isEditting.value
+                  ? getDropDown(
+                      USStates.getAllNames(),
+                      (String value) => {accountController.state.text = value},
+                    )
+                  : Container()),
+            ]),
             SizedBox(
               height: getHeight(8),
             ),
-            inputRegular(
-              context,
-              hintText: "City*",
-              textEditingController: accountController.city,
-            ),
+            Obx(() => inputRegular(
+                  context,
+                  hintText: "City*",
+                  textEditingController: accountController.city,
+                  enabled: accountController.isEditting.value,
+                )),
             SizedBox(
               height: getHeight(8),
             ),
-            inputRegular(
-              context,
-              hintText: "Zipcode*",
-              textEditingController: accountController.zipcode,
-            ),
+            Obx(() => inputRegular(
+                  context,
+                  hintText: "Zipcode*",
+                  textEditingController: accountController.zipcode,
+                  enabled: accountController.isEditting.value,
+                )),
             SizedBox(
               height: getHeight(8),
             ),
@@ -168,9 +187,28 @@ class AccountScreen extends StatelessWidget {
                         color: Color(0xFF000000),
                         width: getWidth(1),
                       )),
-                  child: Text("Edit"),
+                  child: Obx(
+                    () => Text(
+                        accountController.isEditting.value ? "Update" : "Edit"),
+                  ),
                 ),
-                onPress: () => {},
+                onPress: () async {
+                  var result;
+                  if (accountController.isEditting.value) {
+                    result = await accountController.editUserInfo(
+                        firstName: accountController.firstName.text,
+                        lastName: accountController.lastName.text,
+                        avatar: "");
+                    if (result != null) {
+                      accountController.isEditting.value =
+                          !accountController.isEditting.value;
+                    }
+                    return;
+                  }
+
+                  accountController.isEditting.value =
+                      !accountController.isEditting.value;
+                },
               ),
             ),
           ],
