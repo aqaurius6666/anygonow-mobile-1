@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/login/login_controller.dart';
+import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/screen/forgot_password/forgot_password_screen.dart';
 import 'package:untitled/screen/home_page/home_page_screen.dart';
+import 'package:untitled/screen/reset_password/reset_password_screen.dart';
 import 'package:untitled/screen/signup/signup_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
@@ -55,11 +57,13 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: getHeight(12),
               ),
-              inputRegular(
-                context,
-                hintText: "Input your password",
-                textEditingController: loginPageController.password,
-              ),
+              Obx(() => inputPassword(
+                    context,
+                    loginPageController.password,
+                    "Input your password",
+                    loginPageController.isHidePassword.value,
+                    loginPageController.changeHidePassword,
+                  )),
               ListTile(
                 dense: true,
                 contentPadding:
@@ -111,7 +115,9 @@ class LoginScreen extends StatelessWidget {
                 onPress: () async {
                   var result = await loginPageController.login();
                   print(result);
-                  Get.to(HomePageScreen());
+                  if (result) {
+                    Get.to(() => HomePageScreen());
+                  }
                 },
               ),
               SizedBox(
@@ -123,8 +129,9 @@ class LoginScreen extends StatelessWidget {
                         decoration: TextDecoration.underline,
                       )),
                   onPress: () => {
-                    Get.to(ForgotPasswordScreen())
-                  }),
+                        Get.to(ForgotPasswordScreen())
+                        // Get.to(ResetPasswordScreen())
+                      }),
               Row(
                 children: [
                   Text("Don't have an account?"),
@@ -135,9 +142,7 @@ class LoginScreen extends StatelessWidget {
                           decoration: TextDecoration.underline,
                         ),
                       ),
-                      onPress: () => {
-                        Get.to(SignupScreen())
-                      })
+                      onPress: () => {Get.to(SignupScreen())})
                 ],
               ),
             ],
