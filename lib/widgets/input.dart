@@ -4,10 +4,10 @@ import 'package:untitled/utils/config.dart';
 
 Container inputPassword(
   BuildContext context,
-  // TextEditingController controller,
+  TextEditingController controller,
   String hintText,
-  // bool isHide,
-  // Function changeHide,
+  bool isHide,
+  Function changeHide,
   // Function onchange,
 ) {
   return Container(
@@ -25,8 +25,8 @@ Container inputPassword(
         Expanded(
           child: TextFormField(
               style: TextStyle(fontSize: getWidth(16)),
-              // controller: controller,
-              // obscureText: isHide,
+              controller: controller,
+              obscureText: isHide,
               // onChanged: (e) {
               //   onchange();
               // },
@@ -38,19 +38,20 @@ Container inputPassword(
                 disabledBorder: InputBorder.none,
                 labelText: hintText,
                 // hintText: hintText,
-                contentPadding: EdgeInsets.only(left: getWidth(18), bottom: getHeight(10)),
+                contentPadding:
+                    EdgeInsets.only(left: getWidth(18), bottom: getHeight(10)),
                 labelStyle:
                     TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
               )),
         ),
-        // IconButton(
-        //     onPressed: () {
-        //       changeHide();
-        //     },
-        //     icon: Icon(
-        //       isHide ? Icons.visibility_off : Icons.visibility,
-        //       size: 24,
-        //     ))
+        IconButton(
+            onPressed: () {
+              changeHide();
+            },
+            icon: Icon(
+              isHide ? Icons.visibility_off : Icons.visibility,
+              size: 24,
+            ))
       ],
     ),
   );
@@ -144,8 +145,10 @@ Container inputRegular(
   BuildContext context, {
   required String hintText,
   required TextEditingController textEditingController,
+  bool? enabled = true,
   // required Function onChange,
 }) {
+  print(textEditingController.value.text);
   return Container(
     height: getWidth(42),
     padding: EdgeInsets.symmetric(vertical: getHeight(3)),
@@ -160,7 +163,9 @@ Container inputRegular(
       children: [
         Expanded(
           child: TextFormField(
+            enabled: enabled,
             controller: textEditingController,
+            // initialValue: textEditingController.text,
             style: TextStyle(fontSize: getWidth(14)),
             // onChanged: (e) {
             //   onChange();
@@ -185,65 +190,48 @@ Container inputRegular(
   );
 }
 
-// Container inputSearch(
-//   BuildContext context, {
-//   required String hintText,
-//   required TextEditingController textEditingController,
-//   required dynamic onSearch,
-// }) {
-//   return Container(
-//     height: getWidth(56),
-//     padding: EdgeInsets.symmetric(vertical: getHeight(5)),
-//     decoration: BoxDecoration(
-//       color: Color(0xFFF2F3F7),
-//       borderRadius: BorderRadius.circular(getHeight(4)),
-//       border: Border.all(
-//         color: Color(0xFFF2F3F7),
-//         width: getHeight(1),
-//       ),
-//     ),
-//     margin: EdgeInsets.only(
-//       right: getWidth(16),
-//       left: getWidth(16),
-//     ),
-//     child: Row(
-//       children: [
-//         SizedBox(
-//           width: getWidth(16),
-//         ),
-//         GestureDetector(
-//           onTap: () {
-//             FocusScope.of(context).unfocus();
-//             onSearch();
-//           },
-//           child: SvgPicture.asset("assets/images/search-icons.svg"),
-//         ),
-//         Expanded(
-//           child: TextFormField(
-//             controller: textEditingController,
-//             style: TextStyle(fontSize: getWidth(16)),
-//             onEditingComplete: () {
-//               FocusScope.of(context).unfocus();
-//               onSearch();
-//             },
-//             decoration: InputDecoration(
-//               border: InputBorder.none,
-//               focusedBorder: InputBorder.none,
-//               enabledBorder: InputBorder.none,
-//               errorBorder: InputBorder.none,
-//               disabledBorder: InputBorder.none,
-//               hintText: hintText,
-//               contentPadding:
-//                   EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
-//               labelStyle:
-//                   TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
-//             ),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
+Container inputSearch(
+  BuildContext context, {
+  required String hintText,
+  required TextEditingController textEditingController,
+  required dynamic onSearch,
+}) {
+  return Container(
+    // height: getHeight(32),
+    // padding: EdgeInsets.symmetric(vertical: getHeight(5)),
+    margin: EdgeInsets.only(
+      right: getWidth(10),
+      left: getWidth(10),
+    ),
+    child: Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+            controller: textEditingController,
+            style: TextStyle(fontSize: getWidth(12)),
+            onEditingComplete: () {
+              FocusScope.of(context).unfocus();
+              onSearch();
+            },
+            decoration: InputDecoration(
+              isCollapsed: true,
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              hintText: hintText,
+              contentPadding:
+                  EdgeInsets.only( right: getWidth(16),),
+              labelStyle:
+                  TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 //
 // Container userInputSearch(
 //   BuildContext context, {
