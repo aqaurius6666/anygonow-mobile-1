@@ -116,8 +116,11 @@ class LoginScreen extends StatelessWidget {
                   var result = await loginPageController.login();
                   print(result);
                   if (result) {
+                    // Get.to(() => HandymanHomePageScreen());
+                    await Get.put(MainScreenController()).getCategories();
                     Get.to(() => HomePageScreen());
                   }
+                  // Get.to(() => HomePageScreen());
                 },
               ),
               SizedBox(

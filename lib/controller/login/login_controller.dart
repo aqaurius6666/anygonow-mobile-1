@@ -29,7 +29,7 @@ class LoginPageController extends GetxController {
       CustomDio customDio = new CustomDio();
       // var certificateJson = jsonEncode(certificateList);
       print("cert: " + certificateList.toString());
-      customDio.dio.options.headers["authorization"] = certificateList[0];
+      customDio.dio.options.headers["Authorization"] = certificateList[0];
 
       var response = await customDio.post(
         "/auth/ping",
