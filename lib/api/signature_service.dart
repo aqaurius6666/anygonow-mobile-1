@@ -55,14 +55,12 @@ class SignatureService {
     var bodySignature = signMessage(
         privateKey,
         hashMessage(jsonEncode({
-          "certificateInfo": jsonDecode(certificateInfo),
           "_actionType": "POST_API-AUTH-PING",
           "_timestamp": time,
         })));
 
     var body = jsonEncode({
       "data": {
-        "certificateInfo": jsonDecode(certificateInfo),
         "_actionType": "POST_API-AUTH-PING",
         "_timestamp": time,
       },
