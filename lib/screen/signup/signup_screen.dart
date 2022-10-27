@@ -69,17 +69,23 @@ class SignupScreen extends StatelessWidget {
               SizedBox(
                 height: getHeight(12),
               ),
-              inputPassword(
+              Obx(() => inputPassword(
                 context,
+                signupController.password,
                 "Password*",
-              ),
+                signupController.isHidePassword.value,
+                signupController.changeHidePassword,
+              )),
               SizedBox(
                 height: getHeight(12),
               ),
-              inputPassword(
+              Obx(() => inputPassword(
                 context,
+                signupController.confirmPassword,
                 "Confirm Password*",
-              ),
+                signupController.isHideCfPassword.value,
+                signupController.changeHideCfPassword,
+              )),
               SizedBox(
                 height: getHeight(15),
               ),
@@ -141,9 +147,7 @@ class SignupScreen extends StatelessWidget {
                           decoration: TextDecoration.underline,
                         ),
                       ),
-                      onPress: () => {
-                        Get.back()
-                      })
+                      onPress: () => {Get.back()})
                 ],
               ),
               SizedBox(

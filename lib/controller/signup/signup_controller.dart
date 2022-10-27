@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,17 @@ class SignupController extends GetxController {
   TextEditingController zipCode = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+
+  RxBool isHidePassword = true.obs;
+  RxBool isHideCfPassword = true.obs;
+
+  void changeHidePassword() {
+    isHidePassword.value = !isHidePassword.value;
+  }
+
+  void changeHideCfPassword() {
+    isHideCfPassword.value = !isHideCfPassword.value;
+  }
 
   Future checkAccount() async {
     try {
@@ -46,7 +58,7 @@ class SignupController extends GetxController {
             "data": {
               "mail": email.text,
               "phone": phoneNumber.text,
-              "zipCode": zipCode.text,
+              // "zipCode": zipCode.text,
               "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
               "publicKey": keyPair["publicKey"],
             },
@@ -60,8 +72,6 @@ class SignupController extends GetxController {
       if (json["success"] == true) {
         return true;
       }
-
-      print("error");
 
       return data;
     } catch (e, s) {
