@@ -1,0 +1,27 @@
+syntax = "proto3";
+package mailservice;
+
+option go_package = "./pb";
+
+service MailService {
+  rpc SendMail(SendMailRequest) returns (SendMailResponse) {}
+  rpc SendMails(SendMailsRequest) returns (SendMailsResponse) {}
+}
+
+message SendMailRequest {
+  string to = 1;
+  bytes msg = 2;
+}
+
+message SendMailsRequest {
+  repeated string tos = 1;
+  bytes msg = 2;
+}
+
+message SendMailResponse {
+
+}
+
+message SendMailsResponse {
+
+}

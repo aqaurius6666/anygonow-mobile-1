@@ -1,0 +1,1925 @@
+syntax = "proto3";
+
+package apiservice;
+import "google/api/annotations.proto";
+option go_package = "./pb";
+
+
+
+service ApiService {
+    // Auth Credential for get credential infomation
+    rpc AuthCredential(AuthCredentialRequest) returns (AuthCredentialResponse) {
+        option (google.api.http) = {
+            post: "/auth/credential"
+            body: "*"
+        };
+    }
+    // Auth Ping to check whether is authorized
+    rpc AuthPing(AuthPingRequest) returns (AuthPingResponse) {
+        option (google.api.http) = {
+            post: "/auth/ping"
+        };
+    }
+    // Auth Password to change password
+    rpc AuthPasswordPost(AuthPasswordPostRequest) returns (AuthPasswordPostResponse) {
+        option (google.api.http) = {
+            post: "/auth/password"
+            body: "*"
+        };
+    }
+    // Auth OTP to send OTP
+    rpc AuthOTPPost(AuthOTPPostRequest) returns (AuthOTPPostResponse) {
+        option (google.api.http) = {
+            post: "/auth/otp"
+            body: "*"
+        };
+    }
+    // Auth Resend OTP to resend OTP
+    rpc AuthResendOTP(AuthResendOTPRequest) returns (AuthResendOTPResponse) {
+        option (google.api.http) = {
+            post: "/auth/otp/resend"
+            body: "*"
+        };
+    }
+    // Auth Password Forgot to send OTP for forgotting password
+    rpc AuthPasswordForgotPost(AuthPasswordForgotPostRequest) returns (AuthPasswordForgotPostResponse) {
+        option (google.api.http) = {
+            post: "/auth/password/forgot"
+            body: "*"
+        };
+    }
+    // Auth Mail to change mail
+    rpc AuthMailPost(AuthMailPostRequest) returns (AuthMailPostResponse) {
+        option (google.api.http) = {
+            post: "/auth/mail"
+            body: "*"
+        };
+    }
+    // Auth OTP Forgot to update new password when forgotting
+    rpc AuthOTPForgot(AuthOTPForgotRequest) returns (AuthOTPForgotResponse) {
+        option (google.api.http) = {
+            post: "/auth/otp/forgot"
+            body: "*"
+        };
+    }
+    // Auth OTP Admin to register password for admin
+    rpc AuthOTPAdmin(AuthOTPAdminRequest) returns (AuthOTPAdminResponse) {
+        option (google.api.http) = {
+            post: "/auth/otp/admin"
+            body: "*"
+        };
+    }
+
+    // RequestViewGet return infomation for generate view link
+    rpc RequestViewGet(RequestViewGetRequest) returns (RequestViewGetResponse) {
+        option (google.api.http) = {
+            get: "/requests/view"
+        };
+    }
+
+    // Auth OTP Mail to update new mail when changing mail
+    // rpc AuthOTPMail(AuthOTPMailRequest) returns (AuthOTPMailResponse) {
+    //     option (google.api.http) = {
+    //         post: "/auth/otp/mail"
+    //         body: "*"
+    //     };
+    // }
+
+    // User for create new user
+    rpc UserPost(UserPostRequest) returns (UserPostResponse) {
+        option (google.api.http) = {
+            post: "/users"
+            body: "*"
+        };
+    }
+    // User Privacy to get privacy status
+    rpc UserPrivacyGet(UserPrivacyGetRequest) returns (UserPrivacyGetResponse) {
+        option (google.api.http) = {
+            get: "/users/{id=message}/privacy"
+        };
+    }
+    // User Privacy to update privacy status
+    rpc UserPrivacyPut(UserPrivacyPutRequest) returns (UserPrivacyPutResponse) {
+        option (google.api.http) = {
+            put: "/users/{id=message}/privacy"
+            body: "*"
+        };
+    }
+    // User to get user by id
+    rpc UserGet(UserGetRequest) returns (UserGetResponse) {
+        option (google.api.http) = {
+            get: "/users/{id=message}"
+        };
+    }
+    // User Search to search user by username
+    rpc UserSearchGet(UserSearchGetRequest) returns (UserSearchGetResponse) {
+        option (google.api.http) = {
+            get: "/users"
+        };
+    }
+    // User Notification Subscribe to subscribe notification after login success
+    rpc UserNotificationSubscribePost(UserNotificationSubscribePostRequest) returns (UserNotificationSubscribePostResponse) {
+        option (google.api.http) = {
+            post: "/users/{id=message}/notification/subscribe"
+            body: "*"
+        };
+    }
+    // User Notification Fetch to fetch all notification in queue after login success
+    rpc UserNotificationFetchPost(UserNotificationFetchPostRequest) returns (UserNotificationFetchPostResponse) {
+        option (google.api.http) = {
+            post: "/users/{id=message}/notification/fetch"
+            body: "*"
+        };
+    }
+    // User Notification Unsubscribe to unsubscribe notification before logout
+    rpc UserNotificationUnsubscribePost(UserNotificationUnsubscribePostRequest) returns (UserNotificationUnsubscribePostResponse) {
+        option (google.api.http) = {
+            post: "/users/{id=message}/notification/unsubscribe"
+            body: "*"
+        };
+    }
+
+    // User Service Connect to connect new service
+    // rpc UserServiceConnectPost(UserServiceConnectPostRequest) returns (UserServiceConnectPostResponse) {
+    //     option (google.api.http) = {
+    //         post: "/users/{id=message}/service/{serviceId=message}/connect"
+    //         body: "*"
+    //     };
+    // }
+
+    // User Service Disconnect to discconnect to service
+    rpc UserServiceDisconnectPost(UserServiceDisconnectPostRequest) returns (UserServiceDisconnectPostResponse) {
+        option (google.api.http) = {
+            post: "/users/{id=message}/service/{sid=message}/disconnect"
+            body: "*"
+        };
+    }
+    // User Service to get all service and status
+    rpc UserServiceGet(UserServiceGetRequest) returns (UserServiceGetResponse) {
+        option (google.api.http) = {
+            get: "/users/{id=message}/services"
+        };
+    }
+    // Contact to get all contact infomation
+    rpc ContactGet(ContactGetRequest) returns (ContactGetResponse) {
+        option (google.api.http) = {
+            get: "/users/{id=message}/contacts"
+        };
+    }
+    // Contact to create new contact
+    rpc ContactPost(ContactPostRequest) returns (ContactPostResponse) {
+        option (google.api.http) = {
+            post: "/users/{id=message}/contacts"
+            body: "*"
+        };
+    }
+    // Contact to update contact infomation
+    rpc ContactPut(ContactPutRequest) returns (ContactPutResponse) {
+        option (google.api.http) = {
+            put: "/users/{id=message}/contacts/{cid=message}"
+            body: "*"
+        };
+    }
+    // Contact to delete contact
+    rpc ContactDelete(ContactDeleteRequest) returns (ContactDeleteResponse) {
+        option (google.api.http) = {
+            delete: "/users/{id=message}/contact/{cid=message}"
+        };
+    }
+    // My Account to get account infomation
+    rpc MyAccountGet(MyAccountGetRequest) returns (MyAccountGetResponse) {
+        option (google.api.http) = {
+            get: "/users/{id=message}/my-account"
+        };
+    }
+    // My Account to update account infomation
+    rpc MyAccountPut(MyAccountPutRequest) returns (MyAccountPutResponse) {
+        option (google.api.http) = {
+            put: "/users/{id=message}/my-account"
+            body: "*"
+        };
+    }
+    // Request Accept to accept ask request
+    rpc RequestAcceptPost(RequestAcceptPostRequest) returns (RequestAcceptPostResponse) {
+        option (google.api.http) = {
+            post: "/users/{uid=message}/requests/{rid=message}/accept"
+            body: "*"
+        };
+    }
+    // Request to get request by id
+    rpc RequestsGet(RequestsGetRequest) returns (RequestsGetResponse) {
+        option (google.api.http) = {
+            get: "/requests/{rid=message}"
+        };
+    }
+    // Request List to list all requests
+    rpc RequestsListGet(RequestsListGetRequest) returns (RequestsListGetResponse) {
+        option (google.api.http) = {
+            get: "/users/{id=message}/requests"
+        };
+    }
+    // Request Ask to create new ask request
+    rpc RequestAskPost(RequestAskPostRequest) returns (RequestAskPostReponse) {
+        option (google.api.http) = {
+            post: "/requests/ask"
+            body: "*"
+        };
+    }
+    // Reuqest Share to create new share request
+    rpc RequestSharePost(RequestSharePostRequest) returns (RequestSharePostReponse) {
+        option (google.api.http) = {
+            post: "/requests/share"
+            body: "*"
+        };
+    }
+    // Request Deny to deny an ask request
+    rpc RequestDenyPost(RequestDenyPostRequest) returns (RequestDenyPostResponse) {
+        option (google.api.http) = {
+            post: "/users/{uid=message}/requests/{rid=message}/deny"
+            body: "*"
+        };
+    }
+    // Reuqest Stop to stop an ask request that status is sharing
+    rpc RequestStopPost(RequestStopPostRequest) returns (RequestStopPostResponse) {
+        option (google.api.http) = {
+            post: "/users/{uid=message}/requests/{rid=message}/stop"
+            body: "*"
+        };
+    }
+    // Admin User to list all users
+    rpc AdminUsersGet(AdminUsersGetRequest) returns (AdminUsersGetResponse) {
+        option (google.api.http) = {
+            get: "/admins/users"
+        };
+    }
+    // Admin Ban to inactive user
+    rpc AdminBanPost(AdminBanPostRequest) returns (AdminBanPostResponse) {
+        option (google.api.http) = {
+            post: "/admins/users/{uid=message}/ban"
+            body: "*"
+        };
+    }
+    // Admin Unabn to active user
+    rpc AdminUnbanPost(AdminUnbanPostRequest) returns (AdminUbnbanPostResponse) {
+        option (google.api.http) = {
+            post: "/admins/users/{uid=message}/unban"
+            body: "*"
+        };
+    }
+    // Admin User to update user infomation
+    rpc AdminUserPut(AdminUserPutRequest) returns (AdminUserPutResponse) {
+        option (google.api.http) = {
+            put: "/admins/users/{id=message}"
+            body: "*"
+        };
+    }
+    // Admin User to get user by id 
+    rpc AdminUserGet(AdminUserGetRequest) returns (AdminUserGetResponse) {
+        option (google.api.http) = {
+            get: "/admins/users/{id=message}"
+        };
+    }
+    // Admin Logs to list activity logs
+    rpc AdminLogsGet(AdminLogsGetRequest) returns (AdminLogsGetResponse) {
+        option (google.api.http) = {
+            get: "/admins/logs"
+        };
+    }
+    // Admin Get to get admin infomation by id
+    rpc AdminGet(AdminGetRequest) returns (AdminGetResponse) {
+        option (google.api.http) = {
+            get: "/admins/{id=message}"
+        };
+    }
+    // Admin Put to update admin infomation
+    rpc AdminPut(AdminPutRequest) returns (AdminPutResponse) {
+        option (google.api.http) = {
+            put: "/admins/{id=message}"
+            body: "*"
+        };
+    }
+    // Admin Post to create new admin
+    rpc AdminPost(AdminPostRequest) returns (AdminPostResponse) {
+        option (google.api.http) = {
+            post: "/admins"
+            body: "*"
+        };
+    }
+    // Admin List to list all admins
+    rpc AdminListGet(AdminListGetRequest) returns (AdminListGetResponse) {
+        option (google.api.http) = {
+            get: "/admins"
+        };
+    }
+    // Admin to delete admin
+    rpc AdminDelete(AdminDeleteRequest) returns (AdminDeleteResponse) {
+        option (google.api.http) = {
+            delete: "/admins/{aid=message}"
+            body: "*"
+        };
+    }
+    // Admin Provider to create new provider
+    rpc AdminProviderPost(AdminProviderPostRequest) returns (AdminProviderPostResponse) {
+        option (google.api.http) = {
+            post: "/admins/providers"
+            body: "*"
+        };
+    }
+    // Admin Provider to get provider by providerId
+    rpc AdminProviderGet(AdminProviderGetRequest) returns (AdminProviderGetResponse) {
+        option (google.api.http) = {
+            get: "/admins/providers/{pid=message}"
+        };
+    }
+    // Admin Providers List to list all providers
+    rpc AdminProvidersListGet(AdminProvidersListGetRequest) returns (AdminProvidersListGetResponse) {
+        option (google.api.http) = {
+            get: "/admins/providers"
+        };
+    }
+    // Admin Provider to update provider infomation
+    rpc AdminProviderPut(AdminProviderPutRequest) returns (AdminProviderPutResponse) {
+        option (google.api.http) = {
+            put: "/admins/providers/{pid=message}"
+            body: "*"
+        };
+    }
+    // Admin Provider to delete provider
+    rpc AdminProviderDelete(AdminProviderDeleteRequest) returns (AdminProviderDeleteResponse) {
+        option (google.api.http) = {
+            delete: "/admins/providers/{pid=message}"
+            body: "*"
+        };
+    }
+    // Admin Service to get service by id
+    rpc AdminServiceGet(AdminServiceGetRequest) returns (AdminServiceGetResponse) {
+        option (google.api.http) = {
+            get: "/admins/services/{sid=message}"
+        };
+    }
+    // Admin Services List to list all services
+    rpc AdminServicesListGet(AdminServicesListGetRequest) returns (AdminServicesListGetResponse) {
+        option (google.api.http) = {
+            get: "/admins/services"
+        };
+    }
+    // Admin Service to create new service
+    rpc AdminServicePost(AdminServicePostRequest) returns (AdminServicePostResponse) {
+        option (google.api.http) = {
+            post: "/admins/services"
+            body: "*"
+        };
+    }
+    // Admin Service to update service
+    rpc AdminServicePut(AdminServicePutRequest) returns (AdminServicePutResponse) {
+        option (google.api.http) = {
+            put: "/admins/services/{sid=message}"
+            body: "*"
+        };
+    }
+    // Auth check whether account identify is used
+    rpc AuthCheckGet(AuthCheckGetRequest) returns (AuthCheckGetResponse) {
+        option (google.api.http) = {
+            get: "/auth/check"
+        };
+    }
+    // RequestServices get list of services that available or not
+    rpc RequestServicesGet(RequestServicesGetRequest) returns (RequestServicesGetResponse) {
+        option (google.api.http) = {
+            get: "/requests/services"
+        };
+    }
+
+    
+    // Request delete request by id, request status must be invalid
+    rpc RequestDelete(RequestDeleteRequest) returns (RequestDeleteResponse) {
+        option (google.api.http) = {
+            delete: "/users/{uid=message}/requests/{rid=message}"
+            body: "*"
+        };
+    }
+}
+
+message ErrorMessage {
+    string message = 1;
+}
+message ServicesDetails {
+    string id = 1;
+    string name = 2;
+    string url = 3;
+    string viewUrl = 4;
+    string icon = 5;
+}
+
+
+// rpc RequestDelete(RequestDeleteRequest) returns (RequestDeleteResponse) 
+message RequestDeleteRequest {
+    string rid = 1;
+    string uid = 2;
+    Body data = 3;
+    message Body {
+        string requestId = 1;
+    }
+}
+    
+message RequestDeleteResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+
+// rpc RequestServicesGet(RequestServicesGetRequest) returns (RequestServicesGetResponse) 
+message RequestServicesGetRequest {
+    string primaryId = 1;
+    string secondaryId = 2;
+    string limit = 3;
+    string offset = 4;
+}
+    
+message RequestServicesGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        int64 total = 1;
+        int64 offset = 2;
+        int64 limit = 3;
+        repeated Results results = 4;
+        message Results {
+            string id = 1;
+            string name = 2;
+            string url = 3;
+            string viewUrl = 4;
+            string icon = 5;
+            string status = 6;
+        }
+    }
+}
+
+// rpc RequestViewGet(RequestViewGetRequest) returns (RequestViewGetResponse) 
+message RequestViewGetRequest {
+    string primaryId = 1;
+    string serviceId = 2;
+}
+    
+message RequestViewGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string ownerId = 1;
+        bool available = 2;
+    }
+}
+
+// rpc AuthCheckGet(AuthCheckGetRequest) returns (AuthCheckGetResponse) 
+message AuthCheckGetRequest {
+    string username = 1;
+    string mail = 2;
+    string phone = 3;
+}
+    
+message AuthCheckGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        
+    }
+}
+
+// rpc AuthOTPAdmin(AuthOTPAdminRequest) returns (AuthOTPAdminResponse) 
+message AuthOTPAdminRequest {
+    Body data = 1;
+    message Body {
+        string id = 1;
+        string otpId = 2;
+        string otp = 3;
+        string publicKey = 4;
+        string encryptedPrivateKey = 5;
+    }
+}
+    
+message AuthOTPAdminResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        
+    }
+}
+
+// rpc AuthMailPost(AuthMailPostRequest) returns (AuthMailPostResponse) 
+message AuthMailPostRequest {
+    Body data = 1;
+    message Body {
+        string mail = 1;
+    }
+}
+    
+message AuthMailPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string otpId = 1;
+    }
+}
+
+// rpc AuthOTPForgot(AuthOTPForgotRequest) returns (AuthOTPForgotResponse) 
+message AuthOTPForgotRequest {
+    Body data = 1;
+    message Body {
+        string otpId = 1;
+        string encryptedPrivateKey = 2;
+        string publicKey = 3;
+        string otp = 4;
+    }
+}
+    
+message AuthOTPForgotResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string encryptedPrivateKey = 2;
+        string publicKey = 3;
+    }
+}
+
+// rpc AuthOTPMail(AuthOTPMailRequest) returns (AuthOTPMailResponse) 
+message AuthOTPMailRequest {
+    Body data = 1;
+    message Body {
+        string otpId = 1;
+        string otp = 2;
+        string mail = 3;
+    }
+}
+    
+message AuthOTPMailResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+
+
+
+// rpc AuthOTPRegister(AuthOTPRegisterRequest) returns (AuthOTPRegisterResponse) 
+message AuthOTPRegisterRequest {
+    Body data = 1;
+    message Body {
+        string otpId = 1;
+        string id = 2;
+        string encryptedPrivateKey = 3;
+        string publicKey = 4;
+    }
+}
+    
+message AuthOTPRegisterResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string encryptedPrivateKey = 2;
+        string publicKey = 3;
+    }
+}
+
+
+
+// rpc AuthPasswordForgotPost(AuthPasswordForgotPostRequest) returns (AuthPasswordForgotPostResponse) 
+message AuthPasswordForgotPostRequest {
+    Body data = 1;
+    message Body {
+        string mail = 1;
+    }
+}
+    
+message AuthPasswordForgotPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string otpId = 1;
+        string id = 2;
+    }
+}
+
+// rpc AdminServiceGet(AdminServiceGetRequest) returns (AdminServiceGetResponse) 
+message AdminServiceGetRequest {
+    string sid = 1;
+}
+    
+message AdminServiceGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string name = 1;
+        string url = 2;
+        string icon = 3;
+        string viewUrl = 4;
+        string providerId = 5;
+        string serviceId = 6;
+        string description = 7;
+        int64 joinDate = 8;
+        string type = 9;
+        string callbackUrl = 10;
+        string publicKey = 11;
+    }
+}
+// rpc AdminServicesListGet(AdminServicesListGetRequest) returns (AdminServicesListGetResponse) 
+message AdminServicesListGetRequest {
+    string serviceId = 1;
+    string name = 2;
+    string limit = 3;
+    string offset = 4;
+    string type = 5;
+}
+    
+message AdminServicesListGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        int64 total = 1;
+        int64 limit = 2;
+        int64 offset = 3;
+        repeated Results results = 4;
+        message Results {
+            string serviceId = 1;
+            string name = 2;
+            string providerName = 3;
+            string type = 4;
+            string providerId = 5;
+        }
+    }
+}
+// rpc ServicePost(ServicePostRequest) returns (ServicePostResponse)
+message AdminServicePostRequest {
+    Body data = 1;
+    message Body {
+        string name = 1;
+        string url = 2;
+        string icon = 3;
+        string viewUrl = 4;
+        string providerId = 5;
+        string serviceId = 6;
+        string description = 7;
+        string type = 8;
+        string callbackUrl = 9;
+        string publicKey = 10;
+    }
+}
+    
+message AdminServicePostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string name = 1;
+        string url = 2;
+        string icon = 3;
+        string viewUrl = 4;
+        string id = 5;
+        string providerId = 6;
+        string serviceId = 7;
+        string description = 8;
+        string type = 9;
+        string callbackUrl = 10;
+        string publicKey = 11;
+    }
+}
+// rpc AdminServicePut(AdminServicePutRequest) returns (AdminServicePutResponse) 
+message AdminServicePutRequest {
+    Body data = 1;
+    message Body {
+        string url = 1;
+        string icon = 2;
+        string viewUrl = 3;
+        string providerId = 4;
+        string serviceId = 5;
+        string description = 6;
+        string type = 7;
+        string name = 8;
+        string callbackUrl = 9;
+        string publicKey = 10;
+    }
+    string sid = 2;
+}
+    
+message AdminServicePutResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+
+// rpc AdminServiceDelete(AdminServiceDeleteRequest) returns (AdminServiceDeleteResponse) 
+message AdminServiceDeleteRequest {
+    Body data = 1;
+    message Body {
+        string serviceId = 1;
+    }
+}
+    
+message AdminServiceDeleteResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc AdminProviderPost(AdminProviderPostRequest) returns (AdminProviderPostResponse) 
+message AdminProviderPostRequest {
+    Body data = 1;
+    message Body {
+        string providerId = 1;
+        string name = 2;
+        string manager = 3;
+        string mail = 4;
+        string phone = 5;
+        string description = 6;
+    }
+}
+    
+message AdminProviderPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string providerId = 1;
+        string name = 2;
+        string manager = 3;
+        string mail = 4;
+        string phone = 5;
+        string description = 6;
+    }
+}
+
+// rpc AdminProviderGet(AdminProviderGetRequest) returns (AdminProviderGetResponse) 
+message AdminProviderGetRequest {
+    string pid = 1;
+}
+    
+message AdminProviderGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string providerId = 1;
+        string name = 2;
+        string manager = 3;
+        string mail = 4;
+        string phone = 5;
+        string description = 6;
+        int64 joinDate = 7;
+    }
+}
+// rpc AdminProvidersListGet(AdminProvidersListGetRequest) returns (AdminProvidersListGetResponse) 
+message AdminProvidersListGetRequest {
+    string providerId = 1;
+    string name = 2;
+    string offset = 3;
+    string limit = 4;
+    string mail = 5;
+}
+    
+message AdminProvidersListGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        repeated Results results = 1;
+        int64 total = 2;
+        int64 limit = 3;
+        int64 offset = 4;
+        message Results {
+            string providerId = 1;
+            string name = 2;
+            string mail = 3;
+            bool canDelete = 4;
+        }
+    }
+}
+// rpc AdminProviderPut(AdminProviderPutRequest) returns (AdminProviderPutResponse) 
+message AdminProviderPutRequest {
+    Body data = 1;
+    message Body {
+        string name = 1;
+        string manager = 2;
+        string mail = 3;
+        string phone = 4;
+        string description = 5;
+    }
+    string pid = 2;
+}
+    
+message AdminProviderPutResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+// rpc AdminProviderDelete(AdminProviderDeleteRequest) returns (AdminProviderDeleteResponse) 
+message AdminProviderDeleteRequest {
+    Body data = 1;
+    message Body {
+        string providerId = 1;
+    }
+    string pid = 2;
+}
+    
+message AdminProviderDeleteResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc AdminDelete(AdminDeleteRequest) returns (AdminDeleteResponse) 
+message AdminDeleteRequest {
+    string aid = 1;
+    Body data = 2;
+    message Body {
+        string id = 1;
+    }
+}
+    
+message AdminDeleteResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc AdminListGet(AdminListGetRequest) returns (AdminListGetResponse) 
+message AdminListGetRequest {
+    string name = 1;
+    string mail = 2;
+    string offset = 3;
+    string limit = 4;
+    string role = 5;
+}
+    
+message AdminListGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        repeated Results results = 1;
+        int64 total = 2;
+        int64 limit = 3;
+        int64 offset = 4;
+        message Results {
+            string mail = 1;
+            string role = 2;
+            string id = 3;
+            string name = 4;
+        }
+    }
+}
+
+// rpc AdminPost(AdminPostRequest) returns (AdminPostResponse) 
+message AdminPostRequest {
+    Body data = 1;
+    message Body {
+        string mail = 1;
+        string role = 2;
+        string jobTitle = 3;
+        string name = 4;
+    }
+}
+    
+message AdminPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+
+// rpc AdminPut(AdminPutRequest) returns (AdminPutResponse)
+message AdminPutRequest {
+    Body data = 1;
+    message Body {
+        string name = 1;
+        string jobTitle = 2;
+        string role = 3;
+    }
+    string id = 2;
+}
+    
+message AdminPutResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+// rpc AdminGet(AdminGetRequest) returns (AdminGetResponse) 
+message AdminGetRequest {
+    string id = 1;
+}
+    
+message AdminGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string mail = 1;
+        string name = 2;
+        string jobTitle = 3;
+        string role = 4;
+    }
+}
+// rpc AdminLogsGet(AdminLogsGetRequest) returns (AdminLogsGetResponse) 
+message AdminLogsGetRequest {
+    string q = 1;
+    string fromUser = 2;
+    string toUser = 3;
+    string fromDate = 4;
+    string toDate = 5;
+    string offset = 6;
+    string limit = 7;
+    string toMail = 8;
+    string fromMail = 9;
+}
+message AdminLogsGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        repeated Log results = 1;
+        int64 total = 2;
+        message Log {
+            string action = 1;
+            string fromUser = 2;
+            string toUser = 3;
+            string data = 5;
+            string date = 6;
+            string device = 7;
+            string fromMail = 8;
+            string toMail = 9;
+            string serviceId = 10;
+        }
+    }
+}
+
+// rpc AuthResendOTP(AuthResendOTPRequest) returns (AuthResendOTPResponse)
+message AuthResendOTPRequest {
+    Body data = 1;
+    message Body {
+        string id = 1;
+    }
+}
+    
+message AuthResendOTPResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+    }
+}
+
+// rpc AdminUserGet(AdminUserGetRequest) returns (AdminUserGetResponse) 
+message AdminUserGetRequest {
+    Body data = 1;
+    message Body {
+        string kanji = 1;
+        string katakana = 2;
+        int64 birthday = 3;
+        string mail = 4;
+        string phone = 5;
+        string pid = 6;
+    }
+    string id = 2;
+}
+    
+message AdminUserGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        int64 joinDate = 1;
+        bool isBanned = 2;
+        string username = 3;
+        string katakana = 4;
+        int64 birthday = 5;
+        string mail = 6;
+        string phone = 7;
+        string pid = 8;
+        repeated Services services = 9;
+        string kanji = 10;
+        message Services {
+            string id = 1;
+            string name = 2;
+            string icon = 3;
+            int64 joinDate = 4;
+        }
+
+    }
+}
+
+// rpc AdminUserPut(AdminUserPutRequest) returns (AdminUserPutResponse)
+message AdminUserPutRequest {
+    Body data = 1;
+    message Body {
+        string kanji = 1;
+        string katakana = 2;
+        int64 birthday = 3;
+        string mail = 4;
+        string phone = 5;
+        string pid = 6;
+    }
+    string id = 2;
+}
+    
+message AdminUserPutResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc AdminUsersGet(AdminUsersGetRequest) returns (AdminUsersGetResponse) 
+message AdminUsersGetRequest {
+    string username = 1;
+    string kanji = 2;
+    string katakana = 3;
+    string phone = 4;
+    string mail = 5;
+    string isBanned = 6;
+    string offset = 7;
+    string limit = 8;
+    string sortBy = 9;
+    string sortType = 10;
+    string fromDate = 11;
+    string toDate = 12;
+}
+    
+message AdminUsersGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        int64 total = 1;
+        int32 limit = 2;
+        int64 offset = 3;
+        repeated Results results = 4;
+        message Results {
+            string id = 1;
+            string username = 2;
+            string mail = 3;
+            string phone = 4;
+            bool isBanned = 5;
+            string kanji = 6;
+            string katakana = 7;
+            int64 joinDate = 8;
+        }
+    }
+}
+
+// rpc AdminBanPost(AdminBanPostRequest) returns (AdminBanPostResponse) 
+message AdminBanPostRequest {
+    Body data = 1;
+    message Body {
+        string id = 1;
+    }
+    string uid = 2;
+}
+    
+message AdminBanPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc AdminUnbanPost(AdminUnbanPostRequest) returns (AdminUbnbanPostResponse) 
+message AdminUnbanPostRequest {
+    Body data = 1;
+    message Body {
+        string id = 1;
+    }
+    string uid = 2;
+}
+    
+message AdminUbnbanPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc AuthOTPPost(AuthOTPPostRequest) returns (AuthOTPPostResponse)
+message AuthOTPPostRequest {
+    Body data = 1;
+    message Body {
+        string otpId = 1;
+        string otp = 2;
+    }
+}
+    
+message AuthOTPPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+
+    }
+}
+// rpc RequestSharePost(RequestSharePostRequest) returns (RequestSharePostReponse) 
+message RequestSharePostRequest {
+    Body data = 1;
+    message Body {
+        string secondaryId = 1;
+        repeated string services = 2;
+        int64 fromTime = 3;
+    }
+}
+    
+message RequestSharePostReponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string ownerId = 2;
+        string primaryId = 3;
+        string secondaryId = 4;
+        repeated ServicesDetails services = 5;
+        string status = 6;
+    }
+}
+// rpc RequestAcceptPost(RequestAcceptPostRequest) returns (RequestAcceptPostResponse) 
+message RequestAcceptPostRequest {
+    Body data = 1;
+    message Body {
+        string id = 1;
+        int64 fromTime = 2;
+    }
+    string uid = 2;
+    string rid = 3;
+}
+    
+message RequestAcceptPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string ownerId = 2;
+        string primaryId = 3;
+        string secondaryId = 4;
+        repeated ServicesDetails services = 5;
+        string status = 6;
+    }
+}
+// rpc RequestsGet(RequestsGetRequest) returns (RequestsGetResponse) 
+message RequestsGetRequest {
+    string rid = 1;
+}
+    
+message RequestsGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string ownerId = 2;
+        string primaryId = 3;
+        string secondaryId = 4;
+        repeated ServicesDetails services = 5;
+        string status = 6;
+        int64 fromTime = 7;
+        int64 endTime = 8;
+        string username = 9;
+        string kanji = 10;
+        string katakana = 11;
+        string name = 12;
+        int32 avatar = 13;
+    }
+}
+// rpc RequestsListGet(RequestsListGetRequest) returns (RequestsListGetResponse) 
+message RequestsListGetRequest {
+    string status = 1;
+    string q = 2;
+    string primary_id = 3;
+    string secondary_id = 4;
+    string id = 5;
+}
+    
+message RequestsListGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        repeated Results results = 1;
+        message Results {
+            string id = 1;
+            string ownerId = 2;
+            string primaryId = 3;
+            string secondaryId = 4;
+            repeated ServicesDetails services = 5;
+            string status = 6;
+            int64 fromTime = 7;
+            int64 endTime = 8;
+            string username = 9;
+            string kanji = 10;
+            string katakana = 11;
+            string name = 12;
+        }
+    }
+}
+// rpc RequestAskPost(RequestAskPostRequest) returns (RequestAskPostReponse) 
+message RequestAskPostRequest {
+    Body data = 1;
+    message Body {
+        string primaryId = 1;
+        int64 fromTime = 2;
+        repeated string services = 3;
+    }
+}
+    
+message RequestAskPostReponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string ownerId = 2;
+        string primaryId = 3;
+        string secondaryId = 4;
+        repeated ServicesDetails services = 5;
+        string status = 6;
+    }
+}
+// rpc RequestDenyPost(RequestDenyPostRequest) returns (RequestDenyPostResponse) 
+message RequestDenyPostRequest {
+    Body data = 1;
+    message Body {
+        string id = 1;
+        int64 endTime = 2;
+    }
+    string uid = 2;
+    string rid = 3;
+}
+    
+message RequestDenyPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string ownerId = 2;
+        string primaryId = 3;
+        string secondaryId = 4;
+        repeated ServicesDetails services = 5;
+        string status = 6;
+    }
+}
+// rpc RequestStopPost(RequestStopPostRequest) returns (RequestStopPostResponse) 
+message RequestStopPostRequest {
+    Body data = 1;
+    message Body {
+        string id = 1;
+        int64 endTime = 2;
+    }
+    string uid = 2;
+    string rid = 3;
+}
+    
+message RequestStopPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string ownerId = 2;
+        string primaryId = 3;
+        string secondaryId = 4;
+        repeated ServicesDetails services = 5;
+        string status = 6;
+    }
+}
+
+// rpc UserServiceGet(UserServiceGetRequest) returns (UserServiceGetResponse) 
+message UserServiceGetRequest {
+    string id = 1;
+    string name = 2;
+    string limit = 3;
+    string offset = 4;
+}
+    
+message UserServiceGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        repeated Services results = 1;
+        message Services {
+            string id = 1;
+            string url = 2;
+            string icon = 3;
+            string name = 4;
+            string viewUrl = 5;
+            string username = 6;
+            bool connected = 7;
+            string description = 8;
+            string callbackUrl = 9;
+            string blockchainIndex = 10;
+        }
+        int64 total = 2;
+        int64 limit = 3;
+        int64 offset = 4;
+    }
+}
+
+// rpc UserServiceDisconnectPost(UserServiceDisconnectPostRequest) returns (UserServiceDisconnectPostResponse) 
+message UserServiceDisconnectPostRequest {
+    Body data = 1;
+    message Body {
+    }
+    string id = 2;
+    string sid = 3;
+}
+    
+message UserServiceDisconnectPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+// rpc UserServiceConnectPost(UserServiceConnectPostRequest) returns (UserServiceConnectPostResponse) 
+message UserServiceConnectPostRequest {
+    Body data = 1;
+    message Body {
+    }
+    string id = 2;
+    string serviceId = 3;
+}
+    
+message UserServiceConnectPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+
+//  rpc UserNotificationFetchPost(UserNotificationFetchPostRequest) returns (UserNotificationFetchPostResponse) 
+message UserNotificationFetchPostRequest {
+    string id = 1;
+    Body data = 2;
+    message Body {
+    }
+}
+    
+message UserNotificationFetchPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc UserNotificationSubscribePost(UserNotificationSubscribePostRequest) returns (UserNotificationSubscribePostResponse) {
+message UserNotificationSubscribePostRequest {
+    string id = 1;
+    Body data = 2;
+    message Body {
+        string token = 1;
+    }
+}
+    
+message UserNotificationSubscribePostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc UserNotificationUnsubscribePost(UserNotificationUnsubscribePostRequest) returns (UserNotificationUnsubscribePostResponse) {
+message UserNotificationUnsubscribePostRequest {
+    string id = 1;
+    Body data = 2;
+    message Body {
+        string token = 1;
+    }
+}
+    
+message UserNotificationUnsubscribePostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+    }
+}
+
+// rpc UserSearchGet(UserSearchGetRequest) returns (UserSearchGetResponse) 
+message UserSearchGetRequest {
+    string username = 1;
+}
+ 
+message UserSearchGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        repeated Results results = 1;
+        message Results {
+            string id = 1;
+            string username = 2;
+            string katakana = 3;
+            string kanji = 4;
+            int32 avatar = 5;
+            string secondaryName = 6;
+        }
+    }
+}
+
+
+// rpc UserGet(UserGetRequest) returns (UserGetResponse)
+message UserGetRequest {
+    string id = 1;
+}
+ 
+message UserGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string username = 2;
+        string katakana = 3;
+        string kanji = 4;
+        int32 avatar = 5;
+        string secondaryName = 6;
+        string contactId = 7;
+    }
+}
+
+
+// rpc MyAccountGet(MyAccountGetRequest) returns (MyAccountGetResponse) 
+message MyAccountPutRequest {
+    string id = 1;
+    Body data = 3;
+    message Body {
+        int64 birthday = 1;
+        string kanji = 2;
+        string katakana = 3;
+        int32 avatar = 4;
+        string pid = 5;
+        string phone = 6;
+    }
+ }
+ 
+message MyAccountPutResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string username = 2;
+        string katakana = 3;
+        string kanji = 4;
+        int64 birthday = 5;
+        string mail = 6;
+        string phone = 7;
+        string pid = 8;
+        int32 avatar = 9;
+    }
+}
+
+// rpc MyAccountGet(MyAccountGetRequest) returns (MyAccountGetResponse) 
+message MyAccountGetRequest {
+    string id = 1;
+ }
+ 
+message MyAccountGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string username = 2;
+        string katakana = 3;
+        string kanji = 4;
+        int64 birthday = 5;
+        string mail = 6;
+        string phone = 7;
+        string pid = 8;
+        int32 avatar = 9;
+    }
+}
+
+// rpc ContactDelete(ContactDeleteRequest) returns (ContactDeleteResponse)
+message ContactDeleteRequest {
+    string id = 1;
+    string cid = 2;
+ }
+ 
+message ContactDeleteResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        
+    }
+}
+
+// rpc ContactPut(ContactPutRequest) returns (ContactPutResponse)
+message ContactPutRequest {
+    string id = 1;
+    string cid = 2;
+    Body data = 3;
+    message Body {
+        string secondaryName = 1;
+    }
+ }
+ 
+message ContactPutResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string secondaryId = 2;
+        string secondaryName = 3;
+        string primaryId = 4;
+        string secondaryUsername = 5;
+    }
+}
+
+// ContactPost(ContactPostRequest) returns (ContactPostResponse)
+message ContactPostRequest {
+    string id = 1;
+    Body data = 2;
+    message Body {
+        string secondaryId = 1;
+        string secondaryName = 2;
+    }
+
+ }
+ 
+message ContactPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string secondaryId = 2;
+        string secondaryName = 3;
+        string primaryId = 4;
+        string secondaryUsername = 5;
+    }
+}
+
+
+// rpc ContactGet(ContactGetRequest) returns (ContactGetResponse)
+message ContactGetRequest {
+    string id = 1;
+    string offset = 2;
+    string limit = 3;
+    string q = 4;
+}
+
+message ContactGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        repeated Contact results = 1;
+        int64 offset = 2;
+        int64 limit = 3;
+        int64 total = 4;
+        message Contact {
+            string id = 1;
+            string secondaryId = 2;
+            string secondaryName = 3;
+            string secondaryUsername = 4;
+            bool isBanned = 5;
+            string kanji = 6;
+            string katakana = 7;
+            string phone =8;
+            int32 avatar = 9;
+        }
+    }
+ }
+
+
+// UserPrivacyPut(UserPrivacyPutRequest) returns (UserPrivacyPutResponse)
+message UserPrivacyPutRequest {
+    Body data = 1;
+    message Body {
+        bool status = 1;
+    }
+    string id = 2;
+}
+
+message UserPrivacyPutResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        bool status = 1;
+    }
+ }
+
+// AuthPasswordPost(AuthPasswordPostRequest) returns (AuthPasswordPostResponse)
+message AuthPasswordPostRequest {
+    Body data = 1;
+    message Body {
+        string publicKey = 1;
+        string encryptedPrivateKey = 2;
+    }
+}
+
+message AuthPasswordPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string publicKey = 1;
+        string encryptedPrivateKey = 2;
+    }
+ }
+
+
+// UserPost(UserPostResquest) returns (UserPostResponse)
+message UserPostRequest {
+    Body data = 1;
+    message Body {
+        string username = 1;
+        string mail = 2;
+        string phone = 3;
+        string publicKey = 4;
+        string encryptedPrivateKey = 5;
+        string kanji = 6;
+        string katakana = 7;
+    }
+}
+
+message UserPostResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string otpId =2;
+        string mail = 3;
+        string phone = 4;
+        string username = 1;        
+    }
+ }
+ message UserPostData {
+    string id = 1;
+    string username = 2;
+    string mail = 3;
+    string phone = 4;
+    bool isMailValidated = 5;
+ }
+ 
+//  UserPrivacyGet(UserPrivacyGetResquest) returns (UserPrivacyGetResponse)
+message UserPrivacyGetRequest {
+    string id = 1;
+}
+message UserPrivacyGetResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4; 
+    }
+    message Data {
+        bool status = 1;
+    }
+ }
+
+ 
+// AuthCredential(AuthCredentialRequest) returns (AuthCredentialResponse)
+message AuthCredentialRequest {
+    string data = 1; 
+}
+message AuthCredentialResponse {
+    int32 code = 1;
+    bool success = 2;
+    Data data = 3;
+    message Data {
+        string id = 1;
+        string publicKey = 2;
+        string encryptedPrivateKey = 3;
+    }
+}
+
+// AuthPing(AuthPingRequest) returns (AuthPingResponse)
+message AuthPingRequest {
+    
+}
+message AuthPingResponse {
+    int32 code = 1;
+    bool success = 2;
+    oneof response {
+        Data data = 3;
+        ErrorMessage message = 4;
+    }
+    message Data {
+        string id = 1;
+        string role = 2;
+        string blockchainIndex = 3;
+    }
+}
