@@ -1,0 +1,86 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - dev
+  batch: true
+  
+pool:
+  name: 'Builder'
+
+variables:
+  GIT_PAT: $(gitPat)
+  AZURE_PAT: $(azurePass)
+
+name: 1.0.$(Rev:r)
+
+jobs:
+- job: ANDROID
+  displayName: Build_Android_APK
+  pool:
+    name: Builder
+  steps:
+  - checkout: self
+  - task: mirror-git-repository-vsts-task@1
+    inputs:
+      sourceGitRepositoryUri: '$(Build.Repository.Uri)'
+      sourceVerifySSLCertificate: false
+      destinationGitRepositoryUri: '$(DES_REPO)'
+      sourceGitRepositoryPersonalAccessToken: $(AZURE_PAT)
+      destinationGitRepositoryPersonalAccessToken: $(GIT_PAT)
+  - task: CmdLine@2
+    inputs:
+      script: 'printf "SERVER_URL=%s\nUPDATE_VERSION_URL=%s\nUPDATE_VERSION_API=%s\n" "$SERVER_URL" "$UPDATE_VERSION_URL"  "$UPDATE_VERSION_API" > .env'
+  - task: CmdLine@2
+    displayName: Prebuild
+    inputs:
+      script: |
+        cat .env
+        docker build -t handyman/build-flutter --build-arg BUILD_NAME=$(BUILD_NAME) .
+      workingDirectory: $(System.DefaultWorkingDirectory)
+  - task: CmdLine@2
+    displayName: Copy from Container
+    inputs:
+      script: |
+        docker run --rm -v $(pwd)/build:/src/build2 handyman/build-flutter sh -c 'rm -Rf /src/build2/*  && cp -a /src/build/. /src/build2 && chmod -R 777 /src/build2'
+      workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: Android APK'
+    inputs:
+      PathtoPublish: 'build/app/outputs/flutter-apk'
+      ArtifactName: 'android'
+      publishLocation: 'Container'
+
+# - job: IOS
+#   displayName: Build_IOS
+#   pool:
+#     name: MAC
+#   steps:
+#   - checkout: self
+#   - task: FlutterInstall@0
+#     inputs:
+#       mode: 'auto'
+#       channel: 'stable'
+#       version: 'latest'
+#   - task: FlutterBuild@0
+#     inputs:
+#       target: 'ipa'
+#       projectDirectory: '.'
+#       extraArgs: '--release'
+#   # - task: FlutterBuild@0
+#   #   inputs:
+#   #     target: 'ios'
+#   #     projectDirectory: '.'
+#   #     iosCodesign: false
+#   #     extraArgs: '--release'
+  
+#   - task: PublishBuildArtifacts@1
+#     displayName: 'Publish Artifact: IOS'
+#     inputs:
+#       PathtoPublish: 'build/ios/iphoneos'
+#       ArtifactName: mac
+
