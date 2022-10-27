@@ -51,15 +51,18 @@ class UserScreen extends StatelessWidget {
                               SizedBox(
                                 width: getWidth(18),
                               ),
-                              Text(
-                                Get.put(GlobalController())
-                                    .user
-                                    .value
-                                    .username
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: getWidth(20),
-                                    fontWeight: FontWeight.w600),
+                              FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(
+                                  Get.put(GlobalController())
+                                      .user
+                                      .value
+                                      .username
+                                      .toString(),
+                                  style: TextStyle(
+                                      // fontSize: getWidth(20),
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ],
                           ),
@@ -103,7 +106,7 @@ class UserScreen extends StatelessWidget {
                                         width: getWidth(24),
                                         height: getWidth(24),
                                         child: SvgPicture.asset(
-                                          "assets/images/telegram.svg",
+                                          "assets/icons/telegram.svg",
                                           height: getWidth(24),
                                         ),
                                       ),
@@ -117,7 +120,7 @@ class UserScreen extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                  SvgPicture.asset("assets/images/arrow.svg"),
+                                  SvgPicture.asset("assets/icons/arrow.svg"),
                                 ],
                               ),
                               SizedBox(
@@ -151,7 +154,7 @@ class UserScreen extends StatelessWidget {
                                         width: getWidth(24),
                                         height: getWidth(24),
                                         child: SvgPicture.asset(
-                                          "assets/images/qrcode.svg",
+                                          "assets/icons/qrcode.svg",
                                           height: getWidth(24),
                                         ),
                                       ),
@@ -165,7 +168,7 @@ class UserScreen extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                  SvgPicture.asset("assets/images/arrow.svg"),
+                                  SvgPicture.asset("assets/icons/arrow.svg"),
                                 ],
                               ),
                               SizedBox(
@@ -201,7 +204,7 @@ class UserScreen extends StatelessWidget {
                                         width: getWidth(24),
                                         height: getWidth(24),
                                         child: SvgPicture.asset(
-                                          "assets/images/lock.svg",
+                                          "assets/icons/lock.svg",
                                           height: getWidth(24),
                                         ),
                                       ),
@@ -215,7 +218,7 @@ class UserScreen extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                  SvgPicture.asset("assets/images/arrow.svg"),
+                                  SvgPicture.asset("assets/icons/arrow.svg"),
                                 ],
                               ),
                               SizedBox(
@@ -246,7 +249,7 @@ class UserScreen extends StatelessWidget {
                                       width: getWidth(24),
                                       height: getWidth(24),
                                       child: SvgPicture.asset(
-                                        "assets/images/privacy.svg",
+                                        "assets/icons/privacy.svg",
                                         height: getWidth(24),
                                       ),
                                     ),

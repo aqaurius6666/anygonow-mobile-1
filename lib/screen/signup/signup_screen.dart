@@ -129,9 +129,15 @@ class SignupScreen extends StatelessWidget {
                   child: Text("Sign up"),
                 ),
                 onPress: () async {
-                  var result = await signupController.signup();
-                  print(result);
-                  showCheckEmailPopUp(signupController.email.text);
+                  if (signupController.email.text != "" &&
+                      signupController.phoneNumber.text != "" &&
+                      signupController.zipCode.text != "" &&
+                      signupController.password.text != "" &&
+                      signupController.confirmPassword.text != "") {
+                    var result = await signupController.signup();
+                    print(result);
+                    showCheckEmailPopUp(signupController.email.text);
+                  }
                 },
               ),
               SizedBox(

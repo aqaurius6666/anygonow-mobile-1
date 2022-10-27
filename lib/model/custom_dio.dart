@@ -14,7 +14,7 @@ class CustomDio {
   GlobalController globalController = Get.put(GlobalController());
   static final String baseUrl = dotenv.env["SERVER_URL"].toString();
 
-  // static String baseUrl = 'https://test.dev.nftal.io/api';
+  // static String baseUrl = 'https://google.com';
 
   static CustomDio _instance() => CustomDio._();
 
@@ -80,15 +80,14 @@ class CustomDio {
 
   Future post(String url, dynamic params,
       {Options? options, bool? sign}) async {
-    print("params: " + params.toString());
-    if (sign == false)
-      return _dio.post(url, data: params, options: options);
+    print(params);
+    if (sign == false) return _dio.post(url, data: params, options: options);
     var finalData;
     var data = params["data"] ?? {};
     data = {
       ...data,
-      "_timestamp": TimeService.timeToBackEndMaster(TimeService.getTimeNow()),
       "_actionType": _getActionType("post", url),
+      "_timestamp": TimeService.timeToBackEndMaster(TimeService.getTimeNow()),
     };
     var privateKey = globalController.user.value.privateKey ?? "";
     if (privateKey != "") {
