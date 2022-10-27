@@ -13,4 +13,4 @@ COPY --from=handyman/build-flutter /home/developer/.pub-cache  /home/developer/.
 WORKDIR /src
 COPY . .
 ARG BUILD_NAME
-RUN flutter build apk --target-platform=android-arm64 --split-per-abi --release --build-name=${BUILD_NAME}
+RUN flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --release --build-name=${BUILD_NAME}

@@ -195,39 +195,112 @@ Container inputSearch(
   required String hintText,
   required TextEditingController textEditingController,
   required dynamic onSearch,
+  required List<String> options,
 }) {
+  final FocusNode _focusNode = FocusNode();
+  final GlobalKey _autocompleteKey = GlobalKey();
   return Container(
     // height: getHeight(32),
     // padding: EdgeInsets.symmetric(vertical: getHeight(5)),
     margin: EdgeInsets.only(
       right: getWidth(10),
       left: getWidth(10),
+      top:getHeight(5),
     ),
-    child: Row(
+    child: Column(
       children: [
-        Expanded(
-          child: TextFormField(
-            controller: textEditingController,
-            style: TextStyle(fontSize: getWidth(12)),
-            onEditingComplete: () {
-              FocusScope.of(context).unfocus();
-              onSearch();
-            },
-            decoration: InputDecoration(
-              isCollapsed: true,
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              hintText: hintText,
-              contentPadding:
-                  EdgeInsets.only( right: getWidth(16),),
-              labelStyle:
-                  TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
-            ),
-          ),
-        ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: TextFormField(
+        //         focusNode: _focusNode,
+        //         controller: textEditingController,
+        //         style: TextStyle(fontSize: getWidth(12)),
+        //         onEditingComplete: () {
+        //           FocusScope.of(context).unfocus();
+        //           onSearch();
+        //         },
+        //         decoration: InputDecoration(
+        //           isCollapsed: true,
+        //           border: InputBorder.none,
+        //           focusedBorder: InputBorder.none,
+        //           enabledBorder: InputBorder.none,
+        //           errorBorder: InputBorder.none,
+        //           disabledBorder: InputBorder.none,
+        //           hintText: hintText,
+        //           contentPadding: EdgeInsets.only(
+        //             right: getWidth(16),
+        //           ),
+        //           labelStyle: TextStyle(
+        //               color: Color(0xFF878C92), fontSize: getWidth(16)),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        Row(
+          children: [
+            Expanded(
+              child: RawAutocomplete<String>(
+                key: _autocompleteKey,
+                focusNode: _focusNode,
+                textEditingController: textEditingController,
+                fieldViewBuilder: (BuildContext context,
+                    TextEditingController textEditingController,
+                    FocusNode focusNode,
+                    VoidCallback onFieldSubmitted) {
+                  return TextFormField(
+                    focusNode: _focusNode,
+                    controller: textEditingController,
+                    style: TextStyle(fontSize: getWidth(12)),
+                    onEditingComplete: () {
+                      FocusScope.of(context).unfocus();
+                      onSearch();
+                    },
+                    decoration: InputDecoration(
+                      isCollapsed: true,
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: hintText,
+                      contentPadding: EdgeInsets.only(
+                        right: getWidth(16),
+                      ),
+                      labelStyle: TextStyle(
+                          color: Color(0xFF878C92), fontSize: getWidth(16)),
+                    ),
+                  );
+                },
+                optionsViewBuilder: (BuildContext context,
+                    AutocompleteOnSelected<String> onSelected,
+                    Iterable<String> options) {
+                  return Material(
+                    elevation: 4.0,
+                    child: ListView(
+                      children: options
+                          .map((String option) => GestureDetector(
+                                onTap: () {
+                                  onSelected(option);
+                                },
+                                child: ListTile(
+                                  title: Text(option),
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                  );
+                },
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  return options.where((String option) {
+                    return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                  }).toList();
+                },
+              ),
+            )
+          ],
+        )
       ],
     ),
   );
