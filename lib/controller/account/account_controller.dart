@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/model/custom_dio.dart';
 
 class AccountController extends GetxController {
@@ -29,6 +30,8 @@ class AccountController extends GetxController {
 
   RxString logoImage = "".obs;
   RxString bannerImage = "".obs;
+
+  RxList<Category> categories = <Category>[].obs;
 
   Future getUserInfo() async {
     try {
@@ -119,6 +122,11 @@ class AccountController extends GetxController {
           }
         },
       );
+
+      // var response2 = await customDio.put(
+      //   "/businesses/$userID/services?categoryIds=",
+      //   {},
+      // );
       print(response);
       var json = jsonDecode(response.toString());
       return json["data"];
@@ -205,6 +213,34 @@ class AccountController extends GetxController {
     } catch (e, s) {
       print(e);
       return null;
+    }
+  }
+
+  Future getCategories() async {
+    try {
+      var response;
+      CustomDio customDio = CustomDio();
+      response = await customDio.get("/categories");
+      var json = jsonDecode(response.toString());
+
+      List<dynamic> responseData = json["data"]["result"];
+
+      List<Category> res = [];
+
+      for (int i = 0; i < responseData.length; i++) {
+        Category item = new Category();
+        item.id = responseData[i]["id"];
+        item.name = responseData[i]["name"];
+        print(item);
+        res.add(item);
+      }
+
+      categories.clear();
+      categories.value = res;
+      return (true);
+    } catch (e) {
+      print(e);
+      return (false);
     }
   }
 }

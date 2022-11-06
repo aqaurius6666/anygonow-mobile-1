@@ -222,12 +222,21 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                       SizedBox(
                         height: getHeight(18),
                       ),
-                      inputRegular(
-                        context,
-                        hintText: "Professional Category*",
-                        textEditingController: accountController.category,
-                        enabled: accountController.isEditting.value,
-                      ),
+                      Stack(children: [
+                        inputRegular(
+                          context,
+                          hintText: "Professional Category*",
+                          textEditingController: accountController.category,
+                          enabled: accountController.isEditting.value,
+                        ),
+                        Obx(() => accountController.isEditting.value
+                            ? getDropDown(
+                          accountController.categories.map((element) => element.name).toList(),
+                              (String value) => {accountController.category.text = value},
+                        )
+                            : Container()),
+                      ]),
+
                       SizedBox(
                         height: getHeight(18),
                       ),
