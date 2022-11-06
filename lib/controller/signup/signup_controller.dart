@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/api/certificate_service.dart';
 import 'package:untitled/model/custom_dio.dart';
+import 'package:timer_count_down/timer_controller.dart';
 
 class SignupController extends GetxController {
   TextEditingController email = TextEditingController();
@@ -12,9 +12,27 @@ class SignupController extends GetxController {
   TextEditingController zipCode = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+  TextEditingController referral = TextEditingController();
+  late CountdownController otpController;
 
   RxBool isHidePassword = true.obs;
   RxBool isHideCfPassword = true.obs;
+  RxBool isCustomerMode = true.obs;
+  RxBool isAgree = false.obs;
+
+  void resetInput() {
+    email.clear();
+    phoneNumber.clear();
+    zipCode.clear();
+    password.clear();
+    confirmPassword.clear();
+    referral.clear();
+    isAgree.value = false;
+  }
+
+  void updateTime() {
+    update(["validateOTP"]);
+  }
 
   void changeHidePassword() {
     isHidePassword.value = !isHidePassword.value;
@@ -24,18 +42,19 @@ class SignupController extends GetxController {
     isHideCfPassword.value = !isHideCfPassword.value;
   }
 
+  Future<void> resetOTP() async {
+    otpController.restart();
+    update(["validateOTP"]);
+  }
+
   Future checkAccount() async {
     try {
       var response;
       CustomDio customDio = CustomDio();
-      response = await customDio.get(
-          "/auth/check?mail=${email.text}&phone=${phoneNumber.text}");
+      response = await customDio
+          .get("/auth/check?mail=${email.text}&phone=${phoneNumber.text}");
 
       var json = jsonDecode(response.toString());
-
-      print(json);
-      var data = json["data"];
-
       if (json["success"] == true) {
         return true;
       } else {
@@ -49,34 +68,34 @@ class SignupController extends GetxController {
 
   Future signup() async {
     try {
-      var response;
       var keyPair = generateKeyPairAndEncrypt(password.text);
       CustomDio customDio = CustomDio();
-      response = await customDio.post(
-          "/users",
-          {
-            "data": {
+      var data = isCustomerMode.value
+          ? {
               "mail": email.text,
               "phone": phoneNumber.text,
-              // "zipCode": zipCode.text,
               "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
               "publicKey": keyPair["publicKey"],
-            },
-          },
+            }
+          : {
+              "mail": email.text,
+              "phone": email.text,
+              "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
+              "publicKey": keyPair["publicKey"],
+              // "referral": referral.text
+            };
+
+      var response = await customDio.post(
+          "/${isCustomerMode.value ? "users" : "businesses"}", {"data": data},
           sign: false);
       var json = jsonDecode(response.toString());
-      print(json);
-
-      var data = json["data"];
-
+      var result = json["data"];
       if (json["success"] == true) {
         return true;
       }
-
-      return data;
+      return result;
     } catch (e, s) {
       print(e);
-      print(s);
       return null;
     }
   }

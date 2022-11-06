@@ -6,7 +6,7 @@ import 'package:untitled/utils/config.dart';
 
 import '../bounce_button.dart';
 
-Future showPasswordResetPopUp() {
+Future showPopUp({String message = ""}) {
   return Get.defaultDialog(
     titlePadding: EdgeInsets.all(0),
     contentPadding: EdgeInsets.all(0),
@@ -25,24 +25,24 @@ Future showPasswordResetPopUp() {
             foregroundColor: Colors.white,
           ),
           Text(
-            "Password has been reset",
+            message,
             style: TextStyle(fontSize: 14),
           ),
-          Bouncing(
-              child: Container(
-                alignment: Alignment.center,
-                height: getHeight(34),
-                width: getWidth(120),
-                decoration: BoxDecoration(
-                    color: Color(0xFF000000).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: Color(0xFF000000),
-                      width: getWidth(1),
-                    )),
-                child: Text("Login"),
-              ),
-              onPress: () => Get.back()),
+          // Bouncing(
+          //     child: Container(
+          //       alignment: Alignment.center,
+          //       height: getHeight(34),
+          //       width: getWidth(120),
+          //       decoration: BoxDecoration(
+          //           color: Color(0xFF000000).withOpacity(0.1),
+          //           borderRadius: BorderRadius.circular(6),
+          //           border: Border.all(
+          //             color: Color(0xFF000000),
+          //             width: getWidth(1),
+          //           )),
+          //       child: Text("Login"),
+          //     ),
+          //     onPress: () => Get.back()),
         ],
       ),
     ),

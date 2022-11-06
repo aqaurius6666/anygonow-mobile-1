@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/change_password/change_password_controller.dart';
 import 'package:untitled/utils/config.dart';
-import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/input.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
@@ -12,81 +12,79 @@ class ChangePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: BackButton(
-          color: Colors.black,
-        ),
-        elevation: 0,
+      appBar: appBar(
+        title: "Change password",
       ),
       body: Container(
         padding: EdgeInsets.only(
           left: getWidth(27),
           right: getWidth(27),
         ),
-        child: ListView(
+        child: Column(
           children: [
-            Text(
-              "Change Password",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: getWidth(14),
-              ),
-            ),
             SizedBox(
-              height: getHeight(17),
+              height: getHeight(20),
             ),
             Obx(() => inputPassword(
               context,
-              changePasswordController.password,
-              "Current Password",
-              changePasswordController.isHidePassword.value,
-              changePasswordController.changeHidePassword,
+              controller: changePasswordController.password,
+              label: "Old Password",
+              hintText: "",
+              isHide: changePasswordController.isHidePassword.value,
+              changeHide: changePasswordController.changeHidePassword,
+              enabled: changePasswordController.isEditting.value,
             )),
             SizedBox(
-              height: getHeight(8),
+              height: getHeight(16),
             ),
             Obx(() => inputPassword(
               context,
-              changePasswordController.newPassword,
-              "New Password",
-              changePasswordController.isHideNewPassword.value,
-              changePasswordController.changeHideNewPassword,
+              controller: changePasswordController.newPassword,
+              label: "New Password",
+              hintText: " ",
+              isHide:changePasswordController.isHideNewPassword.value,
+              changeHide:changePasswordController.changeHideNewPassword,
+              enabled: changePasswordController.isEditting.value,
             )),
             SizedBox(
-              height: getHeight(8),
+              height: getHeight(16),
             ),
             Obx(() => inputPassword(
               context,
-              changePasswordController.confirmPassword,
-              "Confirm New Password",
-              changePasswordController.isHideConfirmPassword.value,
-              changePasswordController.changeHideConfirmPassword,
+              controller: changePasswordController.confirmPassword,
+              label: "Confirm New Password",
+              hintText: " ",
+              isHide:changePasswordController.isHideConfirmPassword.value,
+              changeHide:changePasswordController.changeHideConfirmPassword,
+              enabled: changePasswordController.isEditting.value,
             )),
             SizedBox(
-              height: getHeight(15),
+              height: getHeight(20),
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Bouncing(
-                child: Container(
-                  alignment: Alignment.center,
-                  height: getHeight(34),
-                  width: getWidth(120),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF000000).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                        color: Color(0xFF000000),
-                        width: getWidth(1),
-                      )),
-                  child: Text("Update"),
+            Obx(() => SizedBox(
+              height: getHeight(52),
+              width: double.infinity,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      side: const BorderSide(
+                        color: Color(0xFFFF511A),
+                      ),
+                  ),
+                  onPressed: () {
+                    if (changePasswordController.isEditting.value) {
+                      changePasswordController.changePassword(context);
+                    } else {
+                      changePasswordController.isEditting.value = true;
+                    }
+                  },
+                  child: Text(
+                    changePasswordController.isEditting.value ? "Update" : "Edit password",
+                    style: const TextStyle(
+                      color: Color(0xFFFF511A),
+                      fontWeight: FontWeight.bold,
+                    ),),
                 ),
-                onPress: () => {
-                  changePasswordController.changePassword(context)
-                },
-              ),
-            ),
+            ),),
           ],
         ),
       ),

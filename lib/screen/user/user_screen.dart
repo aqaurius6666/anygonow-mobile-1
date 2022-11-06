@@ -6,6 +6,7 @@ import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/screen/account/account_screen.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
+import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 
@@ -16,7 +17,7 @@ class UserScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
-          color: Color.fromRGBO(243, 245, 250, 1),
+          color: Colors.white,
           width: double.infinity,
           height: double.infinity,
           child: SingleChildScrollView(
@@ -25,47 +26,28 @@ class UserScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(horizontal: getWidth(16)),
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         height: getHeight(36),
                       ),
-                      GestureDetector(
-                        onTap: () async {
-
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(56),
-                                child: Container(
-                                  width: getWidth(56),
-                                  height: getWidth(56),
-                                  color: Colors.black,
-                                ),
-                              ),
-                              SizedBox(
-                                width: getWidth(18),
-                              ),
-                              FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                  Get.put(GlobalController())
-                                      .user
-                                      .value
-                                      .username
-                                      .toString(),
-                                  style: TextStyle(
-                                      // fontSize: getWidth(20),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ],
-                          ),
+                      Text(
+                        "Profile",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: getWidth(24),
                         ),
                       ),
                       SizedBox(
@@ -85,194 +67,266 @@ class UserScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: getHeight(20),
+                        height: getHeight(10),
                       ),
-                      GestureDetector(
-                        onTap: () async {
-                          await Get.put(AccountController()).getUserInfo();
-                          Get.to(() => AccountScreen());
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: getWidth(24),
-                                        height: getWidth(24),
-                                        child: SvgPicture.asset(
-                                          "assets/icons/telegram.svg",
-                                          height: getWidth(24),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: getWidth(12),
-                                      ),
-                                      Text(
-                                        'Account Information',
-                                        style:
-                                            TextStyle(fontSize: getWidth(16)),
-                                      )
-                                    ],
-                                  ),
-                                  SvgPicture.asset("assets/icons/arrow.svg"),
-                                ],
-                              ),
-                              SizedBox(
-                                height: getHeight(12),
-                              ),
-                              Container(
-                                height: 1,
-                                width: double.infinity,
-                                color: Color(0xFFF8F8F9),
-                              ),
-                              SizedBox(
-                                height: getHeight(12),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: getWidth(24),
-                                        height: getWidth(24),
-                                        child: SvgPicture.asset(
-                                          "assets/icons/qrcode.svg",
-                                          height: getWidth(24),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: getWidth(12),
-                                      ),
-                                      Text(
-                                        "My Request",
-                                        style:
-                                            TextStyle(fontSize: getWidth(16)),
-                                      )
-                                    ],
-                                  ),
-                                  SvgPicture.asset("assets/icons/arrow.svg"),
-                                ],
-                              ),
-                              SizedBox(
-                                height: getHeight(12),
-                              ),
-                              Container(
-                                height: 1,
-                                width: double.infinity,
-                                color: Color(0xFFF8F8F9),
-                              ),
-                              SizedBox(
-                                height: getHeight(12),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(ChangePasswordScreen());
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: getWidth(24),
-                                        height: getWidth(24),
-                                        child: SvgPicture.asset(
-                                          "assets/icons/lock.svg",
-                                          height: getWidth(24),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: getWidth(12),
-                                      ),
-                                      Text(
-                                        "Change Password",
-                                        style:
-                                            TextStyle(fontSize: getWidth(16)),
-                                      )
-                                    ],
-                                  ),
-                                  SvgPicture.asset("assets/icons/arrow.svg"),
-                                ],
-                              ),
-                              SizedBox(
-                                height: getHeight(12),
-                              ),
-                              Container(
-                                height: 1,
-                                width: double.infinity,
-                                color: Color(0xFFF8F8F9),
-                              ),
-                              SizedBox(
-                                height: getHeight(12),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: getWidth(24),
-                                      height: getWidth(24),
-                                      child: SvgPicture.asset(
-                                        "assets/icons/privacy.svg",
-                                        height: getWidth(24),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: getWidth(12),
-                                    ),
-                                    Container(
-                                      width: getWidth(200),
-                                      child: Text(
-                                        "Log out",
-                                        style:
-                                            TextStyle(fontSize: getWidth(16)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
+                      Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Container(
+                              width: getWidth(48),
+                              height: getWidth(48),
+                              color: Colors.black,
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            width: getWidth(8),
+                          ),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              Get.put(GlobalController())
+                                  .user
+                                  .value
+                                  .username
+                                  .toString(),
+                              style: TextStyle(
+                                  fontSize: getWidth(16),
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: getHeight(20),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 10),
+                            ),
+                          ],
+                        ),
+                        padding: EdgeInsets.only(
+                          left: getWidth(16),
+                          right: getWidth(16),
+                        ),
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                await Get.put(AccountController())
+                                    .getUserInfo();
+                                Get.to(() => AccountScreen());
+                              },
+                              child: Container(
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: getHeight(16),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: getWidth(32),
+                                              height: getWidth(32),
+                                              child: SvgPicture.asset(
+                                                "assets/icons/info.svg",
+                                                height: getWidth(32),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: getWidth(8),
+                                            ),
+                                            Text(
+                                              'My information',
+                                              style: TextStyle(
+                                                  fontSize: getWidth(16)),
+                                            )
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 15,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: getHeight(16),
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      width: double.infinity,
+                                      color: Color(0xFFE6E6E6),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: getHeight(16),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: getWidth(32),
+                                              height: getWidth(32),
+                                              child: SvgPicture.asset(
+                                                "assets/icons/request.svg",
+                                                height: getWidth(32),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: getWidth(8),
+                                            ),
+                                            Text(
+                                              "My Request",
+                                              style: TextStyle(
+                                                  fontSize: getWidth(16)),
+                                            )
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 15,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: getHeight(16),
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      width: double.infinity,
+                                      color: Color(0xFFE6E6E6),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(ChangePasswordScreen());
+                              },
+                              child: Container(
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: getHeight(16),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: getWidth(32),
+                                              height: getWidth(32),
+                                              child: SvgPicture.asset(
+                                                "assets/icons/lock.svg",
+                                                height: getWidth(32),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: getWidth(8),
+                                            ),
+                                            Text(
+                                              "Change Password",
+                                              style: TextStyle(
+                                                  fontSize: getWidth(16)),
+                                            )
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 15,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: getHeight(16),
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      width: double.infinity,
+                                      color: Color(0xFFE6E6E6),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              color: Colors.white,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: getHeight(16),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: getWidth(32),
+                                            height: getWidth(32),
+                                            child: SvgPicture.asset(
+                                              "assets/icons/logout.svg",
+                                              height: getWidth(32),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: getWidth(8),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.offAll(() => LoginScreen());
+                                            },
+                                            child: Container(
+                                              width: getWidth(200),
+                                              child: Text(
+                                                "Log out",
+                                                style: TextStyle(
+                                                    fontSize: getWidth(16)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: getHeight(16),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

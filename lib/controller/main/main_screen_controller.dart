@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/model/custom_dio.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import '../global_controller.dart';
 
@@ -28,11 +29,14 @@ class Business {
 class Category {
   String id = "";
   String name = "";
+  int numberOrder = 0;
+  String image = "";
 }
 
 class MainScreenController extends GetxController {
   TextEditingController searchText = TextEditingController();
   TextEditingController searchZipcode = TextEditingController();
+  TextEditingController textFilter = TextEditingController();
 
   GlobalController globalController = Get.put(GlobalController());
 
@@ -48,11 +52,35 @@ class MainScreenController extends GetxController {
 
   RxBool hasSearched = false.obs;
 
+  RxList<String> requests = <String>[].obs;
+
+  String categoryId = "";
+
+  RxInt currentIndex = 0.obs;
+
+  RxBool isKeyboardVisible = false.obs;
+
+  late StreamSubscription<bool> keyboardSubscription;
+
+  int filter = 0;
+
   @override
   void onInit() {
     getProNear = getProfessionalNear();
     getMostInterest = getMostInterested();
+    hasSearched.value = false;
+    var keyboardVisibilityController = KeyboardVisibilityController();
+
+    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
+      isKeyboardVisible.value = visible;
+    });
     super.onInit();
+  }
+
+  @override
+  void dispose() {
+    keyboardSubscription.cancel();
+    super.dispose();
   }
 
   Future<List<Business>> getProfessionalNear() async {
@@ -175,36 +203,72 @@ class MainScreenController extends GetxController {
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] =
           globalController.user.value.certificate.toString();
-      Category? value =categories
-          .firstWhereOrNull((element) =>
-      element.name ==
-          searchText.text);
-      if (value != null) {
-        response = await customDio
-            .get("/businesses?categoryId=${value.id}&zipcode=${searchZipcode.text}");
+      Category? value = categories
+          .firstWhereOrNull((element) => element.name == searchText.text);
+      if (searchText.text == "" || value != null) {
+        categoryId = value != null ? value.id : "";
+        response = await customDio.get(
+            "/businesses?categoryId=$categoryId&zipcode=${searchZipcode.text}&query=$filter");
         var json = jsonDecode(response.toString());
 
-        List<dynamic> responseData = json["data"]["result"];
+        if (json["data"]["result"] != null) {
+          List<dynamic> responseData = json["data"]["result"];
 
-        List<Business> res = [];
+          List<Business> res = [];
 
-        for (int i = 0; i < responseData.length; i++) {
-          Business item = new Business();
-          item.bussiness = responseData[i]["business"];
-          item.rating = responseData[i]["rating"];
-          res.add(item);
+          for (int i = 0; i < responseData.length; i++) {
+            Business item = new Business();
+            item.bussiness = responseData[i]["business"];
+            item.rating = responseData[i]["rating"];
+            res.add(item);
+          }
+
+          businesses.clear();
+          businesses.value = res;
+          print(businesses.toString());
+        } else {
+          businesses.clear();
         }
-
-        businesses.clear();
-        businesses.value = res;
-        print(businesses.toString());
         return (true);
-      } else{
+      } else {
         return false;
       }
     } catch (e) {
       print(e);
       return (false);
+    }
+  }
+
+  Future sendRequest() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+      var response = await customDio.post(
+        "/orders",
+        {
+          "data": {
+            "businessIds": requests,
+            "zipcode": "100",
+            "UserId": globalController.user.value.id.toString(),
+            "categoryId": categoryId,
+          },
+        },
+        sign: true,
+      );
+
+      print(response.toString());
+
+      var json = jsonDecode(response.toString());
+
+      if (json["success"] == false) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 }

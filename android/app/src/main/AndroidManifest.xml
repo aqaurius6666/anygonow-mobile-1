@@ -45,9 +45,21 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="handyman.uetbc.xyz" />
                 <data android:scheme="https" android:host="handyman.uetbc.xyz"/>
             </intent-filter>
+
+             <!-- App Links -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with https://YOUR_HOST -->
+                <data android:scheme="https" android:host="handyman.uetbc.xyz"/>
+            </intent-filter>
+            
+            <meta-data
+                android:name="asset_statements"
+                android:resource="@string/asset_statements"/>
 
         </activity>
         <!-- Don't delete the meta-data below.

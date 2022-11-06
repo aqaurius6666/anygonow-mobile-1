@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/utils/config.dart';
+import 'package:get/get.dart';
 
-Container getAppName() {
-  return Container(
-    child: Text(
-      "App Handyman",
-      style: TextStyle(
-        color: Color(0xFF000000),
-        fontSize: getWidth(30)
+SizedBox getAppName() {
+  return SizedBox(
+    width: getWidth(127),
+    child: Center(
+      child: Container(
+        alignment: Alignment.center,
+        height: getHeight(40),
+        width: getWidth(127),
+        decoration: BoxDecoration(
+          color: const Color(0xffff511a),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          "appName".tr,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: getHeight(20),
+          ),
+        ),
       ),
     ),
   );

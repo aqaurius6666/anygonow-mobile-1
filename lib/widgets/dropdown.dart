@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 DropdownButton getDropDown(List<String> itemList, Function(String) callback) {
   return DropdownButton(
-    isExpanded: true,
+      isExpanded: true,
       underline: SizedBox(),
       items: itemList.map<DropdownMenuItem<String>>((item) {
         return DropdownMenuItem<String>(

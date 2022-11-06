@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
+import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/bottom_navigator.dart';
 import 'package:readmore/readmore.dart';
+import 'package:untitled/widgets/image.dart';
 
 class BrandDetailScreen extends StatelessWidget {
+  BrandDetailController brandDetailController = Get.put(BrandDetailController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: bottomBrandDetail(),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        leading: BackButton(
+        leading: const BackButton(
           color: Colors.black,
         ),
         backgroundColor: Colors.transparent,
@@ -24,20 +31,22 @@ class BrandDetailScreen extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: getHeight(124),
-                  color: Colors.grey,
+                  height: getHeight(205),
+                  color: brandDetailController.business.bussiness["bannerImage"] == null ? Colors.grey : Colors.transparent,
+                  child: getImage(brandDetailController.business.bussiness["bannerImage"]),
                 ),
-                Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top: getHeight(94)),
-                    width: getHeight(60),
-                    height: getHeight(60),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                )
+                Container(
+                    margin: EdgeInsets.only(top: getHeight(160)),
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(56),
+                        child: Container(
+                            width: getHeight(60),
+                            height: getHeight(60),
+                            decoration: BoxDecoration(shape: BoxShape.circle, color: brandDetailController.business.bussiness["logoImage"] == null ? Colors.blueGrey : Colors.transparent),
+                            child: getImage(brandDetailController.business.bussiness["logoImage"], width: getWidth(60), height: getHeight(60))),
+                      ),
+                    )),
               ],
             ),
             SizedBox(
@@ -48,8 +57,8 @@ class BrandDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Brand name",
-                    style: TextStyle(
+                    brandDetailController.business.bussiness["name"] ?? "",
+                    style: const TextStyle(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -70,7 +79,7 @@ class BrandDetailScreen extends StatelessWidget {
                   RatingBarIndicator(
                     rating: 2.75,
                     itemSize: getHeight(20),
-                    itemBuilder: (context, index) => Icon(
+                    itemBuilder: (context, index) => const Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
@@ -80,10 +89,8 @@ class BrandDetailScreen extends StatelessWidget {
                     width: getWidth(10),
                   ),
                   Text(
-                    "(5 out of 900 reviews)",
-                    style: TextStyle(
-                      fontSize: getWidth(12),
-                    ),
+                    "4 reviews",
+                    style: TextStyle(fontSize: getHeight(12), color: const Color(0xFF999999)),
                   ),
                 ],
               ),
@@ -98,22 +105,13 @@ class BrandDetailScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  sections(),
-                  SizedBox(
-                    height: getHeight(9),
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/section-line.svg",
-                  ),
-                  SizedBox(
-                    height: getHeight(12),
-                  ),
                   aboutUs(),
                   SizedBox(
                     height: getHeight(17),
                   ),
                   SvgPicture.asset(
                     "assets/icons/section-line.svg",
+                    height: getHeight(3),
                   ),
                   SizedBox(
                     height: getHeight(12),
@@ -124,11 +122,16 @@ class BrandDetailScreen extends StatelessWidget {
                   ),
                   SvgPicture.asset(
                     "assets/icons/section-line.svg",
+                    height: getHeight(3),
                   ),
                   SizedBox(
                     height: getHeight(12),
                   ),
                   reviews(),
+                  SizedBox(
+                    height: getHeight(12),
+                  ),
+                  comments(context),
                 ],
               ),
             )
@@ -138,57 +141,33 @@ class BrandDetailScreen extends StatelessWidget {
     );
   }
 
-  Container sections() {
-    return Container(
-      child: Row(
-        children: [
-          Bouncing(
-            child: Text(
-              "About Us",
-              style: TextStyle(
-                fontSize: getWidth(12),
-              ),
-            ),
-            onPress: () => {},
-          ),
-          SizedBox(
-            width: getWidth(28),
-          ),
-          Bouncing(
-            child: Text(
-              "Service provided",
-              style: TextStyle(
-                fontSize: getWidth(12),
-              ),
-            ),
-            onPress: () => {},
-          ),
-          SizedBox(
-            width: getWidth(28),
-          ),
-          Bouncing(
-            child: Text(
-              "Reviews",
-              style: TextStyle(
-                fontSize: getWidth(12),
-              ),
-            ),
-            onPress: () => {},
-          ),
-        ],
-      ),
-    );
-  }
-
   Container aboutUs() {
     return Container(
-      child: ReadMoreText(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat nisl id semper elementum. Etiam molestie mauris ut velit scelerisque consequat. Ut eget erat sit amet tortor ultrices luctus. Fusce sodales at augue ut pretium. Ut a viverra nisi. Pellentesque ullamcorper dui et lacus consequat vulputate. Aliquam dapibus diam a nisl sollicitudin, a vulputate erat vestibulum. Quisque vulputate ex quis erat congue, tempus sagittis sapien lacinia. Morbi eleifend tortor non eleifend rutrum. Etiam maximus odio at nibh consequat porta. In fringilla tincidunt elit, vitae efficitur erat placerat nec. Fusce iaculis tellus vel porta porta. Pellentesque habitant morbi tristique senectus et.",
-        style: TextStyle(fontSize: getWidth(12)),
-        trimMode: TrimMode.Line,
-        trimCollapsedText: 'Read more',
-        trimExpandedText: 'Show less',
-        trimLines: 3,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "About us",
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: getHeight(18),
+            ),
+          ),
+          SizedBox(
+            height: getHeight(9),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            child: ReadMoreText(
+              brandDetailController.business.bussiness["descriptions"] ?? "",
+              style: TextStyle(fontSize: getHeight(12)),
+              trimMode: TrimMode.Line,
+              trimCollapsedText: 'Read more',
+              trimExpandedText: 'Show less',
+              trimLines: 3,
+            ),
+          )
+        ],
       ),
     );
   }
@@ -202,7 +181,7 @@ class BrandDetailScreen extends StatelessWidget {
             "Service provided",
             style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: getWidth(12),
+              fontSize: getHeight(18),
             ),
           ),
           SizedBox(
@@ -211,14 +190,9 @@ class BrandDetailScreen extends StatelessWidget {
           SizedBox(
             height: getHeight(145),
             child: ListView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              children: [
-                brandService(),
-                brandService(),
-                brandService(),
-                brandService(),
-              ],
+              children: List.generate(brandDetailController.services.length, (index) => brandService(data: brandDetailController.services[index])),
             ),
           )
         ],
@@ -226,13 +200,60 @@ class BrandDetailScreen extends StatelessWidget {
     );
   }
 
-  Container brandService() {
+  Container brandService({Category? data}) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Color(0xFFE6E6E6),
+        ),
+      ),
+      alignment: Alignment.center,
       margin: EdgeInsets.only(
         right: getHeight(17),
       ),
-      width: getWidth(216),
-      color: Colors.grey,
+      width: getWidth(290),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: getWidth(16),
+              ),
+              getImage(data!.image, width: getWidth(62), height: getHeight(62)),
+              SizedBox(
+                width: getWidth(16),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("${data.numberOrder} times request"),
+                  Text("Best house cleaning"),
+                ],
+              )
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: getHeight(6)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(12), bottomRight: Radius.circular(12)),
+              border: Border.all(
+                color: Color(0xFFE6E6E6),
+              ),
+              color: Color(0xFFFFF511A),
+            ),
+            width: double.infinity,
+            child: Text(
+              data.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -245,59 +266,181 @@ class BrandDetailScreen extends StatelessWidget {
             "Reviews",
             style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: getWidth(12),
+              fontSize: getHeight(18),
             ),
           ),
           SizedBox(
             height: getHeight(9),
           ),
-          reviewBox(),
+          Container(
+            height: getHeight(74),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 10,
+                  child: Container(
+                      child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(56),
+                      child: Container(
+                        width: getHeight(80),
+                        height: getHeight(80),
+                        color: Color(0xFFFFF5F2),
+                        alignment: Alignment.center,
+                        child: Text(
+                          brandDetailController.averageRate.value.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Color(0xFFC02D02)),
+                        ),
+                      ),
+                    ),
+                  )),
+                ),
+                Expanded(
+                  flex: 30,
+                  child: Stack(
+                    children: [
+                      RatingBarIndicator(
+                        rating: brandDetailController.averageRate.value,
+                        itemSize: getHeight(20),
+                        itemBuilder: (context, index) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        itemCount: 5,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: getHeight(28)),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/user.svg",
+                              width: getWidth(18),
+                            ),
+                            SizedBox(
+                              width: getWidth(8),
+                            ),
+                            Text(
+                              "Total 4",
+                              style: TextStyle(
+                                fontSize: getHeight(14),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
   }
 
-  Container reviewBox() {
+  Container comments(context) {
     return Container(
-      height: getHeight(74),
-      color: Color(0xFFEEEFEE),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      height: getHeight(400),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 30,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "0 out of 5",
-                  style: TextStyle(
-                    fontSize: getWidth(12),
-                  ),
-                ),
-                RatingBar(
-                  allowHalfRating: false,
-                  onRatingUpdate: (double value) {},
-                  ratingWidget: RatingWidget(
-                    full: Icon(Icons.star),
-                    empty: Icon(Icons.star_outline),
-                    half: Icon(Icons.star_half),
-                  ),
-                  itemPadding: EdgeInsets.symmetric(
-                    horizontal: getWidth(0),
-                  ),
-                  itemCount: 5,
-                  itemSize: getWidth(16),
-                ),
-              ],
+          Text(
+            "Comments",
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: getHeight(18),
             ),
           ),
           Expanded(
-            flex: 70,
-            child: Container(),
-          )
+            child: MediaQuery.removePadding(
+              context: context,
+              child: ListView(
+                children: [
+                  ...brandDetailController.comments.map((e) {
+                    return commentItem(e);
+                  }).toList(),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Container commentItem(dynamic item) {
+    return Container(
+        margin: EdgeInsets.only(bottom: getHeight(40)),
+        child: Stack(
+          children: [
+            Row(
+              children: [
+                Container(
+                    child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(56),
+                    child: Container(
+                      width: getHeight(32),
+                      height: getHeight(32),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blueGrey),
+                    ),
+                  ),
+                )),
+                SizedBox(
+                  width: getWidth(8),
+                ),
+                Stack(children: [
+                  Container(
+                    child: Text(
+                      item.customerName,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: getHeight(14),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: getHeight(20)),
+                    child: Text(
+                      "Customer service: " + item.serviceOrder,
+                      style: TextStyle(
+                        fontSize: getHeight(12),
+                        color: Color(0xFF333333),
+                      ),
+                    ),
+                  )
+                ]),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top: getHeight(40), left: getWidth(32)),
+              child: RatingBarIndicator(
+                rating: item.rate,
+                itemSize: getHeight(20),
+                itemBuilder: (context, index) => const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                itemCount: 5,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: getHeight(70), left: getWidth(32)),
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: getHeight(8), horizontal: getWidth(8)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Color(0xFFE6E6E6),
+                ),
+              ),
+              child: Text(item.comment),
+            )
+          ],
+        ));
   }
 }

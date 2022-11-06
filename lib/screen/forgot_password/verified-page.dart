@@ -51,7 +51,7 @@ class ForgotPasswordVerifiedPage extends StatelessWidget {
             Text(
               "Your password has been reset !",
               style: TextStyle(
-                  fontSize: getWidth(24),
+                  fontSize: getHeight(24),
                   fontWeight: FontWeight.w500,
                   color: const Color(0xFFFF511A)),
               textAlign: TextAlign.center,

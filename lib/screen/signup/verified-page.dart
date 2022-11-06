@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:untitled/controller/forgot_password/forgot_password_controller.dart';
 import 'package:untitled/controller/signup/signup_controller.dart';
 import 'package:untitled/screen/login/login_screen.dart';
-import 'package:untitled/utils/common-fumction.dart';
+import 'package:untitled/utils/common-function.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_name.dart';
 import 'package:untitled/widgets/bounce_button.dart';
@@ -57,7 +57,7 @@ class VerifiedPage extends StatelessWidget {
             Text(
               "Verified!",
               style: TextStyle(
-                  fontSize: getWidth(24),
+                  fontSize: getHeight(24),
                   fontWeight: FontWeight.w500,
                   color: const Color(0xFFFF511A)),
             ),
@@ -69,7 +69,7 @@ class VerifiedPage extends StatelessWidget {
               child: Text(
                 "Thank you, your account is now verified in our system",
                 style: TextStyle(
-                  fontSize: getWidth(16),
+                  fontSize: getHeight(16),
                   height: getHeight(2),
                   fontWeight: FontWeight.w500,
                 ),

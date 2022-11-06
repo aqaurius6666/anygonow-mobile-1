@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
-import 'package:untitled/controller/handyman/business_management/business_management_controller.dart';
-import 'package:untitled/controller/handyman/contact_info/contact_info_controller.dart';
-import 'package:untitled/screen/account/account_screen.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/handyman/business_management/business_management_screen.dart';
 import 'package:untitled/screen/handyman/payment_page/payment_page_screen.dart';
+import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
+import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/utils/config.dart';
 
 class HandymanUserScreen extends StatelessWidget {
@@ -35,9 +34,7 @@ class HandymanUserScreen extends StatelessWidget {
                         height: getHeight(36),
                       ),
                       GestureDetector(
-                        onTap: () async {
-
-                        },
+                        onTap: () async {},
                         child: Container(
                           color: Colors.white,
                           child: Row(
@@ -62,7 +59,7 @@ class HandymanUserScreen extends StatelessWidget {
                                       .username
                                       .toString(),
                                   style: TextStyle(
-                                      // fontSize: getWidth(20),
+                                      // fontSize: getHeight(20),
                                       fontWeight: FontWeight.w600),
                                 ),
                               ),
@@ -91,8 +88,6 @@ class HandymanUserScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          await Get.put(BusinessManagementController()).getBusinessDetail();
-                          await Get.put(ContactInfoController()).getContactInfo();
                           Get.to(BusinessManagementScreen());
                         },
                         child: Container(
@@ -119,7 +114,7 @@ class HandymanUserScreen extends StatelessWidget {
                                       Text(
                                         'Manage your business',
                                         style:
-                                            TextStyle(fontSize: getWidth(16)),
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -142,7 +137,9 @@ class HandymanUserScreen extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(ServiceAreaScreen());
+                        },
                         child: Container(
                           color: Colors.white,
                           child: Column(
@@ -167,7 +164,7 @@ class HandymanUserScreen extends StatelessWidget {
                                       Text(
                                         "Service Areas",
                                         style:
-                                            TextStyle(fontSize: getWidth(16)),
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -199,7 +196,7 @@ class HandymanUserScreen extends StatelessWidget {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -217,7 +214,7 @@ class HandymanUserScreen extends StatelessWidget {
                                       Text(
                                         "Payment Center",
                                         style:
-                                        TextStyle(fontSize: getWidth(16)),
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -247,7 +244,7 @@ class HandymanUserScreen extends StatelessWidget {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -265,7 +262,7 @@ class HandymanUserScreen extends StatelessWidget {
                                       Text(
                                         "Rating Center",
                                         style:
-                                        TextStyle(fontSize: getWidth(16)),
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -315,7 +312,7 @@ class HandymanUserScreen extends StatelessWidget {
                                       Text(
                                         "Change Password",
                                         style:
-                                            TextStyle(fontSize: getWidth(16)),
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -357,12 +354,17 @@ class HandymanUserScreen extends StatelessWidget {
                                     SizedBox(
                                       width: getWidth(12),
                                     ),
-                                    Container(
-                                      width: getWidth(200),
-                                      child: Text(
-                                        "Log out",
-                                        style:
-                                            TextStyle(fontSize: getWidth(16)),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.offAll(() => LoginScreen());
+                                      },
+                                      child: Container(
+                                        width: getWidth(200),
+                                        child: Text(
+                                          "Log out",
+                                          style:
+                                              TextStyle(fontSize: getWidth(16)),
+                                        ),
                                       ),
                                     ),
                                   ],

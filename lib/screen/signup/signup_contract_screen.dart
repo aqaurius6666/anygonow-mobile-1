@@ -6,6 +6,7 @@ import 'package:untitled/screen/signup/check_email_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/input.dart';
 import 'package:untitled/widgets/app_name.dart';
+import 'package:untitled/widgets/layout.dart';
 
 class SignupContractScreen extends StatelessWidget {
   @override
@@ -14,10 +15,11 @@ class SignupContractScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(top: getHeight(12)),
+          padding: EdgeInsets.only(top: getHeight(0)),
           child: confirmButtonContainer(context, signupController)),
       body: Container(
-        margin: EdgeInsets.only(
+        color: Colors.white,
+        padding: EdgeInsets.only(
           left: getWidth(16),
           right: getWidth(16),
           top: getHeight(24),
@@ -31,7 +33,7 @@ class SignupContractScreen extends StatelessWidget {
             Text(
               "Contractor - Sign up",
               style: TextStyle(
-                fontSize: getWidth(20),
+                fontSize: getHeight(20),
               ),
               textAlign: TextAlign.center,
             ),
@@ -90,12 +92,12 @@ class SignupContractScreen extends StatelessWidget {
                 Text(
                   "I agree to the ",
                   style: TextStyle(
-                      fontSize: getWidth(14), fontWeight: FontWeight.w500),
+                      fontSize: getHeight(14), fontWeight: FontWeight.w500),
                 ),
                 Text(
                   "Term of Use",
                   style: TextStyle(
-                      fontSize: getWidth(14),
+                      fontSize: getHeight(14),
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF3864FF),
                       decoration: TextDecoration.underline),
@@ -103,12 +105,12 @@ class SignupContractScreen extends StatelessWidget {
                 Text(
                   " and ",
                   style: TextStyle(
-                      fontSize: getWidth(14), fontWeight: FontWeight.w500),
+                      fontSize: getHeight(14), fontWeight: FontWeight.w500),
                 ),
                 Text(
                   "Privacy Policy",
                   style: TextStyle(
-                      fontSize: getWidth(14),
+                      fontSize: getHeight(14),
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF3864FF),
                       decoration: TextDecoration.underline),
@@ -122,22 +124,10 @@ class SignupContractScreen extends StatelessWidget {
   }
 }
 
-Container layout({required Widget child}) {
-  return Container(
-    margin: EdgeInsets.only(
-      bottom: getHeight(46),
-      left: getWidth(16),
-      right: getWidth(16),
-    ),
-    height: getHeight(108),
-    width: double.infinity,
-    child: child,
-  );
-}
-
 Container confirmButtonContainer(
     BuildContext context, SignupController signupController) {
-  return layout(
+  return bottomContainerLayout(
+    height: 108,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,

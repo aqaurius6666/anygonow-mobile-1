@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
+import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 
@@ -51,7 +52,7 @@ class MyRequestScreen extends StatelessWidget {
             Text(
               "Number of free customer information view: ${myRequestController.requests.length}",
               style: TextStyle(
-                fontSize: getWidth(12),
+                fontSize: getHeight(12),
               ),
             ),
             SizedBox(
@@ -69,10 +70,11 @@ class MyRequestScreen extends StatelessWidget {
       children: List.generate(
           myRequestController.requests.length,
           (index) => requestItem(
-                startDate: myRequestController.requests[index]["startDate"],
-                endDate: myRequestController.requests[index]["endDate"],
-                serviceName: myRequestController.requests[index]["serviceName"],
-                zipCode: myRequestController.requests[index]["customerZipcode"],
+                startDate: TimeService.dateTimeToString2(TimeService.stringToDateTime(myRequestController.requests[index]["startDate"]) ?? DateTime(1,1,1)),
+                endDate: TimeService.dateTimeToString2(TimeService.stringToDateTime(myRequestController.requests[index]["endDate"]) ?? DateTime(1,1,1)),
+                serviceName: myRequestController.requests[index]["serviceName"] ?? "",
+                zipCode: myRequestController.requests[index]["customerZipcode"] ?? "",
+                fee: myRequestController.requests[index]["fee"]?.toString() ?? "0",
               )),
     );
   }
@@ -110,31 +112,31 @@ class MyRequestScreen extends StatelessWidget {
                 height: getHeight(16),
               ),
               Text(
-                "Request time",
+                "Request time: $startDate",
+                style: TextStyle(
+                  fontSize: getHeight(12),
+                ),
+              ),
+              Text(
+                "Expiry time: $endDate",
+                style: TextStyle(
+                  fontSize: getHeight(12),
+                ),
+              ),
+              Text(
+                "Service requested: $serviceName",
                 style: TextStyle(
                   fontSize: getWidth(12),
                 ),
               ),
               Text(
-                "Expiry time",
+                "Zip code: $zipCode",
                 style: TextStyle(
                   fontSize: getWidth(12),
                 ),
               ),
               Text(
-                "Service requested",
-                style: TextStyle(
-                  fontSize: getWidth(12),
-                ),
-              ),
-              Text(
-                "Zip code",
-                style: TextStyle(
-                  fontSize: getWidth(12),
-                ),
-              ),
-              Text(
-                "Deal fee",
+                "Deal fee: \$$fee",
                 style: TextStyle(
                   fontSize: getWidth(12),
                 ),

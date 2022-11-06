@@ -33,4 +33,25 @@ class ForgotPasswordController extends GetxController {
       return false;
     }
   }
+
+  Future<bool> forgotPassword() async {
+    try {
+      CustomDio customDio = CustomDio();
+      var response = await customDio.post(
+        "/auth/forgot",
+        {
+          "data": {
+            "mail": email.text,
+          },
+        },
+      );
+      var json = jsonDecode(response.toString());
+      if (json["success"] == false) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

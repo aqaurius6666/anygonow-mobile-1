@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/forgot_password/forgot_password_controller.dart';
+import 'package:untitled/screen/forgot_password/check_email_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_name.dart';
-import 'package:untitled/widgets/bounce_button.dart';
 import 'package:untitled/widgets/input.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -13,66 +13,75 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(top: getHeight(12)),
+          child: confirmButtonContainer(context, forgotPasswordController)),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: BackButton(
-          color: Colors.black,
-        ),
+        leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Color(0xFF454B52),
+            ),
+            onPressed: () {
+              Get.back();
+            }),
         elevation: 0,
       ),
       backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.only(
-          left: getWidth(48),
-          right: getWidth(48),
+          left: getWidth(24),
+          right: getWidth(24),
+          top: getHeight(62),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: getHeight(40),
-            ),
             getAppName(),
             SizedBox(
               height: getHeight(38),
             ),
             Text(
-              "Forgot Password",
+              "Forgot your password?",
               style: TextStyle(
-                fontSize: getWidth(20),
+                fontSize: getHeight(24),
+                fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(
               height: getHeight(16),
             ),
             Text(
-                "We will sent you a URL to reset your password \nPlease enter your email address you have registered for our system"),
-            SizedBox(
-              height: getHeight(16),
+              "We will sent you a URL to reset your password",
+              style: TextStyle(
+                fontSize: getHeight(13),
+                color: const Color(0xff999999),
+                height: getHeight(2),
+              ),
+              textAlign: TextAlign.center,
             ),
+            Text(
+              "Please enter your email address you have registered for our system",
+              style: TextStyle(
+                fontSize: getHeight(13),
+                color: const Color(0xff999999),
+                height: getHeight(2),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: getHeight(40),
+            ),
+
             inputRegular(
               context,
-              hintText: "Your email address",
+              label: "email_or_phone".tr,
+              hintText: "name@email.com",
               textEditingController: forgotPasswordController.email,
             ),
             SizedBox(
               height: getHeight(12),
-            ),
-            Bouncing(
-              child: Container(
-                alignment: Alignment.center,
-                height: getHeight(42),
-                width: getWidth(double.infinity),
-                decoration: BoxDecoration(
-                    color: Color(0xFF000000).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: Color(0xFF000000),
-                      width: getWidth(1),
-                    )),
-                child: Text("Next"),
-              ),
-              onPress: () => {},
             ),
           ],
         ),
@@ -80,3 +89,45 @@ class ForgotPasswordScreen extends StatelessWidget {
     );
   }
 }
+
+
+Container layout({required Widget child}) {
+  return Container(
+    margin: EdgeInsets.only(
+      bottom: getHeight(46),
+      left: getWidth(16),
+      right: getWidth(16),
+    ),
+    height: getHeight(48),
+    width: double.infinity,
+    child: child,
+  );
+}
+
+Container confirmButtonContainer(
+    BuildContext context, ForgotPasswordController controller) {
+  return layout(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              backgroundColor: const Color(0xffff511a),
+              side: const BorderSide(
+                color: Color(0xffff511a),
+              ),
+            ),
+            onPressed: () async {
+              await controller.forgotPassword();
+              Get.to(() => ForgotPasswordCheckEmailScreen());
+            },
+            child: Text("continue".tr, style: const TextStyle(color: Colors.white)),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+

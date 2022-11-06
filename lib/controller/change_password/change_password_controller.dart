@@ -10,6 +10,7 @@ import 'package:untitled/model/custom_dio.dart';
 import 'package:untitled/model/status.dart';
 import 'package:untitled/service/date_format.dart';
 import 'package:untitled/service/response_validator.dart';
+import 'package:untitled/widgets/dialog.dart';
 
 // import 'package:untitled/utils/utils.dart';
 // import 'package:untitled/widgets/dialog.dart';
@@ -21,11 +22,6 @@ class ChangePasswordController extends GetxController {
   TextEditingController newPassword = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
 
-  // final RegExp passwordReg0 = new RegExp(r'^[0-9a-zA-Z!@#$%&/=?_.,:;-\\]+$');
-  // final RegExp passwordReg1 = new RegExp(r'^[0-9]+$');
-  // final RegExp passwordReg2 = new RegExp(r'^[a-zA-Z]+$');
-  // final RegExp passwordReg3 = new RegExp(r'^[!@#$%&/=?_.,:;-\\]+$');
-
   var isHidePassword = true.obs;
   var isHideNewPassword = true.obs;
   var isHideConfirmPassword = true.obs;
@@ -34,10 +30,7 @@ class ChangePasswordController extends GetxController {
   var focusNewPassword = false.obs;
   var focusConfirmPassword = false.obs;
 
-  var isSuccess = false.obs;
-  var errPassword = "".obs;
-  var errNewPassword = "".obs;
-  var errConfirmPassword = "".obs;
+  var isEditting = false.obs;
 
   @override
   void onInit() {
@@ -77,8 +70,7 @@ class ChangePasswordController extends GetxController {
 
   Future<bool> checkPassword(String password) async {
     var mail = globalController.user.value.mail;
-    var responseCredential =
-        await loginPageController.getCredential(mail ?? "");
+    var responseCredential = await loginPageController.getCredential(mail ?? "");
     print(responseCredential.toString());
     Status validateUsername = ResponseValidator.check(responseCredential);
     if (validateUsername.status == "OK") {
@@ -93,16 +85,17 @@ class ChangePasswordController extends GetxController {
       Status validatePassword = new Status();
 
       if (privateKey == null)
-        validatePassword =
-            new Status(status: "ERROR", message: "WRONG.PASSWORD");
+        validatePassword = new Status(status: "ERROR", message: "WRONG.PASSWORD");
       else
         validatePassword = new Status(status: "SUCCESS", message: "SUCCESS");
 
       if (validatePassword.status == "SUCCESS") {
         var certificateInfo = SignatureService.getCertificateInfo(userId);
-        String signature = SignatureService.getSignature(
-            certificateInfo, privateKey as String);
-        int times = TimeService.getTimeNow().toUtc().millisecondsSinceEpoch;
+        String signature = SignatureService.getSignature(certificateInfo, privateKey as String);
+        int times = TimeService
+            .getTimeNow()
+            .toUtc()
+            .millisecondsSinceEpoch;
         List<String> certificateList = SignatureService.getCertificateLogin(
             certificateInfo,
             userId,
@@ -129,24 +122,19 @@ class ChangePasswordController extends GetxController {
   }
 
   bool checkCurrentPassword(String password) {
-    var encryptedPrivateKey =
-        globalController.user.value.encryptedPrivateKey ?? "";
+    var encryptedPrivateKey = globalController.user.value.encryptedPrivateKey ?? "";
     String? privateKey = globalController.user.value.privateKey ?? "";
-    String privateKeyGenerated =
-        decryptAESCryptoJS(encryptedPrivateKey, password) ?? "";
+    String privateKeyGenerated = decryptAESCryptoJS(encryptedPrivateKey, password) ?? "";
     if (privateKey != "" && privateKey == privateKeyGenerated) return true;
     return false;
   }
 
   Future sendNewKeyPair({required encryptedKeyPair}) async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] =
-          globalController.user.value.certificate.toString();
-      print(globalController.user.value.certificate.toString());
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
 
-      response = await customDio.post(
+      var response = await customDio.post(
         "/auth/password",
         {
           "data": {
@@ -159,130 +147,62 @@ class ChangePasswordController extends GetxController {
       );
 
       var json = jsonDecode(response.toString());
-      print(json.toString());
       return (json["data"]);
     } catch (e, s) {
       print(e);
-      print(s);
       return null;
     }
   }
 
   void changePassword(context) async {
-    print("change pass");
-    isSuccess.value = false;
-    errNewPassword.value = errMsgNewPassword();
-    errConfirmPassword.value = errMsgConfirmPassword();
-    if (password.text == "") {
-      print("empty pass");
+    if (newPassword.text == "") {
+      CustomDialog(context, "FAILED").show({"message": "password_not_empty"});
+    } else if (newPassword.text != confirmPassword.text) {
+      CustomDialog(context, "FAILED").show({"message": "cfpassword_not_match"});
     } else {
-      errPassword.value = "";
-      if (errNewPassword.value == "" && errConfirmPassword.value == "") {
-        // Todo change password api
-        // showLoading();
-        print(password.text);
-        // var truePassword = await checkPassword(password.text);
-        var truePassword = checkCurrentPassword(password.text);
-        if (truePassword) {
-          var encryptedKeyPair = generateKeyPairAndEncrypt(newPassword.text);
-          var response =
-              await sendNewKeyPair(encryptedKeyPair: encryptedKeyPair);
-          print(response);
-          if (response != null) {
-            print('debug1');
-            String newEncryptedPrivateKey =
-                encryptedKeyPair["encryptedPrivateKey"];
-            String newPrivateKey = encryptedKeyPair["privateKey"];
+      // Todo change password api
+      // var truePassword = await checkPassword(password.text);
+      var truePassword = checkCurrentPassword(password.text);
+      if (truePassword) {
+        var encryptedKeyPair = generateKeyPairAndEncrypt(newPassword.text);
+        var response = await sendNewKeyPair(encryptedKeyPair: encryptedKeyPair);
+        if (response != null) {
+          String newEncryptedPrivateKey = encryptedKeyPair["encryptedPrivateKey"];
+          String newPrivateKey = encryptedKeyPair["privateKey"];
 
-            globalController.user.value.encryptedPrivateKey =
-                newEncryptedPrivateKey;
+          globalController.user.value.encryptedPrivateKey = newEncryptedPrivateKey;
 
-            globalController.user.value.privateKey = newPrivateKey;
-            var certificateInfo = SignatureService.getCertificateInfo(
-                globalController.user.value.id);
-            String signature =
-                SignatureService.getSignature(certificateInfo, newPrivateKey);
-            int times = TimeService.getTimeNow().toUtc().millisecondsSinceEpoch;
+          globalController.user.value.privateKey = newPrivateKey;
+          var certificateInfo = SignatureService.getCertificateInfo(globalController.user.value.id);
+          String signature = SignatureService.getSignature(certificateInfo, newPrivateKey);
+          int times = TimeService
+              .getTimeNow()
+              .toUtc()
+              .millisecondsSinceEpoch;
 
-            List<String> certificateList = SignatureService.getCertificateLogin(
-                certificateInfo,
-                globalController.user.value.id,
-                newPrivateKey,
-                newEncryptedPrivateKey,
-                signature,
-                encryptedKeyPair["publicKey"],
-                times);
-            globalController.user.value.certificate = certificateList[0];
+          List<String> certificateList =
+          SignatureService.getCertificateLogin(
+              certificateInfo,
+              globalController.user.value.id,
+              newPrivateKey,
+              newEncryptedPrivateKey,
+              signature,
+              encryptedKeyPair["publicKey"],
+              times);
+          globalController.user.value.certificate = certificateList[0];
 
-            isSuccess.value = true;
-            errPassword.value = "";
-            password.clear();
-            newPassword.clear();
-            confirmPassword.clear();
-            Get.back();
-            // CustomDialog(context, "CHANGE_PASSWORD").show();
-          } else {
-            print('debug2');
-            Get.back();
-            errPassword.value = "エラーが発生しました。";
-          }
+          password.clear();
+          newPassword.clear();
+          confirmPassword.clear();
+          isEditting.value = false;
+          CustomDialog(context, "SUCCESS").show({"message": "success_change_password"});
         } else {
-          Get.back();
-          print('debug3');
-          errPassword.value = "パスワードが合っていません。";
+          isEditting.value = false;
+          CustomDialog(context, "FAILED").show({"message": "failed_change_password"});
         }
+      } else {
+        CustomDialog(context, "FAILED").show({"message": "wrong_password"});
       }
     }
   }
-
-// void changePassword2(context) async {
-//   isSuccess.value = false;
-//   errNewPassword.value = errMsgNewPassword();
-//   errConfirmPassword.value = errMsgConfirmPassword();
-//   if (password.text == "") {
-//     errPassword.value = "パスワードを入力してください。";
-//   } else {
-//     errPassword.value = "";
-//     if (errNewPassword.value == "" && errConfirmPassword.value == "") {
-//       // Todo change password api
-//       print(password.text);
-//       // var truePassword = await checkPassword(password.text);
-//       // var truePassword = checkCurrentPassword(password.text);
-//       var truePassword = true;
-//       if (truePassword) {
-//         var encryptedKeyPair = generateKeyPairAndEncrypt(newPassword.text);
-//         var response =
-//             await sendNewKeyPair(encryptedKeyPair: encryptedKeyPair);
-//         print(response);
-//         response = true;
-//         if (response == true) {
-//           print('debug1');
-//           var newEncryptedPrivateKey =
-//               encryptedKeyPair["encryptedPrivateKey"];
-
-//           globalController.user.value.encryptedPrivateKey =
-//               newEncryptedPrivateKey;
-
-//           var newPrivateKey =
-//               decryptAESCryptoJS(newEncryptedPrivateKey, password.text);
-//           globalController.user.value.privateKey = newPrivateKey;
-
-//           isSuccess.value = true;
-//           errPassword.value = "";
-//           password.clear();
-//           newPassword.clear();
-//           confirmPassword.clear();
-
-//           CustomDialog(context, "CHANGE_PASSWORD").show();
-//         } else {
-//           print('debug2');
-//           errPassword.value = "パスワードが合っていません。";
-//         }
-//       } else {
-//         print('debug3');
-//         errPassword.value = "パスワードが合っていません。";
-//       }
-//     }
-//   }
-// }
 }

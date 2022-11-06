@@ -6,7 +6,7 @@ import 'package:untitled/controller/signup/signup_controller.dart';
 import 'package:untitled/screen/forgot_password/verified-page.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/screen/signup/verified-page.dart';
-import 'package:untitled/utils/common-fumction.dart';
+import 'package:untitled/utils/common-function.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_name.dart';
 import 'package:untitled/widgets/bounce_button.dart';
@@ -62,7 +62,7 @@ class ForgotPasswordCheckEmailScreen extends StatelessWidget {
             Text(
               "Please check your email",
               style: TextStyle(
-                  fontSize: getWidth(24),
+                  fontSize: getHeight(24),
                   fontWeight: FontWeight.w500,
                   color: const Color(0xFFFF511A)),
             ),
@@ -72,7 +72,7 @@ class ForgotPasswordCheckEmailScreen extends StatelessWidget {
             Text(
               "Confirmation link has been sent to email address ${convertLongString(string: forgotPasswordController.email.text, firstLength: 4, lastLength: 12)}",
               style: TextStyle(
-                fontSize: getWidth(13),
+                fontSize: getHeight(13),
                 height: getHeight(2),
                 fontWeight: FontWeight.w500,
               ),
@@ -93,7 +93,7 @@ class ForgotPasswordCheckEmailScreen extends StatelessWidget {
             Text(
               "No email? Check your spam folder before you ",
               style: TextStyle(
-                fontSize: getWidth(13),
+                fontSize: getHeight(13),
                 height: getHeight(2),
                 color: const Color(0xFF333333),
               ),
@@ -111,7 +111,7 @@ class ForgotPasswordCheckEmailScreen extends StatelessWidget {
                     time.toInt().toString(),
                     style: TextStyle(
                       color: const Color(0xFF878C92),
-                      fontSize: getWidth(17),
+                      fontSize: getHeight(17),
                       fontWeight: FontWeight.w500,
                     ),
                   );
@@ -122,7 +122,7 @@ class ForgotPasswordCheckEmailScreen extends StatelessWidget {
                       style: TextStyle(
                         color: const Color(0xFF3864FF),
                         decoration: TextDecoration.underline,
-                        fontSize: getWidth(14),
+                        fontSize: getHeight(14),
                         fontWeight: FontWeight.w500,
                       ),
                     ),

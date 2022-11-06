@@ -12,9 +12,8 @@ import 'package:untitled/service/date_format.dart';
 
 class CustomDio {
   GlobalController globalController = Get.put(GlobalController());
-  static final String baseUrl = dotenv.env["SERVER_URL"].toString();
-
-  // static String baseUrl = 'https://google.com';
+  static final String baseUrlFormat = dotenv.env["SERVER_URL"].toString();
+  static final String baseUrl = baseUrlFormat[baseUrlFormat.length - 1] == "/" ? baseUrlFormat : baseUrlFormat + "/";
 
   static CustomDio _instance() => CustomDio._();
 
@@ -67,6 +66,7 @@ class CustomDio {
         },
         onError: (DioError error, ErrorInterceptorHandler handler) async {
           print({'onError': error});
+          print({'onError2': error.response});
           return handler.next(error); //continue
         },
       ),
