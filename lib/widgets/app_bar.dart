@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/utils/config.dart';
 
-AppBar appBar({String? title, List<Widget>? actions}) {
+AppBar appBar({String? title, List<Widget>? actions, Function? backFunction}) {
   return AppBar(
     backgroundColor: Colors.white,
     leading: IconButton(
@@ -13,6 +13,7 @@ AppBar appBar({String? title, List<Widget>? actions}) {
       ),
       onPressed: () {
         Get.back();
+        if (backFunction != null) backFunction();
       },
     ),
     elevation: 0,

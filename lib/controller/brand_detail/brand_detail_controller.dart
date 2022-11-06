@@ -22,6 +22,7 @@ class BrandDetailController extends GetxController {
   List<Rating> ratings = <Rating>[];
   List<dynamic> comments = <Comments>[];
   RxDouble averageRate = 0.0.obs;
+  RxInt totalReviews = 0.obs;
 
   Future getBusinessDetail({String id = ""}) async {
     try {
@@ -88,7 +89,7 @@ class BrandDetailController extends GetxController {
 
         List<Rating> res = [];
         double total = 0;
-        double totalItems = 0;
+        int totalItems = 0;
 
         for (int i = 0; i < responseData.length; i++) {
           Rating item = Rating();
@@ -99,6 +100,7 @@ class BrandDetailController extends GetxController {
           res.add(item);
         }
         averageRate.value = double.parse((total / totalItems).toStringAsFixed(1));
+        totalReviews.value = totalItems;
 
         ratings.clear();
         ratings = res;
@@ -117,7 +119,7 @@ class BrandDetailController extends GetxController {
       CustomDio customDio = CustomDio();
 
       response = await customDio.get("/businesses/$id/feedbacks", {
-        "limit": 5,
+        "limit": 15,
         "offset": 0
       });
       var json = jsonDecode(response.toString());
@@ -129,11 +131,11 @@ class BrandDetailController extends GetxController {
 
         for (int i = 0; i < responseData.length; i++) {
           Comments item = Comments();
-          item.rate = double.parse(responseData[i]["rate"].toString());
-          item.customerName = responseData[i]["customerName"];
-          item.createdAt = responseData[i]["createdAt"];
-          item.serviceOrder = responseData[i]["serviceOrder"];
-          item.comment = responseData[i]["comment"];
+          item.rate = double.parse(responseData[i]["rate"]!.toString());
+          item.customerName = responseData[i]["customerName"] ?? "";
+          item.createdAt = responseData[i]["createdAt"] ?? 0;
+          item.serviceOrder = responseData[i]["serviceOrder"] ?? "";
+          item.comment = responseData[i]["comment"] ?? "";
           res.add(item);
         }
         print("debug");

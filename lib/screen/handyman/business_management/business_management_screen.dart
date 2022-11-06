@@ -30,7 +30,11 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: appBar(title: "Manage your business"),
+      appBar: appBar(
+          title: "Manage your business",
+          backFunction: () {
+            accountController.isEditting.value = false;
+          }),
       bottomNavigationBar: Padding(padding: EdgeInsets.only(top: getHeight(0)), child: confirmButtonContainer(context, accountController)),
       body: ListView(
         padding: EdgeInsets.only(

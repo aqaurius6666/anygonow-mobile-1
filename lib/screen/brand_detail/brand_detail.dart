@@ -77,7 +77,7 @@ class BrandDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RatingBarIndicator(
-                    rating: 2.75,
+                    rating: brandDetailController.averageRate.value,
                     itemSize: getHeight(20),
                     itemBuilder: (context, index) => const Icon(
                       Icons.star,
@@ -89,7 +89,7 @@ class BrandDetailScreen extends StatelessWidget {
                     width: getWidth(10),
                   ),
                   Text(
-                    "4 reviews",
+                    brandDetailController.totalReviews.value.toString() + " reviews",
                     style: TextStyle(fontSize: getHeight(12), color: const Color(0xFF999999)),
                   ),
                 ],

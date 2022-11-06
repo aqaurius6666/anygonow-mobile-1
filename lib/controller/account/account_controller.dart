@@ -58,7 +58,6 @@ class AccountController extends GetxController {
       return (json["data"]);
     } catch (e, s) {
       print(e);
-      print(s);
       return null;
     }
   }
