@@ -119,6 +119,9 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                       logoFile.path == "" && accountController.logoImage.value == ""
                           ? GestureDetector(
                               onTap: () async {
+                                if (!accountController.isEditting.value) {
+                                  return;
+                                }
                                 XFile? pickedFile = await ImagePicker().pickImage(
                                   source: ImageSource.gallery,
                                   maxWidth: 1800,
@@ -173,6 +176,9 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                       bannerFile.path == "" && accountController.bannerImage.value == ""
                           ? GestureDetector(
                               onTap: () async {
+                                if (!accountController.isEditting.value) {
+                                  return;
+                                }
                                 XFile? pickedFile = await ImagePicker().pickImage(
                                   source: ImageSource.gallery,
                                   maxWidth: 1800,

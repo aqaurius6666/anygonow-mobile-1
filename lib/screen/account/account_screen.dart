@@ -69,6 +69,9 @@ class _AccountScreenState extends State<AccountScreen> {
               child: logoFile.path == "" && accountController.logoImage.value == ""
                   ? GestureDetector(
                       onTap: () async {
+                        if (!accountController.isEditting.value) {
+                          return;
+                        }
                         XFile? pickedFile = await ImagePicker().pickImage(
                           source: ImageSource.gallery,
                           maxWidth: 1800,
