@@ -36,305 +36,302 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
             accountController.isEditting.value = false;
           }),
       bottomNavigationBar: Padding(padding: EdgeInsets.only(top: getHeight(0)), child: confirmButtonContainer(context, accountController)),
-      body: ListView(
+      body: Container(
         padding: EdgeInsets.only(
-          left: getWidth(33),
+          left: getWidth(27),
+          right: getWidth(27),
         ),
-        children: [
-          Row(
-            children: [
-              Bouncing(
-                child: Obx(() {
-                  return Container(
-                    height: getHeight(36),
-                    width: getWidth(97),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                      color: accountController.isBusinessScreen.value ? Color(0xFFC4C4C4) : Color(0xFFFFFFFF),
-                    ),
-                    child: const Text("Service info"),
-                  );
-                }),
-                onPress: () => {
-                  if (!accountController.isBusinessScreen.value) {accountController.isBusinessScreen.value = true}
-                },
-              ),
-              SizedBox(
-                width: getWidth(11),
-              ),
-              Bouncing(
-                child: Obx(() {
-                  return Container(
-                    height: getHeight(36),
-                    width: getWidth(97),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
+        child: ListView(
+          padding: EdgeInsets.only(
+            left: getWidth(33),
+          ),
+          children: [
+            Row(
+              children: [
+                Bouncing(
+                  child: Obx(() {
+                    return Container(
+                      height: getHeight(36),
+                      width: getWidth(97),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         border: Border.all(
                           color: Colors.black,
                         ),
-                        color: accountController.isBusinessScreen.value ? Color(0xFFFFFFFF) : Color(0xFFC4C4C4)),
-                    child: Text("Contact info"),
-                  );
-                }),
-                onPress: () => {
-                  if (accountController.isBusinessScreen.value) {accountController.isBusinessScreen.value = false}
-                },
-              ),
-            ],
-          ),
-          SizedBox(
-            height: getHeight(15),
-          ),
-          Obx(
-            () => accountController.isBusinessScreen.value
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: getHeight(20),
+                        color: accountController.isBusinessScreen.value ? Color(0xFFC4C4C4) : Color(0xFFFFFFFF),
                       ),
-                      Text(
-                        "Logo images*",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: getHeight(12),
+                      child: const Text("Service info"),
+                    );
+                  }),
+                  onPress: () => {
+                    if (!accountController.isBusinessScreen.value) {accountController.isBusinessScreen.value = true}
+                  },
+                ),
+                SizedBox(
+                  width: getWidth(11),
+                ),
+                Bouncing(
+                  child: Obx(() {
+                    return Container(
+                      height: getHeight(36),
+                      width: getWidth(97),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                          color: accountController.isBusinessScreen.value ? Color(0xFFFFFFFF) : Color(0xFFC4C4C4)),
+                      child: Text("Contact info"),
+                    );
+                  }),
+                  onPress: () => {
+                    if (accountController.isBusinessScreen.value) {accountController.isBusinessScreen.value = false}
+                  },
+                ),
+              ],
+            ),
+            SizedBox(
+              height: getHeight(15),
+            ),
+            Obx(
+              () => accountController.isBusinessScreen.value
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: getHeight(20),
                         ),
-                      ),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      Text(
-                        "This image will also be used for navigation. At least 210x210 recommended.",
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(10), color: const Color(0xFF696969)),
-                      ),
-                      SizedBox(
-                        height: getHeight(10),
-                      ),
-                      logoFile.path == "" && accountController.logoImage.value == ""
-                          ? GestureDetector(
-                              onTap: () async {
-                                if (!accountController.isEditting.value) {
-                                  return;
-                                }
-                                XFile? pickedFile = await ImagePicker().pickImage(
-                                  source: ImageSource.gallery,
-                                  maxWidth: 1800,
-                                  maxHeight: 1800,
-                                );
-                                if (pickedFile != null) {
-                                  setState(() {
-                                    logoFile = File(pickedFile.path);
-                                  });
-                                }
-                              },
-                              child: const Icon(
-                                Icons.add_a_photo_outlined,
-                              ),
-                            )
-                          : Obx(() => Align(
-                                alignment: Alignment.centerLeft,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(56),
+                        Text(
+                          "Logo images*",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: getHeight(12),
+                          ),
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        Text(
+                          "This image will also be used for navigation. At least 210x210 recommended.",
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(10), color: const Color(0xFF696969)),
+                        ),
+                        SizedBox(
+                          height: getHeight(10),
+                        ),
+                        logoFile.path == "" && accountController.logoImage.value == ""
+                            ? GestureDetector(
+                                onTap: () async {
+                                  if (!accountController.isEditting.value) {
+                                    return;
+                                  }
+                                  XFile? pickedFile = await ImagePicker().pickImage(
+                                    source: ImageSource.gallery,
+                                    maxWidth: 1800,
+                                    maxHeight: 1800,
+                                  );
+                                  if (pickedFile != null) {
+                                    setState(() {
+                                      logoFile = File(pickedFile.path);
+                                    });
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.add_a_photo_outlined,
+                                ),
+                              )
+                            : Obx(() => Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(56),
+                                    child: Container(
+                                        width: getHeight(60),
+                                        height: getHeight(60),
+                                        decoration: BoxDecoration(shape: BoxShape.circle, color: accountController.logoImage.value != "" ? Colors.blueGrey : Colors.transparent),
+                                        child: logoFile.path != ""
+                                            ? Image.file(
+                                                logoFile,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : getImage(accountController.logoImage.value, width: getWidth(60), height: getHeight(60))),
+                                  ),
+                                )),
+                        SizedBox(
+                          height: getHeight(18),
+                        ),
+                        Text(
+                          "Banner",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: getHeight(12),
+                          ),
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        Text(
+                          "This image will be used for featuring your business on the homepage. At least 440x220 recommended.",
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(10), color: const Color(0xFF696969)),
+                        ),
+                        SizedBox(
+                          height: getHeight(10),
+                        ),
+                        bannerFile.path == "" && accountController.bannerImage.value == ""
+                            ? GestureDetector(
+                                onTap: () async {
+                                  if (!accountController.isEditting.value) {
+                                    return;
+                                  }
+                                  XFile? pickedFile = await ImagePicker().pickImage(
+                                    source: ImageSource.gallery,
+                                    maxWidth: 1800,
+                                    maxHeight: 1800,
+                                  );
+                                  if (pickedFile != null) {
+                                    setState(() {
+                                      bannerFile = File(pickedFile.path);
+                                    });
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.add_a_photo_outlined,
+                                ),
+                              )
+                            : Obx(() => Align(
+                                  alignment: Alignment.centerLeft,
                                   child: Container(
-                                      width: getHeight(60),
-                                      height: getHeight(60),
-                                      decoration: BoxDecoration(shape: BoxShape.circle, color: accountController.logoImage.value != "" ? Colors.blueGrey : Colors.transparent),
-                                      child: logoFile.path != ""
+                                      height: getWidth(56),
+                                      width: getWidth(108),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        border: Border.all(color: accountController.logoImage.value != "" ? Colors.blueGrey : Colors.transparent),
+                                      ),
+                                      child: bannerFile.path != ""
                                           ? Image.file(
-                                              logoFile,
+                                              bannerFile,
                                               fit: BoxFit.cover,
                                             )
-                                          : getImage(accountController.logoImage.value, width: getWidth(60), height: getHeight(60))),
-                                ),
-                              )),
-                      SizedBox(
-                        height: getHeight(18),
-                      ),
-                      Text(
-                        "Banner",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: getHeight(12),
+                                          : getImage(accountController.bannerImage.value)),
+                                )),
+                        SizedBox(
+                          height: getHeight(18),
                         ),
-                      ),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      Text(
-                        "This image will be used for featuring your business on the homepage. At least 440x220 recommended.",
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(10), color: const Color(0xFF696969)),
-                      ),
-                      SizedBox(
-                        height: getHeight(10),
-                      ),
-                      bannerFile.path == "" && accountController.bannerImage.value == ""
-                          ? GestureDetector(
-                              onTap: () async {
-                                if (!accountController.isEditting.value) {
-                                  return;
-                                }
-                                XFile? pickedFile = await ImagePicker().pickImage(
-                                  source: ImageSource.gallery,
-                                  maxWidth: 1800,
-                                  maxHeight: 1800,
-                                );
-                                if (pickedFile != null) {
-                                  setState(() {
-                                    bannerFile = File(pickedFile.path);
-                                  });
-                                }
-                              },
-                              child: const Icon(
-                                Icons.add_a_photo_outlined,
-                              ),
-                            )
-                          : Obx(() => Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                    height: getWidth(56),
-                                    width: getWidth(108),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(color: accountController.logoImage.value != "" ? Colors.blueGrey : Colors.transparent),
-                                    ),
-                                    child: bannerFile.path != ""
-                                        ? Image.file(
-                                            bannerFile,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : getImage(accountController.bannerImage.value)),
-                              )),
-                      SizedBox(
-                        height: getHeight(18),
-                      ),
-                      inputRegular(
-                        context,
-                        hintText: "Business name*",
-                        textEditingController: accountController.business,
-                        enabled: accountController.isEditting.value,
-                      ),
-                      SizedBox(
-                        height: getHeight(18),
-                      ),
-                      Stack(children: [
+                        inputRegular(
+                          context,
+                          hintText: "Business name*",
+                          textEditingController: accountController.business,
+                          enabled: accountController.isEditting.value,
+                        ),
+                        SizedBox(
+                          height: getHeight(18),
+                        ),
                         inputRegular(
                           context,
                           hintText: "Professional Category*",
                           textEditingController: accountController.category,
                           enabled: accountController.isEditting.value,
                         ),
-                        Obx(() => accountController.isEditting.value
-                            ? getDropDown(
-                          accountController.categories.map((element) => element.name).toList(),
-                              (String value) => {accountController.category.text = value},
-                        )
-                            : Container()),
-                      ]),
-
-                      SizedBox(
-                        height: getHeight(18),
-                      ),
-                      inputRegular(context,
-                          hintText: "Description",
-                          enabled: accountController.isEditting.value,
-                          textEditingController: accountController.description,
-                          maxLines: 6,
-                          keyboardType: TextInputType.multiline,
-                          height: 120,
-                          minLines: 4),
-                    ],
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      inputRegular(
-                        context,
-                        hintText: "Phone number*",
-                        textEditingController: accountController.phoneNumber,
-                        enabled: accountController.isEditting.value,
-                      ),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      Stack(children: [
+                        SizedBox(
+                          height: getHeight(18),
+                        ),
+                        inputRegular(context,
+                            hintText: "Description",
+                            enabled: accountController.isEditting.value,
+                            textEditingController: accountController.description,
+                            maxLines: 6,
+                            keyboardType: TextInputType.multiline,
+                            height: 120,
+                            minLines: 4),
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         inputRegular(
                           context,
-                          hintText: "State*",
+                          hintText: "Phone number*",
+                          textEditingController: accountController.phoneNumber,
                           enabled: accountController.isEditting.value,
-                          textEditingController: accountController.state,
                         ),
-                        Obx(() => accountController.isEditting.value
-                            ? getDropDown(
-                                USStates.getAllNames(),
-                                (String value) => {accountController.state.text = value},
-                              )
-                            : Container()),
-                      ]),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      inputRegular(
-                        context,
-                        hintText: "City*",
-                        textEditingController: accountController.city,
-                        enabled: accountController.isEditting.value,
-                      ),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      inputRegular(
-                        context,
-                        hintText: "Country",
-                        textEditingController: accountController.country,
-                        enabled: accountController.isEditting.value,
-                      ),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      inputRegular(
-                        context,
-                        hintText: "Address 1*",
-                        textEditingController: accountController.address1,
-                        enabled: accountController.isEditting.value,
-                      ),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      inputRegular(
-                        context,
-                        hintText: "Address 2",
-                        textEditingController: accountController.address2,
-                        enabled: accountController.isEditting.value,
-                      ),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      inputRegular(
-                        context,
-                        hintText: "Zipcode*",
-                        textEditingController: accountController.zipcode,
-                        enabled: accountController.isEditting.value,
-                      ),
-                      SizedBox(
-                        height: getHeight(8),
-                      ),
-                      inputRegular(
-                        context,
-                        hintText: "Website",
-                        textEditingController: accountController.website,
-                        enabled: accountController.isEditting.value,
-                      ),
-                    ],
-                  ),
-          ),
-        ],
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        Stack(children: [
+                          inputRegular(
+                            context,
+                            hintText: "State*",
+                            enabled: accountController.isEditting.value,
+                            textEditingController: accountController.state,
+                          ),
+                          Obx(() => accountController.isEditting.value
+                              ? getDropDown(
+                                  USStates.getAllNames(),
+                                  (String value) => {accountController.state.text = value},
+                                )
+                              : Container()),
+                        ]),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        inputRegular(
+                          context,
+                          hintText: "City*",
+                          textEditingController: accountController.city,
+                          enabled: accountController.isEditting.value,
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        inputRegular(
+                          context,
+                          hintText: "Country",
+                          textEditingController: accountController.country,
+                          enabled: accountController.isEditting.value,
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        inputRegular(
+                          context,
+                          hintText: "Address 1*",
+                          textEditingController: accountController.address1,
+                          enabled: accountController.isEditting.value,
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        inputRegular(
+                          context,
+                          hintText: "Address 2",
+                          textEditingController: accountController.address2,
+                          enabled: accountController.isEditting.value,
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        inputRegular(
+                          context,
+                          hintText: "Zipcode*",
+                          textEditingController: accountController.zipcode,
+                          enabled: accountController.isEditting.value,
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        inputRegular(
+                          context,
+                          hintText: "Website",
+                          textEditingController: accountController.website,
+                          enabled: accountController.isEditting.value,
+                        ),
+                      ],
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
