@@ -7,6 +7,7 @@ import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/screen/account/account_screen.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/login/login_screen.dart';
+import 'package:untitled/screen/my_request/my_request_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 
@@ -174,7 +175,9 @@ class UserScreen extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(() => MyRequestUserScreen());
+                              },
                               child: Container(
                                 color: Colors.white,
                                 child: Column(
