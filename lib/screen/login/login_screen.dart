@@ -158,9 +158,11 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                           Get.to(() => HomePageScreen());
                         } else {
                           if (process == 1) {
+                            await globalController.getCategories();
                             Get.to(() => BusinessManagementScreen());
                             AccountController().isBusinessScreen.value = true;
                           } else if (process == 2) {
+                            await globalController.getCategories();
                             Get.to(() => BusinessManagementScreen());
                             AccountController().isBusinessScreen.value = false;
                           } else {

@@ -10,9 +10,17 @@ class State {
   String? name;
 }
 
+class Category {
+  String id = "";
+  String name = "";
+  int numberOrder = 0;
+  String image = "";
+}
+
 class GlobalController extends GetxController {
   var db;
   Rx<User> user = User().obs;
+  RxList<Category> categories = <Category>[].obs;
   var sharingStatus = "SENT_DATA".obs;
   var historyStatus = "SENDING_MODE".obs;
   var recordsTabMode = 0.obs;
@@ -74,6 +82,32 @@ class GlobalController extends GetxController {
     }catch(e) {
       print(e);
       return false;
+    }
+  }
+
+  Future getCategories() async {
+    try {
+      CustomDio customDio = CustomDio();
+      var response = await customDio.get("/categories");
+      var json = jsonDecode(response.toString());
+
+      List<dynamic> responseData = json["data"]["result"];
+
+      List<Category> res = [];
+
+      for (int i = 0; i < responseData.length; i++) {
+        Category item = Category();
+        item.id = responseData[i]["id"];
+        item.name = responseData[i]["name"];
+        res.add(item);
+      }
+
+      categories.clear();
+      categories.value = res;
+      return (true);
+    } catch (e) {
+      print(e);
+      return (false);
     }
   }
 }

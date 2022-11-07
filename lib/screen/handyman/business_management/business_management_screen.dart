@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/account/account_controller.dart';
+import 'package:untitled/main.dart';
 import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/dropdown.dart';
 import 'package:untitled/widgets/image.dart';
 import 'package:untitled/widgets/input.dart';
@@ -20,7 +22,6 @@ class BusinessManagementScreen extends StatefulWidget {
 
 class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
   File logoFile = File("");
-
   File bannerFile = File("");
 
   @override
@@ -42,9 +43,6 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
           right: getWidth(27),
         ),
         child: ListView(
-          padding: EdgeInsets.only(
-            left: getWidth(33),
-          ),
           children: [
             Row(
               children: [
@@ -64,8 +62,11 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                       child: const Text("Service info"),
                     );
                   }),
-                  onPress: () => {
-                    if (!accountController.isBusinessScreen.value) {accountController.isBusinessScreen.value = true}
+                  onPress: () {
+                    if (!accountController.isBusinessScreen.value) {
+                      accountController.isEditting.value = false;
+                      accountController.isBusinessScreen.value = true;
+                    }
                   },
                 ),
                 SizedBox(
@@ -86,8 +87,11 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                       child: Text("Contact info"),
                     );
                   }),
-                  onPress: () => {
-                    if (accountController.isBusinessScreen.value) {accountController.isBusinessScreen.value = false}
+                  onPress: () {
+                    if (accountController.isBusinessScreen.value) {
+                      accountController.isEditting.value = false;
+                      accountController.isBusinessScreen.value = false;
+                    }
                   },
                 ),
               ],
@@ -227,12 +231,19 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         SizedBox(
                           height: getHeight(18),
                         ),
-                        inputRegular(
-                          context,
-                          hintText: "Professional Category*",
-                          textEditingController: accountController.category,
-                          enabled: accountController.isEditting.value,
-                        ),
+                        Stack(children: [
+                          Obx(
+                            () => inputRegular(context, hintText: "Professional Category*", textEditingController: accountController.category, enabled: accountController.isEditting.value, height: 54),
+                          ),
+                          Obx(() => accountController.isEditting.value
+                              ? Container(
+                                  child: getDropDown(
+                                    globalController.categories.map((element) => element.name).toList(),
+                                    (String value) => {accountController.category.text = value},
+                                  ),
+                                )
+                              : Container()),
+                        ]),
                         SizedBox(
                           height: getHeight(18),
                         ),
@@ -260,12 +271,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                           height: getHeight(8),
                         ),
                         Stack(children: [
-                          inputRegular(
-                            context,
-                            hintText: "State*",
-                            enabled: accountController.isEditting.value,
-                            textEditingController: accountController.state,
-                          ),
+                          inputRegular(context, hintText: "State*", enabled: accountController.isEditting.value, textEditingController: accountController.state, height: 54),
                           Obx(() => accountController.isEditting.value
                               ? getDropDown(
                                   USStates.getAllNames(),
@@ -360,11 +366,24 @@ Container confirmButtonContainer(BuildContext context, AccountController control
                     onPressed: () async {
                       if (controller.isEditting.value) {
                         if (controller.isBusinessScreen.value) {
+                          print({"d":controller.business.value});
+                          if (controller.business.text == "" || controller.category.text == "") {
+                            CustomDialog(context, "FAILED").show({"message": "missing_field"});
+                            return;
+                          }
                           var result = await controller.editBusinessInfo();
                           if (result != null) {
                             controller.isBusinessScreen.value = false;
                           }
                         } else {
+                          if (controller.email.text == ""
+                              || controller.city.text == ""
+                              || controller.address1.text == ""
+                              || controller.address2.text == ""
+                              || controller.zipcode.text == "") {
+                            CustomDialog(context, "FAILED").show({"message": "missing_field"});
+                            return;
+                          }
                           var result = await controller.editBusinessContact();
                           if (result != null) {
                             controller.isBusinessScreen.value = false;

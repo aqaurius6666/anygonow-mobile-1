@@ -26,13 +26,6 @@ class Business {
   };
 }
 
-class Category {
-  String id = "";
-  String name = "";
-  int numberOrder = 0;
-  String image = "";
-}
-
 class MainScreenController extends GetxController {
   TextEditingController searchText = TextEditingController();
   TextEditingController searchZipcode = TextEditingController();

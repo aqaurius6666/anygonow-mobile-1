@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/main.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/handyman/business_management/business_management_screen.dart';
 import 'package:untitled/screen/handyman/payment_page/payment_page_screen.dart';
@@ -89,7 +90,7 @@ class HandymanUserScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          await Get.put(AccountController()).getCategories();
+                          await globalController.getCategories();
                           Get.to(BusinessManagementScreen());
                         },
                         child: Container(
