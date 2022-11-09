@@ -40,24 +40,13 @@ class ImageService {
       var headers = response["form"];
       var url = response["url"];
 
-      // final bytes = await file.readAsBytes(); // Uint8List
-      // final byteData = bytes.buffer.asByteData(); //
-
       FormData formData = FormData.fromMap({
-        'filename': filename,
-        'contentLength': contentLength,
         'file': await MultipartFile.fromFile(file.path, filename: filename),
         ...headers
       });
 
-      print(formData.fields);
-
-      var res = await customDio.normalPost(url, data: formData);
-      var json2 = jsonDecode(res.toString());
-
-      print({"res": json2["data"]});
-
-      return url + headers.key;
+      await customDio.normalPost(url, data: formData);
+      return url + headers["key"];
     } catch (e, s) {
       print(e);
       return "";

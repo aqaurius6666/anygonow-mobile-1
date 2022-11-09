@@ -224,21 +224,38 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                                   Icons.add_a_photo_outlined,
                                 ),
                               )
-                            : Obx(() => Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                      height: getWidth(56),
-                                      width: getWidth(108),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        border: Border.all(color: accountController.logoImage.value != "" ? Colors.blueGrey : Colors.transparent),
-                                      ),
-                                      child: bannerFile.path != ""
-                                          ? Image.file(
-                                              bannerFile,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : getImage(accountController.bannerImage.value)),
+                            : Obx(() => GestureDetector(
+                                  onTap: () async {
+                                    if (!accountController.isEditting.value) {
+                                      return;
+                                    }
+                                    XFile? pickedFile = await ImagePicker().pickImage(
+                                      source: ImageSource.gallery,
+                                      maxWidth: 1800,
+                                      maxHeight: 1800,
+                                    );
+                                    if (pickedFile != null) {
+                                      setState(() {
+                                        bannerFile = File(pickedFile.path);
+                                      });
+                                    }
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                        height: getWidth(56),
+                                        width: getWidth(108),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          border: Border.all(color: accountController.logoImage.value != "" ? Colors.blueGrey : Colors.transparent),
+                                        ),
+                                        child: bannerFile.path != ""
+                                            ? Image.file(
+                                                bannerFile,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : getImage(accountController.bannerImage.value)),
+                                  ),
                                 )),
                         SizedBox(
                           height: getHeight(18),
@@ -261,10 +278,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                           },
                           buttonText: Text(
                             "Professional Category*",
-                            style: TextStyle(
-                              fontSize: getHeight(14),
-                              color: accountController.isEditting.value ? Colors.black : const Color(0xFF999999)
-                            ),
+                            style: TextStyle(fontSize: getHeight(14), color: accountController.isEditting.value ? Colors.black : const Color(0xFF999999)),
                           ),
                         ),
                         SizedBox(
@@ -396,7 +410,14 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                             if (logoFile.path != "") {
                               var contentLength = await logoFile.length();
                               var filename = logoFile.path.split("/").last;
-                              var a = await ImageService.handleUploadImage(filename, contentLength, logoFile);
+                              var logoUrl = await ImageService.handleUploadImage(filename, contentLength, logoFile);
+                              controller.logoImage.value = logoUrl;
+                            }
+                            if (bannerFile.path != "") {
+                              var contentLength = await bannerFile.length();
+                              var filename = bannerFile.path.split("/").last;
+                              var bannerUrl = await ImageService.handleUploadImage(filename, contentLength, bannerFile);
+                              controller.bannerImage.value = bannerUrl;
                             }
 
                             var result = await controller.editBusinessInfo();
