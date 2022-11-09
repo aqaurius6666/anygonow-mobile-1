@@ -405,7 +405,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                       onPressed: () async {
                         if (controller.isEditting.value) {
                           if (controller.isBusinessScreen.value) {
-                            if (controller.business.text == "" || controller.category.text == "") {
+                            if (controller.business.text == "" || controller.tags.isEmpty) {
                               CustomDialog(context, "FAILED").show({"message": "missing_field"});
                               return;
                             }
