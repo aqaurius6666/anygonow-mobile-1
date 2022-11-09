@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/utils/config.dart';
 
-AppBar appBar({String? title, List<Widget>? actions, Function? backFunction}) {
+AppBar appBar({String? title, List<Widget>? actions, Function? backFunction, PreferredSizeWidget? bottom}) {
   return AppBar(
     backgroundColor: Colors.white,
     leading: IconButton(
@@ -25,6 +25,7 @@ AppBar appBar({String? title, List<Widget>? actions, Function? backFunction}) {
         color: Colors.black,
       ),
     ),
-    actions: actions
+    actions: actions,
+    bottom: bottom,
   );
 }
