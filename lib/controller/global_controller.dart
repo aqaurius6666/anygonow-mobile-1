@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:untitled/model/User.dart';
 import 'package:untitled/model/custom_dio.dart';
 
-class State {
+class StateModal {
   String? id;
   String? name;
 }
@@ -34,7 +34,7 @@ class GlobalController extends GetxController {
   late PageController pageController;
   RxInt currentPage = 0.obs;
 
-  List<State> states = [];
+  List<StateModal> states = [];
 
   @override
   void onInit() {
@@ -65,10 +65,10 @@ class GlobalController extends GetxController {
       if (json["data"]["states"] != null) {
         List<dynamic> responseData = json["data"]["states"];
 
-        List<State> res = [];
+        List<StateModal> res = [];
 
         for (int i = 0; i < responseData.length; i++) {
-          State item = new State();
+          StateModal item = new StateModal();
           item.id = responseData[i]["id"];
           item.name = responseData[i]["name"];
           res.add(item);

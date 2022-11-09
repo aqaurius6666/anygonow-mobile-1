@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 import 'package:untitled/controller/account/account_controller.dart';
+import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/main.dart';
-import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
 import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
@@ -269,18 +267,23 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         SizedBox(
                           height: getHeight(18),
                         ),
-                        MultiSelectDialogField(
+                        Obx(() => accountController.isEditting.value ? MultiSelectDialogField(
                           title: const Text("Category"),
                           items: globalController.categories.map((e) => MultiSelectItem(e, e.name)).toList(),
                           listType: MultiSelectListType.CHIP,
                           onConfirm: (values) {
-                            accountController.tags = values;
+                            accountController.tags.value = values;
                           },
                           buttonText: Text(
                             "Professional Category*",
                             style: TextStyle(fontSize: getHeight(14), color: accountController.isEditting.value ? Colors.black : const Color(0xFF999999)),
                           ),
-                        ),
+                        ) : inputRegular(
+                          context,
+                          hintText: "Professional Category*",
+                          textEditingController: accountController.category,
+                          enabled: accountController.isEditting.value,
+                        ),),
                         SizedBox(
                           height: getHeight(18),
                         ),
@@ -406,7 +409,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                               CustomDialog(context, "FAILED").show({"message": "missing_field"});
                               return;
                             }
-
+                            controller.isLoading.value = true;
                             if (logoFile.path != "") {
                               var contentLength = await logoFile.length();
                               var filename = logoFile.path.split("/").last;

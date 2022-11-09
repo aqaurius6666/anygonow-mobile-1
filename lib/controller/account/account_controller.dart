@@ -24,7 +24,7 @@ class AccountController extends GetxController {
 
   GlobalController globalController = Get.put(GlobalController());
   final textFieldTagsController = TextFieldTagsController();
-  var tags = [];
+  RxList<dynamic> tags = [].obs;
 
   RxBool isEditting = false.obs;
   RxBool isBusinessScreen = true.obs;
@@ -108,7 +108,6 @@ class AccountController extends GetxController {
   Future editBusinessInfo() async {
     try {
       var userID = globalController.user.value.id.toString();
-      isLoading.value = true;
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
       var response = await customDio.put(
@@ -125,11 +124,20 @@ class AccountController extends GetxController {
         },
       );
 
-      // var response2 = await customDio.put(
-      //   "/businesses/$userID/services?categoryIds=",
-      //   {},
-      // );
-      print(response);
+      var response2 = await customDio.put(
+        "/businesses/$userID/services",
+        {
+          "data": {
+            "id": userID,
+            "categoryIds": tags.value.map((tag) { return tag.id;}).toList(),
+          }
+        },
+      );
+
+      category.text = tags.value.map((e) {
+        return e.name;
+      }).join(", ");
+
       var json = jsonDecode(response.toString());
       return json["data"];
     } catch (e, s) {
@@ -207,9 +215,22 @@ class AccountController extends GetxController {
       zipcode.text = contact["zipcode"] ?? "";
       country.text = contact["country"] ?? "";
 
+      List<Category> res = [];
+
+      for (int i = 0; i < serviceData.length; i++) {
+        Category item = Category();
+        item.id = serviceData[i]["id"] ?? "";
+        item.name = serviceData[i]["name"] ?? "";
+        item.numberOrder = serviceData[i]["numberOrder"] ?? 0;
+        item.image = serviceData[i]["image"] ?? "";
+        res.add(item);
+      }
+
+      tags.value = res;
       category.text = serviceData != null ? serviceData.map((e) {
         return e["name"];
       }).join(", ") : "";
+
 
       return json["data"];
     } catch (e, s) {
