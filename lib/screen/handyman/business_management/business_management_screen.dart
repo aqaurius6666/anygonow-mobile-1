@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:untitled/controller/account/account_controller.dart';
-import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/utils/config.dart';
