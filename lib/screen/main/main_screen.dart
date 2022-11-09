@@ -8,6 +8,7 @@ import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 import 'package:untitled/widgets/dropdown.dart';
+import 'package:untitled/widgets/image.dart';
 import 'package:untitled/widgets/input.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -396,6 +397,10 @@ class MainScreen extends StatelessWidget {
                                     .businessNearList[index].rating["review"]
                                     ?.toInt() ??
                                 0,
+                            requested: mainScreenController
+                                    .businessNearList[index]
+                                    .rating["requested"] ??
+                                0,
                             id: mainScreenController
                                 .businessNearList[index].bussiness["id"],
                           );
@@ -457,8 +462,7 @@ class MainScreen extends StatelessWidget {
                         mainScreenController.filter = 1;
                       }
 
-                      var res = await mainScreenController
-                          .getBusinesses();
+                      var res = await mainScreenController.getBusinesses();
                       if (res) {
                         mainScreenController.textFilter.text = value;
                       }
@@ -494,6 +498,9 @@ class MainScreen extends StatelessWidget {
                 about: mainScreenController
                         .businesses[index].bussiness["descriptions"] ??
                     "",
+                requested: mainScreenController
+                        .businesses[index].rating["requested"] ??
+                    0,
                 id: mainScreenController.businesses[index].bussiness["id"] ??
                     "",
               );

@@ -73,6 +73,11 @@ class TimeService {
     return datedFormat;
   }
 
+  static String requestTimeFormat(DateTime dateTime) {
+    var datedFormat = DateFormat("HH:mm - dd MMM, yyyy").format(dateTime);
+    return datedFormat;
+  }
+
   static String currentTimeDayOfWeek(DateTime dateTime) {
     var datedFormat = DateFormat("EEEE dd, MMM, yyyy").format(dateTime);
     return datedFormat;

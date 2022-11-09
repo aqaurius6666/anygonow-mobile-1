@@ -140,7 +140,7 @@ GestureDetector handymanItem({
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             RatingBarIndicator(
-                              rating: 2.75,
+                              rating: stars,
                               itemSize: getHeight(15),
                               itemBuilder: (context, index) => Icon(
                                 Icons.star,

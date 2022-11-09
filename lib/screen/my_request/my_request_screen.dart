@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
+import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 import 'package:untitled/widgets/pop-up/cancel_request_popup.dart';
 
 class MyRequestUserScreen extends StatelessWidget {
+  MyRequestUserController myRequestUserController =
+      Get.put(MyRequestUserController());
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -26,7 +30,7 @@ class MyRequestUserScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            pendingTab(),
+            pendingTab(myRequestUserController),
             connectedTab(),
             completedTab(),
           ],
@@ -36,16 +40,21 @@ class MyRequestUserScreen extends StatelessWidget {
   }
 }
 
-Container pendingTab() {
+Container pendingTab(MyRequestUserController controller) {
   return Container(
     child: ListView(
-      children: [
-        requestItem(),
-        requestItem(),
-        requestItem(),
-        requestItem(),
-
-      ],
+      children: List.generate(controller.pendingRequests.length, (index) {
+        dynamic item = controller.pendingRequests[index];
+        return requestItem(
+          title: item["businessName"],
+          service: item["serviceName"],
+          timeRequest: TimeService.requestTimeFormat(
+            TimeService.stringToDateTime(item["startDate"]) ??
+                DateTime(1, 1, 1),
+          ),
+          phone: item["customerPhone"],
+        );
+      }),
     ),
   );
 }
@@ -195,7 +204,11 @@ Container requestItem({
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                type == 0 ? "Cancel request" : type == 1 ? "Completed" : "Feedback",
+                type == 0
+                    ? "Cancel request"
+                    : type == 1
+                        ? "Completed"
+                        : "Feedback",
                 style: TextStyle(
                   color: type == 0 ? Color(0xFFFF0000) : Color(0xFF07BAAD),
                 ),
