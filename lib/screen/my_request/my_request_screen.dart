@@ -30,9 +30,9 @@ class MyRequestUserScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            pendingTab(myRequestUserController),
-            connectedTab(),
-            completedTab(),
+            pendingTab(context, myRequestUserController),
+            connectedTab(context),
+            completedTab(context),
           ],
         ),
       ),
@@ -40,12 +40,13 @@ class MyRequestUserScreen extends StatelessWidget {
   }
 }
 
-Container pendingTab(MyRequestUserController controller) {
+Container pendingTab(BuildContext context, MyRequestUserController controller) {
   return Container(
     child: ListView(
       children: List.generate(controller.pendingRequests.length, (index) {
         dynamic item = controller.pendingRequests[index];
         return requestItem(
+          context: context,
           title: item["businessName"],
           service: item["serviceName"],
           timeRequest: TimeService.requestTimeFormat(
@@ -59,31 +60,28 @@ Container pendingTab(MyRequestUserController controller) {
   );
 }
 
-Container connectedTab() {
+Container connectedTab(BuildContext context) {
   return Container(
     child: ListView(
       children: [
-        requestItem(type: 1),
-        requestItem(type: 1),
-        requestItem(type: 1),
-        requestItem(type: 1),
+        requestItem(context: context, type: 1),
       ],
     ),
   );
 }
 
-Container completedTab() {
+Container completedTab(BuildContext context) {
   return Container(
     child: ListView(
       children: [
-        requestItem(type: 2),
-        requestItem(type: 2),
+        requestItem(context: context, type: 2),
       ],
     ),
   );
 }
 
 Container requestItem({
+  required BuildContext context,
   String? title,
   String? service,
   String? phone,
@@ -180,14 +178,44 @@ Container requestItem({
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Time request",
+              type == 0 ? "Time request" : "Request status",
               style: TextStyle(
                 fontSize: getWidth(12),
               ),
             ),
-            Text(
-              timeRequest ?? "00:00",
-              style: TextStyle(fontWeight: FontWeight.w500),
+            Row(
+              children: [
+                Text(
+                  timeRequest ?? "00:00",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                type != 0
+                    ? Container(
+                        margin: EdgeInsets.only(
+                          left: getWidth(8),
+                        ),
+                        padding: EdgeInsets.only(
+                          top: getHeight(4),
+                          bottom: getHeight(4),
+                          left: getHeight(8),
+                          right: getHeight(8),
+                        ),
+                        // height: getHeight(20),
+                        decoration: BoxDecoration(
+                          color:
+                              type == 1 ? Color(0xFF3864FF) : Color(0xFF4FBF67),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          type == 1 ? "Accepted" : "Completed",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: getWidth(12),
+                          ),
+                        ),
+                      )
+                    : SizedBox(),
+              ],
             ),
           ],
         ),
@@ -218,6 +246,10 @@ Container requestItem({
               switch (type) {
                 case 0:
                   cancelRequestPopup();
+                  break;
+                case 2:
+                  feedbackPopup(context: context);
+                  break;
               }
             })
       ],

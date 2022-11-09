@@ -10,6 +10,8 @@ class MyRequestUserController extends GetxController {
   RxList<dynamic> connectedRequests = [].obs;
   RxList<dynamic> completedRequests = [].obs;
 
+  TextEditingController feedback = TextEditingController();
+
   Future getRequests() async {
     try {
       var response;
