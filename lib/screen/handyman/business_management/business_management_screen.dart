@@ -366,7 +366,6 @@ Container confirmButtonContainer(BuildContext context, AccountController control
                     onPressed: () async {
                       if (controller.isEditting.value) {
                         if (controller.isBusinessScreen.value) {
-                          print({"d":controller.business.value});
                           if (controller.business.text == "" || controller.category.text == "") {
                             CustomDialog(context, "FAILED").show({"message": "missing_field"});
                             return;
@@ -376,10 +375,9 @@ Container confirmButtonContainer(BuildContext context, AccountController control
                             controller.isBusinessScreen.value = false;
                           }
                         } else {
-                          if (controller.email.text == ""
+                          if (controller.phoneNumber.text == ""
                               || controller.city.text == ""
                               || controller.address1.text == ""
-                              || controller.address2.text == ""
                               || controller.zipcode.text == "") {
                             CustomDialog(context, "FAILED").show({"message": "missing_field"});
                             return;

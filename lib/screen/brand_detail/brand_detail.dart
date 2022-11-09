@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
-import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:untitled/widgets/bottom_navigator.dart';
@@ -33,6 +32,7 @@ class BrandDetailScreen extends StatelessWidget {
               children: [
                 Container(
                   height: getHeight(205),
+                  width: double.infinity,
                   color: brandDetailController.business.bussiness["bannerImage"] == null ? Colors.grey : Colors.transparent,
                   child: getImage(brandDetailController.business.bussiness["bannerImage"]),
                 ),
@@ -163,6 +163,7 @@ class BrandDetailScreen extends StatelessWidget {
               brandDetailController.business.bussiness["descriptions"] ?? "",
               style: TextStyle(fontSize: getHeight(12)),
               trimMode: TrimMode.Line,
+              delimiter: " ",
               trimCollapsedText: 'Read more',
               trimExpandedText: 'Show less',
               trimLines: 3,
