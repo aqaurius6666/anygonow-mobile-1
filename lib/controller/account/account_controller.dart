@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/model/custom_dio.dart';
 
@@ -22,6 +23,8 @@ class AccountController extends GetxController {
   TextEditingController country = TextEditingController();
 
   GlobalController globalController = Get.put(GlobalController());
+  final textFieldTagsController = TextFieldTagsController();
+  var tags = [];
 
   RxBool isEditting = false.obs;
   RxBool isBusinessScreen = true.obs;
@@ -76,6 +79,7 @@ class AccountController extends GetxController {
           }
         },
       );
+
       var response2 = await customDio.put(
         "/contacts/$userID",
         {
@@ -88,6 +92,7 @@ class AccountController extends GetxController {
           }
         },
       );
+
       var json = jsonDecode(response.toString());
       if (json["data"] != null) {
         return json["data"]["user"];
