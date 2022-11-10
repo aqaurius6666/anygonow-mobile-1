@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/service/date_format.dart';
@@ -54,6 +55,9 @@ Container pendingTab(BuildContext context, MyRequestUserController controller) {
                 DateTime(1, 1, 1),
           ),
           phone: item["customerPhone"],
+          orderId: item["id"],
+          serviceId: item["serviceId"],
+          businessId: item["businessId"],
         );
       }),
     ),
@@ -64,7 +68,13 @@ Container connectedTab(BuildContext context) {
   return Container(
     child: ListView(
       children: [
-        requestItem(context: context, type: 1),
+        requestItem(
+          context: context,
+          type: 1,
+          orderId: "",
+          serviceId: "",
+          businessId: "",
+        ),
       ],
     ),
   );
@@ -74,7 +84,13 @@ Container completedTab(BuildContext context) {
   return Container(
     child: ListView(
       children: [
-        requestItem(context: context, type: 2),
+        requestItem(
+          context: context,
+          type: 2,
+          orderId: "",
+          serviceId: "",
+          businessId: "",
+        ),
       ],
     ),
   );
@@ -87,6 +103,9 @@ Container requestItem({
   String? phone,
   String? timeRequest,
   int type = 0,
+  required String orderId,
+  required String businessId,
+  required String serviceId,
 }) {
   return Container(
     margin: EdgeInsets.only(
@@ -248,7 +267,12 @@ Container requestItem({
                   cancelRequestPopup();
                   break;
                 case 2:
-                  feedbackPopup(context: context);
+                  feedbackPopup(
+                    context: context,
+                    serviceId: serviceId,
+                    businessId: businessId,
+                    orderId: orderId,
+                  );
                   break;
               }
             })

@@ -49,4 +49,37 @@ class MyRequestUserController extends GetxController {
       return false;
     }
   }
+
+  Future<bool> sendFeedback(
+    String orderId,
+    double rate,
+    String serviceId,
+    String businessId,
+  ) async {
+    try {
+      var response;
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          Get.put(GlobalController()).user.value.certificate.toString();
+
+      response = await customDio.post(
+        "/feedbacks",
+        {
+          "data": {
+            "orderId": orderId,
+            "rate": rate,
+            "comment": feedback.text,
+            "serviceId": serviceId,
+            "businessId": businessId,
+          },
+        },
+      );
+
+      var json = jsonDecode(response.toString());
+      return json["success"];
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

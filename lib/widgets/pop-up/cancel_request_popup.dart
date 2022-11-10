@@ -86,8 +86,15 @@ Future cancelRequestPopup() {
   );
 }
 
-Future feedbackPopup(
-    {required BuildContext context, String? title, String? service}) {
+Future feedbackPopup({
+  required BuildContext context,
+  String? title,
+  String? service,
+  required String orderId,
+  required String businessId,
+  required String serviceId,
+}) {
+  double rate = 0;
   return Get.defaultDialog(
     titlePadding: EdgeInsets.only(
       top: getHeight(20),
@@ -116,7 +123,9 @@ Future feedbackPopup(
                 half: Icon(Icons.star_half),
                 full: Icon(Icons.star),
                 empty: Icon(Icons.star_outline)),
-            onRatingUpdate: (double value) {},
+            onRatingUpdate: (double value) {
+              rate = value;
+            },
             itemSize: 30,
           ),
           SizedBox(
@@ -189,11 +198,17 @@ Future feedbackPopup(
               child: Text(
                 "Close",
                 style: TextStyle(
-                  color: Color (0xFFFF0000),
+                  color: Color(0xFFFF0000),
                 ),
               ),
             ),
-            onPress: () => Get.back(),
+            onPress: () async {
+              bool res = await Get.put(MyRequestUserController())
+                  .sendFeedback(orderId, rate, serviceId, businessId);
+              if (res) {
+                Get.back();
+              }
+            },
           ),
         ],
       ),

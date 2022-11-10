@@ -399,7 +399,7 @@ class MainScreen extends StatelessWidget {
                                 0,
                             requested: mainScreenController
                                     .businessNearList[index]
-                                    .rating["requested"] ??
+                                    .rating["request"] ??
                                 0,
                             id: mainScreenController
                                 .businessNearList[index].bussiness["id"],
@@ -499,7 +499,7 @@ class MainScreen extends StatelessWidget {
                         .businesses[index].bussiness["descriptions"] ??
                     "",
                 requested: mainScreenController
-                        .businesses[index].rating["requested"] ??
+                        .businesses[index].rating["request"] ??
                     0,
                 id: mainScreenController.businesses[index].bussiness["id"] ??
                     "",
