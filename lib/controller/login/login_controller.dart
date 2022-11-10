@@ -117,6 +117,15 @@ class LoginPageController extends GetxController {
             userInfo.certificate = certificateList[0];
             userInfo.role = jsonResponse["data"]["role"];
             userInfo.process = jsonResponse["data"]["process"] ?? 0;
+
+            CustomDio customDio = CustomDio();
+
+            if (userInfo.role == null || userInfo.role == 0) {
+              var contactResponse = await customDio.get("/contacts/$userId");
+              var contactInfo = jsonDecode(contactResponse.toString());
+              userInfo.zipcode = int.parse(contactInfo["data"]["contact"]["zipcode"] ?? "100");
+            }
+
             Get.put(GlobalController()).user.value = userInfo;
             return true;
           } else {

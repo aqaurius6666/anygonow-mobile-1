@@ -52,6 +52,8 @@ dependencies:
   flutter_credit_card: ^3.0.1
   http: ^0.13.3
   uni_links: ^0.5.1
+  textfield_tags: ^1.4.4
+  multi_select_flutter: ^4.1.2
 
 dev_dependencies:
   flutter_test:

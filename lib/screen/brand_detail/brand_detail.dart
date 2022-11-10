@@ -233,7 +233,6 @@ class BrandDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text("${data.numberOrder} times request"),
-                  Text("Best house cleaning"),
                 ],
               )
             ],

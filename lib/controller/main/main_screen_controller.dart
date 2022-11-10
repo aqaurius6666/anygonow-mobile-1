@@ -78,11 +78,9 @@ class MainScreenController extends GetxController {
 
   Future<List<Business>> getProfessionalNear() async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] =
-          globalController.user.value.certificate.toString();
-      response = await customDio.get("/businesses/near");
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      var response = await customDio.get("/businesses/near");
       var json = jsonDecode(response.toString());
 
       List<dynamic> responseData = json["data"]["result"];
@@ -109,8 +107,7 @@ class MainScreenController extends GetxController {
     try {
       var response;
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] =
-          globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
       response = await customDio.get("/businesses/interest");
       var json = jsonDecode(response.toString());
 
@@ -136,9 +133,8 @@ class MainScreenController extends GetxController {
 
   Future getCategories() async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
-      response = await customDio.get("/categories");
+      var response = await customDio.get("/categories");
       var json = jsonDecode(response.toString());
 
       List<dynamic> responseData = json["data"]["result"];
@@ -164,9 +160,8 @@ class MainScreenController extends GetxController {
 
   Future getSearchService({String id = ""}) async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
-      response = await customDio.get("/categories/${id}");
+      var response = await customDio.get("/categories/${id}");
       var json = jsonDecode(response.toString());
 
       List<dynamic> responseData = json["data"]["result"];
@@ -192,16 +187,12 @@ class MainScreenController extends GetxController {
 
   Future getBusinesses() async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] =
-          globalController.user.value.certificate.toString();
-      Category? value = categories
-          .firstWhereOrNull((element) => element.name == searchText.text);
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      Category? value = categories.firstWhereOrNull((element) => element.name == searchText.text);
       if (searchText.text == "" || value != null) {
         categoryId = value != null ? value.id : "";
-        response = await customDio.get(
-            "/businesses?categoryId=$categoryId&zipcode=${searchZipcode.text}&query=$filter");
+        var response = await customDio.get("/businesses?categoryId=$categoryId&zipcode=${searchZipcode.text}&query=$filter");
         var json = jsonDecode(response.toString());
 
         if (json["data"]["result"] != null) {
@@ -210,7 +201,7 @@ class MainScreenController extends GetxController {
           List<Business> res = [];
 
           for (int i = 0; i < responseData.length; i++) {
-            Business item = new Business();
+            Business item = Business();
             item.bussiness = responseData[i]["business"];
             item.rating = responseData[i]["rating"];
             res.add(item);
@@ -235,16 +226,15 @@ class MainScreenController extends GetxController {
   Future sendRequest() async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] =
-          globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
       var response = await customDio.post(
         "/orders",
         {
           "data": {
             "businessIds": requests,
-            "zipcode": "100",
+            "zipcode": searchZipcode.text != "" ? searchZipcode.text : "100",
             "UserId": globalController.user.value.id.toString(),
-            "categoryId": categoryId,
+            "categoryId": categoryId != "" ? categoryId : categories[0].id,
           },
         },
         sign: true,

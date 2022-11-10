@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
+import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 import 'package:untitled/widgets/pop-up/cancel_request_popup.dart';
 
 class MyRequestUserScreen extends StatelessWidget {
+  MyRequestUserController myRequestUserController =
+      Get.put(MyRequestUserController());
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -26,9 +30,9 @@ class MyRequestUserScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            pendingTab(),
-            connectedTab(),
-            completedTab(),
+            pendingTab(context, myRequestUserController),
+            connectedTab(context),
+            completedTab(context),
           ],
         ),
       ),
@@ -36,45 +40,48 @@ class MyRequestUserScreen extends StatelessWidget {
   }
 }
 
-Container pendingTab() {
+Container pendingTab(BuildContext context, MyRequestUserController controller) {
+  return Container(
+    child: ListView(
+      children: List.generate(controller.pendingRequests.length, (index) {
+        dynamic item = controller.pendingRequests[index];
+        return requestItem(
+          context: context,
+          title: item["businessName"],
+          service: item["serviceName"],
+          timeRequest: TimeService.requestTimeFormat(
+            TimeService.stringToDateTime(item["startDate"]) ??
+                DateTime(1, 1, 1),
+          ),
+          phone: item["customerPhone"],
+        );
+      }),
+    ),
+  );
+}
+
+Container connectedTab(BuildContext context) {
   return Container(
     child: ListView(
       children: [
-        requestItem(),
-        requestItem(),
-        requestItem(),
-        requestItem(),
-
+        requestItem(context: context, type: 1),
       ],
     ),
   );
 }
 
-Container connectedTab() {
+Container completedTab(BuildContext context) {
   return Container(
     child: ListView(
       children: [
-        requestItem(type: 1),
-        requestItem(type: 1),
-        requestItem(type: 1),
-        requestItem(type: 1),
-      ],
-    ),
-  );
-}
-
-Container completedTab() {
-  return Container(
-    child: ListView(
-      children: [
-        requestItem(type: 2),
-        requestItem(type: 2),
+        requestItem(context: context, type: 2),
       ],
     ),
   );
 }
 
 Container requestItem({
+  required BuildContext context,
   String? title,
   String? service,
   String? phone,
@@ -171,14 +178,44 @@ Container requestItem({
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Time request",
+              type == 0 ? "Time request" : "Request status",
               style: TextStyle(
                 fontSize: getWidth(12),
               ),
             ),
-            Text(
-              timeRequest ?? "00:00",
-              style: TextStyle(fontWeight: FontWeight.w500),
+            Row(
+              children: [
+                Text(
+                  timeRequest ?? "00:00",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                type != 0
+                    ? Container(
+                        margin: EdgeInsets.only(
+                          left: getWidth(8),
+                        ),
+                        padding: EdgeInsets.only(
+                          top: getHeight(4),
+                          bottom: getHeight(4),
+                          left: getHeight(8),
+                          right: getHeight(8),
+                        ),
+                        // height: getHeight(20),
+                        decoration: BoxDecoration(
+                          color:
+                              type == 1 ? Color(0xFF3864FF) : Color(0xFF4FBF67),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          type == 1 ? "Accepted" : "Completed",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: getWidth(12),
+                          ),
+                        ),
+                      )
+                    : SizedBox(),
+              ],
             ),
           ],
         ),
@@ -195,7 +232,11 @@ Container requestItem({
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                type == 0 ? "Cancel request" : type == 1 ? "Completed" : "Feedback",
+                type == 0
+                    ? "Cancel request"
+                    : type == 1
+                        ? "Completed"
+                        : "Feedback",
                 style: TextStyle(
                   color: type == 0 ? Color(0xFFFF0000) : Color(0xFF07BAAD),
                 ),
@@ -205,6 +246,10 @@ Container requestItem({
               switch (type) {
                 case 0:
                   cancelRequestPopup();
+                  break;
+                case 2:
+                  feedbackPopup(context: context);
+                  break;
               }
             })
       ],

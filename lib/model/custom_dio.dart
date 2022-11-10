@@ -78,6 +78,19 @@ class CustomDio {
     return _dio.get(url, queryParameters: params);
   }
 
+  Future<Response<T>> normalPost<T>(
+      String path, {
+        data,
+        Map<String, dynamic>? queryParameters,
+        Options? options,
+        CancelToken? cancelToken,
+        ProgressCallback? onSendProgress,
+        ProgressCallback? onReceiveProgress,
+      }) {
+   return _dio.post(path, data: data, queryParameters: queryParameters, options: options, cancelToken: cancelToken, onReceiveProgress: onSendProgress, onSendProgress: onSendProgress);
+  }
+
+
   Future post(String url, dynamic params,
       {Options? options, bool? sign}) async {
     print(params);

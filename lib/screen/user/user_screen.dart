@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/screen/account/account_screen.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/login/login_screen.dart';
@@ -175,7 +176,8 @@ class UserScreen extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                await Get.put(MyRequestUserController()).getRequests();
                                 Get.to(() => MyRequestUserScreen());
                               },
                               child: Container(
