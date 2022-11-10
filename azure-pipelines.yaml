@@ -1,7 +1,6 @@
 # Starter pipeline
 # Start with a minimal pipeline that you can customize to build and deploy your code Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-
 trigger:
   branches:
     include:
@@ -56,19 +55,29 @@ jobs:
   displayName: Build_IOS
   pool:
     name: MAC
+  variables:
+    - name: configuration
+      value: "Release"
+    - name: sdk
+      value: "iphoneos"
+    - name: iosReleaseDir
+      value: $(Build.SourcesDirectory)/output/$(sdk)/$(configuration)
+    - name: ipaFile
+      value: $(iosReleaseDir)/handyman.ipa
+
   steps:
   - checkout: self
 
   - task: InstallAppleCertificate@2
     inputs:
-      certSecureFile: 'Certificates.p12'
+      certSecureFile: 'Certificates6.p12'
       certPwd: 'Anygonow'
       keychain: 'temp'
 
   - task: InstallAppleProvisioningProfile@1
     inputs:
       provisioningProfileLocation: 'secureFiles'
-      provProfileSecureFile: 'Handyman.mobileprovision'
+      provProfileSecureFile: 'Handyman6.mobileprovision'
 
   - task: FlutterInstall@0
     inputs:
@@ -82,15 +91,28 @@ jobs:
 
   - task: FlutterBuild@0
     inputs:
-      target: 'ipa'
+      target: 'ios'
       projectDirectory: '.'
       extraArgs: '--release'
       buildName: "$(Build.BuildNumber)"
-      exportOptionsPlist: 'ExportOptions.plist'
+      iosCodesign: false
+  - task: Xcode@5
+    displayName: "Code Sign ipa for Distribution"
+    inputs:
+      actions: "archive"
+      scheme: "Runner"
+      sdk: "$(sdk)"
+      configuration: "$(configuration)"
+      xcWorkspacePath: "ios/Runner.xcworkspace"
+      xcodeVersion: "default"
+      packageApp: true
+      signingOption: "manual"
+      signingIdentity: "$(APPLE_CERTIFICATE_SIGNING_IDENTITY)"
+      provisioningProfileUuid: "$(APPLE_PROV_PROFILE_UUID)"
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: IOS'
     inputs:
-      PathtoPublish: 'build/ios/ipa'
+      PathtoPublish: '$(iosReleaseDir)'
       ArtifactName: mac
 
