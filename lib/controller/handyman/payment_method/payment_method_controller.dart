@@ -10,7 +10,7 @@ import '../../global_controller.dart';
 class PaymentController extends GetxController {
   GlobalController globalController = Get.put(GlobalController());
 
-  TextEditingController cardNumber = TextEditingController();
+  TextEditingController cardNumber = MaskedTextController(mask: '0000 0000 0000 0000');
   TextEditingController expiryDate = MaskedTextController(mask: '00/0000');
   TextEditingController cvvCode = TextEditingController();
 

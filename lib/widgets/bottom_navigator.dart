@@ -47,11 +47,11 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/home.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 0 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 0 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             Text(
                               "Home",
-                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 0 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 0 ? Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -71,11 +71,11 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/chat.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             Text(
                               "Message",
-                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -95,11 +95,11 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/bell.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             Text(
                               "Notification",
-                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -119,12 +119,12 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/user.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 1 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 1 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             FittedBox(
                               child: Text(
                                 "Profile",
-                                style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 1 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                                style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 1 ? Color(0xFFFF511A) : Color(0xFF999999)),
                               ),
                             )
                           ],
@@ -175,13 +175,13 @@ Container bottomNavigatorHandyman() {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
-                              "assets/icons/request.svg",
+                              "assets/icons/request-icon.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 0 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 0 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             Text(
                               "My request",
-                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 0 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 0 ? Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -190,7 +190,9 @@ Container bottomNavigatorHandyman() {
                   }),
                   Obx(() {
                     return Bouncing(
-                      onPress: () {},
+                      onPress: () {
+                        globalController.onChangeTab(5);
+                      },
                       child: Container(
                         width: getWidth(60),
                         child: Column(
@@ -199,11 +201,11 @@ Container bottomNavigatorHandyman() {
                             SvgPicture.asset(
                               "assets/icons/message.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             Text(
                               "Message",
-                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -212,20 +214,23 @@ Container bottomNavigatorHandyman() {
                   }),
                   Obx(() {
                     return Bouncing(
-                      onPress: () {},
+                      onPress: () {
+                        globalController.onChangeTab(2);
+                      },
                       child: Container(
                         width: getWidth(60),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
-                              "assets/icons/advertise.svg",
+                              "assets/icons/advertise-icon.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 2 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             Text(
                               "Advertise",
-                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 2 ?
+                              Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -234,20 +239,22 @@ Container bottomNavigatorHandyman() {
                   }),
                   Obx(() {
                     return Bouncing(
-                      onPress: () {},
+                      onPress: () {
+                        globalController.onChangeTab(3);
+                      },
                       child: Container(
                         width: getWidth(60),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
-                              "assets/icons/noti.svg",
+                              "assets/icons/notification-icon.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 3 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             Text(
                               "Notification",
-                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 5 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 3 ? Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -267,12 +274,12 @@ Container bottomNavigatorHandyman() {
                             SvgPicture.asset(
                               "assets/icons/user.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 1 ? Color(0xFF61B3FF) : Color(0xFF878C92),
+                              color: globalController.currentPage.value == 1 ? Color(0xFFFF511A) : Color(0xFF999999),
                             ),
                             FittedBox(
                               child: Text(
                                 "Profile",
-                                style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 1 ? Color(0xFF61B3FF) : Color(0xFF878C92)),
+                                style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 1 ? Color(0xFFFF511A) : Color(0xFF999999)),
                               ),
                             )
                           ],

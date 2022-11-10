@@ -56,7 +56,10 @@ class AddPaymentScreen extends StatelessWidget {
           padding: EdgeInsets.only(left: getWidth(27), right: getWidth(27), top: getHeight(27)),
           child: Column(
             children: [
-              inputRegular(context, label: "Card number", hintText: "0000-0000-0000-0000", required: true, textEditingController: paymentController.cardNumber, maxLength: 16),
+              inputRegular(context, label: "Card number",
+                  hintText: "0000-0000-0000-0000",
+                  required: true,
+                  textEditingController: paymentController.cardNumber, maxLength: 19),
               SizedBox(
                 height: getHeight(16),
               ),

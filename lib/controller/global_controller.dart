@@ -48,7 +48,6 @@ class GlobalController extends GetxController {
       currentPage.value = value;
       pageController.jumpToPage(value);
     } catch (e) {
-      print(e);
       currentPage.value = value;
       pageController = PageController(initialPage: value, keepPage: true);
     }
@@ -56,10 +55,9 @@ class GlobalController extends GetxController {
 
   Future getStates() async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
 
-      response = await customDio.get("/contacts/states");
+      var response = await customDio.get("/contacts/states");
       var json = jsonDecode(response.toString());
 
       if (json["data"]["states"] != null) {
