@@ -11,6 +11,8 @@ import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:untitled/service/stripe.dart';
+import 'package:uni_links/uni_links.dart';
+import 'package:flutter/services.dart' show PlatformException;
 
 GlobalController globalController = Get.put(GlobalController());
 
@@ -45,5 +47,29 @@ class MyApp extends StatelessWidget {
 
   Widget home() {
     return LoginScreen();
+  }
+
+  Future<void> initUniLinks() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      final initialLink = await getInitialLink();
+      // Parse the link and warn the user, if it is not correct,
+      // but keep in mind it could be `null`.
+    } on PlatformException {
+      // Handle exception by warning the user their action did not succeed
+      // return?
+    }
+  }
+  
+  Future<void> initUniUris() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+     try {
+      final initialUri = await getInitialUri();
+      // Use the uri and warn the user, if it is not correct,
+      // but keep in mind it could be `null`.
+    } on FormatException {
+      // Handle exception by warning the user their action did not succeed
+      // return?
+    }
   }
 }

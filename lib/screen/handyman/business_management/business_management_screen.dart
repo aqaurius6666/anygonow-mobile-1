@@ -12,7 +12,6 @@ import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/dropdown.dart';
 import 'package:untitled/widgets/image.dart';
 import 'package:untitled/widgets/input.dart';
-import 'package:untitled/widgets/layout.dart';
 import 'package:us_states/us_states.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -33,15 +32,68 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: appBar(
-          title: "Manage your business",
+          title: "Manage business",
           backFunction: () {
             accountController.isEditting.value = false;
-          }),
-      bottomNavigationBar: Padding(padding: EdgeInsets.only(top: getHeight(0)), child: confirmButtonContainer(context, accountController)),
+          },
+          actions: [
+            GestureDetector(
+              onTap: () async {
+                if (accountController.isEditting.value) {
+                  if (accountController.isBusinessScreen.value) {
+                    if (accountController.business.text == "" || accountController.tags.isEmpty) {
+                      CustomDialog(context, "FAILED").show({"message": "missing_field"});
+                      return;
+                    }
+                    accountController.isLoading.value = true;
+                    if (logoFile.path != "") {
+                      var contentLength = await logoFile.length();
+                      var filename = logoFile.path.split("/").last;
+                      var logoUrl = await ImageService.handleUploadImage(filename, contentLength, logoFile);
+                      accountController.logoImage.value = logoUrl;
+                    }
+                    if (bannerFile.path != "") {
+                      var contentLength = await bannerFile.length();
+                      var filename = bannerFile.path.split("/").last;
+                      var bannerUrl = await ImageService.handleUploadImage(filename, contentLength, bannerFile);
+                      accountController.bannerImage.value = bannerUrl;
+                    }
+
+                    var result = await accountController.editBusinessInfo();
+                    if (result != null) {
+                      accountController.isBusinessScreen.value = false;
+                    }
+                  } else {
+                    if (accountController.phoneNumber.text == "" || accountController.city.text == "" || accountController.address1.text == "" || accountController.zipcode.text == "") {
+                      CustomDialog(context, "FAILED").show({"message": "missing_field"});
+                      return;
+                    }
+                    var result = await accountController.editBusinessContact();
+                    if (result != null) {
+                      accountController.isBusinessScreen.value = false;
+                      Get.to(() => ServiceAreaScreen());
+                    }
+                  }
+                }
+                accountController.isLoading.value = false;
+                accountController.isEditting.value = !accountController.isEditting.value;
+              },
+              child: Obx(
+                    () => Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(right: getHeight(16)),
+                    child: Text(
+                      accountController.isEditting.value ? "Update" : "Edit",
+                      style: TextStyle(color: const Color(0xFF3864FF), fontSize: getHeight(14), decoration: TextDecoration.underline),
+                    )),
+              ),
+            ),
+          ]),
       body: Container(
         padding: EdgeInsets.only(
           left: getWidth(27),
           right: getWidth(27),
+          bottom: getHeight(32),
         ),
         child: ListView(
           children: [
@@ -110,18 +162,22 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                           height: getHeight(20),
                         ),
                         Text(
-                          "Logo images*",
+                          "Logo images",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: getHeight(12),
+                            fontSize: getHeight(18),
                           ),
                         ),
                         SizedBox(
                           height: getHeight(8),
                         ),
                         Text(
-                          "This image will also be used for navigation. At least 210x210 recommended.",
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(10), color: const Color(0xFF696969)),
+                          "This image will also be used for navigation. ",
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(12), color: const Color(0xFF696969)),
+                        ),
+                        Text(
+                          "At least 210x210 recommended. ",
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(12), color: const Color(0xFF696969)),
                         ),
                         SizedBox(
                           height: getHeight(10),
@@ -187,15 +243,19 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                           "Banner",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: getHeight(12),
+                            fontSize: getHeight(18),
                           ),
                         ),
                         SizedBox(
                           height: getHeight(8),
                         ),
                         Text(
-                          "This image will be used for featuring your business on the homepage. At least 440x220 recommended.",
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(10), color: const Color(0xFF696969)),
+                          "This image will also be used for navigation. ",
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(12), color: const Color(0xFF696969)),
+                        ),
+                        Text(
+                          "Recommend size 1000x55",
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: getHeight(12), color: const Color(0xFF696969)),
                         ),
                         SizedBox(
                           height: getHeight(10),
@@ -259,35 +319,42 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         ),
                         inputRegular(
                           context,
-                          hintText: "Business name*",
+                          label: "Business name",
+                          hintText: "",
                           textEditingController: accountController.business,
                           enabled: accountController.isEditting.value,
+                          required: true,
                         ),
                         SizedBox(
                           height: getHeight(18),
                         ),
-                        Obx(() => accountController.isEditting.value ? MultiSelectDialogField(
-                          title: const Text("Category"),
-                          items: globalController.categories.map((e) => MultiSelectItem(e, e.name)).toList(),
-                          listType: MultiSelectListType.CHIP,
-                          onConfirm: (values) {
-                            accountController.tags.value = values;
-                          },
-                          buttonText: Text(
-                            "Professional Category*",
-                            style: TextStyle(fontSize: getHeight(14), color: accountController.isEditting.value ? Colors.black : const Color(0xFF999999)),
-                          ),
-                        ) : inputRegular(
-                          context,
-                          hintText: "Professional Category*",
-                          textEditingController: accountController.category,
-                          enabled: accountController.isEditting.value,
-                        ),),
+                        Obx(
+                          () => accountController.isEditting.value
+                              ? MultiSelectDialogField(
+                                  title: const Text("Category"),
+                                  items: globalController.categories.map((e) => MultiSelectItem(e, e.name)).toList(),
+                                  listType: MultiSelectListType.CHIP,
+                                  onConfirm: (values) {
+                                    accountController.tags.value = values;
+                                  },
+                                  buttonText: Text(
+                                    "Professional Category*",
+                                    style: TextStyle(fontSize: getHeight(14), color: accountController.isEditting.value ? Colors.black : const Color(0xFF999999)),
+                                  ),
+                                )
+                              : inputRegular(
+                                  context,
+                                  hintText: "Professional Category*",
+                                  textEditingController: accountController.category,
+                                  enabled: accountController.isEditting.value,
+                                ),
+                        ),
                         SizedBox(
                           height: getHeight(18),
                         ),
                         inputRegular(context,
-                            hintText: "Description",
+                            label: "Description",
+                            hintText: "",
                             enabled: accountController.isEditting.value,
                             textEditingController: accountController.description,
                             maxLines: 6,
@@ -302,7 +369,9 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                       children: [
                         inputRegular(
                           context,
-                          hintText: "Phone number*",
+                          label: "Phone number",
+                          hintText: "",
+                          required: true,
                           textEditingController: accountController.phoneNumber,
                           enabled: accountController.isEditting.value,
                         ),
@@ -310,7 +379,15 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                           height: getHeight(8),
                         ),
                         Stack(children: [
-                          inputRegular(context, hintText: "State*", enabled: accountController.isEditting.value, textEditingController: accountController.state, height: 54),
+                          inputRegular(
+                            context,
+                            label: "State",
+                            hintText: "",
+                            enabled: accountController.isEditting.value,
+                            textEditingController: accountController.state,
+                            height: 54,
+                            required: true,
+                          ),
                           Obx(() => accountController.isEditting.value
                               ? getDropDown(
                                   USStates.getAllNames(),
@@ -323,7 +400,9 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         ),
                         inputRegular(
                           context,
-                          hintText: "City*",
+                          label: "City*",
+                          hintText: "",
+                          required: true,
                           textEditingController: accountController.city,
                           enabled: accountController.isEditting.value,
                         ),
@@ -332,7 +411,8 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         ),
                         inputRegular(
                           context,
-                          hintText: "Country",
+                          label: "Country",
+                          hintText: "",
                           textEditingController: accountController.country,
                           enabled: accountController.isEditting.value,
                         ),
@@ -341,7 +421,9 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         ),
                         inputRegular(
                           context,
-                          hintText: "Address 1*",
+                          label: "Address 1",
+                          hintText: "",
+                          required: true,
                           textEditingController: accountController.address1,
                           enabled: accountController.isEditting.value,
                         ),
@@ -359,7 +441,9 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         ),
                         inputRegular(
                           context,
-                          hintText: "Zipcode*",
+                          label: "Zipcode",
+                          hintText: "",
+                          required: true,
                           textEditingController: accountController.zipcode,
                           enabled: accountController.isEditting.value,
                         ),
@@ -377,78 +461,6 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Container confirmButtonContainer(BuildContext context, AccountController controller) {
-    return bottomContainerLayout(
-      height: 60,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Obx(
-            () => Expanded(
-              child: controller.isLoading.value == true
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: const Color(0xffff511a),
-                        side: const BorderSide(
-                          color: Color(0xffff511a),
-                        ),
-                      ),
-                      onPressed: () async {
-                        if (controller.isEditting.value) {
-                          if (controller.isBusinessScreen.value) {
-                            if (controller.business.text == "" || controller.tags.isEmpty) {
-                              CustomDialog(context, "FAILED").show({"message": "missing_field"});
-                              return;
-                            }
-                            controller.isLoading.value = true;
-                            if (logoFile.path != "") {
-                              var contentLength = await logoFile.length();
-                              var filename = logoFile.path.split("/").last;
-                              var logoUrl = await ImageService.handleUploadImage(filename, contentLength, logoFile);
-                              controller.logoImage.value = logoUrl;
-                            }
-                            if (bannerFile.path != "") {
-                              var contentLength = await bannerFile.length();
-                              var filename = bannerFile.path.split("/").last;
-                              var bannerUrl = await ImageService.handleUploadImage(filename, contentLength, bannerFile);
-                              controller.bannerImage.value = bannerUrl;
-                            }
-
-                            var result = await controller.editBusinessInfo();
-                            if (result != null) {
-                              controller.isBusinessScreen.value = false;
-                            }
-                          } else {
-                            if (controller.phoneNumber.text == "" || controller.city.text == "" || controller.address1.text == "" || controller.zipcode.text == "") {
-                              CustomDialog(context, "FAILED").show({"message": "missing_field"});
-                              return;
-                            }
-                            var result = await controller.editBusinessContact();
-                            if (result != null) {
-                              controller.isBusinessScreen.value = false;
-                              Get.to(() => ServiceAreaScreen());
-                            }
-                          }
-                        }
-                        controller.isLoading.value = false;
-                        controller.isEditting.value = !controller.isEditting.value;
-                      },
-                      child: Text(controller.isEditting.value ? "update".tr : "edit".tr, style: const TextStyle(color: Colors.white)),
-                    ),
-            ),
-          ),
-          SizedBox(
-            height: getHeight(12),
-          ),
-        ],
       ),
     );
   }

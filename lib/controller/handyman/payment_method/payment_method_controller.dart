@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/get.dart';
 import 'package:untitled/model/custom_dio.dart';
 
@@ -8,13 +10,23 @@ import '../../global_controller.dart';
 class PaymentController extends GetxController {
   GlobalController globalController = Get.put(GlobalController());
 
-  var cardNumber = "".obs;
-  var cardExpireDate = "".obs;
-  var cardCVV = "".obs;
-  var cardHolder = "".obs;
+  TextEditingController cardNumber = TextEditingController();
+  TextEditingController expiryDate = MaskedTextController(mask: '00/0000');
+  TextEditingController cvvCode = TextEditingController();
 
   var paymentMethod = {}.obs;
   var loading = false.obs;
+
+  @override
+  void onInit() {
+    cardNumber.addListener(() {
+    });
+    expiryDate.addListener(() {
+    });
+    cvvCode.addListener(() {
+    });
+    super.onInit();
+  }
 
   Future getPaymentMethods() async {
     try {

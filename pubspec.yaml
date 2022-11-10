@@ -54,6 +54,7 @@ dependencies:
   uni_links: ^0.5.1
   textfield_tags: ^1.4.4
   multi_select_flutter: ^4.1.2
+  flutter_masked_text2: ^0.9.1
 
 dev_dependencies:
   flutter_test:
