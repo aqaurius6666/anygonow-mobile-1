@@ -32,8 +32,8 @@ class MyRequestUserScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             pendingTab(context, myRequestUserController),
-            connectedTab(context),
-            completedTab(context),
+            connectedTab(context, myRequestUserController),
+            completedTab(context, myRequestUserController),
           ],
         ),
       ),
@@ -44,54 +44,81 @@ class MyRequestUserScreen extends StatelessWidget {
 Container pendingTab(BuildContext context, MyRequestUserController controller) {
   return Container(
     child: ListView(
-      children: List.generate(controller.pendingRequests.length, (index) {
-        dynamic item = controller.pendingRequests[index];
-        return requestItem(
-          context: context,
-          title: item["businessName"],
-          service: item["serviceName"],
-          timeRequest: TimeService.requestTimeFormat(
-            TimeService.stringToDateTime(item["startDate"]) ??
-                DateTime(1, 1, 1),
-          ),
-          phone: item["customerPhone"],
-          orderId: item["id"],
-          serviceId: item["serviceId"],
-          businessId: item["businessId"],
-        );
-      }),
+      children: List.generate(
+        controller.pendingRequests.length,
+        (index) {
+          dynamic item = controller.pendingRequests[index];
+          return requestItem(
+            context: context,
+            title: item["businessName"],
+            service: item["serviceName"],
+            timeRequest: TimeService.requestTimeFormat(
+              TimeService.stringToDateTime(item["startDate"]) ??
+                  DateTime(1, 1, 1),
+            ),
+            phone: item["customerPhone"],
+            orderId: item["id"],
+            serviceId: item["serviceId"],
+            businessId: item["businessId"],
+          );
+        },
+      ),
     ),
   );
 }
 
-Container connectedTab(BuildContext context) {
+Container connectedTab(
+    BuildContext context, MyRequestUserController controller) {
   return Container(
     child: ListView(
-      children: [
-        requestItem(
-          context: context,
-          type: 1,
-          orderId: "",
-          serviceId: "",
-          businessId: "",
-        ),
-      ],
+      children: List.generate(
+        controller.connectedRequests.length,
+        (index) {
+          dynamic item = controller.connectedRequests[index];
+          return requestItem(
+            context: context,
+            title: item["businessName"],
+            service: item["serviceName"],
+            timeRequest: TimeService.requestTimeFormat(
+              TimeService.stringToDateTime(item["startDate"]) ??
+                  DateTime(1, 1, 1),
+            ),
+            phone: item["customerPhone"],
+            orderId: item["id"],
+            serviceId: item["serviceId"],
+            businessId: item["businessId"],
+            type: 1,
+          );
+        },
+      ),
     ),
   );
 }
 
-Container completedTab(BuildContext context) {
+Container completedTab(
+    BuildContext context, MyRequestUserController controller) {
   return Container(
     child: ListView(
-      children: [
-        requestItem(
-          context: context,
-          type: 2,
-          orderId: "",
-          serviceId: "",
-          businessId: "",
-        ),
-      ],
+      children: List.generate(
+        controller.completedRequests.length,
+        (index) {
+          dynamic item = controller.completedRequests[index];
+          return requestItem(
+            context: context,
+            title: item["businessName"],
+            service: item["serviceName"],
+            timeRequest: TimeService.requestTimeFormat(
+              TimeService.stringToDateTime(item["startDate"]) ??
+                  DateTime(1, 1, 1),
+            ),
+            phone: item["customerPhone"],
+            orderId: item["id"],
+            serviceId: item["serviceId"],
+            businessId: item["businessId"],
+            type: 2,
+          );
+        },
+      ),
     ),
   );
 }

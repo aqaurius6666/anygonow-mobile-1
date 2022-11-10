@@ -178,7 +178,13 @@ Future feedbackPopup({
                 ),
               ),
             ),
-            onPress: () => Get.back(),
+            onPress: () async {
+              bool res = await Get.put(MyRequestUserController())
+                  .sendFeedback(orderId, rate, serviceId, businessId);
+              if (res) {
+                Get.back();
+              }
+            },
           ),
           SizedBox(
             height: getHeight(8),
@@ -202,12 +208,8 @@ Future feedbackPopup({
                 ),
               ),
             ),
-            onPress: () async {
-              bool res = await Get.put(MyRequestUserController())
-                  .sendFeedback(orderId, rate, serviceId, businessId);
-              if (res) {
-                Get.back();
-              }
+            onPress: () {
+              Get.back();
             },
           ),
         ],
