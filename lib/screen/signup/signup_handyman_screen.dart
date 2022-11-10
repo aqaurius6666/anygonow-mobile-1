@@ -14,9 +14,7 @@ class SignupHandymanScreen extends StatelessWidget {
     SignupController signupController = Get.put(SignupController());
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(top: getHeight(0)),
-          child: confirmButtonContainer(context, signupController)),
+      bottomNavigationBar: Padding(padding: EdgeInsets.only(top: getHeight(0)), child: confirmButtonContainer(context, signupController)),
       body: Container(
         color: Colors.white,
         padding: EdgeInsets.only(
@@ -45,6 +43,7 @@ class SignupHandymanScreen extends StatelessWidget {
               label: "email".tr,
               hintText: "name@email.com",
               textEditingController: signupController.email,
+              required: true,
             ),
             SizedBox(
               height: getHeight(12),
@@ -54,6 +53,7 @@ class SignupHandymanScreen extends StatelessWidget {
               label: "phone".tr,
               hintText: "Enter your phone",
               textEditingController: signupController.phoneNumber,
+              required: true,
             ),
             SizedBox(
               height: getHeight(12),
@@ -65,6 +65,7 @@ class SignupHandymanScreen extends StatelessWidget {
                   hintText: "Enter your password",
                   isHide: signupController.isHidePassword.value,
                   changeHide: signupController.changeHidePassword,
+                  required: true,
                 )),
             SizedBox(
               height: getHeight(12),
@@ -74,6 +75,7 @@ class SignupHandymanScreen extends StatelessWidget {
                   label: "cfPassword".tr,
                   controller: signupController.confirmPassword,
                   hintText: "Enter your password",
+                  required: true,
                   isHide: signupController.isHideCfPassword.value,
                   changeHide: signupController.changeHideCfPassword,
                 )),
@@ -91,29 +93,19 @@ class SignupHandymanScreen extends StatelessWidget {
                 ),
                 Text(
                   "I agree to the ",
-                  style: TextStyle(
-                      fontSize: getHeight(14), fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.w500),
                 ),
                 Text(
                   "Term of Use",
-                  style: TextStyle(
-                      fontSize: getHeight(14),
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF3864FF),
-                      decoration: TextDecoration.underline),
+                  style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.w500, color: Color(0xFF3864FF), decoration: TextDecoration.underline),
                 ),
                 Text(
                   " and ",
-                  style: TextStyle(
-                      fontSize: getHeight(14), fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.w500),
                 ),
                 Text(
                   "Privacy Policy",
-                  style: TextStyle(
-                      fontSize: getHeight(14),
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF3864FF),
-                      decoration: TextDecoration.underline),
+                  style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.w500, color: Color(0xFF3864FF), decoration: TextDecoration.underline),
                 ),
               ],
             )
@@ -124,8 +116,7 @@ class SignupHandymanScreen extends StatelessWidget {
   }
 }
 
-Container confirmButtonContainer(
-    BuildContext context, SignupController signupController) {
+Container confirmButtonContainer(BuildContext context, SignupController signupController) {
   return bottomContainerLayout(
     height: 108,
     child: Column(
@@ -150,8 +141,7 @@ Container confirmButtonContainer(
                 Get.to(() => CheckEmailScreen());
               }
             },
-            child: Text("continue".tr,
-                style: const TextStyle(color: Colors.white)),
+            child: Text("continue".tr, style: const TextStyle(color: Colors.white)),
           ),
         ),
         SizedBox(

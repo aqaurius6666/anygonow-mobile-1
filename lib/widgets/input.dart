@@ -30,7 +30,7 @@ Container inputPassword(
             : Container(),
         label != null
             ? SizedBox(
-                height: getHeight(6),
+                height: getHeight(3),
               )
             : Container(),
         Container(
@@ -110,7 +110,7 @@ Container inputRegular(BuildContext context,
             : Container(),
         label != null
             ? SizedBox(
-                height: getHeight(6),
+                height: getHeight(3),
               )
             : Container(),
         Container(

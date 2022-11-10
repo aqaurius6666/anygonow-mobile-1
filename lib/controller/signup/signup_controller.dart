@@ -49,9 +49,8 @@ class SignupController extends GetxController {
 
   Future checkAccount() async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
-      response = await customDio
+      var response = await customDio
           .get("/auth/check?mail=${email.text}&phone=${phoneNumber.text}");
 
       var json = jsonDecode(response.toString());
@@ -82,7 +81,7 @@ class SignupController extends GetxController {
               "phone": email.text,
               "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
               "publicKey": keyPair["publicKey"],
-              // "referral": referral.text
+              "referral": referral.text
             };
 
       var response = await customDio.post(
