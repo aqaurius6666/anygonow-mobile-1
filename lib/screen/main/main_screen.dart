@@ -283,7 +283,7 @@ class MainScreen extends StatelessWidget {
                   childAspectRatio: (167 / 48),
                   crossAxisCount: 2,
                   children: List.generate(
-                    mainScreenController.mostInterested.length,
+                    globalController.categories.sublist(0, 4).length,
                     (index) {
                       var colors = getPairColor(index > 3 ? Random().nextInt(4) : 0 + index % 4);
                       return Container(
@@ -293,7 +293,7 @@ class MainScreen extends StatelessWidget {
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                mainScreenController.mostInterested[index].bussiness["name"],
+                                globalController.categories[index].name,
                                 style: TextStyle(
                                   color: Color(colors[1]),
                                 ),
