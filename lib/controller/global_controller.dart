@@ -21,15 +21,7 @@ class GlobalController extends GetxController {
   var db;
   Rx<User> user = User().obs;
   RxList<Category> categories = <Category>[].obs;
-  var sharingStatus = "SENT_DATA".obs;
-  var historyStatus = "SENDING_MODE".obs;
-  var recordsTabMode = 0.obs;
-  var itemSelected = {}.obs;
-  var editToShareMode = "".obs;
-  var subscription;
   String? userAgent;
-  bool isPopup = false;
-  var connectivityResult;
 
   late PageController pageController;
   RxInt currentPage = 0.obs;
@@ -48,7 +40,6 @@ class GlobalController extends GetxController {
       currentPage.value = value;
       pageController.jumpToPage(value);
     } catch (e) {
-      print(e);
       currentPage.value = value;
       pageController = PageController(initialPage: value, keepPage: true);
     }
@@ -56,10 +47,9 @@ class GlobalController extends GetxController {
 
   Future getStates() async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
 
-      response = await customDio.get("/contacts/states");
+      var response = await customDio.get("/contacts/states");
       var json = jsonDecode(response.toString());
 
       if (json["data"]["states"] != null) {
@@ -68,7 +58,7 @@ class GlobalController extends GetxController {
         List<StateModal> res = [];
 
         for (int i = 0; i < responseData.length; i++) {
-          StateModal item = new StateModal();
+          StateModal item = StateModal();
           item.id = responseData[i]["id"];
           item.name = responseData[i]["name"];
           res.add(item);

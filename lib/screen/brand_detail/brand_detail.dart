@@ -5,6 +5,7 @@ import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/bottom_navigator.dart';
 import 'package:readmore/readmore.dart';
 import 'package:untitled/widgets/image.dart';
@@ -16,127 +17,123 @@ class BrandDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: bottomBrandDetail(),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.black,
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  height: getHeight(205),
-                  width: double.infinity,
-                  color: brandDetailController.business.bussiness["bannerImage"] == null ? Colors.grey : Colors.transparent,
-                  child: getImage(brandDetailController.business.bussiness["bannerImage"]),
-                ),
-                Container(
-                    margin: EdgeInsets.only(top: getHeight(160)),
-                    child: Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(56),
-                        child: Container(
-                            width: getHeight(60),
-                            height: getHeight(60),
-                            decoration: BoxDecoration(shape: BoxShape.circle, color: brandDetailController.business.bussiness["logoImage"] == null ? Colors.blueGrey : Colors.transparent),
-                            child: getImage(brandDetailController.business.bussiness["logoImage"], width: getWidth(60), height: getHeight(60))),
+      resizeToAvoidBottomInset: true,
+      appBar: appBar(),
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: getHeight(205),
+                    width: double.infinity,
+                    color: brandDetailController.business.bussiness["bannerImage"] == null ? Colors.grey : Colors.transparent,
+                    child: getImage(brandDetailController.business.bussiness["bannerImage"]),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(top: getHeight(160)),
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(56),
+                          child: Container(
+                              width: getHeight(60),
+                              height: getHeight(60),
+                              decoration: BoxDecoration(shape: BoxShape.circle, color: brandDetailController.business.bussiness["logoImage"] == null ? Colors.blueGrey : Colors.transparent),
+                              child: getImage(brandDetailController.business.bussiness["logoImage"], width: getWidth(60), height: getHeight(60))),
+                        ),
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: getHeight(10),
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      brandDetailController.business.bussiness["name"] ?? "",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
                       ),
-                    )),
-              ],
-            ),
-            SizedBox(
-              height: getHeight(10),
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    brandDetailController.business.bussiness["name"] ?? "",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
                     ),
-                  ),
-                  SizedBox(
-                    width: getWidth(10),
-                  ),
-                  SvgPicture.asset("assets/icons/share.svg"),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: getHeight(10),
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RatingBarIndicator(
-                    rating: brandDetailController.averageRate.value,
-                    itemSize: getHeight(20),
-                    itemBuilder: (context, index) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
+                    SizedBox(
+                      width: getWidth(10),
                     ),
-                    itemCount: 5,
-                  ),
-                  SizedBox(
-                    width: getWidth(10),
-                  ),
-                  Text(
-                    brandDetailController.totalReviews.value.toString() + " reviews",
-                    style: TextStyle(fontSize: getHeight(12), color: const Color(0xFF999999)),
-                  ),
-                ],
+                    SvgPicture.asset("assets/icons/share.svg"),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: getHeight(22),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                left: getWidth(18),
-                right: getWidth(24),
+              SizedBox(
+                height: getHeight(10),
               ),
-              child: Column(
-                children: [
-                  aboutUs(),
-                  SizedBox(
-                    height: getHeight(17),
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/section-line.svg",
-                    height: getHeight(3),
-                  ),
-                  SizedBox(
-                    height: getHeight(12),
-                  ),
-                  services(),
-                  SizedBox(
-                    height: getHeight(17),
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/section-line.svg",
-                    height: getHeight(3),
-                  ),
-                  SizedBox(
-                    height: getHeight(12),
-                  ),
-                  reviews(),
-                  SizedBox(
-                    height: getHeight(12),
-                  ),
-                  comments(context),
-                ],
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RatingBarIndicator(
+                      rating: brandDetailController.averageRate.value,
+                      itemSize: getHeight(20),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 5,
+                    ),
+                    SizedBox(
+                      width: getWidth(10),
+                    ),
+                    Text(
+                      brandDetailController.totalReviews.value.toString() + " reviews",
+                      style: TextStyle(fontSize: getHeight(12), color: const Color(0xFF999999)),
+                    ),
+                  ],
+                ),
               ),
-            )
-          ],
+              SizedBox(
+                height: getHeight(22),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  left: getWidth(18),
+                  right: getWidth(24),
+                ),
+                child: Column(
+                  children: [
+                    aboutUs(),
+                    SizedBox(
+                      height: getHeight(17),
+                    ),
+                    SvgPicture.asset(
+                      "assets/icons/section-line.svg",
+                      height: getHeight(3),
+                    ),
+                    SizedBox(
+                      height: getHeight(12),
+                    ),
+                    services(),
+                    SizedBox(
+                      height: getHeight(17),
+                    ),
+                    SvgPicture.asset(
+                      "assets/icons/section-line.svg",
+                      height: getHeight(3),
+                    ),
+                    SizedBox(
+                      height: getHeight(12),
+                    ),
+                    reviews(),
+                    SizedBox(
+                      height: getHeight(12),
+                    ),
+                    comments(context),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
