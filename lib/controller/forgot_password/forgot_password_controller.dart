@@ -19,8 +19,6 @@ class ForgotPasswordController extends GetxController {
         },
       );
 
-      print(response.toString());
-
       var json = jsonDecode(response.toString());
 
       if (json["success"] == false) {

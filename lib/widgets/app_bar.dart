@@ -7,7 +7,9 @@ AppBar appBar({String? title,
   Function? backFunction,
   PreferredSizeWidget? bottom,
   bool? hideBackButton = false,
-  double? elevation
+  double? elevation,
+  double? leadingWidth,
+  bool? centerTitle
 }) {
   return AppBar(
     backgroundColor: Colors.white,
@@ -24,6 +26,8 @@ AppBar appBar({String? title,
             },
           )
         : null,
+    centerTitle: centerTitle,
+    leadingWidth: leadingWidth,
     elevation: elevation ?? 0,
     title: Text(
       title ?? "",

@@ -139,7 +139,6 @@ class BrandDetailController extends GetxController {
           item.comment = responseData[i]["comment"] ?? "";
           res.add(item);
         }
-        print("debug");
         comments.clear();
         comments = res;
       }

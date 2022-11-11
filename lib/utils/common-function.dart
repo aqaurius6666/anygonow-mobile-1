@@ -30,3 +30,21 @@ String upperFirstString(String string) {
   String firstPattern = string[0].toUpperCase();
   return firstPattern + lastPattern;
 }
+
+dynamic getPairColor(dynamic color) {
+  switch (color) {
+    case "purple":
+    case 0:
+      return [0xFFD3DDFF, 0xFF003261];
+    case "yellow":
+    case 1:
+      return [0xFFFFF2CE, 0xFF6B4F00];
+    case "red":
+    case 2:
+      return [0xFFFFCDBE, 0xFF842000];
+    case "green":
+    case 3:
+    default:
+      return [0xFFCAFFFB, 0xFF005852];
+  }
+}

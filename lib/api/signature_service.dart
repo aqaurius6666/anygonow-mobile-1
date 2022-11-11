@@ -7,7 +7,6 @@ class SignatureService {
   static getCertificateInfo(
       String? userId,
       ) {
-    print(TimeService.timeToBackEndMaster(TimeService.getTimeNow()));
     var certificateInfo = jsonEncode({
       "id": userId,
       "timestamp": TimeService.timeToBackEndMaster(TimeService.getTimeNow()),
@@ -21,7 +20,6 @@ class SignatureService {
   }
 
   static String getSignature(var certificateInfo, String privateKey) {
-    print({certificateInfo});
     var hashCertificateInfo = hashMessage(certificateInfo);
     var signature = signMessage(privateKey, hashCertificateInfo);
     return signature;
@@ -45,7 +43,6 @@ class SignatureService {
       String signature,
       String publicKey,
       int time) {
-    // print({"cf": certificateInfo});
     var certificate = jsonEncode({
       "signature": signature,
       "certificateInfo": jsonDecode(certificateInfo),
@@ -67,13 +64,9 @@ class SignatureService {
       "_signature": bodySignature,
     });
 
-    print({body});
-    // print(certificate);
-
     List<String> result = [];
     result.add(certificate);
     result.add(body);
-    print({"authorization": certificate.toString()});
     return result;
   }
 

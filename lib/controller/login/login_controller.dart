@@ -29,7 +29,7 @@ class LoginPageController extends GetxController {
 
   Future getPing(List<String> certificateList) async {
     try {
-      CustomDio customDio = new CustomDio();
+      CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] = certificateList[0];
 
       var response = await customDio.post(
@@ -45,9 +45,8 @@ class LoginPageController extends GetxController {
 
   Future getCredential(String username) async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
-      response = await customDio.post(
+      var response = await customDio.post(
           "/auth/credential",
           {
             "data": {
@@ -78,8 +77,7 @@ class LoginPageController extends GetxController {
         var publicKey = data['publicKey'];
         var encryptedPrivateKey = data['encryptedPrivateKey'];
         var userName = username.text;
-        String? privateKey =
-        decryptAESCryptoJS(encryptedPrivateKey, password.text);
+        String? privateKey = decryptAESCryptoJS(encryptedPrivateKey, password.text);
 
         Status validatePassword = Status();
 
@@ -91,17 +89,9 @@ class LoginPageController extends GetxController {
 
         if (validatePassword.status == "SUCCESS") {
           var certificateInfo = SignatureService.getCertificateInfo(userId);
-          String signature = SignatureService.getSignature(
-              certificateInfo, privateKey as String);
+          String signature = SignatureService.getSignature(certificateInfo, privateKey as String);
           int times = DateTime.now().toUtc().millisecondsSinceEpoch;
-          List<String> certificateList = SignatureService.getCertificateLogin(
-              certificateInfo,
-              userId,
-              privateKey,
-              encryptedPrivateKey,
-              signature,
-              publicKey,
-              times);
+          List<String> certificateList = SignatureService.getCertificateLogin(certificateInfo, userId, privateKey, encryptedPrivateKey, signature, publicKey, times);
 
           var responsePing = await getPing(certificateList);
           Status validateServer2 = ResponseValidator.check(responsePing);
@@ -123,7 +113,12 @@ class LoginPageController extends GetxController {
             if (userInfo.role == null || userInfo.role == 0) {
               var contactResponse = await customDio.get("/contacts/$userId");
               var contactInfo = jsonDecode(contactResponse.toString());
+              var userResponse = await customDio.get("/users/$userId");
+              var userInformation = jsonDecode(userResponse.toString());
               userInfo.zipcode = int.parse(contactInfo["data"]["contact"]["zipcode"] ?? "100");
+              var firstName = userInformation["data"]["user"]["firstName"] ?? "";
+              var lastName = userInformation["data"]["user"]["lastName"] ?? "";
+              userInfo.fullName = firstName + " " + lastName;
             }
 
             Get.put(GlobalController()).user.value = userInfo;

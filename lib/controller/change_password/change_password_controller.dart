@@ -71,7 +71,6 @@ class ChangePasswordController extends GetxController {
   Future<bool> checkPassword(String password) async {
     var mail = globalController.user.value.mail;
     var responseCredential = await loginPageController.getCredential(mail ?? "");
-    print(responseCredential.toString());
     Status validateUsername = ResponseValidator.check(responseCredential);
     if (validateUsername.status == "OK") {
       var data = responseCredential.data["data"];
@@ -106,7 +105,6 @@ class ChangePasswordController extends GetxController {
             times);
 
         var responsePing = await loginPageController.getPing(certificateList);
-        print({"resPing": responsePing.toString()});
         Status validateServer2 = ResponseValidator.check(responsePing);
         if (validateServer2.status == "OK") {
           return true;

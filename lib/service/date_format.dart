@@ -64,7 +64,6 @@ class TimeService {
   static int? timeToBackEndMaster(DateTime dateTime) {
     if (dateTime == null) return null;
     var datedFormat = dateTime.toUtc().millisecondsSinceEpoch;
-    print({"dateFormat": datedFormat});
     return datedFormat;
   }
 

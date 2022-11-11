@@ -19,7 +19,7 @@ class HandymanUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBar(title: "Profile", hideBackButton: true),
+      appBar: appBar(title: "Profile", hideBackButton: true, centerTitle: false, leadingWidth: 0),
       body: SafeArea(
         child: Container(
           color: const Color.fromRGBO(243, 245, 250, 1),
