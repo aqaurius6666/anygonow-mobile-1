@@ -21,15 +21,7 @@ class GlobalController extends GetxController {
   var db;
   Rx<User> user = User().obs;
   RxList<Category> categories = <Category>[].obs;
-  var sharingStatus = "SENT_DATA".obs;
-  var historyStatus = "SENDING_MODE".obs;
-  var recordsTabMode = 0.obs;
-  var itemSelected = {}.obs;
-  var editToShareMode = "".obs;
-  var subscription;
   String? userAgent;
-  bool isPopup = false;
-  var connectivityResult;
 
   late PageController pageController;
   RxInt currentPage = 0.obs;
@@ -66,7 +58,7 @@ class GlobalController extends GetxController {
         List<StateModal> res = [];
 
         for (int i = 0; i < responseData.length; i++) {
-          StateModal item = new StateModal();
+          StateModal item = StateModal();
           item.id = responseData[i]["id"];
           item.name = responseData[i]["name"];
           res.add(item);

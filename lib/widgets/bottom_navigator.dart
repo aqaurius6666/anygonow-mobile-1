@@ -61,7 +61,6 @@ Container bottomNavigator() {
                   Obx(() {
                     return Bouncing(
                       onPress: () {
-                        globalController.sharingStatus.value = "SENT_DATA";
                       },
                       child: Container(
                         width: getWidth(60),
@@ -75,30 +74,6 @@ Container bottomNavigator() {
                             ),
                             Text(
                               "Message",
-                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999)),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-                  Obx(() {
-                    return Bouncing(
-                      onPress: () {
-                        globalController.historyStatus.value = "REQUEST_MODE";
-                      },
-                      child: Container(
-                        width: getWidth(70),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/bell.svg",
-                              width: getWidth(24),
-                              color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999),
-                            ),
-                            Text(
-                              "Notification",
                               style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
@@ -231,30 +206,6 @@ Container bottomNavigatorHandyman() {
                               "Advertise",
                               style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 2 ?
                               Color(0xFFFF511A) : Color(0xFF999999)),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-                  Obx(() {
-                    return Bouncing(
-                      onPress: () {
-                        globalController.onChangeTab(3);
-                      },
-                      child: Container(
-                        width: getWidth(60),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/notification-icon.svg",
-                              width: getWidth(24),
-                              color: globalController.currentPage.value == 3 ? Color(0xFFFF511A) : Color(0xFF999999),
-                            ),
-                            Text(
-                              "Notification",
-                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 3 ? Color(0xFFFF511A) : Color(0xFF999999)),
                             )
                           ],
                         ),

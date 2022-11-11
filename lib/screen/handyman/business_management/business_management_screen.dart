@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:untitled/controller/account/account_controller.dart';
@@ -7,7 +8,6 @@ import 'package:untitled/main.dart';
 import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
-import 'package:untitled/widgets/bounce_button.dart';
 import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/dropdown.dart';
 import 'package:untitled/widgets/image.dart';
@@ -29,9 +29,11 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
     AccountController accountController = Get.put(AccountController());
     accountController.getBusinessInfo();
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: appBar(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: appBar(
           title: "Manage business",
           backFunction: () {
             accountController.isEditting.value = false;
@@ -88,121 +90,91 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                     )),
               ),
             ),
-          ]),
-      body: Container(
-        color: Colors.white,
-        child: ListView(
-          children: [
-            Container(
-              color: Colors.white,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Bouncing(
-                      child: Obx(() {
-                        return Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: getWidth(1),
-                                color: accountController.isBusinessScreen.value ? const Color(0xFFFF511A) : const Color(0xFFF9F6F6),
-                              ),
-                            ),
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.only(bottom: getHeight(4)),
-                            child: Text(
-                              "Service info",
-                              style: TextStyle(
-                                color: accountController.isBusinessScreen.value ? const Color(0xFFFF511A) : const Color(0xFF333333),
-                                fontSize: getHeight(16),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
-                      onPress: () {
-                        if (!accountController.isBusinessScreen.value) {
-                          accountController.isEditting.value = false;
-                          accountController.isBusinessScreen.value = true;
-                        }
-                      },
-                    ),
+          ],
+          bottom: TabBar(
+            onTap: (index) {
+              if (index == 0) {
+                if (!accountController.isBusinessScreen.value) {
+                  accountController.isEditting.value = false;
+                  accountController.isBusinessScreen.value = true;
+                } else {
+                  if (accountController.isBusinessScreen.value) {
+                    accountController.isEditting.value = false;
+                    accountController.isBusinessScreen.value = false;
+                  }
+                }
+              }
+            },
+            labelColor: const Color(0xFFFF511A),
+            indicatorColor: const Color(0xFFFF511A),
+            unselectedLabelColor: const Color(0xFF333333),
+            tabs: [
+              Tab(text: "Service info".tr),
+              Tab(text: "Contact info".tr),
+            ],
+          ),
+        ),
+        body: TabBarView(children: [
+          Container(
+            color: Colors.white,
+            child: ListView(
+              children: [
+                SizedBox(height: getHeight(15)),
+                Container(
+                  padding: EdgeInsets.only(
+                    left: getWidth(27),
+                    right: getWidth(27),
+                    bottom: getHeight(80),
+                    top: getHeight(12),
                   ),
-                  Expanded(
-                    child: Bouncing(
-                      child: Obx(() {
-                        return Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: getWidth(1),
-                                color: !accountController.isBusinessScreen.value ? Color(0xFFFF511A) : Color(0xFFF9F6F6),
-                              ),
-                            ),
+                  child: Obx(
+                    () => Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Logo image",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: getHeight(18),
                           ),
-                          child: Container(
-                            padding: EdgeInsets.only(bottom: getHeight(4)),
-                            child: Text(
-                              "Contact info",
-                              style: TextStyle(color: !accountController.isBusinessScreen.value ? Color(0xFFFF511A) : Color(0xFF333333), fontSize: getHeight(16), fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        );
-                      }),
-                      onPress: () {
-                        if (accountController.isBusinessScreen.value) {
-                          accountController.isEditting.value = false;
-                          accountController.isBusinessScreen.value = false;
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: getHeight(15),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                left: getWidth(27),
-                right: getWidth(27),
-                bottom: getHeight(80),
-                top: getHeight(12),
-              ),
-              child: Obx(
-                () => accountController.isBusinessScreen.value
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Logo image",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: getHeight(18),
-                            ),
-                          ),
-                          SizedBox(
-                            height: getHeight(8),
-                          ),
-                          Text(
-                            "This image will also be used for navigation. ",
-                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: getHeight(12), color: Colors.black),
-                          ),
-                          Text(
-                            "At least 210x210 recommended. ",
-                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: getHeight(12), color: Colors.black),
-                          ),
-                          SizedBox(
-                            height: getHeight(10),
-                          ),
-                          logoFile.path == "" && accountController.logoImage.value == ""
-                              ? GestureDetector(
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        Text(
+                          "This image will also be used for navigation. ",
+                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: getHeight(12), color: Colors.black),
+                        ),
+                        Text(
+                          "At least 210x210 recommended. ",
+                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: getHeight(12), color: Colors.black),
+                        ),
+                        SizedBox(
+                          height: getHeight(10),
+                        ),
+                        logoFile.path == "" && accountController.logoImage.value == ""
+                            ? GestureDetector(
+                                onTap: () async {
+                                  if (!accountController.isEditting.value) {
+                                    return;
+                                  }
+                                  XFile? pickedFile = await ImagePicker().pickImage(
+                                    source: ImageSource.gallery,
+                                    maxWidth: 1800,
+                                    maxHeight: 1800,
+                                  );
+                                  if (pickedFile != null) {
+                                    setState(() {
+                                      logoFile = File(pickedFile.path);
+                                    });
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.add_a_photo_outlined,
+                                ),
+                              )
+                            : Obx(() => GestureDetector(
                                   onTap: () async {
                                     if (!accountController.isEditting.value) {
                                       return;
@@ -218,69 +190,72 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                                       });
                                     }
                                   },
-                                  child: const Icon(
-                                    Icons.add_a_photo_outlined,
-                                  ),
-                                )
-                              : Obx(() => GestureDetector(
-                                    onTap: () async {
-                                      if (!accountController.isEditting.value) {
-                                        return;
-                                      }
-                                      XFile? pickedFile = await ImagePicker().pickImage(
-                                        source: ImageSource.gallery,
-                                        maxWidth: 1800,
-                                        maxHeight: 1800,
-                                      );
-                                      if (pickedFile != null) {
-                                        setState(() {
-                                          logoFile = File(pickedFile.path);
-                                        });
-                                      }
-                                    },
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: ClipRRect(
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: ClipRRect(
                                         borderRadius: BorderRadius.circular(56),
                                         child: Container(
                                             width: getHeight(60),
                                             height: getHeight(60),
-                                            decoration: BoxDecoration(shape: BoxShape.circle, color: accountController.logoImage.value != "" ? Colors.blueGrey : Colors.transparent),
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                            ),
                                             child: logoFile.path != ""
                                                 ? Image.file(
                                                     logoFile,
                                                     fit: BoxFit.cover,
                                                   )
-                                                : getImage(accountController.logoImage.value, width: getWidth(60), height: getHeight(60))),
-                                      ),
-                                    ),
-                                  )),
-                          SizedBox(
-                            height: getHeight(18),
+                                                : accountController.logoImage.value != ""
+                                                    ? getImage(accountController.logoImage.value, width: getWidth(60), height: getHeight(60), fit: BoxFit.cover)
+                                                    : SvgPicture.asset("assets/icons/image-default.svg"))),
+                                  ),
+                                )),
+                        SizedBox(
+                          height: getHeight(18),
+                        ),
+                        Text(
+                          "Banner",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: getHeight(18),
                           ),
-                          Text(
-                            "Banner",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: getHeight(18),
-                            ),
-                          ),
-                          SizedBox(
-                            height: getHeight(8),
-                          ),
-                          Text(
-                            "This image will also be used for navigation. ",
-                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: getHeight(12), color: Colors.black),
-                          ),
-                          Text(
-                            "Recommend size 1000x55",
-                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: getHeight(12), color: Colors.black),
-                          ),
-                          SizedBox(
-                            height: getHeight(10),
-                          ),
-                          bannerFile.path == "" && accountController.bannerImage.value == ""
-                              ? GestureDetector(
+                        ),
+                        SizedBox(
+                          height: getHeight(8),
+                        ),
+                        Text(
+                          "This image will also be used for navigation. ",
+                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: getHeight(12), color: Colors.black),
+                        ),
+                        Text(
+                          "Recommend size 1000x55",
+                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: getHeight(12), color: Colors.black),
+                        ),
+                        SizedBox(
+                          height: getHeight(10),
+                        ),
+                        bannerFile.path == "" && accountController.bannerImage.value == ""
+                            ? GestureDetector(
+                                onTap: () async {
+                                  if (!accountController.isEditting.value) {
+                                    return;
+                                  }
+                                  XFile? pickedFile = await ImagePicker().pickImage(
+                                    source: ImageSource.gallery,
+                                    maxWidth: 1800,
+                                    maxHeight: 1800,
+                                  );
+                                  if (pickedFile != null) {
+                                    setState(() {
+                                      bannerFile = File(pickedFile.path);
+                                    });
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.add_a_photo_outlined,
+                                ),
+                              )
+                            : Obx(() => GestureDetector(
                                   onTap: () async {
                                     if (!accountController.isEditting.value) {
                                       return;
@@ -296,199 +271,191 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                                       });
                                     }
                                   },
-                                  child: const Icon(
-                                    Icons.add_a_photo_outlined,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      height: getWidth(100),
+                                      width: getWidth(194),
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                      ),
+                                      alignment: Alignment.centerLeft,
+                                      child: bannerFile.path != ""
+                                          ? Image.file(
+                                              bannerFile,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : accountController.bannerImage.value != ""
+                                              ? getImage(accountController.bannerImage.value)
+                                              : SvgPicture.asset("assets/icons/image-default.svg"),
+                                    ),
+                                  ),
+                                )),
+                        SizedBox(
+                          height: getHeight(18),
+                        ),
+                        inputRegular(
+                          context,
+                          label: "Business name",
+                          hintText: "",
+                          textEditingController: accountController.business,
+                          enabled: accountController.isEditting.value,
+                          required: true,
+                        ),
+                        SizedBox(
+                          height: getHeight(18),
+                        ),
+                        Obx(
+                          () => accountController.isEditting.value
+                              ? MultiSelectDialogField(
+                                  title: const Text("Category"),
+                                  items: globalController.categories.map((e) => MultiSelectItem(e, e.name)).toList(),
+                                  listType: MultiSelectListType.CHIP,
+                                  onConfirm: (values) {
+                                    accountController.tags.value = values;
+                                  },
+                                  buttonText: Text(
+                                    "Professional Category*",
+                                    style: TextStyle(fontSize: getHeight(14), color: accountController.isEditting.value ? Colors.black : const Color(0xFF999999)),
                                   ),
                                 )
-                              : Obx(() => GestureDetector(
-                                    onTap: () async {
-                                      if (!accountController.isEditting.value) {
-                                        return;
-                                      }
-                                      XFile? pickedFile = await ImagePicker().pickImage(
-                                        source: ImageSource.gallery,
-                                        maxWidth: 1800,
-                                        maxHeight: 1800,
-                                      );
-                                      if (pickedFile != null) {
-                                        setState(() {
-                                          bannerFile = File(pickedFile.path);
-                                        });
-                                      }
-                                    },
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Container(
-                                          height: getWidth(100),
-                                          width: getWidth(194),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: bannerFile.path != ""
-                                              ? Image.file(
-                                                  bannerFile,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : getImage(accountController.bannerImage.value)),
-                                    ),
-                                  )),
-                          SizedBox(
-                            height: getHeight(18),
-                          ),
-                          inputRegular(
-                            context,
-                            label: "Business name",
+                              : inputRegular(
+                                  context,
+                                  label: "Professional Category",
+                                  required: true,
+                                  hintText: "",
+                                  maxLines: 4,
+                                  height: accountController.category.text.length / 40 * 28 + 36,
+                                  textEditingController: accountController.category,
+                                  keyboardType: TextInputType.multiline,
+                                  enabled: accountController.isEditting.value,
+                                ),
+                        ),
+                        SizedBox(
+                          height: getHeight(24),
+                        ),
+                        inputRegular(context,
+                            label: "Description",
                             hintText: "",
-                            textEditingController: accountController.business,
                             enabled: accountController.isEditting.value,
-                            required: true,
-                          ),
-                          SizedBox(
-                            height: getHeight(18),
-                          ),
-                          Obx(
-                            () => accountController.isEditting.value
-                                ? MultiSelectDialogField(
-                                    title: const Text("Category"),
-                                    items: globalController.categories.map((e) => MultiSelectItem(e, e.name)).toList(),
-                                    listType: MultiSelectListType.CHIP,
-                                    onConfirm: (values) {
-                                      accountController.tags.value = values;
-                                    },
-                                    buttonText: Text(
-                                      "Professional Category*",
-                                      style: TextStyle(fontSize: getHeight(14), color: accountController.isEditting.value ? Colors.black : const Color(0xFF999999)),
-                                    ),
-                                  )
-                                : inputRegular(
-                                    context,
-                                    label: "Professional Category",
-                                    required: true,
-                                    hintText: "",
-                                    maxLines: 4,
-                                    height: accountController.tags.length / 3 * 40 + 40,
-                                    textEditingController: accountController.category,
-                                    enabled: accountController.isEditting.value,
-                                  ),
-                          ),
-                          SizedBox(
-                            height: getHeight(24),
-                          ),
-                          inputRegular(context,
-                              label: "Description",
-                              hintText: "",
-                              enabled: accountController.isEditting.value,
-                              textEditingController: accountController.description,
-                              maxLines: 6,
-                              keyboardType: TextInputType.multiline,
-                              height: 120,
-                              minLines: 4),
-                        ],
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          inputRegular(
-                            context,
-                            label: "Phone number",
-                            hintText: "",
-                            required: true,
-                            textEditingController: accountController.phoneNumber,
-                            enabled: accountController.isEditting.value,
-                          ),
-                          SizedBox(
-                            height: getHeight(16),
-                          ),
-                          Stack(children: [
-                            inputRegular(
-                              context,
-                              label: "State",
-                              hintText: "",
-                              enabled: accountController.isEditting.value,
-                              textEditingController: accountController.state,
-                              height: 54,
-                              required: true,
-                            ),
-                            Obx(() => accountController.isEditting.value
-                                ? Container(
-                                    child: getDropDown(
-                                      USStates.getAllNames(),
-                                      (String value) => {accountController.state.text = value},
-                                    ),
-                                    margin: EdgeInsets.only(top: getHeight(22)),
-                                  )
-                                : Container()),
-                          ]),
-                          SizedBox(
-                            height: getHeight(16),
-                          ),
-                          inputRegular(
-                            context,
-                            label: "City",
-                            hintText: "",
-                            required: true,
-                            textEditingController: accountController.city,
-                            enabled: accountController.isEditting.value,
-                          ),
-                          SizedBox(
-                            height: getHeight(16),
-                          ),
-                          inputRegular(
-                            context,
-                            label: "Country",
-                            hintText: "",
-                            textEditingController: accountController.country,
-                            enabled: accountController.isEditting.value,
-                          ),
-                          SizedBox(
-                            height: getHeight(16),
-                          ),
-                          inputRegular(
-                            context,
-                            label: "Address 1",
-                            hintText: "",
-                            required: true,
-                            textEditingController: accountController.address1,
-                            enabled: accountController.isEditting.value,
-                          ),
-                          SizedBox(
-                            height: getHeight(16),
-                          ),
-                          inputRegular(
-                            context,
-                            label: "Address 2",
-                            hintText: "",
-                            textEditingController: accountController.address2,
-                            enabled: accountController.isEditting.value,
-                          ),
-                          SizedBox(
-                            height: getHeight(16),
-                          ),
-                          inputRegular(
-                            context,
-                            label: "Zipcode",
-                            hintText: "",
-                            required: true,
-                            textEditingController: accountController.zipcode,
-                            enabled: accountController.isEditting.value,
-                          ),
-                          SizedBox(
-                            height: getHeight(16),
-                          ),
-                          inputRegular(
-                            context,
-                            hintText: "Website",
-                            textEditingController: accountController.website,
-                            enabled: accountController.isEditting.value,
-                          ),
-                        ],
-                      ),
-              ),
+                            textEditingController: accountController.description,
+                            maxLines: 6,
+                            keyboardType: TextInputType.multiline,
+                            height: 120,
+                            minLines: 4),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: getWidth(27),
+              right: getWidth(27),
+              bottom: getHeight(80),
+              top: getHeight(12),
+            ),
+            child: ListView(
+              children: [
+                inputRegular(
+                  context,
+                  label: "Phone number",
+                  hintText: "",
+                  required: true,
+                  textEditingController: accountController.phoneNumber,
+                  enabled: accountController.isEditting.value,
+                ),
+                SizedBox(
+                  height: getHeight(16),
+                ),
+                Stack(children: [
+                  inputRegular(
+                    context,
+                    label: "State",
+                    hintText: "",
+                    enabled: accountController.isEditting.value,
+                    textEditingController: accountController.state,
+                    height: 54,
+                    required: true,
+                  ),
+                  Obx(() => accountController.isEditting.value
+                      ? Container(
+                          child: getDropDown(
+                            USStates.getAllNames(),
+                            (String value) => {accountController.state.text = value},
+                          ),
+                          margin: EdgeInsets.only(top: getHeight(22)),
+                        )
+                      : Container()),
+                ]),
+                SizedBox(
+                  height: getHeight(16),
+                ),
+                inputRegular(
+                  context,
+                  label: "City",
+                  hintText: "",
+                  required: true,
+                  textEditingController: accountController.city,
+                  enabled: accountController.isEditting.value,
+                ),
+                SizedBox(
+                  height: getHeight(16),
+                ),
+                inputRegular(
+                  context,
+                  label: "Country",
+                  hintText: "",
+                  textEditingController: accountController.country,
+                  enabled: accountController.isEditting.value,
+                ),
+                SizedBox(
+                  height: getHeight(16),
+                ),
+                inputRegular(
+                  context,
+                  label: "Address 1",
+                  hintText: "",
+                  required: true,
+                  textEditingController: accountController.address1,
+                  enabled: accountController.isEditting.value,
+                ),
+                SizedBox(
+                  height: getHeight(16),
+                ),
+                inputRegular(
+                  context,
+                  label: "Address 2",
+                  hintText: "",
+                  textEditingController: accountController.address2,
+                  enabled: accountController.isEditting.value,
+                ),
+                SizedBox(
+                  height: getHeight(16),
+                ),
+                inputRegular(
+                  context,
+                  label: "Zipcode",
+                  hintText: "",
+                  required: true,
+                  textEditingController: accountController.zipcode,
+                  enabled: accountController.isEditting.value,
+                ),
+                SizedBox(
+                  height: getHeight(16),
+                ),
+                inputRegular(
+                  context,
+                  hintText: "Website",
+                  textEditingController: accountController.website,
+                  enabled: accountController.isEditting.value,
+                ),
+              ],
+            ),
+          ),
+        ]),
       ),
     );
   }

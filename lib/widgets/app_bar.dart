@@ -2,21 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/utils/config.dart';
 
-AppBar appBar({String? title, List<Widget>? actions, Function? backFunction, PreferredSizeWidget? bottom}) {
+AppBar appBar({String? title,
+  List<Widget>? actions,
+  Function? backFunction,
+  PreferredSizeWidget? bottom,
+  bool? hideBackButton = false,
+  double? elevation
+}) {
   return AppBar(
     backgroundColor: Colors.white,
-    leading: IconButton(
-      icon: Icon(
-        Icons.arrow_back_ios,
-        color: Colors.black,
-        size: getHeight(20),
-      ),
-      onPressed: () {
-        Get.back();
-        if (backFunction != null) backFunction();
-      },
-    ),
-    elevation: 0,
+    leading: hideBackButton != true
+        ? IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+              size: getHeight(20),
+            ),
+            onPressed: () {
+              Get.back();
+              if (backFunction != null) backFunction();
+            },
+          )
+        : null,
+    elevation: elevation ?? 0,
     title: Text(
       title ?? "",
       style: TextStyle(

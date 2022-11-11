@@ -62,17 +62,18 @@ class MainScreen extends StatelessWidget {
             // margin: EdgeInsets.only(left: getWidth(25), right: getWidth(25)),
             child: ListView(
               shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               children: [
                 Obx(() {
                   return mainScreenController.hasSearched.value
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
                                 left: getWidth(16),
+                                top: getHeight(30)
                               ),
                               child: Text(
                                 "Hi ${globalController.user.value.username}, have a good day",
@@ -88,9 +89,8 @@ class MainScreen extends StatelessWidget {
                                 left: getWidth(16),
                               ),
                               child: Text(
-                                TimeService.currentTimeDayOfWeek(
-                                    DateTime.now()),
-                                style: TextStyle(
+                                TimeService.currentTimeDayOfWeek(DateTime.now()),
+                                style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
@@ -101,33 +101,6 @@ class MainScreen extends StatelessWidget {
                           ],
                         );
                 }),
-                // Padding(
-                //   padding: EdgeInsets.only(
-                //     left: getWidth(16),
-                //   ),
-                //   child: Text(
-                //     "Hi ${globalController.user.value.username}, have a good day",
-                //     style: TextStyle(
-                //       fontSize: getHeight(18),
-                //       fontWeight: FontWeight.w500,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.only(
-                //     left: getWidth(16),
-                //   ),
-                //   child: Text(
-                //     TimeService.currentTimeDayOfWeek(DateTime.now()),
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: getHeight(12),
-                // ),
                 Row(
                   children: [
                     Obx(() {
@@ -142,11 +115,10 @@ class MainScreen extends StatelessWidget {
                                     child: Icon(
                                       Icons.arrow_back_ios,
                                       color: Colors.white,
-                                      size: 30,
+                                      size: getHeight(30),
                                     )),
                                 onPress: () {
-                                  mainScreenController.hasSearched.value =
-                                      false;
+                                  mainScreenController.hasSearched.value = false;
                                 },
                               ),
                             )
@@ -158,13 +130,11 @@ class MainScreen extends StatelessWidget {
                     Obx(() {
                       return Container(
                         height: getHeight(40),
-                        width: mainScreenController.hasSearched.value
-                            ? getWidth(287)
-                            : getWidth(343),
+                        width: mainScreenController.hasSearched.value ? getWidth(287) : getWidth(343),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(
-                            color: Color(0xFFC4C4C4),
+                            color: const Color(0xFFC4C4C4),
                             width: getWidth(1),
                           ),
                           color: Colors.white,
@@ -176,22 +146,16 @@ class MainScreen extends StatelessWidget {
                               child: inputSearch(
                                 context,
                                 hintText: "Search by service",
-                                textEditingController:
-                                    mainScreenController.searchText,
+                                textEditingController: mainScreenController.searchText,
                                 onSearch: () async {
-                                  var res = await mainScreenController
-                                      .getBusinesses();
+                                  var res = await mainScreenController.getBusinesses();
                                   if (res) {
-                                    mainScreenController.hasSearched.value =
-                                        true;
+                                    mainScreenController.hasSearched.value = true;
                                   } else {
                                     print("not found");
                                   }
                                 },
-                                options: List.generate(
-                                    mainScreenController.categories.length,
-                                    (index) => mainScreenController
-                                        .categories[index].name),
+                                options: List.generate(mainScreenController.categories.length, (index) => mainScreenController.categories[index].name),
                                 prefixIcon: "assets/icons/search.svg",
                               ),
                             ),
@@ -206,14 +170,11 @@ class MainScreen extends StatelessWidget {
                               child: inputSearch(
                                 context,
                                 hintText: "Zipcode",
-                                textEditingController:
-                                    mainScreenController.searchZipcode,
+                                textEditingController: mainScreenController.searchZipcode,
                                 onSearch: () async {
-                                  var res = await mainScreenController
-                                      .getBusinesses();
+                                  var res = await mainScreenController.getBusinesses();
                                   if (res) {
-                                    mainScreenController.hasSearched.value =
-                                        true;
+                                    mainScreenController.hasSearched.value = true;
                                   } else {
                                     print("not found");
                                   }
@@ -232,9 +193,7 @@ class MainScreen extends StatelessWidget {
                   height: getHeight(24),
                 ),
                 Obx(() {
-                  return mainScreenController.hasSearched.value
-                      ? searchResults(context)
-                      : mainScreenDisplay();
+                  return mainScreenController.hasSearched.value ? searchResults(context) : mainScreenDisplay();
                 }),
               ],
             ),
@@ -274,11 +233,7 @@ class MainScreen extends StatelessWidget {
             height: getHeight(12),
           ),
           CarouselSlider(
-            options: CarouselOptions(
-                height: getHeight(250),
-                viewportFraction: 1,
-                onPageChanged: (index, reason) =>
-                    {mainScreenController.currentIndex.value = index}),
+            options: CarouselOptions(height: getHeight(250), viewportFraction: 1, onPageChanged: (index, reason) => {mainScreenController.currentIndex.value = index}),
             items: [1, 2, 3, 4, 5]
                 .map(
                   (i) => Container(
@@ -302,13 +257,8 @@ class MainScreen extends StatelessWidget {
                         right: getWidth(3),
                       ),
                       height: 6,
-                      width:
-                          i == mainScreenController.currentIndex.value ? 16 : 6,
-                      decoration: BoxDecoration(
-                          color: i == mainScreenController.currentIndex.value
-                              ? Color(0xFFFF511A)
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(5)));
+                      width: i == mainScreenController.currentIndex.value ? 16 : 6,
+                      decoration: BoxDecoration(color: i == mainScreenController.currentIndex.value ? Color(0xFFFF511A) : Colors.grey, borderRadius: BorderRadius.circular(5)));
                 })
             ],
           ),
@@ -339,14 +289,9 @@ class MainScreen extends StatelessWidget {
                       mainScreenController.mostInterested.length,
                       (index) {
                         return serviceItem(
-                          image: mainScreenController
-                                  .mostInterested[index].bussiness["logoUrl"] ??
-                              "",
-                          id: mainScreenController
-                              .mostInterested[index].bussiness["id"],
-                          service: mainScreenController
-                                  .mostInterested[index].bussiness["name"] ??
-                              "",
+                          image: mainScreenController.mostInterested[index].bussiness["logoUrl"] ?? "",
+                          id: mainScreenController.mostInterested[index].bussiness["id"],
+                          service: mainScreenController.mostInterested[index].bussiness["name"] ?? "",
                         );
                       },
                     ),
@@ -380,29 +325,13 @@ class MainScreen extends StatelessWidget {
                         mainScreenController.businessNearList.length,
                         (index) {
                           return handymanItem(
-                            image: mainScreenController.businessNearList[index]
-                                    .bussiness["bannerUrl"] ??
-                                "",
-                            logo: mainScreenController.businessNearList[index]
-                                    .bussiness["logoUrl"] ??
-                                "",
-                            title: mainScreenController.businessNearList[index]
-                                    .bussiness["name"] ??
-                                "",
-                            stars: (mainScreenController.businessNearList[index]
-                                        .rating["rate"] ??
-                                    0.0) *
-                                1.0,
-                            reviews: mainScreenController
-                                    .businessNearList[index].rating["review"]
-                                    ?.toInt() ??
-                                0,
-                            requested: mainScreenController
-                                    .businessNearList[index]
-                                    .rating["request"] ??
-                                0,
-                            id: mainScreenController
-                                .businessNearList[index].bussiness["id"],
+                            image: mainScreenController.businessNearList[index].bussiness["bannerUrl"] ?? "",
+                            logo: mainScreenController.businessNearList[index].bussiness["logoUrl"] ?? "",
+                            title: mainScreenController.businessNearList[index].bussiness["name"] ?? "",
+                            stars: (mainScreenController.businessNearList[index].rating["rate"] ?? 0.0) * 1.0,
+                            reviews: mainScreenController.businessNearList[index].rating["review"]?.toInt() ?? 0,
+                            requested: mainScreenController.businessNearList[index].rating["request"] ?? 0,
+                            id: mainScreenController.businessNearList[index].bussiness["id"],
                           );
                         },
                       ),
@@ -476,33 +405,17 @@ class MainScreen extends StatelessWidget {
             ],
           ),
           Column(
-            children:
-                List.generate(mainScreenController.businesses.length, (index) {
+            children: List.generate(mainScreenController.businesses.length, (index) {
               return handymanItem(
-                image: mainScreenController
-                        .businesses[index].bussiness["bannerUrl"] ??
-                    "",
-                logo: mainScreenController
-                        .businesses[index].bussiness["logoUrl"] ??
-                    "",
-                title:
-                    mainScreenController.businesses[index].bussiness["name"] ??
-                        "",
-                stars: (mainScreenController.businesses[index].rating["rate"] ??
-                        0.0) *
-                    1.0,
-                reviews: mainScreenController.businesses[index].rating["review"]
-                        ?.toInt() ??
-                    0,
+                image: mainScreenController.businesses[index].bussiness["bannerUrl"] ?? "",
+                logo: mainScreenController.businesses[index].bussiness["logoUrl"] ?? "",
+                title: mainScreenController.businesses[index].bussiness["name"] ?? "",
+                stars: (mainScreenController.businesses[index].rating["rate"] ?? 0.0) * 1.0,
+                reviews: mainScreenController.businesses[index].rating["review"]?.toInt() ?? 0,
                 isSearchResult: false,
-                about: mainScreenController
-                        .businesses[index].bussiness["descriptions"] ??
-                    "",
-                requested: mainScreenController
-                        .businesses[index].rating["request"] ??
-                    0,
-                id: mainScreenController.businesses[index].bussiness["id"] ??
-                    "",
+                about: mainScreenController.businesses[index].bussiness["descriptions"] ?? "",
+                requested: mainScreenController.businesses[index].rating["request"] ?? 0,
+                id: mainScreenController.businesses[index].bussiness["id"] ?? "",
               );
             }),
           ),
