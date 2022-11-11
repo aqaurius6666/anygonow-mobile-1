@@ -111,9 +111,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                             ),
                           ),
                           child: Container(
-                            padding: EdgeInsets.only(
-                                bottom: getHeight(4)
-                            ),
+                            padding: EdgeInsets.only(bottom: getHeight(4)),
                             child: Text(
                               "Service info",
                               style: TextStyle(
@@ -147,9 +145,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                             ),
                           ),
                           child: Container(
-                            padding: EdgeInsets.only(
-                                bottom: getHeight(4)
-                            ),
+                            padding: EdgeInsets.only(bottom: getHeight(4)),
                             child: Text(
                               "Contact info",
                               style: TextStyle(color: !accountController.isBusinessScreen.value ? Color(0xFFFF511A) : Color(0xFF333333), fontSize: getHeight(16), fontWeight: FontWeight.w500),
@@ -327,8 +323,8 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                                           width: getWidth(194),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.rectangle,
-                                            border: Border.all(color: accountController.logoImage.value != "" ? Colors.blueGrey : Colors.transparent),
                                           ),
+                                          alignment: Alignment.centerLeft,
                                           child: bannerFile.path != ""
                                               ? Image.file(
                                                   bannerFile,
@@ -367,7 +363,11 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                                   )
                                 : inputRegular(
                                     context,
-                                    hintText: "Professional Category*",
+                                    label: "Professional Category",
+                                    required: true,
+                                    hintText: "",
+                                    maxLines: 4,
+                                    height: accountController.tags.length / 3 * 40 + 40,
                                     textEditingController: accountController.category,
                                     enabled: accountController.isEditting.value,
                                   ),
@@ -412,9 +412,12 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                               required: true,
                             ),
                             Obx(() => accountController.isEditting.value
-                                ? getDropDown(
-                                    USStates.getAllNames(),
-                                    (String value) => {accountController.state.text = value},
+                                ? Container(
+                                    child: getDropDown(
+                                      USStates.getAllNames(),
+                                      (String value) => {accountController.state.text = value},
+                                    ),
+                                    margin: EdgeInsets.only(top: getHeight(22)),
                                   )
                                 : Container()),
                           ]),
@@ -423,7 +426,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                           ),
                           inputRegular(
                             context,
-                            label: "City*",
+                            label: "City",
                             hintText: "",
                             required: true,
                             textEditingController: accountController.city,
