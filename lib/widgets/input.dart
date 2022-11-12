@@ -198,8 +198,11 @@ Container inputSearch(
                   ),
                   prefixIcon: prefixIcon == ""
                       ? null
-                      : SizedBox(
-                          child: SvgPicture.asset(prefixIcon),
+                      : Container(
+                          margin: EdgeInsets.only(right: getWidth(4)),
+                          child: SizedBox(
+                            child: SvgPicture.asset(prefixIcon),
+                          ),
                         ),
                   isCollapsed: true,
                   border: InputBorder.none,

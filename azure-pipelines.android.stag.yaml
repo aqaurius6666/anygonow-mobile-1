@@ -5,8 +5,7 @@
 trigger:
   branches:
     include:
-    - releases/*
-    - test
+      - dev
   batch: true
 
 variables:
@@ -14,6 +13,7 @@ variables:
   AZURE_PAT: $(azurePass)
 
 name: 1.0.$(Rev:r)
+
 
 jobs:
 - job: ANDROID
