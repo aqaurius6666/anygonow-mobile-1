@@ -168,7 +168,7 @@ Container requestItem({
             ),
           ),
           onPress: () async {
-            await Get.put(MyRequestUserController()).getRequests(serviceId);
+            await Get.put(MyRequestUserController()).getRequests(serviceId, zipcode);
             Get.to(MyRequestUserScreen());
           },
         ),

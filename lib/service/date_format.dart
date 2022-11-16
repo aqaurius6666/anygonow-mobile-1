@@ -99,4 +99,13 @@ class TimeService {
     var datedFormat = DateFormat("yyyy/MM/dd HH:mm$suffix").format(dateTime);
     return datedFormat;
   }
+
+  static String millisecondToTime(int time) {
+    Duration duration = Duration(milliseconds: time);
+    if (duration.inHours > 1) {
+      return "${duration.inHours.toString()} h";
+    }
+
+    return "${duration.inMinutes.toString()} h";
+  }
 }
