@@ -56,58 +56,66 @@ ListView connectedTab(MessageController controller, List<dynamic> requests) {
   );
 }
 
-Container messageItem({
+GestureDetector messageItem({
   String img = "",
   String business = "",
   String message = "",
   String time = "",
 }) {
-  return Container(
-    height: getHeight(97),
-    padding: EdgeInsets.only(
-      left: getWidth(16),
-      right: getWidth(16),
-    ),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          height: getHeight(56),
-          width: getHeight(56),
-          color: Colors.grey,
-        ),
-        SizedBox(
-          height: getHeight(56),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+  RxBool tapped = false.obs;
+  return GestureDetector(
+    onTap: () => tapped.value = true,
+    child: Obx(() {
+        return Container(
+          height: getHeight(97),
+          color: tapped.value ? Color(0xFFFFF4F0) : Colors.white,
+          padding: EdgeInsets.only(
+            left: getWidth(16),
+            right: getWidth(16),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                business,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
+              Container(
+                height: getHeight(56),
+                width: getHeight(56),
+                color: Colors.grey,
+              ),
+              SizedBox(
+                height: getHeight(56),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      business,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      message,
+                      style: TextStyle(
+                        color: Color(0xFF999999),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              SizedBox(
+                width: getWidth(100),
+              ),
               Text(
-                message,
+                time,
                 style: TextStyle(
                   color: Color(0xFF999999),
                 ),
-              ),
+              )
             ],
           ),
-        ),
-        SizedBox(
-          width: getWidth(100),
-        ),
-        Text(
-          time,
-          style: TextStyle(
-            color: Color(0xFF999999),
-          ),
-        )
-      ],
+        );
+      }
     ),
   );
 }
