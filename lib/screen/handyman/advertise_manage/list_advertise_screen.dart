@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/screen/handyman/advertise_manage/buy_advertise.dart';
 import 'package:untitled/utils/config.dart';
@@ -14,16 +15,19 @@ class ListAdvertiseScreen extends StatefulWidget {
 
 class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
   MyRequestController myRequestController = Get.put(MyRequestController());
+  ManageAdvertiseController manageAdvertiseController = Get.put(ManageAdvertiseController());
 
   
-  bool isCheck = false;
-  // @override
-  // void initState() {
-      
-  // }
+  // bool isCheck = true;
+  @override
+  void initState() {
+      // manageAdvertiseController.pageController = PageController(viewportFraction: 0.6);
+      super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // manageAdvertiseController.getListAdvertise();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -74,93 +78,101 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                   SizedBox(
                     height: getHeight(16),
                   ),
-                  Container(
-                    // width: getWidth(265),
-                    height: isCheck ? getHeight(168) : getHeight(230),
-                    child: isCheck ? getAdvertises() : itemAdvertiseBuy(),
+                  Obx(() => 
+                    Container(
+                      // width: getWidth(265),
+                      height: !manageAdvertiseController.isBuy.value ? getHeight(168) : getHeight(230),
+                      child: !manageAdvertiseController.isBuy.value ? getAdvertises() : itemAdvertiseBuy(),
+                    ),
                   ),
                   SizedBox(
                     height: getHeight(24),
                   ),
-                  Expanded(
-                    child: Container(
-                      width: getWidth(375),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'With Package1 you will get',
-                              style: TextStyle(
-                                fontSize: getWidth(18),
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'TTNorm',
+                  Obx(()=> 
+                    Expanded(
+                      child: Container(
+                        width: getWidth(375),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'With ' + manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["name"] + ' you will get',
+                                style: TextStyle(
+                                  fontSize: getWidth(18),
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'TTNorm',
+                                ),
                               ),
-                            ),
-                            SizedBox(height: getHeight(24)),
-                            Text(
-                              'Services',
-                              style: TextStyle(
-                                fontSize: getWidth(18),
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'TTNorm',
+                              SizedBox(height: getHeight(24)),
+                              Text(
+                                'Services',
+                                style: TextStyle(
+                                  fontSize: getWidth(18),
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'TTNorm',
+                                ),
                               ),
-                            ),
-                            SizedBox(height: getHeight(16)),
-                            Container(
-                              child: Column(
-                                children: List.generate(
-                                  ['Home cleaning', 'Security'].length,
-                                  (index) => Column(
-                                    children: [
-                                      SizedBox(height: getHeight(12)),
-                                      Container(
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.lock,
-                                              color:
-                                                  Color.fromARGB(255, 80, 80, 80),
-                                            ),
-                                            SizedBox(width: getWidth(4)),
-                                            Text(
-                                              ['Home cleaning', 'Security'][index],
-                                              style: TextStyle(
-                                                fontSize: getWidth(16),
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: 'TTNorm',
-                                                color: Color.fromARGB(
-                                                    255, 80,80,80),
+                              SizedBox(height: getHeight(16)),
+                              Container(
+                                child: Column(
+                                  children: List.generate(
+                                    !manageAdvertiseController.isBuy.value ? 
+                                     manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"].length
+                                    : manageAdvertiseController.currentAdvertise["serviceInfo"].length,
+                                    (index) => Column(
+                                      children: [
+                                        SizedBox(height: getHeight(12)),
+                                        Container(
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.lock,
+                                                color:
+                                                    Color.fromARGB(255, 80, 80, 80),
                                               ),
-                                            )
-                                          ],
+                                              SizedBox(width: getWidth(4)),
+                                              Text(
+                                                !manageAdvertiseController.isBuy.value ? manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"][index]["serviceName"]
+                                                : manageAdvertiseController.currentAdvertise["serviceInfo"][index]["serviceName"],
+                                                style: TextStyle(
+                                                  fontSize: getWidth(16),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: 'TTNorm',
+                                                  color: Color.fromARGB(
+                                                      255, 80,80,80),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
 
-                                    ]
+                                      ]
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: getHeight(24)),
-                            Text(
-                              'Description',
-                              style: TextStyle(
-                                fontSize: getWidth(18),
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'TTNorm',
+                              SizedBox(height: getHeight(24)),
+                              Text(
+                                'Description',
+                                style: TextStyle(
+                                  fontSize: getWidth(18),
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'TTNorm',
+                                ),
                               ),
-                            ),
-                            SizedBox(height: getHeight(12)),
-                            Text(
-                              'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using "Content here, content here", making it look like readable English.',
-                              style: TextStyle(
-                                fontSize: getWidth(14),
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'TTNorm',
+                              SizedBox(height: getHeight(12)),
+                              Text(
+                                !manageAdvertiseController.isBuy.value ? manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["description"]
+                                : manageAdvertiseController.currentAdvertise["description"],
+                                style: TextStyle(
+                                  fontSize: getWidth(14),
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'TTNorm',
+                                ),
                               ),
-                            ),
-                            SizedBox(height: getHeight(24)),
-                          ]),
+                              SizedBox(height: getHeight(24)),
+                            ]),
+                      ),
                     ),
                   ),
                 ],
@@ -175,11 +187,19 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
   Stack getAdvertises() {
     return Stack(
       children: [
-        ListView.builder(
+        PageView.builder(
+          padEnds: false,
           scrollDirection: Axis.horizontal,
-          itemCount: myRequestController.requests.length,
+          controller: manageAdvertiseController.pageController,
+          onPageChanged: (value) {
+            manageAdvertiseController.onChangeIndexCurrentAd(value);
+          },
+          itemCount: manageAdvertiseController.listAdvertise.length,
           itemBuilder: (BuildContext context, index) =>
-              itemAdvertise(name: "Package1", price: 0.99),
+              itemAdvertise(
+                name: manageAdvertiseController.listAdvertise[index]["name"], 
+                price: manageAdvertiseController.listAdvertise[index]["price"],
+              ),
         ),
       ],
     );
@@ -187,15 +207,18 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
 
   Container itemAdvertise({
     String name = "",
-    double price = 0,
+    dynamic price = 0.0,
     List<String> services = ListAdvertiseScreen.listServices,
     String description = '',
   }) {
     return Container(
-      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      
+      child: Column(mainAxisAlignment: MainAxisAlignment.start, 
+      children: [
         Container(
+          padding: EdgeInsets.symmetric(horizontal: getWidth(20)),
           margin: EdgeInsets.only(
-            right: getWidth(16),
+            right: getWidth(5),
           ),
           height: getHeight(168),
           width: getWidth(259),
@@ -211,14 +234,14 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: getHeight(24),
+                height: getHeight(20),
               ),
               Text(name,
                   style: TextStyle(
                     fontSize: getWidth(16),
                   )),
               SizedBox(
-                height: getHeight(20),
+                height: getHeight(16),
               ),
               RichText(
                 text: TextSpan(
@@ -241,10 +264,14 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                 ),
               ),
               SizedBox(
-                height: getHeight(16),
+                height: getHeight(12),
               ),
               Bouncing(
-                onPress: () {Get.to(() => BuyAdvertiseScreen()); },
+                onPress: () async {
+                  await manageAdvertiseController.getItemAdvertise(manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["id"]);
+                  await manageAdvertiseController.getPaymentMethods();
+                  Get.to(() => BuyAdvertiseScreen()); 
+                },
                 child: Container(
                   width: getWidth(235),
                   height: getHeight(40),
@@ -293,7 +320,7 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
               SizedBox(width: getWidth(10)),
               Expanded(
                 child: Text(
-                  'Package name Package name Package name Package name',
+                  manageAdvertiseController.currentAdvertise["name"],
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -306,18 +333,16 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
             ],
           ),
           SizedBox(height: getHeight(16)),
-          itemShowInfoDate(title: "Registration date", date: "15/01/2022"),
+          itemShowInfoDate(title: "Registration date", date: manageAdvertiseController.registrationDate.text),
           SizedBox(height: getHeight(16)),
-          itemShowInfoDate(title: "Expiry date", date: "15/02/2022"),
+          itemShowInfoDate(title: "Expiry date", date: manageAdvertiseController.expiryDate.text),
           SizedBox(height: getHeight(16)),
-          itemShowInfoDate(title: "Price", date: "\$0.99/Day"),
+          itemShowInfoDate(title: "Price", date: "\$" + manageAdvertiseController.currentAdvertise["price"].toString() + "/Day"),
 
           SizedBox(height: getHeight(24)),
           Bouncing(
                 onPress: () {
-                  setState(() {
-                    isCheck = true;
-                  });
+                  manageAdvertiseController.clearState();
                 },
                 child: Container(
                   width: getWidth(319),
@@ -328,13 +353,18 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                         color: Color.fromARGB(255, 255, 81, 26),
                         width: 1,
                       )),
-                  child: Center(
-                    child: Text('Buy more',
-                        style: TextStyle(
-                            fontSize: getWidth(16),
-                            color: Color.fromARGB(255, 255, 81, 26),
-                            fontFamily: 'TTNorm',
-                            fontWeight: FontWeight.w700)),
+                  child: GestureDetector(
+                    onTap: () {
+                      manageAdvertiseController.NoChangeBuy();
+                    },
+                    child: Center(
+                      child: Text('Buy more',
+                          style: TextStyle(
+                              fontSize: getWidth(16),
+                              color: Color.fromARGB(255, 255, 81, 26),
+                              fontFamily: 'TTNorm',
+                              fontWeight: FontWeight.w700)),
+                    ),
                   ),
                 ),
               )

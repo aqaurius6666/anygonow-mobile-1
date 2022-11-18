@@ -6,11 +6,7 @@ trigger:
     include:
     - dev
   batch: true
-
-variables:
-  GIT_PAT: $(gitPat)
-  AZURE_PAT: $(azurePass)
-
+  
 name: 1.2.$(Rev:r)
 
 jobs:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/login/login_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
@@ -167,6 +168,7 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                             AccountController().isBusinessScreen.value = false;
                           } else {
                             await Get.put(MyRequestController()).getRequests();
+                            await Get.put(ManageAdvertiseController()).getListAdvertise();
                             Get.to(() => HandymanHomePageScreen());
                           }
                         }

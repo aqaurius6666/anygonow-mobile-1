@@ -1,19 +1,33 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
+import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/screen/handyman/advertise_manage/add_card.dart';
 import 'package:untitled/screen/handyman/advertise_manage/popup_notification.dart';
+import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 
-class BuyAdvertiseScreen extends StatelessWidget {
-  MyRequestController myRequestController = Get.put(MyRequestController());
-  TextEditingController inputText = TextEditingController();
+class BuyAdvertiseScreen extends StatefulWidget {
   static const listServices = [''];
+
+  @override
+  State<BuyAdvertiseScreen> createState() => _BuyAdvertiseScreenState();
+}
+
+class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
+  TextEditingController inputText = TextEditingController();
+
+  ManageAdvertiseController manageAdvertiseController =
+      Get.put(ManageAdvertiseController());
+
   @override
   Widget build(BuildContext context) {
+    manageAdvertiseController.getBusinessesPaymentMethod();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -21,7 +35,7 @@ class BuyAdvertiseScreen extends StatelessWidget {
           onPressed: () => {Get.back()},
         ),
         title: Text(
-          "Package 1",
+          manageAdvertiseController.currentAdvertise["name"],
           style: TextStyle(
             color: Colors.black,
             fontSize: getWidth(24),
@@ -68,7 +82,7 @@ class BuyAdvertiseScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '\$1.00',
+                        '\$' + manageAdvertiseController.currentAdvertise["price"].toString(),
                         style: TextStyle(
                           fontSize: getWidth(18),
                           fontWeight: FontWeight.w500,
@@ -92,10 +106,15 @@ class BuyAdvertiseScreen extends StatelessWidget {
                               SizedBox(
                                 height: getHeight(4),
                               ),
-                              inputRegular(
+                              inputDate(
                                 context,
-                                textEditingController: inputText,
+                                textEditingController:
+                                    manageAdvertiseController.registrationDate,
                                 hintText: "DD/MM/YYYY",
+                                suffixIcon: "assets/icons/date.svg",
+                                onTap: () {
+                                  _openModalDatePicker(context, 1);
+                                },
                               ),
                             ]),
                       ),
@@ -111,10 +130,15 @@ class BuyAdvertiseScreen extends StatelessWidget {
                               SizedBox(
                                 height: getHeight(4),
                               ),
-                              inputRegular(
+                              inputDate(
                                 context,
-                                textEditingController: inputText,
+                                textEditingController:
+                                    manageAdvertiseController.expiryDate,
                                 hintText: "DD/MM/YYYY",
+                                suffixIcon: "assets/icons/date.svg",
+                                onTap: () {
+                                  _openModalDatePicker(context, 2);
+                                },
                               ),
                             ]),
                       ),
@@ -133,10 +157,33 @@ class BuyAdvertiseScreen extends StatelessWidget {
                             SizedBox(
                               height: getHeight(4),
                             ),
-                            inputRegular(
+                            // inputRegular(
+                            //   context,
+                            //   textEditingController: inputText,
+                            //   hintText: "Category",
+                            // ),
+                            inputSelect(
                               context,
-                              textEditingController: inputText,
                               hintText: "Category",
+                              textEditingController:
+                                  manageAdvertiseController.category,
+                              options: List.generate(
+                                manageAdvertiseController
+                                            .currentAdvertise["serviceInfo"] !=
+                                        null
+                                    ? manageAdvertiseController
+                                        .currentAdvertise["serviceInfo"].length
+                                    : 0,
+                                (index) => manageAdvertiseController
+                                            .currentAdvertise["serviceInfo"] !=
+                                        null
+                                    ? manageAdvertiseController
+                                            .currentAdvertise["serviceInfo"]
+                                        [index]["serviceName"]
+                                    : "",
+                              ),
+                              // options: List.generate(manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"].length, (index) => manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"][index]["serviceName"]),
+                              // suffixIcon: "assets/icons/date.svg",
                             ),
                           ]),
                     )
@@ -153,10 +200,30 @@ class BuyAdvertiseScreen extends StatelessWidget {
                             SizedBox(
                               height: getHeight(4),
                             ),
-                            inputRegular(
+                            // inputRegular(
+                            //   context,
+                            //   textEditingController: inputText,
+                            //   hintText: "Service areas",
+                            // ),
+                            inputSelect(
                               context,
-                              textEditingController: inputText,
                               hintText: "Service areas",
+                              textEditingController:
+                                  manageAdvertiseController.serviceArea,
+                              options: List.generate(
+                                  manageAdvertiseController
+                                              .currentAdvertise["zipcodes"] !=
+                                          null
+                                      ? manageAdvertiseController
+                                          .currentAdvertise["zipcodes"].length
+                                      : 0,
+                                  (index) => manageAdvertiseController
+                                              .currentAdvertise["zipcodes"] !=
+                                          null
+                                      ? manageAdvertiseController
+                                          .currentAdvertise["zipcodes"]
+                                      : ""),
+                              // suffixIcon: "assets/icons/date.svg",
                             ),
                           ]),
                     )
@@ -173,14 +240,16 @@ class BuyAdvertiseScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
-                        '\$1.00',
-                        style: TextStyle(
-                          fontSize: getWidth(18),
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromARGB(255, 255, 81, 26),
+                      Obx(() => 
+                        Text(
+                          '\$' + manageAdvertiseController.totalPrice.toString(),
+                          style: TextStyle(
+                            fontSize: getWidth(18),
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromARGB(255, 255, 81, 26),
+                          ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                   borderBottom(),
@@ -197,47 +266,111 @@ class BuyAdvertiseScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                      // padding: EdgeInsets.all(getWidth(23)),
-                      margin: EdgeInsets.only(top: getWidth(23)),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: const Color(0xFFFF511A),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(left: getWidth(12)),
-                                child: Image.asset(
-                                    "assets/icons/ratio-icon.png")
-                            ),
-                            SizedBox(width: getWidth(24),),
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/bankcard-icon.svg",                           
-                                ),
-                                SizedBox(
-                                  width: getWidth(8),
-                                ),
-                                Text(
-                                  "422149******2397",
-                                  style: TextStyle(fontSize: getWidth(14)),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
+                  SizedBox(
+                    height: getHeight(24),
                   ),
+                  manageAdvertiseController.paymentMethod["last4"] != null
+                      ? Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: getHeight(14)),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: const Color(0xFFFF511A),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(left: getWidth(12)),
+                                  child: Image.asset(
+                                      "assets/icons/ratio-icon.png")),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: getWidth(8),
+                                  ),
+                                  SvgPicture.asset(
+                                      "assets/icons/bankcard-icon.svg"),
+                                  SizedBox(
+                                    width: getWidth(8),
+                                  ),
+                                  Text(
+                                    "xxxx xxxx xxxx " +
+                                        manageAdvertiseController
+                                            .paymentMethod["last4"]!,
+                                    style: TextStyle(fontSize: getHeight(14)),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      : Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/icons/no-payment.png",
+                                height: getHeight(180),
+                              ),
+                              Text(
+                                "You don't have any payment method",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: getHeight(14),
+                                  color: const Color(0xFF999999),
+                                ),
+                              ),
+                            ],
+                          )),
+
+                  // Container(
+                  //     // padding: EdgeInsets.all(getWidth(23)),
+                  //     margin: EdgeInsets.only(top: getWidth(23)),
+                  //     child: Container(
+                  //       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  //       decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(8),
+                  //         border: Border.all(
+                  //           color: const Color(0xFFFF511A),
+                  //         ),
+                  //       ),
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         children: [
+                  //           Container(
+                  //               margin: EdgeInsets.only(left: getWidth(12)),
+                  //               child: Image.asset(
+                  //                   "assets/icons/ratio-icon.png")
+                  //           ),
+                  //           SizedBox(width: getWidth(24),),
+                  //           Row(
+                  //             children: [
+                  //               SvgPicture.asset(
+                  //                 "assets/icons/bankcard-icon.svg",
+                  //               ),
+                  //               SizedBox(
+                  //                 width: getWidth(8),
+                  //               ),
+                  //               Text(
+                  //                 "422149******2397",
+                  //                 style: TextStyle(fontSize: getWidth(14)),
+                  //               )
+                  //             ],
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     )
+                  // ),
                   SizedBox(height: getHeight(24)),
                   Bouncing(
-                    onPress: () {Get.to(() => AddCard()); },
+                    onPress: () {
+                      Get.to(() => AddCard());
+                    },
                     child: Container(
                       width: getWidth(235),
                       height: getHeight(42),
@@ -258,16 +391,18 @@ class BuyAdvertiseScreen extends StatelessWidget {
                     ),
                   ),
 
-
                   SizedBox(height: getHeight(72)),
                   Bouncing(
-                    onPress: () {Get.to(() => PopupNotification()); },
+                    onPress: () {
+                      manageAdvertiseController.setBusinessesPaymentMethod();
+                      // Get.off(() => PopupNotification());
+                    },
                     child: Container(
                       width: getWidth(235),
                       height: getHeight(48),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color.fromARGB(255, 255, 81, 26),
+                        borderRadius: BorderRadius.circular(8),
+                        color: Color.fromARGB(255, 255, 81, 26),
                       ),
                       child: Center(
                         child: Text('Play now',
@@ -323,11 +458,45 @@ class BuyAdvertiseScreen extends StatelessWidget {
     );
   }
 
-  Future _selectDate() async {
-    DateTime? picked = await showDatePicker(
-        context: Get.context!,
-        initialDate: new DateTime.now(),
-        firstDate: new DateTime(2020),
-        lastDate: new DateTime(2030));
+  void _openModalDatePicker(context, index) {
+      showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100),
+        selectableDayPredicate: _decideWhichDayToEnable,
+      ).then((date) {
+        print(date);
+        index == 1 ? manageAdvertiseController.registrationDate.text =
+            TimeService.dateTimeToString5(date!)
+          : manageAdvertiseController.expiryDate.text =
+            TimeService.dateTimeToString5(date!);
+        if (manageAdvertiseController.registrationDate.text != "" && manageAdvertiseController.expiryDate.text != "") {
+          int kc = _tinhkhoangcachhaimocthoigian(manageAdvertiseController.registrationDate.text, manageAdvertiseController.expiryDate.text);
+          double price = double.parse(manageAdvertiseController.currentAdvertise["price"].toString());
+          manageAdvertiseController.totalPrice.value = kc * price;
+        }
+      });
+  }
+
+  bool _decideWhichDayToEnable(DateTime day) {
+    if ((day.isAfter(DateTime.now().subtract(Duration(days: 1))) &&
+        day.isBefore(DateTime(2100)))) {
+      return true;
+    }
+    return false;
+  }
+
+  int _tinhkhoangcachhaimocthoigian(String s1, String s2) {
+    DateTime t1 = DateTime.parse(s1);
+    DateTime t2 = DateTime.parse(s2);
+    int difference = t2.difference(t1).inDays;
+    print(t1);
+    print(t2);
+    print(difference);
+    if (difference > 0) {
+      return difference;
+    }
+    return 0;
   }
 }

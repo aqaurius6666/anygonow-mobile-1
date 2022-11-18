@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/screen/handyman/advertise_manage/add_card.dart';
 import 'package:untitled/screen/handyman/advertise_manage/list_advertise_screen.dart';
@@ -8,6 +9,7 @@ import 'package:untitled/widgets/bounce_button.dart';
 
 class PopupNotification extends StatelessWidget {
   MyRequestController myRequestController = Get.put(MyRequestController());
+  ManageAdvertiseController manageAdvertiseController = Get.put(ManageAdvertiseController());
   static const listServices = [''];
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,10 @@ class PopupNotification extends StatelessWidget {
                   children: [
                     Container(
                       child: Bouncing(
-                        onPress: () {Get.to(() => ListAdvertiseScreen());},
+                        onPress: () {
+                          manageAdvertiseController.ChangeBuy();
+                          Get.back();
+                        },
                         child: Container(
                           width: getWidth(343),
                           height: getHeight(48),

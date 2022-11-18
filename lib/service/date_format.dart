@@ -49,6 +49,10 @@ class TimeService {
     return DateFormat("yyyy'年'MM'月'dd'日'").format(dateTime);
   }
 
+  static String dateTimeToString5(DateTime dateTime) {
+    return DateFormat("yyyy-MM-dd").format(dateTime);
+  }
+
   static String timeNowToString() {
     return DateTime.now().toString();
   }

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/handyman/payment_method/payment_method_controller.dart';
+import 'package:untitled/service/stripe.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 
 class AddCard extends StatelessWidget {
   MyRequestController myRequestController = Get.put(MyRequestController());
-  PaymentController paymentController = Get.put(PaymentController());
+  ManageAdvertiseController manageAdvertiseController = Get.put(ManageAdvertiseController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class AddCard extends StatelessWidget {
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => {Get.back()},
         ),
         shadowColor: Color(0xFFE5E5E5),
@@ -54,7 +58,7 @@ class AddCard extends StatelessWidget {
                     inputRegular(context, label: "Card number",
                         hintText: "0000-0000-0000-0000",
                         required: true,
-                        textEditingController: paymentController.cardNumber, maxLength: 19),
+                        textEditingController: manageAdvertiseController.cardNumber, maxLength: 19),
                     SizedBox(
                       height: getHeight(16),
                     ),
@@ -65,7 +69,7 @@ class AddCard extends StatelessWidget {
                           label: "Expiration date",
                           required: true,
                           hintText: "MM/YYYY",
-                          textEditingController: paymentController.expiryDate,
+                          textEditingController: manageAdvertiseController.expiryDateCard,
                           maxLength: 7,
                         ),
                       ),
@@ -79,40 +83,68 @@ class AddCard extends StatelessWidget {
                           required: true,
                           hintText: "000",
                           maxLength: 3,
-                          textEditingController: paymentController.cvvCode,
+                          textEditingController: manageAdvertiseController.cvvCode,
                         ),
                       ),
                     ]),
                   ],
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+              Obx(() => 
+                Expanded(
+                  flex: 2,
+                  child: manageAdvertiseController.loading.value == true
+                ? Container(
+                    color: Colors.white,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      child: Bouncing(
-                        onPress: () {Get.back();},
-                        child: Container(
-                          width: getWidth(343),
-                          height: getHeight(48),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Color.fromARGB(255, 255, 81, 26),
+                      width: getWidth(343),
+                      height: getHeight(48),
+                      child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: const Color(0xffff511a),
+                            side: const BorderSide(
+                              color: Color(0xffff511a),
+                            ),
                           ),
-                          child: Center(
-                            child: Text('Add card',
-                                style: TextStyle(
-                                    fontSize: getWidth(16),
-                                    color: Color.fromARGB(255, 255, 255, 255),
-                                    fontFamily: 'TTNorm',
-                                    fontWeight: FontWeight.w700)),
-                          ),
+                          onPressed: () async {
+                            manageAdvertiseController.loading.value = true;
+                            var _card = CardDetails();
+                            var expireDate = manageAdvertiseController.expiryDateCard.text.split('/');
+                            if (manageAdvertiseController.cardNumber.text != "") {
+                              _card = _card.copyWith(number: manageAdvertiseController.cardNumber.text.replaceAll(" ", ""));
+                            }
+                            if (expireDate.first != '') {
+                              _card = _card.copyWith(expirationMonth: int.parse(expireDate.first));
+                            }
+                            if (expireDate.last != '') {
+                              _card = _card.copyWith(expirationYear: int.parse(expireDate.last.substring(expireDate.last.length - 2)));
+                            }
+                            if (manageAdvertiseController.cvvCode.text != "") {
+                              _card = _card.copyWith(cvc: manageAdvertiseController.cvvCode.text);
+                            }
+                            SetupIntent? paymentMethod = await StripeService.createSetupIntent(_card);
+                            var result = await StripeService.createNewPayment(paymentMethod, context);
+                            if (result != null) {
+                              await manageAdvertiseController.getPaymentMethods();
+                              CustomDialog(context, "SUCCESS").show({"message": "success_add_payment"});
+                              manageAdvertiseController.clearInfoAddCard();
+                            } else {
+                              CustomDialog(context, "FAILED").show({"message": "failed_add_payment"});
+                            }
+                            manageAdvertiseController.loading.value = false;
+                          },
+                          child: Text("Add card".tr, style: const TextStyle(color: Colors.white)),
                         ),
-                      ),
                     ),
                   ],
+                ),               
                 ),
               ),
               SizedBox(height: getHeight(24),),
