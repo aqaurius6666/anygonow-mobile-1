@@ -106,13 +106,20 @@ class TimeService {
 
   static String millisecondToTime(int time) {
     Duration duration = Duration(milliseconds: time);
+<<<<<<< HEAD
     if(duration.inDays > 1) {
       return "${duration.inDays.toString()} d";
     }
+=======
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
     if (duration.inHours > 1) {
       return "${duration.inHours.toString()} h";
     }
 
+<<<<<<< HEAD
     return "${duration.inMinutes.toString()} m";
+=======
+    return "${duration.inMinutes.toString()} h";
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+<<<<<<< HEAD
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
+=======
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
 import 'package:untitled/controller/message/message_controller.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/screen/chat/chat_screen.dart';
@@ -42,6 +45,7 @@ class MessageScreen extends StatelessWidget {
 
   ListView connectedTab(List<dynamic> requests) {
     return ListView(
+<<<<<<< HEAD
       children: List.generate(requests.length, (index) {
         var messages = messageController.connectedMessageList[index];
         return messageItem(
@@ -59,6 +63,25 @@ class MessageScreen extends StatelessWidget {
       // children: [
       //   messageItem(),
       // ],
+=======
+      // children: List.generate(requests.length, (index) {
+      //   var messages = messageController.connectedMessageList[index];
+      //   return messageItem(
+      //     message: messages.isNotEmpty
+      //         ? messages[messages.length - 1]["payload"]
+      //         : "Connected",
+      //     business: requests[index]["serviceName"],
+      //     img: requests[index]["businessLogo"],
+      //     time: messageController
+      //         .getTimeSent(messages[messages.length - 1]["timestamp"]),
+      //     index: index,
+      //     completed: false,
+      //   );
+      // }),
+      children: [
+        messageItem(),
+      ],
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
     );
   }
 
@@ -92,6 +115,7 @@ class MessageScreen extends StatelessWidget {
     RxBool tapped = false.obs;
     return GestureDetector(
       onTap: () {
+<<<<<<< HEAD
         tapped.value = true;
         messageController.index = index;
         messageController.completedChat = completed;
@@ -105,6 +129,17 @@ class MessageScreen extends StatelessWidget {
           (Get.put(MyRequestController()).currentRequest =
               requestController.connectedRequests[index]["id"]);
 
+=======
+        // tapped.value = true;
+        // messageController.index = index;
+        // messageController.completedChat = completed;
+        // messageController.chats.value = completed
+        //     ? messageController.completedMessageList[index].reversed.toList()
+        //     : messageController.connectedMessageList[index].reversed.toList();
+        // messageController.chatId = completed
+        //     ? messageController.completedMessageIds[index]
+        //     : messageController.connectedMessageIds[index];
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
         Get.to(ChatScreen());
       },
       child: Obx(() {

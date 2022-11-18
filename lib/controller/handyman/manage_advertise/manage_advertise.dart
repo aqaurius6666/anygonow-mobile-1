@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+<<<<<<< HEAD
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
@@ -11,13 +16,25 @@ import 'package:untitled/service/date_format.dart';
 import 'package:untitled/service/stripe.dart';
 
 class ManageAdvertiseController extends GetxController {
+=======
+import 'package:get/get.dart';
+import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/model/custom_dio.dart';
+
+class ManageAdvertiseController extends GetxController { 
+
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
   GlobalController globalController = Get.put(GlobalController());
   TextEditingController registrationDate = TextEditingController();
   TextEditingController expiryDate = TextEditingController();
   TextEditingController category = TextEditingController();
   TextEditingController serviceArea = TextEditingController();
 
+<<<<<<< HEAD
   RxInt totalPrice = 0.obs;
+=======
+  RxDouble totalPrice = 0.0.obs;
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
 
   TextEditingController cardNumber = MaskedTextController(mask: '0000 0000 0000 0000');
   TextEditingController expiryDateCard = MaskedTextController(mask: '00/0000');
@@ -26,7 +43,10 @@ class ManageAdvertiseController extends GetxController {
   var paymentMethod = {}.obs;
   var bsPaymentMethod = {}.obs;
   var loading = false.obs;
+<<<<<<< HEAD
   var loadingBuyAd = false.obs;
+=======
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
 
   RxList<dynamic> listAdvertise = [].obs;
   var currentAdvertise = {}.obs;
@@ -38,9 +58,18 @@ class ManageAdvertiseController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
+<<<<<<< HEAD
     cardNumber.addListener(() {});
     expiryDateCard.addListener(() {});
     cvvCode.addListener(() {});
+=======
+    cardNumber.addListener(() {
+    });
+    expiryDateCard.addListener(() {
+    });
+    cvvCode.addListener(() {
+    });
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
     pageController = PageController(initialPage: 0, keepPage: true, viewportFraction: 0.9);
     super.onInit();
   }
@@ -50,7 +79,10 @@ class ManageAdvertiseController extends GetxController {
     indexCurrentAd.value = 0;
     currentAdvertise.value = {};
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
   void ChangeBuy() {
     isBuy.value = true;
   }
@@ -83,16 +115,28 @@ class ManageAdvertiseController extends GetxController {
       indexCurrentAd.value = value;
       pageController = PageController(initialPage: value, keepPage: true);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
   }
 
   // void onSetCurrentAd(currentAd) {
   //   currentAdvertise.value = currentAd;
   // }
 
+<<<<<<< HEAD
   Future getListAdvertise() async {
     try {
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+=======
+  Future getListAdvertise() async{
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
       var response = await customDio.get("/businesses/promote");
       listAdvertise.clear();
       var json = jsonDecode(response.toString());
@@ -107,11 +151,20 @@ class ManageAdvertiseController extends GetxController {
     }
   }
 
+<<<<<<< HEAD
   Future getItemAdvertise(currentAdId) async {
     try {
       print(currentAdId);
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+=======
+  Future getItemAdvertise(currentAdId) async{
+    try {
+      print(currentAdId);
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
       var response = await customDio.get("/businesses/promote/$currentAdId");
       currentAdvertise.clear();
       var json = jsonDecode(response.toString());
@@ -177,6 +230,7 @@ class ManageAdvertiseController extends GetxController {
 
   Future setBusinessesPaymentMethod() async {
     try {
+<<<<<<< HEAD
       loadingBuyAd.value = true;
       print(globalController.user.value.id);
 
@@ -250,9 +304,30 @@ class ManageAdvertiseController extends GetxController {
 
 
       // return res;
+=======
+      loading.value = true;
+      print(globalController.user.value.id);
+      var data = {
+          // "UserId": globalController.user.value.id,
+          "amount": totalPrice.value,
+          "paymentId": bsPaymentMethod["payment"]["paymentMethodId"]
+      };
+      print(data);
+      CustomDio customDio = CustomDio();
+      var response = await customDio.post("businesses/buy-promote/setup", {"data": data}, sign: true);
+      print('123');
+      var json = jsonDecode(response.toString());
+      print(json["data"]);
+      return response;
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
     } catch (e, s) {
       loading.value = false;
       return null;
     }
   }
+<<<<<<< HEAD
 }
+=======
+
+}
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46

@@ -214,6 +214,7 @@ Container bottomNavigatorHandyman() {
                   }),
                   Obx(() {
                     return Bouncing(
+<<<<<<< HEAD
                       onPress: () async {
                         if (globalController.currentPage != 1){
                           var request = Get.put(MyRequestUserController());
@@ -237,6 +238,10 @@ Container bottomNavigatorHandyman() {
                           globalController.onChangeTab(1);
                         }
 
+=======
+                      onPress: () {
+                        globalController.onChangeTab(1);
+>>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
                       },
                       child: Container(
                         width: getWidth(60),
