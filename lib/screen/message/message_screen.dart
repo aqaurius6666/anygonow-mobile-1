@@ -32,7 +32,7 @@ class MessageScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             connectedTab(requestController.connectedRequests),
-            Container(),
+            completedTab(requestController.completedRequests),
           ],
         ),
       ),
@@ -41,8 +41,30 @@ class MessageScreen extends StatelessWidget {
 
   ListView connectedTab(List<dynamic> requests) {
     return ListView(
+      // children: List.generate(requests.length, (index) {
+      //   var messages = messageController.connectedMessageList[index];
+      //   return messageItem(
+      //     message: messages.isNotEmpty
+      //         ? messages[messages.length - 1]["payload"]
+      //         : "Connected",
+      //     business: requests[index]["serviceName"],
+      //     img: requests[index]["businessLogo"],
+      //     time: messageController
+      //         .getTimeSent(messages[messages.length - 1]["timestamp"]),
+      //     index: index,
+      //     completed: false,
+      //   );
+      // }),
+      children: [
+        messageItem(),
+      ],
+    );
+  }
+
+  ListView completedTab(List<dynamic> requests) {
+    return ListView(
       children: List.generate(requests.length, (index) {
-        var messages = messageController.connectedMessageList[index];
+        var messages = messageController.completedMessageList[index];
         return messageItem(
           message: messages.isNotEmpty
               ? messages[messages.length - 1]["payload"]
@@ -52,7 +74,7 @@ class MessageScreen extends StatelessWidget {
           time: messageController
               .getTimeSent(messages[messages.length - 1]["timestamp"]),
           index: index,
-          completed: false,
+          completed: true,
         );
       }),
     );
@@ -69,15 +91,15 @@ class MessageScreen extends StatelessWidget {
     RxBool tapped = false.obs;
     return GestureDetector(
       onTap: () {
-        tapped.value = true;
-        messageController.index = index;
-        messageController.completedChat = completed;
-        messageController.chats.value = completed
-            ? messageController.completedMessageList[index].reversed.toList()
-            : messageController.connectedMessageList[index].reversed.toList();
-        messageController.chatId = completed
-            ? messageController.completedMessageIds[index]
-            : messageController.connectedMessageIds[index];
+        // tapped.value = true;
+        // messageController.index = index;
+        // messageController.completedChat = completed;
+        // messageController.chats.value = completed
+        //     ? messageController.completedMessageList[index].reversed.toList()
+        //     : messageController.connectedMessageList[index].reversed.toList();
+        // messageController.chatId = completed
+        //     ? messageController.completedMessageIds[index]
+        //     : messageController.connectedMessageIds[index];
         Get.to(ChatScreen());
       },
       child: Obx(() {

@@ -217,3 +217,110 @@ Future feedbackPopup({
     ),
   );
 }
+
+Future customerDetailPopup({
+  required BuildContext context,
+  String startTime = "000",
+  String serviceName = "",
+  String zipcode = "",
+  String email = "",
+  String phone = "",
+}) {
+  double rate = 0;
+  return Get.defaultDialog(
+    titlePadding: EdgeInsets.only(
+      top: getHeight(20),
+    ),
+    contentPadding: EdgeInsets.only(
+      top: getHeight(20),
+      left: getWidth(16),
+      right: getWidth(16),
+    ),
+    titleStyle: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w700,
+    ),
+    radius: 8,
+    title: "User profile",
+    content: Container(
+      width: getWidth(400),
+      height: getHeight(300),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Start time:"),
+              Text("$startTime"),
+            ],
+          ),
+          Container(
+            height: 1,
+            color: Color(0xFFE6E6E6),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Service orders:"),
+              Text("$serviceName"),
+            ],
+          ),
+          Container(
+            height: 1,
+            color: Color(0xFFE6E6E6),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Zip code:"),
+              Text("$zipcode"),
+            ],
+          ),
+          Container(
+            height: 1,
+            color: Color(0xFFE6E6E6),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Email:"),
+              Text("$email"),
+            ],
+          ),
+          Container(
+            height: 1,
+            color: Color(0xFFE6E6E6),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Phone number:"),
+              Text("$phone"),
+            ],
+          ),
+          Bouncing(
+            child: Container(
+              alignment: Alignment.center,
+              height: getHeight(48),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Text(
+                "Close",
+                style: TextStyle(
+                  color: Color(0xFFFF0000),
+                ),
+              ),
+            ),
+            onPress: () {
+              Get.back();
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}

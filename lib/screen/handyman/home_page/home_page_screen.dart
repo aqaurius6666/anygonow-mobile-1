@@ -4,6 +4,7 @@ import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/screen/handyman/advertise_manage/list_advertise_screen.dart';
 import 'package:untitled/screen/handyman/my_request/my_request_screen.dart';
 import 'package:untitled/screen/handyman/user/user_screen.dart';
+import 'package:untitled/screen/message/message_screen.dart';
 import 'package:untitled/widgets/bottom_navigator.dart';
 
 class HandymanHomePageScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class HandymanHomePageScreen extends StatelessWidget {
         physics:const NeverScrollableScrollPhysics(),
         children: [
           MyRequestScreen(),
-          HandymanUserScreen(),
+          MessageScreen(),
           ListAdvertiseScreen(),
           HandymanUserScreen(),
         ],

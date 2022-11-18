@@ -215,7 +215,7 @@ Container bottomNavigatorHandyman() {
                   Obx(() {
                     return Bouncing(
                       onPress: () {
-                        globalController.onChangeTab(5);
+                        globalController.onChangeTab(1);
                       },
                       child: Container(
                         width: getWidth(60),
@@ -225,7 +225,7 @@ Container bottomNavigatorHandyman() {
                             SvgPicture.asset(
                               "assets/icons/message.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5
+                              color: globalController.currentPage.value == 1
                                   ? Color(0xFFFF511A)
                                   : Color(0xFF999999),
                             ),
@@ -233,7 +233,7 @@ Container bottomNavigatorHandyman() {
                               "Message",
                               style: TextStyle(
                                   fontSize: getWidth(10),
-                                  color: globalController.currentPage.value == 5
+                                  color: globalController.currentPage.value == 1
                                       ? Color(0xFFFF511A)
                                       : Color(0xFF999999)),
                             )
@@ -275,7 +275,7 @@ Container bottomNavigatorHandyman() {
                   Obx(() {
                     return Bouncing(
                       onPress: () {
-                        globalController.onChangeTab(1);
+                        globalController.onChangeTab(3);
                       },
                       child: Container(
                         width: getWidth(65),
@@ -285,7 +285,7 @@ Container bottomNavigatorHandyman() {
                             SvgPicture.asset(
                               "assets/icons/user.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 1
+                              color: globalController.currentPage.value == 3
                                   ? Color(0xFFFF511A)
                                   : Color(0xFF999999),
                             ),
@@ -295,7 +295,7 @@ Container bottomNavigatorHandyman() {
                                 style: TextStyle(
                                     fontSize: getWidth(10),
                                     color:
-                                        globalController.currentPage.value == 1
+                                        globalController.currentPage.value == 3
                                             ? Color(0xFFFF511A)
                                             : Color(0xFF999999)),
                               ),
