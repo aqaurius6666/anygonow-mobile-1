@@ -52,13 +52,9 @@ String signMessage(privateKey, message) {
   // var pk1 = secp.PrivateKey.fromHex(privateKeyHex);
   var privateKeyDecode = PrivateKey.fromHex(pk.curve, privateKeyHex);
   var a = deterministicSign(privateKeyDecode, message.bytes);
-  print(message.toString());
   // var b = pk1.signature(message.toString());
   String c = a.R.toRadixString(16).padLeft(64, '0') + // r's hex
       a.S.toRadixString(16).padLeft(64, '0'); // s's
-  // print('de a:' + a.toString());
-  // print('de b:' + b.toString());
-  print('de c:' + c.toString());
   var base64Sign = convertHexToBase64(c.toString());
   // msg 48fcb0ab2b000a747f3a631ff75004cb2f1e1d6bdc385ac6d8aecf66ad7cfbfe
   // 527598012fbabfec08cd9ecdf2f1fdcfd16c1b5575eab49b43442abb2149cf55757f634dee8b183e9b3924a6d5ad9df2683c3d577b48957c6ed0a813e1a60f0b

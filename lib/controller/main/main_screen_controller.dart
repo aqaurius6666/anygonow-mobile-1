@@ -12,8 +12,8 @@ class Business {
   Map<String, dynamic> bussiness = {
     "id": "",
     "name": "",
-    "logoUrl": "",
-    "bannerUrl": "",
+    "logoImage": "",
+    "bannerImage": "",
     "contactId": "",
     "website": "",
     "descriptions": "",
@@ -88,7 +88,7 @@ class MainScreenController extends GetxController {
       List<Business> res = [];
 
       for (int i = 0; i < responseData.length; i++) {
-        Business item = new Business();
+        Business item = Business();
         item.bussiness = responseData[i]["business"];
         item.rating = responseData[i]["rating"];
         res.add(item);
@@ -105,18 +105,18 @@ class MainScreenController extends GetxController {
 
   Future<List<Business>> getMostInterested() async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
-      response = await customDio.get("/businesses/interest");
+      var response = await customDio.get("/businesses/interest");
       var json = jsonDecode(response.toString());
 
       List<dynamic> responseData = json["data"]["result"];
 
       List<Business> res = [];
+      print({"resss": responseData});
 
       for (int i = 0; i < responseData.length; i++) {
-        Business item = new Business();
+        Business item = Business();
         item.bussiness = responseData[i]["business"];
         item.rating = responseData[i]["rating"];
         res.add(item);
@@ -145,7 +145,6 @@ class MainScreenController extends GetxController {
         Category item = new Category();
         item.id = responseData[i]["id"];
         item.name = responseData[i]["name"];
-        print(item);
         res.add(item);
       }
 
@@ -172,7 +171,6 @@ class MainScreenController extends GetxController {
         Category item = new Category();
         item.id = responseData[i]["id"];
         item.name = responseData[i]["name"];
-        print(item);
         res.add(item);
       }
 
@@ -209,7 +207,6 @@ class MainScreenController extends GetxController {
 
           businesses.clear();
           businesses.value = res;
-          print(businesses.toString());
         } else {
           businesses.clear();
         }
@@ -239,8 +236,6 @@ class MainScreenController extends GetxController {
         },
         sign: true,
       );
-
-      print(response.toString());
 
       var json = jsonDecode(response.toString());
 

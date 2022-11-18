@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
+import 'package:untitled/controller/project/project_controller.dart';
 import 'package:untitled/screen/account/account_screen.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/screen/my_request/my_request_screen.dart';
+import 'package:untitled/screen/project/project_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 
@@ -177,8 +179,9 @@ class UserScreen extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                await Get.put(MyRequestUserController()).getRequests();
-                                Get.to(() => MyRequestUserScreen());
+                                // await Get.put(MyRequestUserController()).getRequests();
+                                await Get.put(ProjectController()).getProjects();
+                                Get.to(() => MyProjectScreen());
                               },
                               child: Container(
                                 color: Colors.white,

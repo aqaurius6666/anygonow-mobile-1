@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,7 @@ import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/main/main_screen_model.dart';
 import 'package:untitled/service/date_format.dart';
+import 'package:untitled/utils/common-function.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 import 'package:untitled/widgets/dropdown.dart';
@@ -36,7 +39,7 @@ class MainScreen extends StatelessWidget {
                     height: getHeight(48),
                     width: getWidth(343),
                     decoration: BoxDecoration(
-                      color: Color(0xFFFF511A),
+                      color: const Color(0xFFFF511A),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -56,93 +59,89 @@ class MainScreen extends StatelessWidget {
         children: [
           Container(
             height: getHeight(500),
-            color: Color(0xFF07BAAD),
+            color: const Color(0xFF07BAAD),
           ),
-          Container(
-            // margin: EdgeInsets.only(left: getWidth(25), right: getWidth(25)),
-            child: ListView(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              children: [
-                Obx(() {
-                  return mainScreenController.hasSearched.value
-                      ? const SizedBox()
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: getWidth(16),
-                                top: getHeight(30)
-                              ),
-                              child: Text(
-                                "Hi ${globalController.user.value.username}, have a good day",
-                                style: TextStyle(
-                                  fontSize: getHeight(18),
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
+          ListView(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            children: [
+              Obx(() {
+                return mainScreenController.hasSearched.value
+                    ? SizedBox(
+                        height: getHeight(12),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: getWidth(16), top: getHeight(30)),
+                            child: Text(
+                              "Hi ${globalController.user.value.fullName ?? globalController.user.value.username}, have a good day 👋",
+                              style: TextStyle(
+                                fontSize: getHeight(18),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: getWidth(16),
-                              ),
-                              child: Text(
-                                TimeService.currentTimeDayOfWeek(DateTime.now()),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: getHeight(12),
-                            ),
-                          ],
-                        );
-                }),
-                Row(
-                  children: [
-                    Obx(() {
-                      return mainScreenController.hasSearched.value
-                          ? Container(
-                              margin: EdgeInsets.only(left: getWidth(2)),
-                              width: getWidth(54),
-                              height: getHeight(32),
-                              child: Bouncing(
-                                child: Container(
-                                    alignment: Alignment.centerRight,
-                                    child: Icon(
-                                      Icons.arrow_back_ios,
-                                      color: Colors.white,
-                                      size: getHeight(30),
-                                    )),
-                                onPress: () {
-                                  mainScreenController.hasSearched.value = false;
-                                },
-                              ),
-                            )
-                          : SizedBox();
-                    }),
-                    SizedBox(
-                      width: getWidth(16),
-                    ),
-                    Obx(() {
-                      return Container(
-                        height: getHeight(40),
-                        width: mainScreenController.hasSearched.value ? getWidth(287) : getWidth(343),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: const Color(0xFFC4C4C4),
-                            width: getWidth(1),
                           ),
-                          color: Colors.white,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: getWidth(16),
+                            ),
+                            child: Text(
+                              TimeService.currentTimeDayOfWeek(DateTime.now()),
+                              style: TextStyle(color: Colors.white, fontSize: getHeight(14)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: getHeight(12),
+                          ),
+                        ],
+                      );
+              }),
+              Row(
+                children: [
+                  Obx(() {
+                    return mainScreenController.hasSearched.value
+                        ? Container(
+                            margin: EdgeInsets.only(left: getWidth(2)),
+                            width: getWidth(54),
+                            height: getHeight(32),
+                            child: Bouncing(
+                              child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.white,
+                                    size: getHeight(30),
+                                  )),
+                              onPress: () {
+                                mainScreenController.hasSearched.value = false;
+                              },
+                            ),
+                          )
+                        : const SizedBox();
+                  }),
+                  SizedBox(
+                    width: getWidth(14),
+                  ),
+                  Obx(() {
+                    return Container(
+                      height: getHeight(40),
+                      width: mainScreenController.hasSearched.value ? getWidth(287) : getWidth(343),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: const Color(0xFFC4C4C4),
+                          width: getWidth(1),
                         ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 68,
+                        color: Colors.white,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 68,
+                            child: Container(
                               child: inputSearch(
                                 context,
                                 hintText: "Search by service",
@@ -159,44 +158,44 @@ class MainScreen extends StatelessWidget {
                                 prefixIcon: "assets/icons/search.svg",
                               ),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: SvgPicture.asset(
-                                "assets/icons/line.svg",
-                              ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: SvgPicture.asset(
+                              "assets/icons/line.svg",
                             ),
-                            Expanded(
-                              flex: 30,
-                              child: inputSearch(
-                                context,
-                                hintText: "Zipcode",
-                                textEditingController: mainScreenController.searchZipcode,
-                                onSearch: () async {
-                                  var res = await mainScreenController.getBusinesses();
-                                  if (res) {
-                                    mainScreenController.hasSearched.value = true;
-                                  } else {
-                                    print("not found");
-                                  }
-                                },
-                                options: [],
-                                prefixIcon: "assets/icons/location.svg",
-                              ),
+                          ),
+                          Expanded(
+                            flex: 30,
+                            child: inputSearch(
+                              context,
+                              hintText: "Zipcode",
+                              textEditingController: mainScreenController.searchZipcode,
+                              onSearch: () async {
+                                var res = await mainScreenController.getBusinesses();
+                                if (res) {
+                                  mainScreenController.hasSearched.value = true;
+                                } else {
+                                  print("not found");
+                                }
+                              },
+                              options: [],
+                              prefixIcon: "assets/icons/location.svg",
                             ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-                SizedBox(
-                  height: getHeight(24),
-                ),
-                Obx(() {
-                  return mainScreenController.hasSearched.value ? searchResults(context) : mainScreenDisplay();
-                }),
-              ],
-            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ],
+              ),
+              SizedBox(
+                height: getHeight(24),
+              ),
+              Obx(() {
+                return mainScreenController.hasSearched.value ? searchResults(context) : mainScreenDisplay();
+              }),
+            ],
           ),
         ],
       ),
@@ -214,57 +213,57 @@ class MainScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-              Text(
-                "Best Services",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: getHeight(18),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: getHeight(12),
-          ),
-          CarouselSlider(
-            options: CarouselOptions(height: getHeight(250), viewportFraction: 1, onPageChanged: (index, reason) => {mainScreenController.currentIndex.value = index}),
-            items: [1, 2, 3, 4, 5]
-                .map(
-                  (i) => Container(
-                    // color: Colors.grey,
-                    child: carouselItem(),
-                  ),
-                )
-                .toList(),
-          ),
-          SizedBox(
-            height: getHeight(12),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (int i = 0; i < 5; i++)
-                Obx(() {
-                  return Container(
-                      margin: EdgeInsets.only(
-                        left: getWidth(3),
-                        right: getWidth(3),
-                      ),
-                      height: 6,
-                      width: i == mainScreenController.currentIndex.value ? 16 : 6,
-                      decoration: BoxDecoration(color: i == mainScreenController.currentIndex.value ? Color(0xFFFF511A) : Colors.grey, borderRadius: BorderRadius.circular(5)));
-                })
-            ],
-          ),
-          SizedBox(
-            height: getHeight(24),
-          ),
+          // Row(
+          //   children: [
+          //     Icon(
+          //       Icons.star,
+          //       color: Colors.amber,
+          //     ),
+          //     Text(
+          //       "Best Services",
+          //       style: TextStyle(
+          //         fontWeight: FontWeight.w500,
+          //         fontSize: getHeight(18),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(
+          //   height: getHeight(12),
+          // ),
+          // CarouselSlider(
+          //   options: CarouselOptions(height: getHeight(250), viewportFraction: 1, onPageChanged: (index, reason) => {mainScreenController.currentIndex.value = index}),
+          //   items: [1, 2, 3, 4, 5]
+          //       .map(
+          //         (i) => Container(
+          //           // color: Colors.grey,
+          //           child: carouselItem(),
+          //         ),
+          //       )
+          //       .toList(),
+          // ),
+          // SizedBox(
+          //   height: getHeight(12),
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     for (int i = 0; i < 5; i++)
+          //       Obx(() {
+          //         return Container(
+          //             margin: EdgeInsets.only(
+          //               left: getWidth(3),
+          //               right: getWidth(3),
+          //             ),
+          //             height: 6,
+          //             width: i == mainScreenController.currentIndex.value ? 16 : 6,
+          //             decoration: BoxDecoration(color: i == mainScreenController.currentIndex.value ? Color(0xFFFF511A) : Colors.grey, borderRadius: BorderRadius.circular(5)));
+          //       })
+          //   ],
+          // ),
+          // SizedBox(
+          //   height: getHeight(24),
+          // ),
           Text(
             "Most interest",
             style: TextStyle(
@@ -275,35 +274,45 @@ class MainScreen extends StatelessWidget {
           SizedBox(
             height: getHeight(12),
           ),
-          Container(
-            // height: getHeight(600),
-            child: FutureBuilder(
-              future: mainScreenController.getMostInterest,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return GridView.count(
-                    shrinkWrap: true,
-                    childAspectRatio: (167 / 105),
-                    crossAxisCount: 2,
-                    children: List.generate(
-                      mainScreenController.mostInterested.length,
-                      (index) {
-                        return serviceItem(
-                          image: mainScreenController.mostInterested[index].bussiness["logoUrl"] ?? "",
-                          id: mainScreenController.mostInterested[index].bussiness["id"],
-                          service: mainScreenController.mostInterested[index].bussiness["name"] ?? "",
-                        );
-                      },
-                    ),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
+          FutureBuilder(
+            future: mainScreenController.getMostInterest,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return GridView.count(
+                  shrinkWrap: true,
+                  childAspectRatio: (167 / 48),
+                  crossAxisCount: 2,
+                  children: List.generate(
+                    globalController.categories.sublist(0, 0).length,
+                    (index) {
+                      var colors = getPairColor(index > 3 ? Random().nextInt(4) : 0 + index % 4);
+                      return Container(
+                          margin: EdgeInsets.symmetric(horizontal: getWidth(4), vertical: getHeight(4)),
+                          height: getHeight(48),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Color(colors[0])),
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                globalController.categories[index].name,
+                                style: TextStyle(
+                                  color: Color(colors[1]),
+                                ),
+                              )));
+                      // return serviceItem(
+                      //   image: mainScreenController.mostInterested[index].bussiness["logoUrl"] ?? "",
+                      //   id: mainScreenController.mostInterested[index].bussiness["id"],
+                      //   service: mainScreenController.mostInterested[index].bussiness["name"] ?? "",
+                      // );
+                    },
+                  ),
+                );
+              } else {
+                return const SizedBox();
+              }
+            },
           ),
           SizedBox(
-            height: getHeight(73),
+            height: getHeight(24),
           ),
           Text(
             "Professional Near You",
@@ -315,32 +324,30 @@ class MainScreen extends StatelessWidget {
           SizedBox(
             height: getHeight(12),
           ),
-          Container(
-            child: FutureBuilder(
-                future: mainScreenController.getProNear,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: List.generate(
-                        mainScreenController.businessNearList.length,
-                        (index) {
-                          return handymanItem(
-                            image: mainScreenController.businessNearList[index].bussiness["bannerUrl"] ?? "",
-                            logo: mainScreenController.businessNearList[index].bussiness["logoUrl"] ?? "",
-                            title: mainScreenController.businessNearList[index].bussiness["name"] ?? "",
-                            stars: (mainScreenController.businessNearList[index].rating["rate"] ?? 0.0) * 1.0,
-                            reviews: mainScreenController.businessNearList[index].rating["review"]?.toInt() ?? 0,
-                            requested: mainScreenController.businessNearList[index].rating["request"] ?? 0,
-                            id: mainScreenController.businessNearList[index].bussiness["id"],
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return SizedBox();
-                  }
-                }),
-          ),
+          FutureBuilder(
+              future: mainScreenController.getProNear,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: List.generate(
+                      mainScreenController.businessNearList.length,
+                      (index) {
+                        return handymanItem(
+                          image: mainScreenController.businessNearList[index].bussiness["bannerImage"] ?? "",
+                          logo: mainScreenController.businessNearList[index].bussiness["logoImage"] ?? "",
+                          title: mainScreenController.businessNearList[index].bussiness["name"] ?? "",
+                          stars: (mainScreenController.businessNearList[index].rating["rate"] ?? 0.0) * 1.0,
+                          reviews: mainScreenController.businessNearList[index].rating["review"]?.toInt() ?? 0,
+                          requested: mainScreenController.businessNearList[index].rating["request"] ?? 0,
+                          id: mainScreenController.businessNearList[index].bussiness["id"],
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              }),
         ],
       ),
     );
@@ -407,8 +414,8 @@ class MainScreen extends StatelessWidget {
           Column(
             children: List.generate(mainScreenController.businesses.length, (index) {
               return handymanItem(
-                image: mainScreenController.businesses[index].bussiness["bannerUrl"] ?? "",
-                logo: mainScreenController.businesses[index].bussiness["logoUrl"] ?? "",
+                image: mainScreenController.businesses[index].bussiness["bannerImage"] ?? "",
+                logo: mainScreenController.businesses[index].bussiness["logoImage"] ?? "",
                 title: mainScreenController.businesses[index].bussiness["name"] ?? "",
                 stars: (mainScreenController.businesses[index].rating["rate"] ?? 0.0) * 1.0,
                 reviews: mainScreenController.businesses[index].rating["review"]?.toInt() ?? 0,

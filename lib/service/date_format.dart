@@ -64,7 +64,6 @@ class TimeService {
   static int? timeToBackEndMaster(DateTime dateTime) {
     if (dateTime == null) return null;
     var datedFormat = dateTime.toUtc().millisecondsSinceEpoch;
-    print({"dateFormat": datedFormat});
     return datedFormat;
   }
 
@@ -99,5 +98,14 @@ class TimeService {
         DateTime.fromMicrosecondsSinceEpoch(a ? time * 1000000 : time * 1000);
     var datedFormat = DateFormat("yyyy/MM/dd HH:mm$suffix").format(dateTime);
     return datedFormat;
+  }
+
+  static String millisecondToTime(int time) {
+    Duration duration = Duration(milliseconds: time);
+    if (duration.inHours > 1) {
+      return "${duration.inHours.toString()} h";
+    }
+
+    return "${duration.inMinutes.toString()} h";
   }
 }

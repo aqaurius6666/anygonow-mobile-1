@@ -12,12 +12,10 @@ class MyRequestController extends GetxController {
 
   Future getRequests() async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] =
           globalController.user.value.certificate.toString();
-      response = await customDio.get("/orders");
-      print(response);
+      var response = await customDio.get("/orders");
       requests.clear();
       var json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {

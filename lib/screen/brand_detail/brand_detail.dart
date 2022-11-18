@@ -384,7 +384,7 @@ class BrandDetailScreen extends StatelessWidget {
                     child: Container(
                       width: getHeight(32),
                       height: getHeight(32),
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blueGrey),
+                      decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.blueGrey),
                     ),
                   ),
                 )),
@@ -392,13 +392,11 @@ class BrandDetailScreen extends StatelessWidget {
                   width: getWidth(8),
                 ),
                 Stack(children: [
-                  Container(
-                    child: Text(
-                      item.customerName,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: getHeight(14),
-                      ),
+                  Text(
+                    item.customerName,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: getHeight(14),
                     ),
                   ),
                   Container(

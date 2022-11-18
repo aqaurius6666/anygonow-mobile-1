@@ -12,7 +12,7 @@ class MyRequestUserController extends GetxController {
 
   TextEditingController feedback = TextEditingController();
 
-  Future getRequests() async {
+  Future getRequests(String serviceId, String zipcode) async {
     try {
       var response;
       CustomDio customDio = CustomDio();
@@ -21,24 +21,22 @@ class MyRequestUserController extends GetxController {
       pendingRequests.clear();
       connectedRequests.clear();
       completedRequests.clear();
+      print(serviceId);
 
-      response = await customDio.get("/orders?status=0");
-      print(response);
+      response = await customDio.get("/orders?status=0&serviceId=$serviceId&zipcode=$zipcode");
 
       var json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
         pendingRequests.value = json["data"]["result"];
       }
 
-      response = await customDio.get("/orders?status=1");
-      print(response);
+      response = await customDio.get("/orders?status=1&serviceId=$serviceId&zipcode=$zipcode");
       json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
         connectedRequests.value = json["data"]["result"];
       }
 
-      response = await customDio.get("/orders?status=4");
-      print(response);
+      response = await customDio.get("/orders?status=4&serviceId=$serviceId&zipcode=$zipcode");
       json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
         completedRequests.value = json["data"]["result"];
