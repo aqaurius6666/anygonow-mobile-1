@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 String convertLongString(
     {required String string,
       required int firstLength,
@@ -46,5 +48,44 @@ dynamic getPairColor(dynamic color) {
     case 3:
     default:
       return [0xFFCAFFFB, 0xFF005852];
+  }
+}
+
+// export enum orderStatus {
+//   PENDING = 0,
+//   CONNECTED = 1,
+//   REJECTED = 2,
+//   CANCELED = 3,
+//   COMPLETED = 4,
+//   UNRECOGNIZED = -1,
+// }
+
+dynamic getOrderStatus(int indexOrder) {
+  switch (indexOrder) {
+    case 0:
+      return "Pending";
+    case 1:
+      return "Connected";
+    case 2:
+      return "Rejected";
+    case 3:
+      return "Canceled";
+    case 4:
+      return "Completed";
+    default:
+      return;
+  }
+}
+
+dynamic getColorOrderStatus(int indexOrder) {
+  switch (indexOrder) {
+    case 1:
+      return Colors.blue;
+    case 2:
+      return Colors.red;
+    case 4:
+      return Colors.green;
+    default:
+      return Colors.yellow;
   }
 }

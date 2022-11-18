@@ -5,6 +5,8 @@ import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
+import 'package:untitled/controller/message/message_controller.dart';
+import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/screen/main/main_screen_model.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/layout.dart';
@@ -47,11 +49,17 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/home.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 0 ? Color(0xFFFF511A) : Color(0xFF999999),
+                              color: globalController.currentPage.value == 0
+                                  ? Color(0xFFFF511A)
+                                  : Color(0xFF999999),
                             ),
                             Text(
                               "Home",
-                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 0 ? Color(0xFFFF511A) : Color(0xFF999999)),
+                              style: TextStyle(
+                                  fontSize: getWidth(12),
+                                  color: globalController.currentPage.value == 0
+                                      ? Color(0xFFFF511A)
+                                      : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -60,7 +68,28 @@ Container bottomNavigator() {
                   }),
                   Obx(() {
                     return Bouncing(
-                      onPress: () {
+                      onPress: () async {
+                        if (globalController.currentPage != 1){
+                          var request = Get.put(MyRequestUserController());
+                          var message = Get.put(MessageController());
+                          await request.getRequests("", "");
+
+                          message.connectedMessageIds = List.generate(
+                            request.connectedRequests.length,
+                            (index) => request.connectedRequests[index]
+                                ["conversationId"],
+                          );
+
+                          message.completedMessageIds = List.generate(
+                            request.completedRequests.length,
+                            (index) => request.completedRequests[index]
+                                ["conversationId"],
+                          );
+
+                          await message.getMessages();
+
+                          globalController.onChangeTab(1);
+                        }
                       },
                       child: Container(
                         width: getWidth(60),
@@ -70,11 +99,18 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/chat.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999),
+                              color: globalController.currentPage.value == 5
+                                  ? Color(0xFFFF511A)
+                                  : Color(0xFF999999),
                             ),
                             Text(
                               "Message",
-                              style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999)),
+                              style: TextStyle(
+                                fontSize: getWidth(12),
+                                color: globalController.currentPage.value == 5
+                                    ? Color(0xFFFF511A)
+                                    : Color(0xFF999999),
+                              ),
                             )
                           ],
                         ),
@@ -84,7 +120,7 @@ Container bottomNavigator() {
                   Obx(() {
                     return Bouncing(
                       onPress: () {
-                        globalController.onChangeTab(1);
+                        globalController.onChangeTab(2);
                       },
                       child: Container(
                         width: getWidth(65),
@@ -94,12 +130,19 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/user.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 1 ? Color(0xFFFF511A) : Color(0xFF999999),
+                              color: globalController.currentPage.value == 1
+                                  ? Color(0xFFFF511A)
+                                  : Color(0xFF999999),
                             ),
                             FittedBox(
                               child: Text(
                                 "Profile",
-                                style: TextStyle(fontSize: getWidth(12), color: globalController.currentPage.value == 1 ? Color(0xFFFF511A) : Color(0xFF999999)),
+                                style: TextStyle(
+                                    fontSize: getWidth(12),
+                                    color:
+                                        globalController.currentPage.value == 1
+                                            ? Color(0xFFFF511A)
+                                            : Color(0xFF999999)),
                               ),
                             )
                           ],
@@ -152,11 +195,17 @@ Container bottomNavigatorHandyman() {
                             SvgPicture.asset(
                               "assets/icons/request-icon.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 0 ? Color(0xFFFF511A) : Color(0xFF999999),
+                              color: globalController.currentPage.value == 0
+                                  ? Color(0xFFFF511A)
+                                  : Color(0xFF999999),
                             ),
                             Text(
                               "My request",
-                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 0 ? Color(0xFFFF511A) : Color(0xFF999999)),
+                              style: TextStyle(
+                                  fontSize: getWidth(10),
+                                  color: globalController.currentPage.value == 0
+                                      ? Color(0xFFFF511A)
+                                      : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -165,8 +214,29 @@ Container bottomNavigatorHandyman() {
                   }),
                   Obx(() {
                     return Bouncing(
-                      onPress: () {
-                        globalController.onChangeTab(5);
+                      onPress: () async {
+                        if (globalController.currentPage != 1){
+                          var request = Get.put(MyRequestUserController());
+                          var message = Get.put(MessageController());
+                          await request.getRequests("", "");
+
+                          message.connectedMessageIds = List.generate(
+                            request.connectedRequests.length,
+                                (index) => request.connectedRequests[index]
+                            ["conversationId"],
+                          );
+
+                          message.completedMessageIds = List.generate(
+                            request.completedRequests.length,
+                                (index) => request.completedRequests[index]
+                            ["conversationId"],
+                          );
+
+                          await message.getMessages();
+
+                          globalController.onChangeTab(1);
+                        }
+
                       },
                       child: Container(
                         width: getWidth(60),
@@ -176,11 +246,17 @@ Container bottomNavigatorHandyman() {
                             SvgPicture.asset(
                               "assets/icons/message.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999),
+                              color: globalController.currentPage.value == 1
+                                  ? Color(0xFFFF511A)
+                                  : Color(0xFF999999),
                             ),
                             Text(
                               "Message",
-                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 5 ? Color(0xFFFF511A) : Color(0xFF999999)),
+                              style: TextStyle(
+                                  fontSize: getWidth(10),
+                                  color: globalController.currentPage.value == 1
+                                      ? Color(0xFFFF511A)
+                                      : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -200,12 +276,17 @@ Container bottomNavigatorHandyman() {
                             SvgPicture.asset(
                               "assets/icons/advertise-icon.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 2 ? Color(0xFFFF511A) : Color(0xFF999999),
+                              color: globalController.currentPage.value == 2
+                                  ? Color(0xFFFF511A)
+                                  : Color(0xFF999999),
                             ),
                             Text(
                               "Advertise",
-                              style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 2 ?
-                              Color(0xFFFF511A) : Color(0xFF999999)),
+                              style: TextStyle(
+                                  fontSize: getWidth(10),
+                                  color: globalController.currentPage.value == 2
+                                      ? Color(0xFFFF511A)
+                                      : Color(0xFF999999)),
                             )
                           ],
                         ),
@@ -215,7 +296,7 @@ Container bottomNavigatorHandyman() {
                   Obx(() {
                     return Bouncing(
                       onPress: () {
-                        globalController.onChangeTab(1);
+                        globalController.onChangeTab(3);
                       },
                       child: Container(
                         width: getWidth(65),
@@ -225,12 +306,19 @@ Container bottomNavigatorHandyman() {
                             SvgPicture.asset(
                               "assets/icons/user.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 1 ? Color(0xFFFF511A) : Color(0xFF999999),
+                              color: globalController.currentPage.value == 3
+                                  ? Color(0xFFFF511A)
+                                  : Color(0xFF999999),
                             ),
                             FittedBox(
                               child: Text(
                                 "Profile",
-                                style: TextStyle(fontSize: getWidth(10), color: globalController.currentPage.value == 1 ? Color(0xFFFF511A) : Color(0xFF999999)),
+                                style: TextStyle(
+                                    fontSize: getWidth(10),
+                                    color:
+                                        globalController.currentPage.value == 3
+                                            ? Color(0xFFFF511A)
+                                            : Color(0xFF999999)),
                               ),
                             )
                           ],
@@ -271,7 +359,8 @@ Container bottomBrandDetail({String id = ""}) {
                   SizedBox(
                     width: getWidth(4),
                   ),
-                  Text("Message".tr, style: const TextStyle(color: Color(0xffff511a))),
+                  Text("Message".tr,
+                      style: const TextStyle(color: Color(0xffff511a))),
                 ],
               )),
         ),
@@ -288,7 +377,8 @@ Container bottomBrandDetail({String id = ""}) {
               ),
               onPressed: () async {
                 mainScreenController.requests.clear();
-                mainScreenController.requests.add(Get.put(BrandDetailController()).business.bussiness["id"]);
+                mainScreenController.requests.add(
+                    Get.put(BrandDetailController()).business.bussiness["id"]);
                 var res = await mainScreenController.sendRequest();
                 if (res) {
                   showPopUp(
@@ -303,7 +393,8 @@ Container bottomBrandDetail({String id = ""}) {
                   SizedBox(
                     width: getWidth(4),
                   ),
-                  Text("Send request".tr, style: const TextStyle(color: Colors.white)),
+                  Text("Send request".tr,
+                      style: const TextStyle(color: Colors.white)),
                 ],
               )),
         ),

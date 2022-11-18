@@ -80,7 +80,15 @@ dev_dependencies:
   carousel_slider: ^4.0.0
   image_picker:
   flutter_keyboard_visibility: ^5.2.0
+  flutter_launcher_icons: ^0.9.2
+  intl: ^0.17.0
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/logo.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

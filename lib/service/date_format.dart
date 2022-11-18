@@ -49,6 +49,10 @@ class TimeService {
     return DateFormat("yyyy'年'MM'月'dd'日'").format(dateTime);
   }
 
+  static String dateTimeToString5(DateTime dateTime) {
+    return DateFormat("yyyy-MM-dd").format(dateTime);
+  }
+
   static String timeNowToString() {
     return DateTime.now().toString();
   }
@@ -98,5 +102,17 @@ class TimeService {
         DateTime.fromMicrosecondsSinceEpoch(a ? time * 1000000 : time * 1000);
     var datedFormat = DateFormat("yyyy/MM/dd HH:mm$suffix").format(dateTime);
     return datedFormat;
+  }
+
+  static String millisecondToTime(int time) {
+    Duration duration = Duration(milliseconds: time);
+    if(duration.inDays > 1) {
+      return "${duration.inDays.toString()} d";
+    }
+    if (duration.inHours > 1) {
+      return "${duration.inHours.toString()} h";
+    }
+
+    return "${duration.inMinutes.toString()} m";
   }
 }

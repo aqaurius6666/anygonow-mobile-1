@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/message/message_controller.dart';
 import 'package:untitled/i18n.dart';
 import 'package:untitled/screen/brand_detail/brand_detail.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
@@ -22,6 +24,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await globalController.getStates();
+  // Timer.periodic(new Duration(seconds: 1), (timer) {
+  //   Get.put(MessageController()).getMessages();
+  // });
   runApp(MyApp());
 }
 

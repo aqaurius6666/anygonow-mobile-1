@@ -8,6 +8,7 @@ import 'package:untitled/main.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/handyman/business_management/business_management_screen.dart';
 import 'package:untitled/screen/handyman/payment_page/payment_page_screen.dart';
+import 'package:untitled/screen/handyman/payment_summary/payment_summary.dart';
 import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/utils/config.dart';
@@ -211,6 +212,57 @@ class HandymanUserScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         "Payment Center",
+                                        style: TextStyle(fontSize: getHeight(16)),
+                                      )
+                                    ],
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: getHeight(16),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: getHeight(12),
+                              ),
+                              Container(
+                                height: 1,
+                                width: double.infinity,
+                                color: const Color(0xFFF8F8F9),
+                              ),
+                              SizedBox(
+                                height: getHeight(12),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to((PaymentSummary()));
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: getWidth(24),
+                                        height: getWidth(24),
+                                        child: SvgPicture.asset(
+                                          "assets/icons/menu-payment-icon.svg",
+                                          height: getWidth(24),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: getWidth(12),
+                                      ),
+                                      Text(
+                                        "Payment Summary",
                                         style: TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
