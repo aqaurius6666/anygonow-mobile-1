@@ -11,7 +11,7 @@ variables:
   GIT_PAT: $(gitPat)
   AZURE_PAT: $(azurePass)
 
-name: 1.1.$(Rev:r)
+name: 1.2.$(Rev:r)
 
 jobs:
 
