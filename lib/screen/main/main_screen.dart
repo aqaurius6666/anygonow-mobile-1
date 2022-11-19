@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/main/main_screen_model.dart';
@@ -75,7 +76,8 @@ class MainScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: getWidth(16), top: getHeight(30)),
+                            padding: EdgeInsets.only(
+                                left: getWidth(16), top: getHeight(30)),
                             child: Text(
                               "Hi ${globalController.user.value.fullName ?? globalController.user.value.username}, have a good day 👋",
                               style: TextStyle(
@@ -91,7 +93,8 @@ class MainScreen extends StatelessWidget {
                             ),
                             child: Text(
                               TimeService.currentTimeDayOfWeek(DateTime.now()),
-                              style: TextStyle(color: Colors.white, fontSize: getHeight(14)),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: getHeight(14)),
                             ),
                           ),
                           SizedBox(
@@ -129,7 +132,9 @@ class MainScreen extends StatelessWidget {
                   Obx(() {
                     return Container(
                       height: getHeight(40),
-                      width: mainScreenController.hasSearched.value ? getWidth(287) : getWidth(343),
+                      width: mainScreenController.hasSearched.value
+                          ? getWidth(287)
+                          : getWidth(343),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
@@ -146,16 +151,22 @@ class MainScreen extends StatelessWidget {
                               child: inputSearch(
                                 context,
                                 hintText: "Search by service",
-                                textEditingController: mainScreenController.searchText,
+                                textEditingController:
+                                    mainScreenController.searchText,
                                 onSearch: () async {
-                                  var res = await mainScreenController.getBusinesses();
+                                  var res = await mainScreenController
+                                      .getBusinesses();
                                   if (res) {
-                                    mainScreenController.hasSearched.value = true;
+                                    mainScreenController.hasSearched.value =
+                                        true;
                                   } else {
                                     print("not found");
                                   }
                                 },
-                                options: List.generate(mainScreenController.categories.length, (index) => mainScreenController.categories[index].name),
+                                options: List.generate(
+                                    mainScreenController.categories.length,
+                                    (index) => mainScreenController
+                                        .categories[index].name),
                                 prefixIcon: "assets/icons/search.svg",
                               ),
                             ),
@@ -171,9 +182,11 @@ class MainScreen extends StatelessWidget {
                             child: inputSearch(
                               context,
                               hintText: "Zipcode",
-                              textEditingController: mainScreenController.searchZipcode,
+                              textEditingController:
+                                  mainScreenController.searchZipcode,
                               onSearch: () async {
-                                var res = await mainScreenController.getBusinesses();
+                                var res =
+                                    await mainScreenController.getBusinesses();
                                 if (res) {
                                   mainScreenController.hasSearched.value = true;
                                 } else {
@@ -191,10 +204,25 @@ class MainScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: getHeight(24),
+                height: getHeight(12),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: getWidth(16),),
+                child: Obx(() {
+                    return Text(
+                      mainScreenController.missingSearchField.value ? "Missing text field" : "",
+                      style: TextStyle(color: Colors.red),
+                    );
+                  }
+                ),
+              ),
+              SizedBox(
+                height: getHeight(12),
               ),
               Obx(() {
-                return mainScreenController.hasSearched.value ? searchResults(context) : mainScreenDisplay();
+                return mainScreenController.hasSearched.value
+                    ? searchResults(context)
+                    : mainScreenDisplay();
               }),
             ],
           ),
@@ -282,11 +310,15 @@ class MainScreen extends StatelessWidget {
             children: List.generate(
               globalController.categories.sublist(0, 4).length,
               (index) {
-                var colors = getPairColor(index > 3 ? Random().nextInt(4) : 0 + index % 4);
+                var colors = getPairColor(
+                    index > 3 ? Random().nextInt(4) : 0 + index % 4);
                 return Container(
-                    margin: EdgeInsets.symmetric(horizontal: getWidth(4), vertical: getHeight(4)),
+                    margin: EdgeInsets.symmetric(
+                        horizontal: getWidth(4), vertical: getHeight(4)),
                     height: getHeight(48),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Color(colors[0])),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Color(colors[0])),
                     child: Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -320,13 +352,30 @@ class MainScreen extends StatelessWidget {
                       mainScreenController.businessNearList.length,
                       (index) {
                         return handymanItem(
-                          image: getCDN(mainScreenController.businessNearList[index].bussiness["bannerImage"] ?? ""),
-                          logo: getCDN(mainScreenController.businessNearList[index].bussiness["logoImage"] ?? ""),
-                          title: mainScreenController.businessNearList[index].bussiness["name"] ?? "",
-                          stars: (mainScreenController.businessNearList[index].rating["rate"] ?? 0.0) * 1.0,
-                          reviews: mainScreenController.businessNearList[index].rating["review"]?.toInt() ?? 0,
-                          requested: mainScreenController.businessNearList[index].rating["request"] ?? 0,
-                          id: mainScreenController.businessNearList[index].bussiness["id"],
+                          image: getCDN(mainScreenController
+                                  .businessNearList[index]
+                                  .bussiness["bannerImage"] ??
+                              ""),
+                          logo: getCDN(mainScreenController
+                                  .businessNearList[index]
+                                  .bussiness["logoImage"] ??
+                              ""),
+                          title: mainScreenController
+                                  .businessNearList[index].bussiness["name"] ??
+                              "",
+                          stars: (mainScreenController
+                                      .businessNearList[index].rating["rate"] ??
+                                  0.0) *
+                              1.0,
+                          reviews: mainScreenController
+                                  .businessNearList[index].rating["review"]
+                                  ?.toInt() ??
+                              0,
+                          requested: mainScreenController
+                                  .businessNearList[index].rating["request"] ??
+                              0,
+                          id: mainScreenController
+                              .businessNearList[index].bussiness["id"],
                         );
                       },
                     ),
@@ -399,17 +448,33 @@ class MainScreen extends StatelessWidget {
             ],
           ),
           Column(
-            children: List.generate(mainScreenController.businesses.length, (index) {
+            children:
+                List.generate(mainScreenController.businesses.length, (index) {
               return handymanItem(
-                image: mainScreenController.businesses[index].bussiness["bannerImage"] ?? "",
-                logo: mainScreenController.businesses[index].bussiness["logoImage"] ?? "",
-                title: mainScreenController.businesses[index].bussiness["name"] ?? "",
-                stars: (mainScreenController.businesses[index].rating["rate"] ?? 0.0) * 1.0,
-                reviews: mainScreenController.businesses[index].rating["review"]?.toInt() ?? 0,
+                image: mainScreenController
+                        .businesses[index].bussiness["bannerImage"] ??
+                    "",
+                logo: mainScreenController
+                        .businesses[index].bussiness["logoImage"] ??
+                    "",
+                title:
+                    mainScreenController.businesses[index].bussiness["name"] ??
+                        "",
+                stars: (mainScreenController.businesses[index].rating["rate"] ??
+                        0.0) *
+                    1.0,
+                reviews: mainScreenController.businesses[index].rating["review"]
+                        ?.toInt() ??
+                    0,
                 isSearchResult: false,
-                about: mainScreenController.businesses[index].bussiness["descriptions"] ?? "",
-                requested: mainScreenController.businesses[index].rating["request"] ?? 0,
-                id: mainScreenController.businesses[index].bussiness["id"] ?? "",
+                about: mainScreenController
+                        .businesses[index].bussiness["descriptions"] ??
+                    "",
+                requested:
+                    mainScreenController.businesses[index].rating["request"] ??
+                        0,
+                id: mainScreenController.businesses[index].bussiness["id"] ??
+                    "",
               );
             }),
           ),

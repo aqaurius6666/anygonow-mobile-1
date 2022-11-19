@@ -99,7 +99,7 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/chat.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5
+                              color: globalController.currentPage.value == 1
                                   ? Color(0xFFFF511A)
                                   : Color(0xFF999999),
                             ),
@@ -107,7 +107,7 @@ Container bottomNavigator() {
                               "Message",
                               style: TextStyle(
                                 fontSize: getWidth(12),
-                                color: globalController.currentPage.value == 5
+                                color: globalController.currentPage.value == 1
                                     ? Color(0xFFFF511A)
                                     : Color(0xFF999999),
                               ),
@@ -130,7 +130,7 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/user.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 1
+                              color: globalController.currentPage.value == 2
                                   ? Color(0xFFFF511A)
                                   : Color(0xFF999999),
                             ),
@@ -140,7 +140,7 @@ Container bottomNavigator() {
                                 style: TextStyle(
                                     fontSize: getWidth(12),
                                     color:
-                                        globalController.currentPage.value == 1
+                                        globalController.currentPage.value == 2
                                             ? Color(0xFFFF511A)
                                             : Color(0xFF999999)),
                               ),

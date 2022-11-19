@@ -156,7 +156,7 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                         controller.isLoading.value = false;
                         int? role = globalController.user.value.role;
                         int? process = globalController.user.value.process;
-                        await globalController.getCategories();
+                        await Get.put(MainScreenController()).getCategories();
                         if (role == null || role == 0) {
                           Get.to(HomePageScreen());
                           if (process == 1) {

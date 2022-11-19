@@ -112,59 +112,57 @@ class MessageScreen extends StatelessWidget {
 
         Get.to(ChatScreen());
       },
-      child: Obx(() {
-        return Container(
-          height: getHeight(97),
-          color: Colors.white,
-          padding: EdgeInsets.only(
-            left: getWidth(16),
-            right: getWidth(16),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                height: getHeight(56),
-                width: getHeight(56),
-                color: Colors.grey,
-              ),
-              SizedBox(
-                height: getHeight(56),
-                width: getWidth(200),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      business,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                      ),
+      child: Container(
+        height: getHeight(97),
+        color: Colors.white,
+        padding: EdgeInsets.only(
+          left: getWidth(16),
+          right: getWidth(16),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: getHeight(56),
+              width: getHeight(56),
+              color: Colors.grey,
+            ),
+            SizedBox(
+              height: getHeight(56),
+              width: getWidth(200),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    business,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
                     ),
-                    Text(
-                      message,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Color(0xFF999999),
-                      ),
+                  ),
+                  Text(
+                    message,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Color(0xFF999999),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SizedBox(
-                width: getWidth(50),
+            ),
+            SizedBox(
+              width: getWidth(50),
+            ),
+            Text(
+              time,
+              style: TextStyle(
+                color: Color(0xFF999999),
               ),
-              Text(
-                time,
-                style: TextStyle(
-                  color: Color(0xFF999999),
-                ),
-              )
-            ],
-          ),
-        );
-      }),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
