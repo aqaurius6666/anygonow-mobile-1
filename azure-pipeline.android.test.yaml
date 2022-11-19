@@ -17,11 +17,27 @@ name: 1.0.$(Rev:r)
 
 jobs:
 - job: ANDROID
-  displayName: Build_Android_APK
+  displayName: Build_Android_APK
   pool:
-    name: Builder
+    name: AndroidBuilder
   steps:
   - checkout: self
+  - task: FlutterInstall@0
+    inputs:
+      mode: 'auto'
+      channel: 'stable'
+      version: 'latest'
+  - task: CmdLine@2
+    displayName: Upgrade & clean Flutter
+    inputs:
+      script: |
+        $(FlutterToolPath)/flutter upgrade \
+        cd ios \
+        pod deintegrate \
+        rm Flutter/Flutter.podspec \
+        rm podfile.lock \
+        $(FlutterToolPath)/flutter clean \
+  
   - task: mirror-git-repository-vsts-task@1
     inputs:
       sourceGitRepositoryUri: '$(Build.Repository.Uri)'
@@ -32,20 +48,16 @@ jobs:
   - task: CmdLine@2
     inputs:
       script: 'printf "SERVER_URL=%s\nUPDATE_VERSION_URL=%s\nUPDATE_VERSION_API=%s\n" "$SERVER_URL" "$UPDATE_VERSION_URL"  "$UPDATE_VERSION_API" > .env'
-  - task: CmdLine@2
-    displayName: Prebuild
+ 
+  - task: FlutterBuild@0
     inputs:
-      script: |
-        cat .env
-        docker build -t handyman/build-flutter --build-arg BUILD_NAME=$(BUILD_NAME) .
-      workingDirectory: $(System.DefaultWorkingDirectory)
-  - task: CmdLine@2
-    displayName: Copy from Container
-    inputs:
-      script: |
-        docker run --rm -v $(pwd)/build:/src/build2 handyman/build-flutter sh -c 'rm -Rf /src/build2/*  && cp -a /src/build/. /src/build2 && chmod -R 777 /src/build2'
-      workingDirectory: $(System.DefaultWorkingDirectory)
-
+      target: 'apk'
+      projectDirectory: '.'
+      splitPerAbi: true
+      buildName: '$(Build.BuildNumber)'
+      apkTargetPlatform: 'custom'
+      customApkTargetPlatform: 'android-arm,android-arm64,android-x64'
+      extraArgs: '--release'  
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: Android APK'
     inputs:

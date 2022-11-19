@@ -50,15 +50,14 @@ class MessageScreen extends StatelessWidget {
               : "Connected",
           business: requests[index]["serviceName"],
           img: requests[index]["businessLogo"],
-          time: messageController
-              .getTimeSent(messages[messages.length - 1]["timestamp"]),
+          time: messages.isNotEmpty
+              ? messageController
+                  .getTimeSent(messages[messages.length - 1]["timestamp"])
+              : "",
           index: index,
           completed: false,
         );
       }),
-      // children: [
-      //   messageItem(),
-      // ],
     );
   }
 
@@ -69,11 +68,13 @@ class MessageScreen extends StatelessWidget {
         return messageItem(
           message: messages.isNotEmpty
               ? messages[messages.length - 1]["payload"]
-              : "Connected",
+              : "Completed",
           business: requests[index]["serviceName"],
           img: requests[index]["businessLogo"],
-          time: messageController
-              .getTimeSent(messages[messages.length - 1]["timestamp"]),
+          time: messages.isNotEmpty
+              ? messageController
+                  .getTimeSent(messages[messages.length - 1]["timestamp"])
+              : "",
           index: index,
           completed: true,
         );
@@ -92,6 +93,7 @@ class MessageScreen extends StatelessWidget {
     RxBool tapped = false.obs;
     return GestureDetector(
       onTap: () {
+        if (time == "") return;
         tapped.value = true;
         messageController.index = index;
         messageController.completedChat = completed;
