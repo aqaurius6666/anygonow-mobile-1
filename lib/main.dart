@@ -14,6 +14,8 @@ import 'package:untitled/service/stripe.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart' show PlatformException;
 
+import 'controller/message/message_controller.dart';
+
 GlobalController globalController = Get.put(GlobalController());
 
 Future<void> main() async {

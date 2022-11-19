@@ -40,6 +40,7 @@ class MessageScreen extends StatelessWidget {
   }
 
   ListView connectedTab(List<dynamic> requests) {
+    // print(requests);
     return ListView(
       children: List.generate(requests.length, (index) {
         var messages = messageController.connectedMessageList[index];
@@ -61,6 +62,7 @@ class MessageScreen extends StatelessWidget {
   }
 
   ListView completedTab(List<dynamic> requests) {
+    print(requests);
     return ListView(
       children: List.generate(requests.length, (index) {
         var messages = messageController.completedMessageList[index];
@@ -89,13 +91,12 @@ class MessageScreen extends StatelessWidget {
     int index = 0,
     bool completed = false,
   }) {
-    RxBool tapped = false.obs;
     return GestureDetector(
       onTap: () {
         print("time" + time);
-        tapped.value = true;
         messageController.index = index;
         messageController.completedChat = completed;
+        messageController.chats.clear();
         if (time != "") {
           messageController.chats.value = completed
               ? messageController.completedMessageList[index].reversed.toList()
@@ -105,15 +106,16 @@ class MessageScreen extends StatelessWidget {
             ? messageController.completedMessageIds[index]
             : messageController.connectedMessageIds[index];
         if (!completed) {
-          (Get.put(MyRequestController()).currentRequest =
-              requestController.connectedRequests[index]["id"]);
+          Get.put(MyRequestController()).currentRequest =
+              requestController.connectedRequests[index]["id"];
         }
+
         Get.to(ChatScreen());
       },
       child: Obx(() {
         return Container(
           height: getHeight(97),
-          color: tapped.value ? Color(0xFFFFF4F0) : Colors.white,
+          color: Colors.white,
           padding: EdgeInsets.only(
             left: getWidth(16),
             right: getWidth(16),
