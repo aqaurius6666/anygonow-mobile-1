@@ -85,7 +85,6 @@ android {
         }
         prod {
             dimension "flavors"
-            applicationIdSuffix ".production"
             versionNameSuffix " Prod"
         }
     }

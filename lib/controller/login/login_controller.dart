@@ -94,6 +94,7 @@ class LoginPageController extends GetxController {
           List<String> certificateList = SignatureService.getCertificateLogin(certificateInfo, userId, privateKey, encryptedPrivateKey, signature, publicKey, times);
 
           var responsePing = await getPing(certificateList);
+          print(responsePing);
           Status validateServer2 = ResponseValidator.check(responsePing);
           var jsonResponse = jsonDecode(responsePing.toString());
           if (validateServer2.status == "OK") {

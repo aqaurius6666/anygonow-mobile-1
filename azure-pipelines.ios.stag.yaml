@@ -4,7 +4,7 @@
 trigger:
   branches:
     include:
-    - dev
+    - releases/*
   batch: true
   
 name: 1.2.$(Rev:r)
@@ -55,9 +55,9 @@ jobs:
     inputs:
       target: 'ios'
       projectDirectory: '.'
-      extraArgs: '--release'
       buildName: "$(Build.BuildNumber)"
       iosCodesign: false
+      extraArgs: '--release'
 #
 #  - task: InstallAppleCertificate@2
 #    inputs:

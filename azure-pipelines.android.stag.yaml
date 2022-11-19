@@ -48,7 +48,6 @@ jobs:
   - task: CmdLine@2
     inputs:
       script: 'cat ./android/key.properties'
-
   - task: FlutterBuild@0
     inputs:
       target: 'aab'
@@ -56,7 +55,8 @@ jobs:
       splitPerAbi: true
       buildName: '1.0.0'
       buildNumber: '$(Build.BuildNumber)'
-      extraArgs: '--release'  
+      extraArgs: '--release'
+      buildFlavour: 'prod'
   # - task: CmdLine@2
   #   displayName: 'Signing and aligning AAB file(s) app\build\outputs\bundle\release\app-release.aab'
   #   inputs:
@@ -89,6 +89,6 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: Android Bundle'
     inputs:
-      PathtoPublish: './build/app/outputs/bundle/release'
+      PathtoPublish: './build/app/outputs/bundle'
       ArtifactName: 'android'
       publishLocation: 'Container'

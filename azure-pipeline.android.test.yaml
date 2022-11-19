@@ -12,7 +12,7 @@ variables:
   GIT_PAT: $(gitPat)
   AZURE_PAT: $(azurePass)
 
-name: 1.0.$(Rev:r)
+name: $(Rev:r)
 
 
 jobs:
@@ -54,13 +54,16 @@ jobs:
       target: 'apk'
       projectDirectory: '.'
       splitPerAbi: true
-      buildName: '$(Build.BuildNumber)'
+      buildName: '1.0.0'
+      buildNumber: '$(Build.BuildNumber)'
       apkTargetPlatform: 'custom'
       customApkTargetPlatform: 'android-arm,android-arm64,android-x64'
-      extraArgs: '--release'  
+      buildFlavour: 'development'
+      debugMode: true
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: Android APK'
     inputs:
-      PathtoPublish: 'build/app/outputs/flutter-apk'
+      PathtoPublish: './build/app/outputs/flutter-apk'
       ArtifactName: 'android'
       publishLocation: 'Container'

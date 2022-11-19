@@ -17,7 +17,7 @@ jobs:
     name: MAC
   variables:
     - name: configuration
-      value: "Release"
+      value: "Profile"
     - name: sdk
       value: "iphoneos"
     - name: iosReleaseDir
@@ -55,9 +55,9 @@ jobs:
     inputs:
       target: 'ios'
       projectDirectory: '.'
-      extraArgs: '--release'
       buildName: "$(Build.BuildNumber)"
       iosCodesign: false
+
 #
 #  - task: InstallAppleCertificate@2
 #    inputs:
