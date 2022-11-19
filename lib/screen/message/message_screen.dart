@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
@@ -93,20 +92,22 @@ class MessageScreen extends StatelessWidget {
     RxBool tapped = false.obs;
     return GestureDetector(
       onTap: () {
-        if (time == "") return;
+        print("time" + time);
         tapped.value = true;
         messageController.index = index;
         messageController.completedChat = completed;
-        messageController.chats.value = completed
-            ? messageController.completedMessageList[index].reversed.toList()
-            : messageController.connectedMessageList[index].reversed.toList();
+        if (time != "") {
+          messageController.chats.value = completed
+              ? messageController.completedMessageList[index].reversed.toList()
+              : messageController.connectedMessageList[index].reversed.toList();
+        }
         messageController.chatId = completed
             ? messageController.completedMessageIds[index]
             : messageController.connectedMessageIds[index];
-        if (!completed)
+        if (!completed) {
           (Get.put(MyRequestController()).currentRequest =
               requestController.connectedRequests[index]["id"]);
-
+        }
         Get.to(ChatScreen());
       },
       child: Obx(() {
