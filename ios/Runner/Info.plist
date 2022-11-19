@@ -5,15 +5,15 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>AnyGoNow</string>
+	<string>$(app_display_name)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>${ST_BundleId}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>AnyGoNow</string>
+	<string>$(app_display_name)</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -26,8 +26,8 @@
 	<false/>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs camera access to scan ...</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>This app needs access your photo library ...</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access your photo library ...</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -48,6 +48,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
-    <false/>
+	<false/>
 </dict>
 </plist>
