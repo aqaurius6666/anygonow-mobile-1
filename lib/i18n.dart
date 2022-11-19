@@ -6,7 +6,7 @@ class Messages extends Translations {
         'en_US': {
           'login': 'Login',
           'welcomeBack': "Welcome back",
-          'appName': "Anygonow",
+          'appName': "AnyGoNow",
           'email_or_phone': "Email address or phone number",
           'password': "Password",
           'email': "Email address",

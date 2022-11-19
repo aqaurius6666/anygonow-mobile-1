@@ -1,0 +1,69 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - dev
+  batch: true
+
+variables:
+  GIT_PAT: $(gitPat)
+  AZURE_PAT: $(azurePass)
+
+name: $(Rev:r)
+
+
+jobs:
+- job: ANDROID
+  displayName: Build_Android_APK
+  pool:
+    name: AndroidBuilder
+  steps:
+  - checkout: self
+  - task: FlutterInstall@0
+    inputs:
+      mode: 'auto'
+      channel: 'stable'
+      version: 'latest'
+  - task: CmdLine@2
+    displayName: Upgrade & clean Flutter
+    inputs:
+      script: |
+        $(FlutterToolPath)/flutter upgrade \
+        cd ios \
+        pod deintegrate \
+        rm Flutter/Flutter.podspec \
+        rm podfile.lock \
+        $(FlutterToolPath)/flutter clean \
+  
+  - task: mirror-git-repository-vsts-task@1
+    inputs:
+      sourceGitRepositoryUri: '$(Build.Repository.Uri)'
+      sourceVerifySSLCertificate: false
+      destinationGitRepositoryUri: '$(DES_REPO)'
+      sourceGitRepositoryPersonalAccessToken: $(AZURE_PAT)
+      destinationGitRepositoryPersonalAccessToken: $(GIT_PAT)
+  - task: CmdLine@2
+    inputs:
+      script: 'printf "SERVER_URL=%s\nUPDATE_VERSION_URL=%s\nUPDATE_VERSION_API=%s\n" "$SERVER_URL" "$UPDATE_VERSION_URL"  "$UPDATE_VERSION_API" > .env'
+ 
+  - task: FlutterBuild@0
+    inputs:
+      target: 'apk'
+      projectDirectory: '.'
+      splitPerAbi: true
+      buildName: '1.0.0'
+      buildNumber: '$(Build.BuildNumber)'
+      apkTargetPlatform: 'custom'
+      customApkTargetPlatform: 'android-arm,android-arm64,android-x64'
+      buildFlavour: 'development'
+      debugMode: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: Android APK'
+    inputs:
+      PathtoPublish: './build/app/outputs/flutter-apk'
+      ArtifactName: 'android'
+      publishLocation: 'Container'

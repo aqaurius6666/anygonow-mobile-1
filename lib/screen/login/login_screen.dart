@@ -6,6 +6,7 @@ import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.d
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/login/login_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
+import 'package:untitled/screen/account/account_screen.dart';
 import 'package:untitled/screen/forgot_password/forgot_password_screen.dart';
 import 'package:untitled/screen/handyman/business_management/business_management_screen.dart';
 import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
@@ -13,6 +14,7 @@ import 'package:untitled/screen/home_page/home_page_screen.dart';
 import 'package:untitled/screen/signup/signup_welcome_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 import 'package:untitled/widgets/app_name.dart';
 import 'package:untitled/widgets/layout.dart';
@@ -154,16 +156,19 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                         controller.isLoading.value = false;
                         int? role = globalController.user.value.role;
                         int? process = globalController.user.value.process;
+                        await Get.put(MainScreenController()).getCategories();
                         if (role == null || role == 0) {
-                          await Get.put(MainScreenController()).getCategories();
                           Get.to(HomePageScreen());
+                          if (process == 1) {
+                            await Get.put(AccountController()).getUserInfo();
+                            Get.to(() => AccountScreen());    
+                            CustomDialog(context, "SUCCESS").show({"message": "You need to complete your information"});                         
+                          }                         
                         } else {
                           if (process == 1) {
-                            await globalController.getCategories();
                             Get.to(() => BusinessManagementScreen());
                             AccountController().isBusinessScreen.value = true;
                           } else if (process == 2) {
-                            await globalController.getCategories();
                             Get.to(() => BusinessManagementScreen());
                             AccountController().isBusinessScreen.value = false;
                           } else {

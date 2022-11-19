@@ -89,90 +89,88 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                     height: getHeight(24),
                   ),
                   Obx(()=> 
-                    Expanded(
-                      child: Container(
-                        width: getWidth(375),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'With ' + manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["name"] + ' you will get',
-                                style: TextStyle(
-                                  fontSize: getWidth(18),
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'TTNorm',
-                                ),
+                    Container(
+                      width: getWidth(375),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'With ' + manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["name"] + ' you will get',
+                              style: TextStyle(
+                                fontSize: getWidth(18),
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'TTNorm',
                               ),
-                              SizedBox(height: getHeight(24)),
-                              Text(
-                                'Services',
-                                style: TextStyle(
-                                  fontSize: getWidth(18),
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'TTNorm',
-                                ),
+                            ),
+                            SizedBox(height: getHeight(24)),
+                            Text(
+                              'Services',
+                              style: TextStyle(
+                                fontSize: getWidth(18),
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'TTNorm',
                               ),
-                              SizedBox(height: getHeight(16)),
-                              Container(
-                                child: Column(
-                                  children: List.generate(
-                                    !manageAdvertiseController.isBuy.value ? 
-                                     manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"].length
-                                    : manageAdvertiseController.currentAdvertise["serviceInfo"].length,
-                                    (index) => Column(
-                                      children: [
-                                        SizedBox(height: getHeight(12)),
-                                        Container(
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.lock,
-                                                color:
-                                                    Color.fromARGB(255, 80, 80, 80),
+                            ),
+                            SizedBox(height: getHeight(16)),
+                            Container(
+                              child: Column(
+                                children: List.generate(
+                                  !manageAdvertiseController.isBuy.value ? 
+                                   manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"].length
+                                  : manageAdvertiseController.currentAdvertise["serviceInfo"].length,
+                                  (index) => Column(
+                                    children: [
+                                      SizedBox(height: getHeight(12)),
+                                      Container(
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.lock,
+                                              color:
+                                                  Color.fromARGB(255, 80, 80, 80),
+                                            ),
+                                            SizedBox(width: getWidth(4)),
+                                            Text(
+                                              !manageAdvertiseController.isBuy.value ? manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"][index]["serviceName"]
+                                              : manageAdvertiseController.currentAdvertise["serviceInfo"][index]["serviceName"],
+                                              style: TextStyle(
+                                                fontSize: getWidth(16),
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'TTNorm',
+                                                color: Color.fromARGB(
+                                                    255, 80,80,80),
                                               ),
-                                              SizedBox(width: getWidth(4)),
-                                              Text(
-                                                !manageAdvertiseController.isBuy.value ? manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"][index]["serviceName"]
-                                                : manageAdvertiseController.currentAdvertise["serviceInfo"][index]["serviceName"],
-                                                style: TextStyle(
-                                                  fontSize: getWidth(16),
-                                                  fontWeight: FontWeight.w600,
-                                                  fontFamily: 'TTNorm',
-                                                  color: Color.fromARGB(
-                                                      255, 80,80,80),
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         ),
+                                      ),
 
-                                      ]
-                                    ),
+                                    ]
                                   ),
                                 ),
                               ),
-                              SizedBox(height: getHeight(24)),
-                              Text(
-                                'Description',
-                                style: TextStyle(
-                                  fontSize: getWidth(18),
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'TTNorm',
-                                ),
+                            ),
+                            SizedBox(height: getHeight(24)),
+                            Text(
+                              'Description',
+                              style: TextStyle(
+                                fontSize: getWidth(18),
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'TTNorm',
                               ),
-                              SizedBox(height: getHeight(12)),
-                              Text(
-                                !manageAdvertiseController.isBuy.value ? manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["description"]
-                                : manageAdvertiseController.currentAdvertise["description"],
-                                style: TextStyle(
-                                  fontSize: getWidth(14),
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'TTNorm',
-                                ),
+                            ),
+                            SizedBox(height: getHeight(12)),
+                            Text(
+                              !manageAdvertiseController.isBuy.value ? manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["description"]
+                              : manageAdvertiseController.currentAdvertise["description"],
+                              style: TextStyle(
+                                fontSize: getWidth(14),
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'TTNorm',
                               ),
-                              SizedBox(height: getHeight(24)),
-                            ]),
-                      ),
+                            ),
+                            SizedBox(height: getHeight(24)),
+                          ]),
                     ),
                   ),
                 ],
@@ -318,17 +316,15 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                 color: Color.fromARGB(255, 79,191,103),
               ),
               SizedBox(width: getWidth(10)),
-              Expanded(
-                child: Text(
-                  manageAdvertiseController.currentAdvertise["name"],
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: getWidth(18),
-                    fontFamily: 'TTNorm',
-                    fontWeight: FontWeight.w600
-                  )
-                ),
+              Text(
+                manageAdvertiseController.currentAdvertise["name"],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: getWidth(18),
+                  fontFamily: 'TTNorm',
+                  fontWeight: FontWeight.w600
+                )
               )
             ],
           ),

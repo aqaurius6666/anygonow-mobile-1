@@ -3,10 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-<<<<<<< HEAD
-import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
-=======
->>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
 import 'package:untitled/model/custom_dio.dart';
 import 'package:untitled/service/date_format.dart';
 
@@ -83,8 +79,10 @@ class MessageController extends GetxController {
           : connectedMessageList[index].reversed.toList();
 
       print(chats[0]);
+      return true;
     } catch (e) {
       print(e);
+      return false;
     }
   }
 

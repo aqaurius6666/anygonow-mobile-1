@@ -3,10 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
-<<<<<<< HEAD
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
-=======
->>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
 import 'package:untitled/controller/message/message_controller.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
@@ -14,10 +11,10 @@ import 'package:untitled/widgets/bounce_button.dart';
 import 'package:untitled/widgets/pop-up/cancel_request_popup.dart';
 
 class ChatScreen extends StatelessWidget {
-  MessageController messageController = Get.put(MessageController());
 
   @override
   Widget build(BuildContext context) {
+    MessageController messageController = Get.put(MessageController());
     return Scaffold(
         appBar: appBar(
             title: "On top mover",
@@ -48,13 +45,9 @@ class ChatScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-<<<<<<< HEAD
                               onPress: () async {
                                 await Get.put(MyRequestController()).rejectRequest();
                               },
-=======
-                              onPress: () {},
->>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
                             ),
                           ),
                           Expanded(
@@ -79,13 +72,9 @@ class ChatScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-<<<<<<< HEAD
                               onPress: () async {
                                 await Get.put(MyRequestController()).completeRequest();
                               },
-=======
-                              onPress: () {},
->>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
                             ),
                           )
                         ],

@@ -99,7 +99,7 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/chat.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5
+                              color: globalController.currentPage.value == 1
                                   ? Color(0xFFFF511A)
                                   : Color(0xFF999999),
                             ),
@@ -107,7 +107,7 @@ Container bottomNavigator() {
                               "Message",
                               style: TextStyle(
                                 fontSize: getWidth(12),
-                                color: globalController.currentPage.value == 5
+                                color: globalController.currentPage.value == 1
                                     ? Color(0xFFFF511A)
                                     : Color(0xFF999999),
                               ),
@@ -130,7 +130,7 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/user.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 1
+                              color: globalController.currentPage.value == 2
                                   ? Color(0xFFFF511A)
                                   : Color(0xFF999999),
                             ),
@@ -140,7 +140,7 @@ Container bottomNavigator() {
                                 style: TextStyle(
                                     fontSize: getWidth(12),
                                     color:
-                                        globalController.currentPage.value == 1
+                                        globalController.currentPage.value == 2
                                             ? Color(0xFFFF511A)
                                             : Color(0xFF999999)),
                               ),
@@ -214,7 +214,6 @@ Container bottomNavigatorHandyman() {
                   }),
                   Obx(() {
                     return Bouncing(
-<<<<<<< HEAD
                       onPress: () async {
                         if (globalController.currentPage != 1){
                           var request = Get.put(MyRequestUserController());
@@ -238,10 +237,6 @@ Container bottomNavigatorHandyman() {
                           globalController.onChangeTab(1);
                         }
 
-=======
-                      onPress: () {
-                        globalController.onChangeTab(1);
->>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
                       },
                       child: Container(
                         width: getWidth(60),

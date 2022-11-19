@@ -57,6 +57,8 @@ class MainScreenController extends GetxController {
 
   int filter = 0;
 
+  RxBool missingSearchField = false.obs;
+
   @override
   void onInit() {
     getProNear = getProfessionalNear();
@@ -188,7 +190,7 @@ class MainScreenController extends GetxController {
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
       Category? value = categories.firstWhereOrNull((element) => element.name == searchText.text);
-      if (searchText.text == "" || value != null) {
+      if (value != null && searchZipcode.text != "") {
         categoryId = value != null ? value.id : "";
         var response = await customDio.get("/businesses?categoryId=$categoryId&zipcode=${searchZipcode.text}&query=$filter");
         var json = jsonDecode(response.toString());
@@ -210,8 +212,10 @@ class MainScreenController extends GetxController {
         } else {
           businesses.clear();
         }
+        missingSearchField.value = false;
         return (true);
       } else {
+        missingSearchField.value = true;
         return false;
       }
     } catch (e) {

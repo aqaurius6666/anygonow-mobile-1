@@ -1,10 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-<<<<<<< HEAD
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
-=======
->>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
 import 'package:untitled/controller/message/message_controller.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/screen/chat/chat_screen.dart';
@@ -44,8 +40,8 @@ class MessageScreen extends StatelessWidget {
   }
 
   ListView connectedTab(List<dynamic> requests) {
+    // print(requests);
     return ListView(
-<<<<<<< HEAD
       children: List.generate(requests.length, (index) {
         var messages = messageController.connectedMessageList[index];
         return messageItem(
@@ -54,49 +50,32 @@ class MessageScreen extends StatelessWidget {
               : "Connected",
           business: requests[index]["serviceName"],
           img: requests[index]["businessLogo"],
-          time: messageController
-              .getTimeSent(messages[messages.length - 1]["timestamp"]),
+          time: messages.isNotEmpty
+              ? messageController
+                  .getTimeSent(messages[messages.length - 1]["timestamp"])
+              : "",
           index: index,
           completed: false,
         );
       }),
-      // children: [
-      //   messageItem(),
-      // ],
-=======
-      // children: List.generate(requests.length, (index) {
-      //   var messages = messageController.connectedMessageList[index];
-      //   return messageItem(
-      //     message: messages.isNotEmpty
-      //         ? messages[messages.length - 1]["payload"]
-      //         : "Connected",
-      //     business: requests[index]["serviceName"],
-      //     img: requests[index]["businessLogo"],
-      //     time: messageController
-      //         .getTimeSent(messages[messages.length - 1]["timestamp"]),
-      //     index: index,
-      //     completed: false,
-      //   );
-      // }),
-      children: [
-        messageItem(),
-      ],
->>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
     );
   }
 
   ListView completedTab(List<dynamic> requests) {
+    print(requests);
     return ListView(
       children: List.generate(requests.length, (index) {
         var messages = messageController.completedMessageList[index];
         return messageItem(
           message: messages.isNotEmpty
               ? messages[messages.length - 1]["payload"]
-              : "Connected",
+              : "Completed",
           business: requests[index]["serviceName"],
           img: requests[index]["businessLogo"],
-          time: messageController
-              .getTimeSent(messages[messages.length - 1]["timestamp"]),
+          time: messages.isNotEmpty
+              ? messageController
+                  .getTimeSent(messages[messages.length - 1]["timestamp"])
+              : "",
           index: index,
           completed: true,
         );
@@ -112,89 +91,78 @@ class MessageScreen extends StatelessWidget {
     int index = 0,
     bool completed = false,
   }) {
-    RxBool tapped = false.obs;
     return GestureDetector(
       onTap: () {
-<<<<<<< HEAD
-        tapped.value = true;
+        print("time" + time);
         messageController.index = index;
         messageController.completedChat = completed;
-        messageController.chats.value = completed
-            ? messageController.completedMessageList[index].reversed.toList()
-            : messageController.connectedMessageList[index].reversed.toList();
+        messageController.chats.clear();
+        if (time != "") {
+          messageController.chats.value = completed
+              ? messageController.completedMessageList[index].reversed.toList()
+              : messageController.connectedMessageList[index].reversed.toList();
+        }
         messageController.chatId = completed
             ? messageController.completedMessageIds[index]
             : messageController.connectedMessageIds[index];
-        if (!completed)
-          (Get.put(MyRequestController()).currentRequest =
-              requestController.connectedRequests[index]["id"]);
+        if (!completed) {
+          Get.put(MyRequestController()).currentRequest =
+              requestController.connectedRequests[index]["id"];
+        }
 
-=======
-        // tapped.value = true;
-        // messageController.index = index;
-        // messageController.completedChat = completed;
-        // messageController.chats.value = completed
-        //     ? messageController.completedMessageList[index].reversed.toList()
-        //     : messageController.connectedMessageList[index].reversed.toList();
-        // messageController.chatId = completed
-        //     ? messageController.completedMessageIds[index]
-        //     : messageController.connectedMessageIds[index];
->>>>>>> bd99ec7b0bba637a55fc62ada8787cec950fae46
         Get.to(ChatScreen());
       },
-      child: Obx(() {
-        return Container(
-          height: getHeight(97),
-          color: tapped.value ? Color(0xFFFFF4F0) : Colors.white,
-          padding: EdgeInsets.only(
-            left: getWidth(16),
-            right: getWidth(16),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                height: getHeight(56),
-                width: getHeight(56),
-                color: Colors.grey,
-              ),
-              SizedBox(
-                height: getHeight(56),
-                width: getWidth(200),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      business,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                      ),
+      child: Container(
+        height: getHeight(97),
+        color: Colors.white,
+        padding: EdgeInsets.only(
+          left: getWidth(16),
+          right: getWidth(16),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: getHeight(56),
+              width: getHeight(56),
+              color: Colors.grey,
+            ),
+            SizedBox(
+              height: getHeight(56),
+              width: getWidth(200),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    business,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
                     ),
-                    Text(
-                      message,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Color(0xFF999999),
-                      ),
+                  ),
+                  Text(
+                    message,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Color(0xFF999999),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SizedBox(
-                width: getWidth(50),
+            ),
+            SizedBox(
+              width: getWidth(50),
+            ),
+            Text(
+              time,
+              style: TextStyle(
+                color: Color(0xFF999999),
               ),
-              Text(
-                time,
-                style: TextStyle(
-                  color: Color(0xFF999999),
-                ),
-              )
-            ],
-          ),
-        );
-      }),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

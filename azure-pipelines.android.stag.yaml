@@ -5,50 +5,90 @@
 trigger:
   branches:
     include:
-      - dev
+      - releases/*
   batch: true
 
-variables:
-  GIT_PAT: $(gitPat)
-  AZURE_PAT: $(azurePass)
-
-name: 1.0.$(Rev:r)
+name: $(Rev:r)
 
 
 jobs:
 - job: ANDROID
-  displayName: Build_Android_APK
+  displayName: Build_Android_APK
   pool:
-    name: Builder
+    name: AndroidBuilder
   steps:
   - checkout: self
-  - task: mirror-git-repository-vsts-task@1
+  - task: DownloadSecureFile@1
+    name: mySecureFile
     inputs:
-      sourceGitRepositoryUri: '$(Build.Repository.Uri)'
-      sourceVerifySSLCertificate: false
-      destinationGitRepositoryUri: '$(DES_REPO)'
-      sourceGitRepositoryPersonalAccessToken: $(AZURE_PAT)
-      destinationGitRepositoryPersonalAccessToken: $(GIT_PAT)
+      secureFile: '$(KEY_ALIAS).keystore'
+
   - task: CmdLine@2
     inputs:
       script: 'printf "SERVER_URL=%s\nUPDATE_VERSION_URL=%s\nUPDATE_VERSION_API=%s\n" "$SERVER_URL" "$UPDATE_VERSION_URL"  "$UPDATE_VERSION_API" > .env'
+  - task: FlutterInstall@0
+    inputs:
+      mode: 'auto'
+      channel: 'stable'
+      version: 'latest'
   - task: CmdLine@2
-    displayName: Prebuild
+    displayName: Upgrade & clean Flutter
     inputs:
       script: |
-        cat .env
-        docker build -t handyman/build-flutter --build-arg BUILD_NAME=$(BUILD_NAME) .
-      workingDirectory: $(System.DefaultWorkingDirectory)
+        $(FlutterToolPath)/flutter upgrade \
+        cd ios \
+        pod deintegrate \
+        rm Flutter/Flutter.podspec \
+        rm podfile.lock \
+        $(FlutterToolPath)/flutter clean
   - task: CmdLine@2
-    displayName: Copy from Container
     inputs:
-      script: |
-        docker run --rm -v $(pwd)/build:/src/build2 handyman/build-flutter sh -c 'rm -Rf /src/build2/*  && cp -a /src/build/. /src/build2 && chmod -R 777 /src/build2'
-      workingDirectory: $(System.DefaultWorkingDirectory)
+      script: 'printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=%s\n" "$(KEY_PASSWORD)" "$(KEY_PASSWORD)" "$(KEY_ALIAS)" "$(mySecureFile.secureFilePath)"> ./android/key.properties'
+
+  - task: CmdLine@2
+    inputs:
+      script: 'cat ./android/key.properties'
+  - task: FlutterBuild@0
+    inputs:
+      target: 'aab'
+      projectDirectory: '.'
+      splitPerAbi: true
+      buildName: '1.0.0'
+      buildNumber: '$(Build.BuildNumber)'
+      extraArgs: '--release'
+      buildFlavour: 'prod'
+  # - task: CmdLine@2
+  #   displayName: 'Signing and aligning AAB file(s) app\build\outputs\bundle\release\app-release.aab'
+  #   inputs:
+  #     script: 'jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore $(mySecureFile.secureFilePath) -storepass $(KEY_PASSWORD) -keypass $(KEY_PASSWORD) $(system.defaultworkingdirectory)/build/app/outputs/bundle/release/app-release.aab $(KEY_ALIAS).alias'
+
+  # - task: AndroidSigning@3
+  #   displayName: 'Signing and aligning APK file(s) **/*.aab'
+  #   inputs:
+  #     apkFiles: './build/app/outputs/bundle/release/*.aab'
+  #     apksign: true
+  #     apksignerKeystoreFile: $(KEY_ALIAS).keystore
+  #     apksignerKeystorePassword: $(KEY_PASSWORD)
+  #     apksignerKeystoreAlias: $(KEY_ALIAS).alias
+  #     apksignerKeyPassword: $(KEY_PASSWORD)
+  #     zipalign: false
+  # - task: AndroidSigning@2
+  #   inputs:
+  #     apkFiles: './build/app/outputs/bundle/release/*.aab' 
+  #     jarsign: true 
+  #     jarsignerKeystoreFile: '$(KEY_ALIAS).keystore'
+  #     jarsignerKeystorePassword: '$(KEY_PASSWORD)'
+  #     jarsignerKeystoreAlias: '$(KEY_ALIAS)'
+  #     jarsignerKeyPassword: '$(KEY_PASSWORD)'
+  #     jarsignerArguments: '-sigalg SHA256withRSA -digestalg SHA-256'
+  #     zipalign: true
+  - task: CmdLine@2
+    inputs:
+      script: 'rm ./android/key.properties'
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: Android APK'
+    displayName: 'Publish Artifact: Android Bundle'
     inputs:
-      PathtoPublish: 'build/app/outputs/flutter-apk'
+      PathtoPublish: './build/app/outputs/bundle'
       ArtifactName: 'android'
       publishLocation: 'Container'
