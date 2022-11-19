@@ -7,6 +7,7 @@ import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/main/main_screen_model.dart';
 import 'package:untitled/service/date_format.dart';
+import 'package:untitled/utils/cdn.dart';
 import 'package:untitled/utils/common-function.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
@@ -274,42 +275,28 @@ class MainScreen extends StatelessWidget {
           SizedBox(
             height: getHeight(12),
           ),
-          FutureBuilder(
-            future: mainScreenController.getMostInterest,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return GridView.count(
-                  shrinkWrap: true,
-                  childAspectRatio: (167 / 48),
-                  crossAxisCount: 2,
-                  children: List.generate(
-                    globalController.categories.sublist(0, 0).length,
-                    (index) {
-                      var colors = getPairColor(index > 3 ? Random().nextInt(4) : 0 + index % 4);
-                      return Container(
-                          margin: EdgeInsets.symmetric(horizontal: getWidth(4), vertical: getHeight(4)),
-                          height: getHeight(48),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Color(colors[0])),
-                          child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                globalController.categories[index].name,
-                                style: TextStyle(
-                                  color: Color(colors[1]),
-                                ),
-                              )));
-                      // return serviceItem(
-                      //   image: mainScreenController.mostInterested[index].bussiness["logoUrl"] ?? "",
-                      //   id: mainScreenController.mostInterested[index].bussiness["id"],
-                      //   service: mainScreenController.mostInterested[index].bussiness["name"] ?? "",
-                      // );
-                    },
-                  ),
-                );
-              } else {
-                return const SizedBox();
-              }
-            },
+          GridView.count(
+            shrinkWrap: true,
+            childAspectRatio: (167 / 48),
+            crossAxisCount: 2,
+            children: List.generate(
+              globalController.categories.sublist(0, 4).length,
+              (index) {
+                var colors = getPairColor(index > 3 ? Random().nextInt(4) : 0 + index % 4);
+                return Container(
+                    margin: EdgeInsets.symmetric(horizontal: getWidth(4), vertical: getHeight(4)),
+                    height: getHeight(48),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Color(colors[0])),
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          globalController.categories[index].name,
+                          style: TextStyle(
+                            color: Color(colors[1]),
+                          ),
+                        )));
+              },
+            ),
           ),
           SizedBox(
             height: getHeight(24),
@@ -333,8 +320,8 @@ class MainScreen extends StatelessWidget {
                       mainScreenController.businessNearList.length,
                       (index) {
                         return handymanItem(
-                          image: mainScreenController.businessNearList[index].bussiness["bannerImage"] ?? "",
-                          logo: mainScreenController.businessNearList[index].bussiness["logoImage"] ?? "",
+                          image: getCDN(mainScreenController.businessNearList[index].bussiness["bannerImage"] ?? ""),
+                          logo: getCDN(mainScreenController.businessNearList[index].bussiness["logoImage"] ?? ""),
                           title: mainScreenController.businessNearList[index].bussiness["name"] ?? "",
                           stars: (mainScreenController.businessNearList[index].rating["rate"] ?? 0.0) * 1.0,
                           reviews: mainScreenController.businessNearList[index].rating["review"]?.toInt() ?? 0,

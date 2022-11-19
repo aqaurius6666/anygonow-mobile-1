@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untitled/model/custom_dio.dart';
 import 'package:untitled/model/unauthorize_dio.dart';
+import 'package:untitled/utils/cdn.dart';
 
 Container getImage(String? src, {Key? key, width, height, fit, BoxDecoration? decoration}) {
   return Container(
@@ -12,8 +13,8 @@ Container getImage(String? src, {Key? key, width, height, fit, BoxDecoration? de
       child: src == null || src == ""
           ? Container()
           : src.contains(".svg")
-              ? SvgPicture.network(src, height: height, fit: fit ?? BoxFit.contain)
-              : Image.network(src, height: height, fit: fit ?? BoxFit.contain));
+              ? SvgPicture.network(getCDN(src), height: height, fit: fit ?? BoxFit.contain)
+              : Image.network(getCDN(src), height: height, fit: fit ?? BoxFit.contain));
 }
 
 class ImageService {

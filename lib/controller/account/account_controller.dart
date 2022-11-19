@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/model/custom_dio.dart';
+import 'package:untitled/utils/cdn.dart';
 
 class AccountController extends GetxController {
   TextEditingController firstName = TextEditingController();
@@ -49,7 +50,7 @@ class AccountController extends GetxController {
       firstName.text = userInfo["firstName"] ?? "";
       lastName.text = userInfo["lastName"] ?? "";
       phoneNumber.text = userInfo["phone"] ?? "";
-      logoImage.value = userInfo["image"] ?? "";
+      logoImage.value = getCDN(userInfo["image"] ?? "");
 
       address1.text = contactInfo["address1"] ?? "";
       address2.text = contactInfo["address2"] ?? "";
@@ -203,8 +204,8 @@ class AccountController extends GetxController {
 
       business.text = businessData["name"] ?? "";
       description.text = businessData["descriptions"] ?? "";
-      logoImage.value = businessData["logoImage"] ?? "";
-      bannerImage.value = businessData["bannerImage"] ?? "";
+      logoImage.value = getCDN(businessData["logoImage"] ?? "");
+      bannerImage.value = getCDN(businessData["bannerImage"] ?? "");
       phoneNumber.text = businessData["phone"] ?? "";
       website.text = businessData["website"] ?? "";
 
@@ -222,7 +223,7 @@ class AccountController extends GetxController {
         item.id = serviceData[i]["id"] ?? "";
         item.name = serviceData[i]["name"] ?? "";
         item.numberOrder = serviceData[i]["numberOrder"] ?? 0;
-        item.image = serviceData[i]["image"] ?? "";
+        item.image = getCDN(serviceData[i]["image"] ?? "");
         res.add(item);
       }
 

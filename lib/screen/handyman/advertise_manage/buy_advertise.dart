@@ -240,7 +240,7 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                         Obx(
                           () => Text(
                             '\$' +
-                                manageAdvertiseController.totalPrice.toString(),
+                                (manageAdvertiseController.totalPrice / 100).toString(),
                             style: TextStyle(
                               fontSize: getWidth(18),
                               fontWeight: FontWeight.w700,
@@ -351,7 +351,7 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                     ),
 
                     SizedBox(height: getHeight(72)),
-                    manageAdvertiseController.loadingBuyAd == false ?
+                    manageAdvertiseController.loadingBuyAd.value == false ?
                     Bouncing(
                       onPress:  () async {
                         await manageAdvertiseController.setBusinessesPaymentMethod();
@@ -441,7 +441,7 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
             manageAdvertiseController.expiryDate.text);
         double price = double.parse(
             manageAdvertiseController.currentAdvertise["price"].toString());
-        double totalPrice = kc * price;
+        double totalPrice = kc * price * 100;
         manageAdvertiseController.totalPrice.value = totalPrice.ceil();
       }
     });

@@ -198,51 +198,34 @@ class ManageAdvertiseController extends GetxController {
       var json = jsonDecode(res.toString());
       if (json["success"]==true) {
         // setup promote
+        print(dataSetup);
         var response = await customDio.post("businesses/buy-promote/setup", {"data": dataSetup}, sign: true);
         var json = jsonDecode(response.toString());
-        String clientSecret = json["data"]["clientSecret"];
-
-        // confirm stripe
-        // var publishedKey = await StripeService.getPubKey();
-        // Stripe.publishableKey = publishedKey;
-        // PaymentMethodParams params = PaymentMethodParams.cardFromMethodId(paymentMethodId: bsPaymentMethod["payment"]["paymentMethodId"], cvc: "424");
-        // await Stripe.instance.applySettings();
-        // await Stripe.instance.initPaymentSheet(
-        //     paymentSheetParameters: SetupPaymentSheetParameters(
-        //   paymentIntentClientSecret: clientSecret,
-        //   applePay: true,
-        //   googlePay: true,
-        // ));
-        // await Stripe.instance.presentPaymentSheet(
-        //   parameters: PresentPaymentSheetParameters(clientSecret: clientSecret, confirmPayment: true)
-        // );
-        // PaymentIntent confirmPayment = await Stripe.instance.confirmPayment(clientSecret, params);
-        // print({"cer": confirmPayment});
-
-
-
-        // buy promote
-        var dataAdvertise = {
-          "UserId": "",
-          "advertisePackageId": currentAdvertise["id"],
-          "packageName": currentAdvertise["name"],
-          "price": currentAdvertise["price"],
-          "bannerUrl": currentAdvertise["bannerUrl"],
-          "description": currentAdvertise["description"],
-          "zipcode": serviceArea.text,
-          "categoryName": category.text,
-          "categoryId": serviceId,
-          "startDate": TimeService.timeToBackEndMaster(DateTime.parse(registrationDate.text)),
-          "endDate": TimeService.timeToBackEndMaster(DateTime.parse(expiryDate.text)),
-        };
-        var responseBuyAd = await customDio.post("/businesses/buy-promote", {"data": dataAdvertise}, sign: true);
-        var jsonBuyAd = jsonDecode(responseBuyAd.toString());
-        if(jsonBuyAd["success"] == true) {
-          loadingBuyAd.value = false;
-          Get.back();
-          Get.to(() => PopupNotification());
-        } 
-
+        print(json["data"]["status"]);
+        if (json["data"]["status"] == "succeeded") {
+          // buy promote
+          var dataAdvertise = {
+            "UserId": "",
+            "advertisePackageId": currentAdvertise["id"],
+            "packageName": currentAdvertise["name"],
+            "price": currentAdvertise["price"],
+            "bannerUrl": currentAdvertise["bannerUrl"],
+            "description": currentAdvertise["description"],
+            "zipcode": serviceArea.text,
+            "categoryName": category.text,
+            "categoryId": serviceId,
+            "startDate": TimeService.timeToBackEndMaster(DateTime.parse(registrationDate.text)),
+            "endDate": TimeService.timeToBackEndMaster(DateTime.parse(expiryDate.text)),
+          };
+          var responseBuyAd = await customDio.post("/businesses/buy-promote", {"data": dataAdvertise}, sign: true);
+          var jsonBuyAd = jsonDecode(responseBuyAd.toString());
+          if(jsonBuyAd["success"] == true) {
+            loadingBuyAd.value = false;
+            Get.back();
+            Get.to(() => PopupNotification());
+          } 
+        }
+        // String clientSecret = json["data"]["clientSecret"];
       }
 
 

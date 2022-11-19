@@ -156,8 +156,8 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                         controller.isLoading.value = false;
                         int? role = globalController.user.value.role;
                         int? process = globalController.user.value.process;
+                        await globalController.getCategories();
                         if (role == null || role == 0) {
-                          await Get.put(MainScreenController()).getCategories();
                           Get.to(HomePageScreen());
                           if (process == 1) {
                             await Get.put(AccountController()).getUserInfo();
@@ -166,11 +166,9 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                           }                         
                         } else {
                           if (process == 1) {
-                            await globalController.getCategories();
                             Get.to(() => BusinessManagementScreen());
                             AccountController().isBusinessScreen.value = true;
                           } else if (process == 2) {
-                            await globalController.getCategories();
                             Get.to(() => BusinessManagementScreen());
                             AccountController().isBusinessScreen.value = false;
                           } else {
