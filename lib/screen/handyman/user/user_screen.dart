@@ -4,11 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/handyman/rating_center/rating_center_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/handyman/business_management/business_management_screen.dart';
 import 'package:untitled/screen/handyman/payment_page/payment_page_screen.dart';
 import 'package:untitled/screen/handyman/payment_summary/payment_summary.dart';
+import 'package:untitled/screen/handyman/rating_center/rating_center_screen.dart';
 import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/utils/config.dart';
@@ -17,6 +19,7 @@ import 'package:untitled/widgets/image.dart';
 
 class HandymanUserScreen extends StatelessWidget {
   GlobalController globalController = Get.put(GlobalController());
+  RatingCenterController ratingCenterController = Get.put(RatingCenterController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -290,7 +293,11 @@ class HandymanUserScreen extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          await ratingCenterController.getBusinessRating();
+                          await ratingCenterController.getBusinessFeedback();
+                          Get.to(RatingCenterScreen());
+                        },
                         child: Container(
                           color: Colors.white,
                           child: Column(
