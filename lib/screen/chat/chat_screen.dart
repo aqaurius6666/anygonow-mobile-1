@@ -11,10 +11,10 @@ import 'package:untitled/widgets/bounce_button.dart';
 import 'package:untitled/widgets/pop-up/cancel_request_popup.dart';
 
 class ChatScreen extends StatelessWidget {
-  MessageController messageController = Get.put(MessageController());
 
   @override
   Widget build(BuildContext context) {
+    MessageController messageController = Get.put(MessageController());
     return Scaffold(
         appBar: appBar(
             title: "On top mover",

@@ -6,7 +6,7 @@ import 'package:untitled/utils/config.dart';
 
 import '../bounce_button.dart';
 
-Future showPopUp({String message = ""}) {
+Future showPopUp({String message = "", bool success = true}) {
   return Get.defaultDialog(
     titlePadding: EdgeInsets.all(0),
     contentPadding: EdgeInsets.all(0),
@@ -19,11 +19,17 @@ Future showPopUp({String message = ""}) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          CircleAvatar(
-            child: Icon(Icons.check),
-            backgroundColor: Color(0XFF689C60),
-            foregroundColor: Colors.white,
-          ),
+          success
+              ? CircleAvatar(
+                  child: Icon(Icons.check),
+                  backgroundColor: Color(0XFF689C60),
+                  foregroundColor: Colors.white,
+                )
+              : Icon(
+                  Icons.clear,
+                  size: getWidth(100),
+                  color: Colors.red,
+                ),
           Text(
             message,
             style: TextStyle(fontSize: 14),

@@ -32,7 +32,8 @@ class GlobalController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    pageController = PageController(initialPage: 0, keepPage: true);
+    pageController = PageController(initialPage: 0, keepPage: false);
+    currentPage.value = 0;
   }
 
   void onChangeTab(int value) {
@@ -41,7 +42,7 @@ class GlobalController extends GetxController {
       pageController.jumpToPage(value);
     } catch (e) {
       currentPage.value = value;
-      pageController = PageController(initialPage: value, keepPage: true);
+      pageController = PageController(initialPage: value, keepPage: false);
     }
   }
 

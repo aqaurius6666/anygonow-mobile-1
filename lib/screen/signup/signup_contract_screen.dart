@@ -4,6 +4,7 @@ import 'package:untitled/controller/signup/signup_controller.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/screen/signup/check_email_screen.dart';
 import 'package:untitled/utils/config.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 import 'package:untitled/widgets/app_name.dart';
 import 'package:untitled/widgets/layout.dart';
@@ -141,10 +142,35 @@ Container confirmButtonContainer(BuildContext context, SignupController signupCo
               ),
             ),
             onPressed: () async {
-              if (signupController.email.text != "" && signupController.password.text != "" && signupController.isAgree.value == true && signupController.confirmPassword.text != "") {
-                var result = await signupController.signup();
-                Get.to(() => CheckEmailScreen());
+              // if (signupController.email.text != "" && signupController.password.text != "" && signupController.isAgree.value == true && signupController.confirmPassword.text != "") {
+              //   var result = await signupController.signup();
+              //   Get.to(() => CheckEmailScreen());
+              // }
+              bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(signupController.email.text);
+              if (!emailValid) {
+                CustomDialog(context, "FAILED").show({"message": "Email invalidate"});
+                return;
               }
+              bool phoneValid = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(signupController.phoneNumber.text);
+              if (!phoneValid) {
+                CustomDialog(context, "FAILED").show({"message": "Phone number invalidate"});
+                return;
+              }
+              bool passValid = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(signupController.password.text);
+              if (!passValid) {
+                CustomDialog(context, "FAILED").show({"message": "Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number"});
+                return;
+              }
+              if (signupController.password.text != signupController.confirmPassword.text) {
+                CustomDialog(context, "FAILED").show({"message": "Re-entered password is incorrect"});
+                return;
+              }
+              if (signupController.isAgree.value == false) {
+                CustomDialog(context, "FAILED").show({"message": "You do not agree to the terms of use"});
+                return;
+              }
+              var result = await signupController.signup();
+                Get.to(() => CheckEmailScreen());
             },
             child: Text("continue".tr, style: const TextStyle(color: Colors.white)),
           ),

@@ -34,8 +34,11 @@ class Messages extends Translations {
           "wrong_password": "Your password is invalid !",
           "password_not_empty": "Your password is mustn't empty !",
           "success_change_password": "Change password successful !",
-          "cfpassword_not_match": "Your confirm password not match with your new password",
-          "missing_field": "You must fill all required fields"
+          "cfpassword_not_match":
+              "Your confirm password not match with your new password",
+          "missing_field": "You must fill all required fields",
+          "invalid_newPassword_rule":
+              "Your new password must be at least 8 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number"
         },
       };
 }

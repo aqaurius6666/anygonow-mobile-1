@@ -79,8 +79,10 @@ class MessageController extends GetxController {
           : connectedMessageList[index].reversed.toList();
 
       print(chats[0]);
+      return true;
     } catch (e) {
       print(e);
+      return false;
     }
   }
 

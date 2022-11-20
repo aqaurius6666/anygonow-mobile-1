@@ -154,9 +154,13 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                       var result = await controller.login();
                       if (result) {
                         controller.isLoading.value = false;
+                        controller.onClearData();
+                        Get.delete<MainScreenController>();
+                        Get.delete<GlobalController>();
                         int? role = globalController.user.value.role;
                         int? process = globalController.user.value.process;
-                        await globalController.getCategories();
+                        await Get.put(GlobalController()).getCategories();
+                        await Get.put(MainScreenController()).getCategories();
                         if (role == null || role == 0) {
                           Get.to(HomePageScreen());
                           if (process == 1) {

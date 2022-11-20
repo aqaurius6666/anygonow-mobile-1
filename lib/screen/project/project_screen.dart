@@ -49,6 +49,8 @@ class MyProjectScreen extends StatelessWidget {
               zipcode: projectController.projectList[index]["zipcode"] ?? "",
               serviceId:
                   projectController.projectList[index]["serviceId"] ?? "",
+              context: context,
+              index: index
             ),
           ),
         );
@@ -64,6 +66,8 @@ Container requestItem({
   required String total,
   required String zipcode,
   required String serviceId,
+  required BuildContext context,
+  required int index
 }) {
   return Container(
     margin: EdgeInsets.only(
@@ -193,7 +197,8 @@ Container requestItem({
             ),
           ),
           onPress: () {
-            projectController.cancelProject(zipcode, serviceId);
+            projectController.cancelProject(zipcode, serviceId, context, index);
+            
           },
         ),
       ],

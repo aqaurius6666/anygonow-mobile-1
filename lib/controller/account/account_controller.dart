@@ -38,7 +38,8 @@ class AccountController extends GetxController {
     try {
       var userID = globalController.user.value.id.toString();
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.get("/users/$userID");
       var response2 = await customDio.get("/contacts/$userID");
       var json = jsonDecode(response.toString());
@@ -70,16 +71,23 @@ class AccountController extends GetxController {
     try {
       var userID = globalController.user.value.id.toString();
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.put(
         "/users/$userID",
         {
           "data": {
             "firstName": firstName.text,
             "lastName": lastName.text,
+            "url": logoImage.value,
+            "phone": phoneNumber.text,
+            "mail": email.text,
           }
         },
       );
+
+      List<StateModal> stateInfos =
+          globalController.states.where((i) => i.name == state.text).toList();
 
       var response2 = await customDio.put(
         "/contacts/$userID",
@@ -88,7 +96,7 @@ class AccountController extends GetxController {
             "zipcode": zipcode.text,
             "address1": address1.text,
             "address2": address2.text,
-            "stateId": "0914343f-28bb-49e8-971d-3f0f7646787c",
+            "stateId": stateInfos.isNotEmpty ? stateInfos[0].id : "",
             "city": city.text,
           }
         },
@@ -96,6 +104,7 @@ class AccountController extends GetxController {
 
       var json = jsonDecode(response.toString());
       if (json["data"] != null) {
+        globalController.user.value.avatar = logoImage.value;
         return json["data"]["user"];
       } else {
         return null;
@@ -110,7 +119,8 @@ class AccountController extends GetxController {
     try {
       var userID = globalController.user.value.id.toString();
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.put(
         "/businesses/$userID",
         {
@@ -130,7 +140,9 @@ class AccountController extends GetxController {
         {
           "data": {
             "id": userID,
-            "categoryIds": tags.value.map((tag) { return tag.id;}).toList(),
+            "categoryIds": tags.value.map((tag) {
+              return tag.id;
+            }).toList(),
           }
         },
       );
@@ -152,14 +164,19 @@ class AccountController extends GetxController {
       var userID = globalController.user.value.id.toString();
       isLoading.value = true;
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+
+      List<StateModal> stateInfos =
+          globalController.states.where((i) => i.name == state.text).toList();
+
       var response = await customDio.put(
         "/contacts/$userID",
         {
           "data": {
             "address1": address1.text,
             "address2": address2.text,
-            "stateId": "0914343f-28bb-49e8-971d-3f0f7646787c",
+            "stateId": stateInfos.isNotEmpty ? stateInfos[0].id : "",
             "city": city.text,
             "zipcode": zipcode.text,
             "state": state.text,
@@ -189,7 +206,8 @@ class AccountController extends GetxController {
     try {
       var userID = globalController.user.value.id.toString();
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.get("/businesses/$userID");
       var response2 = await customDio.get("/contacts/$userID");
       var response3 = await customDio.get("/businesses/$userID/services");
@@ -228,10 +246,11 @@ class AccountController extends GetxController {
       }
 
       tags.value = res;
-      category.text = serviceData != null ? serviceData.map((e) {
-        return e["name"];
-      }).join(", ") : "";
-
+      category.text = serviceData != null
+          ? serviceData.map((e) {
+              return e["name"];
+            }).join(", ")
+          : "";
 
       return json["data"];
     } catch (e, s) {
@@ -239,5 +258,4 @@ class AccountController extends GetxController {
       return null;
     }
   }
-
 }

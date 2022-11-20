@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 String convertLongString(
     {required String string,
-      required int firstLength,
-      required int lastLength}) {
+    required int firstLength,
+    required int lastLength}) {
   if (string.length <= firstLength) return string;
   if (firstLength + lastLength >= string.length) return string;
   var firstPattern = string.toString().substring(0, firstLength);
@@ -48,6 +48,20 @@ dynamic getPairColor(dynamic color) {
     case 3:
     default:
       return [0xFFCAFFFB, 0xFF005852];
+  }
+}
+
+dynamic getPairColor2(dynamic color) {
+  switch (color) {
+    case 0:
+      return 0xFFFF511A;
+    case 1:
+      return 0xFFFFBB00;
+    case 2:
+      return 0xFF842000;
+    case 3:
+    default:
+      return 0xFF005852;
   }
 }
 

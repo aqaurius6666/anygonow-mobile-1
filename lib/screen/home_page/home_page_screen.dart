@@ -13,6 +13,9 @@ class HomePageScreen extends StatelessWidget {
       bottomNavigationBar: bottomNavigator(),
       body: PageView(
         controller: Get.put(GlobalController()).pageController,
+        onPageChanged: (value) {
+          Get.put(GlobalController()).onChangeTab(value);
+        },
         children: [
           MainScreen(),
           MessageScreen(),

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
+import 'package:untitled/model/custom_dio.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 
 Future cancelRequestPopup() {
@@ -171,7 +173,7 @@ Future feedbackPopup({
                 color: Color(0xFFFF0000),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(
+              child: const Text(
                 "Send feedback",
                 style: TextStyle(
                   color: Colors.white,
@@ -183,6 +185,11 @@ Future feedbackPopup({
                   .sendFeedback(orderId, rate, serviceId, businessId);
               if (res) {
                 Get.back();
+                Get.put(MyRequestUserController()).feedback.text = "";
+                CustomDialog(context, "SUCCESS").show({"message": "Send feedback successfully"});
+              } else {
+                Get.back();
+                CustomDialog(context, "FAILED").show({"message": "Send feedback failed"});
               }
             },
           ),

@@ -6,6 +6,12 @@ String getCDN(String s) {
     return s;
   }
   String cdnUrl = dotenv.env["CDN_URL"].toString();
-  print({"db": cdnUrl != "" ? cdnUrl : 'http://d26p4pe0nfrg62.cloudfront.net/' + s});
-  return cdnUrl != "" ? cdnUrl : 'http://d26p4pe0nfrg62.cloudfront.net/' + s;
+  print({
+    "db": cdnUrl != "" && cdnUrl != "null"
+        ? cdnUrl
+        : 'http://d26p4pe0nfrg62.cloudfront.net/' + s
+  });
+  return cdnUrl != "" && cdnUrl != "null"
+      ? cdnUrl
+      : 'http://d26p4pe0nfrg62.cloudfront.net/' + s;
 }

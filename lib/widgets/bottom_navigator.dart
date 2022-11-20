@@ -69,7 +69,7 @@ Container bottomNavigator() {
                   Obx(() {
                     return Bouncing(
                       onPress: () async {
-                        if (globalController.currentPage != 1){
+                        if (globalController.currentPage != 1) {
                           var request = Get.put(MyRequestUserController());
                           var message = Get.put(MessageController());
                           await request.getRequests("", "");
@@ -99,7 +99,7 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/chat.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 5
+                              color: globalController.currentPage.value == 1
                                   ? Color(0xFFFF511A)
                                   : Color(0xFF999999),
                             ),
@@ -107,7 +107,7 @@ Container bottomNavigator() {
                               "Message",
                               style: TextStyle(
                                 fontSize: getWidth(12),
-                                color: globalController.currentPage.value == 5
+                                color: globalController.currentPage.value == 1
                                     ? Color(0xFFFF511A)
                                     : Color(0xFF999999),
                               ),
@@ -130,7 +130,7 @@ Container bottomNavigator() {
                             SvgPicture.asset(
                               "assets/icons/user.svg",
                               width: getWidth(24),
-                              color: globalController.currentPage.value == 1
+                              color: globalController.currentPage.value == 2
                                   ? Color(0xFFFF511A)
                                   : Color(0xFF999999),
                             ),
@@ -140,7 +140,7 @@ Container bottomNavigator() {
                                 style: TextStyle(
                                     fontSize: getWidth(12),
                                     color:
-                                        globalController.currentPage.value == 1
+                                        globalController.currentPage.value == 2
                                             ? Color(0xFFFF511A)
                                             : Color(0xFF999999)),
                               ),
@@ -215,28 +215,27 @@ Container bottomNavigatorHandyman() {
                   Obx(() {
                     return Bouncing(
                       onPress: () async {
-                        if (globalController.currentPage != 1){
+                        if (globalController.currentPage != 1) {
                           var request = Get.put(MyRequestUserController());
                           var message = Get.put(MessageController());
                           await request.getRequests("", "");
 
                           message.connectedMessageIds = List.generate(
                             request.connectedRequests.length,
-                                (index) => request.connectedRequests[index]
-                            ["conversationId"],
+                            (index) => request.connectedRequests[index]
+                                ["conversationId"],
                           );
 
                           message.completedMessageIds = List.generate(
                             request.completedRequests.length,
-                                (index) => request.completedRequests[index]
-                            ["conversationId"],
+                            (index) => request.completedRequests[index]
+                                ["conversationId"],
                           );
 
                           await message.getMessages();
 
                           globalController.onChangeTab(1);
                         }
-
                       },
                       child: Container(
                         width: getWidth(60),
@@ -383,6 +382,11 @@ Container bottomBrandDetail({String id = ""}) {
                 if (res) {
                   showPopUp(
                     message: "Request has been sent successfully",
+                  );
+                } else {
+                  showPopUp(
+                    message: "Request has already been sent",
+                    success: false,
                   );
                 }
               },

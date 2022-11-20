@@ -7,7 +7,7 @@ trigger:
     - releases/*
   batch: true
   
-name: 1.2.$(Rev:r)
+name: 1.0.$(Rev:r)
 
 jobs:
 
@@ -58,6 +58,8 @@ jobs:
       buildName: "$(Build.BuildNumber)"
       iosCodesign: false
       extraArgs: '--release'
+      buildFlavour: 'prod'
+
 #
 #  - task: InstallAppleCertificate@2
 #    inputs:
@@ -77,7 +79,7 @@ jobs:
     displayName: "Code Sign ipa for Distribution"
     inputs:
       actions: "archive"
-      scheme: "Runner"
+      scheme: "prod"
       sdk: "$(sdk)"
       configuration: "$(configuration)"
       xcWorkspacePath: "ios/Runner.xcworkspace"

@@ -9,6 +9,7 @@ class Rating {
   int rate = 0;
   int review = 0;
 }
+
 class Comments {
   int createdAt = 0;
   String customerName = "";
@@ -79,10 +80,9 @@ class BrandDetailController extends GetxController {
 
   Future getBusinessRating({String id = ""}) async {
     try {
-      var response;
       CustomDio customDio = CustomDio();
 
-      response = await customDio.get("/businesses/$id/rating");
+      var response = await customDio.get("/businesses/$id/rating");
       var json = jsonDecode(response.toString());
 
       if (json["data"]["rate"] != null) {
@@ -100,7 +100,8 @@ class BrandDetailController extends GetxController {
           totalItems += item.review;
           res.add(item);
         }
-        averageRate.value = double.parse((total / totalItems).toStringAsFixed(1));
+        averageRate.value =
+            double.parse((total / totalItems).toStringAsFixed(1));
         totalReviews.value = totalItems;
 
         ratings.clear();
@@ -119,10 +120,8 @@ class BrandDetailController extends GetxController {
       var response;
       CustomDio customDio = CustomDio();
 
-      response = await customDio.get("/businesses/$id/feedbacks", {
-        "limit": 15,
-        "offset": 0
-      });
+      response = await customDio
+          .get("/businesses/$id/feedbacks", {"limit": 15, "offset": 0});
       var json = jsonDecode(response.toString());
 
       if (json["data"]["result"] != null) {
@@ -149,5 +148,4 @@ class BrandDetailController extends GetxController {
       return (false);
     }
   }
-
 }

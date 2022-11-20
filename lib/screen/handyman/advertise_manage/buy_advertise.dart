@@ -459,9 +459,6 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
     DateTime t1 = DateTime.parse(s1);
     DateTime t2 = DateTime.parse(s2);
     int difference = t2.difference(t1).inDays;
-    print(t1);
-    print(t2);
-    print(difference);
     if (difference > 0) {
       return difference;
     }

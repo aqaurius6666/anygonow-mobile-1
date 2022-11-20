@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
-import 'package:untitled/main.dart';
+import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/handyman/business_management/business_management_screen.dart';
 import 'package:untitled/screen/handyman/payment_page/payment_page_screen.dart';
@@ -16,6 +16,7 @@ import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/image.dart';
 
 class HandymanUserScreen extends StatelessWidget {
+  GlobalController globalController = Get.put(GlobalController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -410,6 +411,8 @@ class HandymanUserScreen extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
+                                        // Get.delete<>();
+                                        
                                         Get.offAll(() => LoginScreen());
                                       },
                                       child: SizedBox(

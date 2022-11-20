@@ -14,6 +14,9 @@ class HandymanHomePageScreen extends StatelessWidget {
       bottomNavigationBar: bottomNavigatorHandyman(),
       body: PageView(
         controller: Get.put(GlobalController()).pageController,
+        onPageChanged: (value) {
+          Get.put(GlobalController()).onChangeTab(value);
+        },
         physics:const NeverScrollableScrollPhysics(),
         children: [
           MyRequestScreen(),

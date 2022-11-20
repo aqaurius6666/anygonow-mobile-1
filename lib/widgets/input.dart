@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untitled/utils/config.dart';
 
@@ -23,8 +24,19 @@ Container inputPassword(
                 ),
                 width: double.infinity,
                 child: Row(children: [
-                  Text(label, style: TextStyle(fontSize: getHeight(14), color: enabled ? Colors.black : const Color(0xFF999999), fontWeight: FontWeight.w500)),
-                  required ? Text("*", style: TextStyle(color: enabled ? Colors.red : const Color(0xFF999999))) : Container()
+                  Text(label,
+                      style: TextStyle(
+                          fontSize: getHeight(14),
+                          color:
+                              enabled ? Colors.black : const Color(0xFF999999),
+                          fontWeight: FontWeight.w500)),
+                  required
+                      ? Text("*",
+                          style: TextStyle(
+                              color: enabled
+                                  ? Colors.red
+                                  : const Color(0xFF999999)))
+                      : Container()
                 ]),
               )
             : Container(),
@@ -58,8 +70,13 @@ Container inputPassword(
                       disabledBorder: InputBorder.none,
                       labelText: hintText,
                       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      contentPadding: EdgeInsets.only(left: getWidth(18), bottom: getHeight(20)),
-                      labelStyle: TextStyle(color: enabled ? const Color(0xFF9E9E9E) : const Color(0xFF999999), fontSize: getHeight(14)),
+                      contentPadding: EdgeInsets.only(
+                          left: getWidth(18), bottom: getHeight(20)),
+                      labelStyle: TextStyle(
+                          color: enabled
+                              ? const Color(0xFF9E9E9E)
+                              : const Color(0xFF999999),
+                          fontSize: getHeight(14)),
                     )),
               ),
               IconButton(
@@ -78,19 +95,22 @@ Container inputPassword(
   );
 }
 
-Container inputRegular(BuildContext context,
-    {String? label,
-    required String hintText,
-    required TextEditingController textEditingController,
-    bool enabled = true,
-    bool required = false,
-    double height = 48,
-    double width = 0,
-    int maxLines = 1,
-    int minLines = 1,
-    int? maxLength,
-    dynamic? onChange,
-    TextInputType keyboardType = TextInputType.text}) {
+Container inputRegular(
+  BuildContext context, {
+  String? label,
+  required String hintText,
+  required TextEditingController textEditingController,
+  bool enabled = true,
+  bool required = false,
+  double height = 48,
+  double width = 0,
+  int maxLines = 1,
+  int minLines = 1,
+  int? maxLength,
+  dynamic? onChange,
+  TextInputType keyboardType = TextInputType.text,
+  List<TextInputFormatter>? inputFormatters,
+}) {
   return Container(
     width: width == 0 ? null : getWidth(width),
     child: Column(
@@ -103,8 +123,19 @@ Container inputRegular(BuildContext context,
                 ),
                 width: double.infinity,
                 child: Row(children: [
-                  Text(label, style: TextStyle(fontSize: getHeight(14), color: enabled ? Colors.black : const Color(0xFF999999), fontWeight: FontWeight.w500)),
-                  required ? Text("*", style: TextStyle(color: enabled ? Colors.red : const Color(0xFF999999))) : Container()
+                  Text(label,
+                      style: TextStyle(
+                          fontSize: getHeight(14),
+                          color:
+                              enabled ? Colors.black : const Color(0xFF999999),
+                          fontWeight: FontWeight.w500)),
+                  required
+                      ? Text("*",
+                          style: TextStyle(
+                              color: enabled
+                                  ? Colors.red
+                                  : const Color(0xFF999999)))
+                      : Container()
                 ]),
               )
             : Container(),
@@ -126,6 +157,7 @@ Container inputRegular(BuildContext context,
             children: [
               Expanded(
                 child: TextFormField(
+                  inputFormatters: inputFormatters,
                   maxLines: maxLines,
                   minLines: minLines,
                   keyboardType: keyboardType,
@@ -133,7 +165,9 @@ Container inputRegular(BuildContext context,
                   controller: textEditingController,
                   maxLength: maxLength,
                   onChanged: onChange,
-                  style: TextStyle(fontSize: getHeight(14), color: enabled ? Colors.black : const Color(0xFF999999)),
+                  style: TextStyle(
+                      fontSize: getHeight(14),
+                      color: enabled ? Colors.black : const Color(0xFF999999)),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -147,7 +181,9 @@ Container inputRegular(BuildContext context,
                       left: getWidth(18),
                       bottom: getHeight(20),
                     ),
-                    labelStyle: TextStyle(color: const Color(0xFF9E9E9E), fontSize: getHeight(14)),
+                    labelStyle: TextStyle(
+                        color: const Color(0xFF9E9E9E),
+                        fontSize: getHeight(14)),
                   ),
                 ),
               ),
@@ -167,6 +203,8 @@ Container inputSearch(
   required List<String> options,
   String prefixIcon = "",
   String suffixIcon = "",
+  int maxLength = 0,
+  bool numberOnly = false,
 }) {
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _autocompleteKey = GlobalKey();
@@ -183,8 +221,19 @@ Container inputSearch(
             key: _autocompleteKey,
             focusNode: _focusNode,
             textEditingController: textEditingController,
-            fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+            fieldViewBuilder: (BuildContext context,
+                TextEditingController textEditingController,
+                FocusNode focusNode,
+                VoidCallback onFieldSubmitted) {
               return TextFormField(
+                inputFormatters: numberOnly
+                    ? <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        LengthLimitingTextInputFormatter(
+                            maxLength != 0 ? maxLength : null)
+                      ]
+                    : null,
+                // maxLength: maxLength == 0 ? null : maxLength,
                 focusNode: _focusNode,
                 controller: textEditingController,
                 style: TextStyle(fontSize: getHeight(12)),
@@ -228,11 +277,14 @@ Container inputSearch(
                     right: getWidth(16),
                     top: getHeight(2),
                   ),
-                  labelStyle: TextStyle(color: Color(0xFF878C92), fontSize: getHeight(16)),
+                  labelStyle: TextStyle(
+                      color: Color(0xFF878C92), fontSize: getHeight(16)),
                 ),
               );
             },
-            optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+            optionsViewBuilder: (BuildContext context,
+                AutocompleteOnSelected<String> onSelected,
+                Iterable<String> options) {
               return Material(
                 elevation: 4.0,
                 child: ListView(
@@ -251,7 +303,9 @@ Container inputSearch(
             },
             optionsBuilder: (TextEditingValue textEditingValue) {
               return options.where((String option) {
-                return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                return option
+                    .toLowerCase()
+                    .contains(textEditingValue.text.toLowerCase());
               }).toList();
             },
           ),
@@ -262,7 +316,12 @@ Container inputSearch(
 }
 
 Container inputWithHint(BuildContext context,
-    {required String hintText, required String labelText, required String initialText, required TextEditingController textEditingController, required bool err, Function? onchange}) {
+    {required String hintText,
+    required String labelText,
+    required String initialText,
+    required TextEditingController textEditingController,
+    required bool err,
+    Function? onchange}) {
   return Container(
     height: getWidth(52),
     padding: EdgeInsets.symmetric(vertical: getHeight(5)),
@@ -291,8 +350,10 @@ Container inputWithHint(BuildContext context,
               disabledBorder: InputBorder.none,
               labelText: labelText,
               hintText: hintText,
-              contentPadding: EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
-              labelStyle: TextStyle(color: Color(0xFF878C92), fontSize: getHeight(16)),
+              contentPadding:
+                  EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
+              labelStyle:
+                  TextStyle(color: Color(0xFF878C92), fontSize: getHeight(16)),
             ),
           ),
         ),
@@ -301,7 +362,11 @@ Container inputWithHint(BuildContext context,
   );
 }
 
-Container inputSignup(BuildContext context, {required String hintText, required TextEditingController textEditingController, required bool focus, required bool err}) {
+Container inputSignup(BuildContext context,
+    {required String hintText,
+    required TextEditingController textEditingController,
+    required bool focus,
+    required bool err}) {
   return Container(
     height: getWidth(52),
     padding: EdgeInsets.symmetric(vertical: getHeight(5)),
@@ -329,8 +394,10 @@ Container inputSignup(BuildContext context, {required String hintText, required 
               errorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
               labelText: hintText,
-              contentPadding: EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
-              labelStyle: TextStyle(color: Color(0xFF878C92), fontSize: getHeight(16)),
+              contentPadding:
+                  EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
+              labelStyle:
+                  TextStyle(color: Color(0xFF878C92), fontSize: getHeight(16)),
             ),
           ),
         ),
@@ -339,7 +406,15 @@ Container inputSignup(BuildContext context, {required String hintText, required 
   );
 }
 
-Container inputPasswordSignup(BuildContext context, TextEditingController controller, String hintText, bool isHide, Function changeHide, bool focus, bool err, {Function? onchange}) {
+Container inputPasswordSignup(
+    BuildContext context,
+    TextEditingController controller,
+    String hintText,
+    bool isHide,
+    Function changeHide,
+    bool focus,
+    bool err,
+    {Function? onchange}) {
   return Container(
     height: getWidth(52),
     padding: EdgeInsets.symmetric(vertical: getHeight(5)),
@@ -372,7 +447,8 @@ Container inputPasswordSignup(BuildContext context, TextEditingController contro
                 disabledBorder: InputBorder.none,
                 labelText: hintText,
                 contentPadding: EdgeInsets.only(left: getWidth(16)),
-                labelStyle: TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
+                labelStyle:
+                    TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
               )),
         ),
         IconButton(
@@ -388,7 +464,10 @@ Container inputPasswordSignup(BuildContext context, TextEditingController contro
   );
 }
 
-Container inputOnChange(BuildContext context, {required String hintText, required TextEditingController textEditingController, required Function function}) {
+Container inputOnChange(BuildContext context,
+    {required String hintText,
+    required TextEditingController textEditingController,
+    required Function function}) {
   return Container(
     height: getWidth(52),
     padding: EdgeInsets.symmetric(vertical: getHeight(5)),
@@ -413,8 +492,10 @@ Container inputOnChange(BuildContext context, {required String hintText, require
               errorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
               labelText: hintText,
-              contentPadding: EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
-              labelStyle: TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
+              contentPadding:
+                  EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
+              labelStyle:
+                  TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
             ),
           ),
         ),
@@ -434,10 +515,10 @@ Container inputSelect(
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _autocompleteKey = GlobalKey();
   return Container(
-    
-    padding: EdgeInsets.symmetric(vertical: getWidth(16), horizontal: getWidth(16)),
+    padding:
+        EdgeInsets.symmetric(vertical: getWidth(16), horizontal: getWidth(16)),
     decoration: BoxDecoration(
-      border: Border.all(width: 1, color: Color.fromARGB(255, 242,239,244)),
+      border: Border.all(width: 1, color: Color.fromARGB(255, 242, 239, 244)),
       borderRadius: BorderRadius.circular(8),
     ),
     child: Row(
@@ -447,11 +528,16 @@ Container inputSelect(
             key: _autocompleteKey,
             focusNode: _focusNode,
             textEditingController: textEditingController,
-            fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+            fieldViewBuilder: (BuildContext context,
+                TextEditingController textEditingController,
+                FocusNode focusNode,
+                VoidCallback onFieldSubmitted) {
               return TextFormField(
                 focusNode: _focusNode,
                 controller: textEditingController,
-                style: TextStyle(fontSize: getHeight(14),),
+                style: TextStyle(
+                  fontSize: getHeight(14),
+                ),
                 onEditingComplete: () {
                   FocusScope.of(context).unfocus();
                 },
@@ -491,11 +577,15 @@ Container inputSelect(
                     right: getWidth(16),
                     top: getHeight(2),
                   ),
-                  labelStyle: TextStyle(color: Color.fromARGB(255, 195, 196, 197), fontSize: getHeight(16)),
+                  labelStyle: TextStyle(
+                      color: Color.fromARGB(255, 195, 196, 197),
+                      fontSize: getHeight(16)),
                 ),
               );
             },
-            optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+            optionsViewBuilder: (BuildContext context,
+                AutocompleteOnSelected<String> onSelected,
+                Iterable<String> options) {
               return Material(
                 elevation: 4.0,
                 child: ListView(
@@ -514,7 +604,9 @@ Container inputSelect(
             },
             optionsBuilder: (TextEditingValue textEditingValue) {
               return options.where((String option) {
-                return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                return option
+                    .toLowerCase()
+                    .contains(textEditingValue.text.toLowerCase());
               }).toList();
             },
           ),
@@ -551,8 +643,19 @@ Container inputDate(BuildContext context,
                 ),
                 width: double.infinity,
                 child: Row(children: [
-                  Text(label, style: TextStyle(fontSize: getHeight(14), color: enabled ? Colors.black : const Color(0xFF999999), fontWeight: FontWeight.w500)),
-                  required ? Text("*", style: TextStyle(color: enabled ? Colors.red : const Color(0xFF999999))) : Container()
+                  Text(label,
+                      style: TextStyle(
+                          fontSize: getHeight(14),
+                          color:
+                              enabled ? Colors.black : const Color(0xFF999999),
+                          fontWeight: FontWeight.w500)),
+                  required
+                      ? Text("*",
+                          style: TextStyle(
+                              color: enabled
+                                  ? Colors.red
+                                  : const Color(0xFF999999)))
+                      : Container()
                 ]),
               )
             : Container(),
@@ -581,8 +684,10 @@ Container inputDate(BuildContext context,
                   controller: textEditingController,
                   maxLength: maxLength,
                   onChanged: onChange,
-                  onTap: onTap,                
-                  style: TextStyle(fontSize: getHeight(14), color: enabled ? Colors.black : const Color(0xFF999999)),
+                  onTap: onTap,
+                  style: TextStyle(
+                      fontSize: getHeight(14),
+                      color: enabled ? Colors.black : const Color(0xFF999999)),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -597,19 +702,21 @@ Container inputDate(BuildContext context,
                       bottom: getHeight(15),
                       top: getHeight(-5),
                     ),
-                    labelStyle: TextStyle(color: const Color(0xFF9E9E9E), fontSize: getHeight(14)),
+                    labelStyle: TextStyle(
+                        color: const Color(0xFF9E9E9E),
+                        fontSize: getHeight(14)),
                     suffixIconConstraints: BoxConstraints(
                       maxHeight: getHeight(30),
                       maxWidth: getWidth(30),
                     ),
                     suffixIcon: suffixIcon == ""
-                      ? null
-                      : Container(
-                          margin: EdgeInsets.only(right: getWidth(4)),
-                          child: SizedBox(
-                            child: SvgPicture.asset(suffixIcon),
+                        ? null
+                        : Container(
+                            margin: EdgeInsets.only(right: getWidth(4)),
+                            child: SizedBox(
+                              child: SvgPicture.asset(suffixIcon),
+                            ),
                           ),
-                        ),
                   ),
                 ),
               ),
