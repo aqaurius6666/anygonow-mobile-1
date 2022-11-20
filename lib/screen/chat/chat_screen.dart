@@ -17,7 +17,7 @@ class ChatScreen extends StatelessWidget {
     MessageController messageController = Get.put(MessageController());
     return Scaffold(
         appBar: appBar(
-            title: "On top mover",
+            title: messageController.currentService.value,
             bottom: Get.put(GlobalController()).user.value.role == 1 &&
                     !messageController.completedChat
                 ? PreferredSize(

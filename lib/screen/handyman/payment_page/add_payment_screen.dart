@@ -69,9 +69,9 @@ class AddPaymentScreen extends StatelessWidget {
                     context,
                     label: "Expiration date",
                     required: true,
-                    hintText: "MM/YYYY",
+                    hintText: "MM/YY",
                     textEditingController: paymentController.expiryDate,
-                    maxLength: 7,
+                    maxLength: 5,
                   ),
                 ),
                 SizedBox(

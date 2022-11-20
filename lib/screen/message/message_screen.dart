@@ -110,6 +110,8 @@ class MessageScreen extends StatelessWidget {
               requestController.connectedRequests[index]["id"];
         }
 
+        messageController.currentService.value = business;
+
         Get.to(ChatScreen());
       },
       child: Container(

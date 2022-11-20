@@ -188,9 +188,11 @@ Container confirmButtonContainer(
                           if (process == 1) {
                             Get.to(() => BusinessManagementScreen());
                             AccountController().isBusinessScreen.value = true;
+                            Get.put(AccountController()).isEditting.value = true;
                           } else if (process == 2) {
                             Get.to(() => BusinessManagementScreen());
                             AccountController().isBusinessScreen.value = false;
+                            Get.put(AccountController()).isEditting.value = true;
                           } else {
                             await Get.put(MyRequestController()).getRequests();
                             await Get.put(ManageAdvertiseController())

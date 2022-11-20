@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
@@ -12,6 +13,7 @@ import 'package:untitled/widgets/pop-up/password-reset.dart';
 class MyRequestUserScreen extends StatelessWidget {
   MyRequestUserController myRequestUserController =
       Get.put(MyRequestUserController());
+  MyRequestController myRequestController = Get.put(MyRequestController());
 
   cancel(String id) async {
     var res = await myRequestUserController.cancelRequest(orderId: id);
@@ -310,6 +312,13 @@ class MyRequestUserScreen extends StatelessWidget {
                   case 0:
                     await cancelRequestPopup(
                         () => {cancel(orderId), Get.back()});
+                    break;
+                  case 1:
+                    myRequestController.currentRequest = orderId;
+                    var res = await myRequestController.completeRequest();
+                    if (res) {
+                      showPopUp(message: "Service completed", success: true);
+                    }
                     break;
                   case 2:
                     feedbackPopup(

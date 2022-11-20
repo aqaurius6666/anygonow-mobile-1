@@ -22,6 +22,8 @@ class MessageController extends GetxController {
   int index = 0;
   bool completedChat = false;
 
+  RxString currentService = "".obs;
+
   Future getMessages() async {
     try {
       var response;

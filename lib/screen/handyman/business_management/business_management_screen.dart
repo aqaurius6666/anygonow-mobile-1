@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:untitled/controller/account/account_controller.dart';
+import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/utils/config.dart';
@@ -86,6 +88,24 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                     var result = await accountController.editBusinessContact();
                     if (result != null) {
                       accountController.isBusinessScreen.value = false;
+                      final flutterWebviewPlugin = new FlutterWebviewPlugin();
+                      print("localst");
+                      flutterWebviewPlugin
+                          .launch(
+                              GlobalController.baseWebUrl +
+                                  "?page=services_areas",
+                              withLocalStorage: true,
+                              withJavascript: true)
+                          .catchError((err) => {print(err)})
+                          .whenComplete(() async {
+                        final res = await flutterWebviewPlugin.evalJavascript(
+                            '(function() { try { alert(window.location.href); window.localStorage.setItem("persist:userInfo", JSON.stringify({"auth": ${Get.put(GlobalController()).user.value.certificate.toString()}})); } catch (err) { alert(err); } })();');
+                        // Wrapped `setItem` into a func that would return some helpful info in case it throws.
+                        print("Eval result: $res");
+                      });
+                      // await flutterWebviewPlugin.evalJavascript(
+                      //     '<script language="JavaScript" type="text/javascript">(function() { try { alert("res"); window.localStorage.setItem("persist:userInfo", JSON.stringify({"auth": ${Get.put(GlobalController()).user.value.certificate.toString()}})); } catch (err) { alert(err); } })();</script>');
+
                       Get.to(() => ServiceAreaScreen());
                     }
                   }

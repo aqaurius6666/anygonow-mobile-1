@@ -68,9 +68,9 @@ class AddCard extends StatelessWidget {
                           context,
                           label: "Expiration date",
                           required: true,
-                          hintText: "MM/YYYY",
+                          hintText: "MM/YY",
                           textEditingController: manageAdvertiseController.expiryDateCard,
-                          maxLength: 7,
+                          maxLength: 5,
                         ),
                       ),
                       SizedBox(
@@ -114,9 +114,17 @@ class AddCard extends StatelessWidget {
                             ),
                           ),
                           onPressed: () async {
+                            var expireDate = manageAdvertiseController.expiryDateCard.text.split('/');
+                            if (manageAdvertiseController.cardNumber.text == "") {
+                              CustomDialog(context, "FAILED").show({"message": 'Card number is required'});
+                              return;
+                            }
+                            if (int.parse(expireDate.first) > 12 || int.parse(expireDate.first) == 0) {
+                              CustomDialog(context, "FAILED").show({"message": 'The expiration date is not in the correct format'});
+                              return;
+                            }
                             manageAdvertiseController.loading.value = true;
                             var _card = CardDetails();
-                            var expireDate = manageAdvertiseController.expiryDateCard.text.split('/');
                             if (manageAdvertiseController.cardNumber.text != "") {
                               _card = _card.copyWith(number: manageAdvertiseController.cardNumber.text.replaceAll(" ", ""));
                             }
