@@ -57,27 +57,30 @@ class MyRequestUserScreen extends StatelessWidget {
   Container pendingTab(
       BuildContext context, MyRequestUserController controller) {
     return Container(
-      child: ListView(
-        children: List.generate(
-          controller.pendingRequests.length,
-          (index) {
-            dynamic item = controller.pendingRequests[index];
-            return requestItem(
-              context: context,
-              title: item["businessName"],
-              service: item["serviceName"],
-              timeRequest: TimeService.requestTimeFormat(
-                TimeService.stringToDateTime(item["startDate"]) ??
-                    DateTime(1, 1, 1),
-              ),
-              phone: item["customerPhone"],
-              orderId: item["id"],
-              serviceId: item["serviceId"],
-              businessId: item["businessId"],
-              image: item["businessLogo"] ?? "",
-            );
-          },
-        ),
+      child: Obx(() {
+          return ListView(
+            children: List.generate(
+              controller.pendingRequests.length,
+              (index) {
+                dynamic item = controller.pendingRequests[index];
+                return requestItem(
+                  context: context,
+                  title: item["businessName"],
+                  service: item["serviceName"],
+                  timeRequest: TimeService.requestTimeFormat(
+                    TimeService.stringToDateTime(item["startDate"]) ??
+                        DateTime(1, 1, 1),
+                  ),
+                  phone: item["customerPhone"],
+                  orderId: item["id"],
+                  serviceId: item["serviceId"],
+                  businessId: item["businessId"],
+                  image: item["businessLogo"] ?? "",
+                );
+              },
+            ),
+          );
+        }
       ),
     );
   }
@@ -85,28 +88,31 @@ class MyRequestUserScreen extends StatelessWidget {
   Container connectedTab(
       BuildContext context, MyRequestUserController controller) {
     return Container(
-      child: ListView(
-        children: List.generate(
-          controller.connectedRequests.length,
-          (index) {
-            dynamic item = controller.connectedRequests[index];
-            return requestItem(
-              context: context,
-              title: item["businessName"],
-              service: item["serviceName"],
-              timeRequest: TimeService.requestTimeFormat(
-                TimeService.stringToDateTime(item["startDate"]) ??
-                    DateTime(1, 1, 1),
-              ),
-              phone: item["customerPhone"],
-              orderId: item["id"],
-              serviceId: item["serviceId"],
-              businessId: item["businessId"],
-              type: 1,
-              image: item["businessLogo"] ?? "",
-            );
-          },
-        ),
+      child: Obx(() {
+          return ListView(
+            children: List.generate(
+              controller.connectedRequests.length,
+              (index) {
+                dynamic item = controller.connectedRequests[index];
+                return requestItem(
+                  context: context,
+                  title: item["businessName"],
+                  service: item["serviceName"],
+                  timeRequest: TimeService.requestTimeFormat(
+                    TimeService.stringToDateTime(item["startDate"]) ??
+                        DateTime(1, 1, 1),
+                  ),
+                  phone: item["customerPhone"],
+                  orderId: item["id"],
+                  serviceId: item["serviceId"],
+                  businessId: item["businessId"],
+                  type: 1,
+                  image: item["businessLogo"] ?? "",
+                );
+              },
+            ),
+          );
+        }
       ),
     );
   }
@@ -114,28 +120,31 @@ class MyRequestUserScreen extends StatelessWidget {
   Container completedTab(
       BuildContext context, MyRequestUserController controller) {
     return Container(
-      child: ListView(
-        children: List.generate(
-          controller.completedRequests.length,
-          (index) {
-            dynamic item = controller.completedRequests[index];
-            return requestItem(
-              context: context,
-              title: item["businessName"],
-              service: item["serviceName"],
-              timeRequest: TimeService.requestTimeFormat(
-                TimeService.stringToDateTime(item["startDate"]) ??
-                    DateTime(1, 1, 1),
-              ),
-              phone: item["customerPhone"],
-              orderId: item["id"],
-              serviceId: item["serviceId"],
-              businessId: item["businessId"],
-              type: 2,
-              image: item["businessLogo"] ?? "",
-            );
-          },
-        ),
+      child: Obx(() {
+          return ListView(
+            children: List.generate(
+              controller.completedRequests.length,
+              (index) {
+                dynamic item = controller.completedRequests[index];
+                return requestItem(
+                  context: context,
+                  title: item["businessName"],
+                  service: item["serviceName"],
+                  timeRequest: TimeService.requestTimeFormat(
+                    TimeService.stringToDateTime(item["startDate"]) ??
+                        DateTime(1, 1, 1),
+                  ),
+                  phone: item["customerPhone"],
+                  orderId: item["id"],
+                  serviceId: item["serviceId"],
+                  businessId: item["businessId"],
+                  type: 2,
+                  image: item["businessLogo"] ?? "",
+                );
+              },
+            ),
+          );
+        }
       ),
     );
   }
