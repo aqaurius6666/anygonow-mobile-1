@@ -195,6 +195,113 @@ Container inputRegular(
   );
 }
 
+Container inputPhoneNUmber(
+  BuildContext context, {
+  String? label,
+  required String hintText,
+  required TextEditingController textEditingController,
+  bool enabled = true,
+  bool required = false,
+  double height = 48,
+  double width = 0,
+  int maxLines = 1,
+  int minLines = 1,
+  int? maxLength,
+  dynamic? onChange,
+  TextInputType keyboardType = TextInputType.text,
+  List<TextInputFormatter>? inputFormatters,
+  bool numberOnly = false,
+}) {
+  return Container(
+    width: width == 0 ? null : getWidth(width),
+    child: Column(
+      children: [
+        label != null
+            ? Container(
+                margin: EdgeInsets.only(
+                  left: getWidth(16),
+                  right: getWidth(16),
+                ),
+                width: double.infinity,
+                child: Row(children: [
+                  Text(label,
+                      style: TextStyle(
+                          fontSize: getHeight(14),
+                          color:
+                              enabled ? Colors.black : const Color(0xFF999999),
+                          fontWeight: FontWeight.w500)),
+                  required
+                      ? Text("*",
+                          style: TextStyle(
+                              color: enabled
+                                  ? Colors.red
+                                  : const Color(0xFF999999)))
+                      : Container()
+                ]),
+              )
+            : Container(),
+        label != null
+            ? SizedBox(
+                height: getHeight(3),
+              )
+            : Container(),
+        Container(
+          height: getHeight(height),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(getHeight(6)),
+            border: Border.all(
+              color: const Color(0xFFE6E6E6),
+              width: getHeight(1),
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  inputFormatters:  numberOnly
+                    ? <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        LengthLimitingTextInputFormatter(
+                            maxLength != 0 ? maxLength : null)
+                      ]
+                    : null,
+                  maxLines: maxLines,
+                  minLines: minLines,
+                  keyboardType: keyboardType,
+                  readOnly: !enabled,
+                  controller: textEditingController,
+                  maxLength: maxLength,
+                  onChanged: onChange,
+                  style: TextStyle(
+                      fontSize: getHeight(14),
+                      color: enabled ? Colors.black : const Color(0xFF999999)),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    counterText: "",
+                    labelText: hintText,
+                    contentPadding: EdgeInsets.only(
+                      left: getWidth(18),
+                      bottom: getHeight(20),
+                    ),
+                    labelStyle: TextStyle(
+                        color: const Color(0xFF9E9E9E),
+                        fontSize: getHeight(14)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 Container inputSearch(
   BuildContext context, {
   required String hintText,

@@ -118,6 +118,7 @@ class MyRequestScreen extends StatelessWidget {
         bottom: getHeight(13),
       ),
       height: getHeight(184),
+      width: getWidth(343),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -144,107 +145,112 @@ class MyRequestScreen extends StatelessWidget {
           SizedBox(
             width: getWidth(14),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Request time: $startDate",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: getHeight(12),
-                ),
-              ),
-              SizedBox(
-                height: getHeight(8),
-              ),
-              Text(
-                "Expiry time: $endDate",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: getHeight(12),
-                ),
-              ),
-              SizedBox(
-                height: getHeight(8),
-              ),
-              Text(
-                "Service requested: $serviceName",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: getWidth(12),
-                ),
-              ),
-              SizedBox(
-                height: getHeight(8),
-              ),
-              Text(
-                "Zip code: $zipCode",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: getWidth(12),
-                ),
-              ),
-              SizedBox(
-                height: getHeight(8),
-              ),
-              Text(
-                "Deal fee: \$$fee",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: getWidth(12),
-                ),
-              ),
-              SizedBox(
-                height: getHeight(16),
-              ),
-              Row(
-                children: [
-                  Bouncing(
-                    onPress: () {},
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: getHeight(32),
-                      width: getWidth(81),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white,
-                      ),
-                      child: Text(
-                        "Ignore",
-                        style: TextStyle(
-                          color: Color(0xFFFF511A),
-                          fontSize: getWidth(16),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Request time: $startDate",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: getHeight(12),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(
-                    width: getWidth(7),
+                ),
+                SizedBox(
+                  height: getHeight(8),
+                ),
+                Text(
+                  "Expiry time: $endDate",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: getHeight(12),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Bouncing(
-                    onPress: () {},
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: getHeight(32),
-                      width: getWidth(115),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Color(0xFFFF511A),
-                      ),
-                      child: Text(
-                        "View detail",
-                        style: TextStyle(
+                ),
+                SizedBox(
+                  height: getHeight(8),
+                ),
+                Text(
+                  "Service requested: $serviceName",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: getWidth(12),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                SizedBox(
+                  height: getHeight(8),
+                ),
+                Text(
+                  "Zip code: $zipCode",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: getWidth(12),
+                  ),
+                ),
+                SizedBox(
+                  height: getHeight(8),
+                ),
+                Text(
+                  "Deal fee: \$$fee",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: getWidth(12),
+                  ),
+                ),
+                SizedBox(
+                  height: getHeight(16),
+                ),
+                Row(
+                  children: [
+                    Bouncing(
+                      onPress: () {},
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: getHeight(32),
+                        width: getWidth(81),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
                           color: Colors.white,
-                          fontSize: getWidth(16),
-                          fontWeight: FontWeight.w700,
+                        ),
+                        child: Text(
+                          "Ignore",
+                          style: TextStyle(
+                            color: Color(0xFFFF511A),
+                            fontSize: getWidth(16),
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    SizedBox(
+                      width: getWidth(7),
+                    ),
+                    Bouncing(
+                      onPress: () {},
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: getHeight(32),
+                        width: getWidth(115),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xFFFF511A),
+                        ),
+                        child: Text(
+                          "View detail",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: getWidth(16),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           )
         ],
       ),

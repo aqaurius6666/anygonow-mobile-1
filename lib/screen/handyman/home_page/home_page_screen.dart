@@ -10,20 +10,25 @@ import 'package:untitled/widgets/bottom_navigator.dart';
 class HandymanHomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: bottomNavigatorHandyman(),
-      body: PageView(
-        controller: Get.put(GlobalController()).pageController,
-        onPageChanged: (value) {
-          Get.put(GlobalController()).onChangeTab(value);
-        },
-        physics:const NeverScrollableScrollPhysics(),
-        children: [
-          MyRequestScreen(),
-          MessageScreen(),
-          ListAdvertiseScreen(),
-          HandymanUserScreen(),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        bottomNavigationBar: bottomNavigatorHandyman(),
+        body: PageView(
+          controller: Get.put(GlobalController()).pageController,
+          onPageChanged: (value) {
+            Get.put(GlobalController()).onChangeTab(value);
+          },
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            MyRequestScreen(),
+            MessageScreen(),
+            ListAdvertiseScreen(),
+            HandymanUserScreen(),
+          ],
+        ),
       ),
     );
   }

@@ -116,11 +116,7 @@ AlertDialog alertDialogFailed(context, message, height) {
             ),
           ),
           SizedBox(
-<<<<<<< HEAD
-            height: getHeight(20),
-=======
             height: getHeight(15),
->>>>>>> fix: fix bug
           ),
           Text(
             message != null ? message.toString().tr : "common_failed".tr,

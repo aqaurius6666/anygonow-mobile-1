@@ -49,12 +49,14 @@ class SignupContractScreen extends StatelessWidget {
             SizedBox(
               height: getHeight(12),
             ),
-            inputRegular(
+            inputPhoneNUmber(
               context,
               label: "phone".tr,
               hintText: "Enter your phone",
               required: true,
               textEditingController: signupController.phoneNumber,
+              numberOnly: true,
+              maxLength: 12,
             ),
             SizedBox(
               height: getHeight(12),
@@ -151,9 +153,9 @@ Container confirmButtonContainer(BuildContext context, SignupController signupCo
                 CustomDialog(context, "FAILED").show({"message": "Email invalidate"});
                 return;
               }
-              bool phoneValid = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(signupController.phoneNumber.text);
+              bool phoneValid = RegExp(r'(^(?:[+0]9)?[0-9]{7,12}$)').hasMatch(signupController.phoneNumber.text);
               if (!phoneValid) {
-                CustomDialog(context, "FAILED").show({"message": "Phone number invalidate"});
+                CustomDialog(context, "FAILED").show({"message": "Phone numbers are only alphanumeric and have 7-12 characters"});
                 return;
               }
               bool passValid = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(signupController.password.text);

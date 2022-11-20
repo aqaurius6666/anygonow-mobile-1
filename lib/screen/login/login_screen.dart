@@ -8,6 +8,7 @@ import 'package:untitled/controller/login/login_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/screen/account/account_screen.dart';
 import 'package:untitled/screen/forgot_password/forgot_password_screen.dart';
+import 'package:untitled/screen/handyman/advertise_manage/buy_advertise.dart';
 import 'package:untitled/screen/handyman/business_management/business_management_screen.dart';
 import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
 import 'package:untitled/screen/home_page/home_page_screen.dart';
@@ -27,7 +28,9 @@ class LoginScreen extends StatelessWidget {
     LoginPageController loginPageController = Get.put(LoginPageController());
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      bottomNavigationBar: Padding(padding: EdgeInsets.only(top: getHeight(0)), child: confirmButtonContainer(context, loginPageController)),
+      bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(top: getHeight(0)),
+          child: confirmButtonContainer(context, loginPageController)),
       body: Container(
         padding: EdgeInsets.only(
           left: getWidth(16),
@@ -63,11 +66,17 @@ class LoginScreen extends StatelessWidget {
             SizedBox(
               height: getHeight(40),
             ),
-            inputRegular(context, label: "email_or_phone".tr, hintText: "name@email.com", textEditingController: loginPageController.username),
+            inputRegular(context,
+                label: "email_or_phone".tr,
+                hintText: "name@email.com",
+                textEditingController: loginPageController.username),
             Obx(
               () => loginPageController.messValidateUsername.value != ""
                   ? Padding(
-                      padding: EdgeInsets.only(top: getHeight(12), bottom: getHeight(12), left: getWidth(16)),
+                      padding: EdgeInsets.only(
+                          top: getHeight(12),
+                          bottom: getHeight(12),
+                          left: getWidth(16)),
                       child: InkWell(
                         child: Text(
                           loginPageController.messValidateUsername.value.tr,
@@ -93,7 +102,10 @@ class LoginScreen extends StatelessWidget {
             Obx(
               () => loginPageController.messValidatePassword.value != ""
                   ? Padding(
-                      padding: EdgeInsets.only(top: getHeight(12), bottom: getHeight(12), left: getWidth(16)),
+                      padding: EdgeInsets.only(
+                          top: getHeight(12),
+                          bottom: getHeight(12),
+                          left: getWidth(16)),
                       child: InkWell(
                         child: Text(
                           loginPageController.messValidatePassword.value.tr,
@@ -125,7 +137,8 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-Container confirmButtonContainer(BuildContext context, LoginPageController controller) {
+Container confirmButtonContainer(
+    BuildContext context, LoginPageController controller) {
   GlobalController globalController = Get.put(GlobalController());
   return bottomContainerLayout(
     height: 120,
@@ -156,7 +169,8 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                         controller.isLoading.value = false;
                         controller.onClearData();
                         Get.delete<MainScreenController>();
-                        Get.delete<GlobalController>();
+                        Get.put(GlobalController()).currentPage.value = 0;
+                        Get.delete<BuyAdvertiseScreen>();
                         int? role = globalController.user.value.role;
                         int? process = globalController.user.value.process;
                         await Get.put(GlobalController()).getCategories();
@@ -165,9 +179,11 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                           Get.to(HomePageScreen());
                           if (process == 1) {
                             await Get.put(AccountController()).getUserInfo();
-                            Get.to(() => AccountScreen());    
-                            CustomDialog(context, "SUCCESS").show({"message": "You need to complete your information"});                         
-                          }                         
+                            Get.to(() => AccountScreen());
+                            CustomDialog(context, "SUCCESS").show({
+                              "message": "You need to complete your information"
+                            });
+                          }
                         } else {
                           if (process == 1) {
                             Get.to(() => BusinessManagementScreen());
@@ -177,14 +193,17 @@ Container confirmButtonContainer(BuildContext context, LoginPageController contr
                             AccountController().isBusinessScreen.value = false;
                           } else {
                             await Get.put(MyRequestController()).getRequests();
-                            await Get.put(ManageAdvertiseController()).getListAdvertise();
+                            await Get.put(ManageAdvertiseController())
+                                .getListAdvertise();
                             Get.to(() => HandymanHomePageScreen());
                           }
+                          // Get.to(() => HandymanHomePageScreen());
                         }
                       }
                       controller.isLoading.value = false;
                     },
-                    child: const Text("Sign in", style: TextStyle(color: Colors.white)),
+                    child: const Text("Sign in",
+                        style: TextStyle(color: Colors.white)),
                   ),
           ),
         ),

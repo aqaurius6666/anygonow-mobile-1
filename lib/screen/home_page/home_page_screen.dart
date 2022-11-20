@@ -9,18 +9,23 @@ import 'package:untitled/widgets/bottom_navigator.dart';
 class HomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: bottomNavigator(),
-      body: PageView(
-        controller: Get.put(GlobalController()).pageController,
-        onPageChanged: (value) {
-          Get.put(GlobalController()).onChangeTab(value);
-        },
-        children: [
-          MainScreen(),
-          MessageScreen(),
-          UserScreen(),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        bottomNavigationBar: bottomNavigator(),
+        body: PageView(
+          controller: Get.put(GlobalController()).pageController,
+          onPageChanged: (value) {
+            Get.put(GlobalController()).onChangeTab(value);
+          },
+          children: [
+            MainScreen(),
+            MessageScreen(),
+            UserScreen(),
+          ],
+        ),
       ),
     );
   }

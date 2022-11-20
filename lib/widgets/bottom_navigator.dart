@@ -389,6 +389,7 @@ Container bottomBrandDetail({String id = ""}) {
                     success: false,
                   );
                 }
+                mainScreenController.requests.clear();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -406,3 +407,72 @@ Container bottomBrandDetail({String id = ""}) {
     ),
   );
 }
+
+Container bottomSearchResult() {
+  MainScreenController mainScreenController = Get.put(MainScreenController());
+  return bottomContainerLayout(
+    height: getHeight(50),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.white,
+                side: const BorderSide(
+                  color: Color(0xffff511a),
+                ),
+              ),
+              onPressed: () async {
+
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Uncheck all".tr,
+                      style: const TextStyle(color: Color(0xffff511a))),
+                ],
+              )),
+        ),
+        SizedBox(
+          width: getWidth(8),
+        ),
+        Expanded(
+          child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: const Color(0xffff511a),
+                side: const BorderSide(
+                  color: Color(0xffff511a),
+                ),
+              ),
+              onPressed: () async {
+                var res = await mainScreenController.sendRequest();
+                if (res) {
+                  showPopUp(
+                    message: "Request has been sent successfully",
+                  );
+                } else {
+                  showPopUp(
+                    message: "Request has already been sent",
+                    success: false,
+                  );
+                }
+                mainScreenController.requests.clear();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset("assets/icons/flag.svg"),
+                  SizedBox(
+                    width: getWidth(4),
+                  ),
+                  Text("Send request".tr,
+                      style: const TextStyle(color: Colors.white)),
+                ],
+              )),
+        ),
+      ],
+    ),
+  );
+}
+

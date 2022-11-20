@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -18,6 +19,11 @@ class Category {
 }
 
 class GlobalController extends GetxController {
+  static final String baseWebUrlFormat = dotenv.env["WEB_URL"].toString();
+  static final String baseWebUrl =
+      baseWebUrlFormat[baseWebUrlFormat.length - 1] == "/"
+          ? baseWebUrlFormat
+          : baseWebUrlFormat + "/";
   var db;
   Rx<User> user = User().obs;
   RxList<Category> categories = <Category>[].obs;
@@ -70,7 +76,7 @@ class GlobalController extends GetxController {
       }
 
       return (true);
-    }catch(e) {
+    } catch (e) {
       print(e);
       return false;
     }

@@ -32,7 +32,6 @@ class LoginPageController extends GetxController {
     password.text = "";
   }
 
-
   Future getPing(List<String> certificateList) async {
     try {
       CustomDio customDio = CustomDio();
@@ -123,7 +122,7 @@ class LoginPageController extends GetxController {
             userInfo.certificate = certificateList[0];
             userInfo.role = jsonResponse["data"]["role"];
             userInfo.process = jsonResponse["data"]["process"] ?? 0;
-            userInfo.avatar = jsonResponse["data"]["image"] ?? 0;
+            userInfo.avatar = jsonResponse["data"]["image"];
 
             CustomDio customDio = CustomDio();
 
