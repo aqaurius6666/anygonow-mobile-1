@@ -172,14 +172,28 @@ GestureDetector handymanItem({
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            RatingBarIndicator(
-                              rating: stars,
-                              itemSize: getHeight(15),
-                              itemBuilder: (context, index) => const Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              itemCount: 5,
+                            Row(
+                              children: [
+                                RatingBarIndicator(
+                                  rating: stars,
+                                  itemSize: getHeight(15),
+                                  itemBuilder: (context, index) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  itemCount: 5,
+                                ),
+                                SizedBox(
+                                  width: getWidth(5),
+                                ),
+                                Text(
+                                  "$reviews reviews",
+                                  style: TextStyle(
+                                    fontSize: getWidth(12),
+                                    color: Color(0xFF999999),
+                                  ),
+                                )
+                              ],
                             ),
                             const Icon(
                               Icons.arrow_forward_ios,

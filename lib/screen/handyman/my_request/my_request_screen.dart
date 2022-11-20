@@ -4,6 +4,7 @@ import 'package:untitled/controller/handyman/my_request/my_request_controller.da
 import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/image.dart';
 
 class MyRequestScreen extends StatelessWidget {
@@ -43,7 +44,15 @@ class MyRequestScreen extends StatelessWidget {
                   ),
                 ),
                 Bouncing(
-                  onPress: () {},
+                  onPress: () async {
+                    var res = await myRequestController.connectAllRequest();
+                    if (res == true) {
+                      myRequestController.requests.removeRange(0, myRequestController.requests.length);
+                      CustomDialog(context, "SUCCESS").show({'message': 'Successfully connect order'});
+                    } else {
+                      CustomDialog(context, "FAILED").show({'message': 'Failed refused order'});
+                    }
+                  },
                   child: const Text(
                     "Connect all",
                     style: TextStyle(
@@ -71,7 +80,9 @@ class MyRequestScreen extends StatelessWidget {
               SizedBox(
                 height: getHeight(19),
               ),
-              getRequests(),
+              Obx(() => 
+                getRequests(context: context),
+              ),
             ],
           ),
         ),
@@ -79,39 +90,51 @@ class MyRequestScreen extends StatelessWidget {
     );
   }
 
-  Column getRequests() {
-    return Column(
-      children: List.generate(
-          myRequestController.requests.length,
-          (index) => requestItem(
-                startDate: TimeService.dateTimeToString2(
-                    TimeService.stringToDateTime(
-                            myRequestController.requests[index]["startDate"]) ??
-                        DateTime(1, 1, 1)),
-                endDate: TimeService.dateTimeToString2(
-                    TimeService.stringToDateTime(
-                            myRequestController.requests[index]["endDate"]) ??
-                        DateTime(1, 1, 1)),
-                serviceName:
-                    myRequestController.requests[index]["serviceName"] ?? "",
-                zipCode: myRequestController.requests[index]
-                        ["customerZipcode"] ??
-                    "",
-                fee: myRequestController.requests[index]["fee"]?.toString() ??
-                    "0",
-                banner:
-                    myRequestController.requests[index]["businessLogo"] ?? "",
-              )),
-    );
+  Column getRequests({context}) {
+    return  
+      Column(
+        children: 
+          List.generate(
+            myRequestController.requests.length,
+            (index) => requestItem(
+                  startDate: TimeService.dateTimeToString2(
+                      TimeService.stringToDateTime(
+                              myRequestController.requests[index]["startDate"]) ??
+                          DateTime(1, 1, 1)),
+                  endDate: TimeService.dateTimeToString2(
+                      TimeService.stringToDateTime(
+                              myRequestController.requests[index]["endDate"]) ??
+                          DateTime(1, 1, 1)),
+                  serviceName:
+                      myRequestController.requests[index]["serviceName"] ?? "",
+                  id:
+                      myRequestController.requests[index]["id"] ?? "",
+                  zipCode: myRequestController.requests[index]
+                          ["customerZipcode"] ??
+                      "",
+                  fee: myRequestController.requests[index]["fee"]?.toString() ??
+                      "0",
+                  banner:
+                      myRequestController.requests[index]["businessLogo"] ?? "",
+                  index: index,
+                  context: context,
+              )
+          ),
+      );
+        
+      
   }
 
   Container requestItem({
     String startDate = "",
     String endDate = "",
     String serviceName = "",
+    String id = "",
     String zipCode = "",
     String fee = "",
     String banner = "",
+    int index = 0,
+    context,
   }) {
     return Container(
       margin: EdgeInsets.only(
@@ -153,7 +176,7 @@ class MyRequestScreen extends StatelessWidget {
                   "Request time: $startDate",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: getHeight(12),
+                    fontSize: getWidth(12),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -164,7 +187,7 @@ class MyRequestScreen extends StatelessWidget {
                   "Expiry time: $endDate",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: getHeight(12),
+                    fontSize: getWidth(12),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -187,6 +210,7 @@ class MyRequestScreen extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: getWidth(12),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(
@@ -197,6 +221,7 @@ class MyRequestScreen extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: getWidth(12),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(
@@ -205,7 +230,16 @@ class MyRequestScreen extends StatelessWidget {
                 Row(
                   children: [
                     Bouncing(
-                      onPress: () {},
+                      onPress: () async {
+                        myRequestController.currentRequest = id;
+                        var res = await myRequestController.rejectRequest();
+                        if (res) {
+                          myRequestController.requests.removeAt(index);
+                          CustomDialog(context, "SUCCESS").show({'message': 'Successfully refused order'});
+                        } else {
+                          CustomDialog(context, "FAILED").show({'message': 'Failed refused order'});
+                        }
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         height: getHeight(32),
@@ -228,7 +262,16 @@ class MyRequestScreen extends StatelessWidget {
                       width: getWidth(7),
                     ),
                     Bouncing(
-                      onPress: () {},
+                      onPress: () async {
+                        myRequestController.currentRequest = id;
+                        var res = await myRequestController.connectRequest();
+                        if (res) {
+                          myRequestController.requests.removeAt(index);
+                          CustomDialog(context, "SUCCESS").show({'message': 'Successfully connect order'});
+                        } else {
+                          CustomDialog(context, "FAILED").show({'message': 'Failed connect order'});
+                        }
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         height: getHeight(32),
@@ -238,7 +281,7 @@ class MyRequestScreen extends StatelessWidget {
                           color: Color(0xFFFF511A),
                         ),
                         child: Text(
-                          "View detail",
+                          "Connect",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: getWidth(16),

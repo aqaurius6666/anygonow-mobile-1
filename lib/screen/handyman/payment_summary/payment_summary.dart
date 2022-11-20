@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/payment_summary/payment_summary_controller.dart';
 import 'package:untitled/service/date_format.dart';
+import 'package:untitled/utils/cdn.dart';
 import 'package:untitled/utils/common-function.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:intl/intl.dart';
@@ -163,15 +164,16 @@ class PaymentSummary extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          paymentSummaryController.listPaymentSummary[index]["image"] != null ?
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image(
               width: getWidth(48),
               height: getHeight(48),
-              image: NetworkImage(paymentSummaryController.listPaymentSummary[index]["image"]),
+              image: NetworkImage(getCDN(paymentSummaryController.listPaymentSummary[index]["image"])),
               fit: BoxFit.cover,
             ),
-          ),
+          ): Container(),
           SizedBox(width: getWidth(12)),
           Expanded(
             child: Column(
@@ -219,6 +221,7 @@ class PaymentSummary extends StatelessWidget {
         fontSize: getHeight(14),
         fontFamily: 'TTNorm',
         fontWeight: FontWeight.w600,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

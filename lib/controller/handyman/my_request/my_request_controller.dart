@@ -53,7 +53,48 @@ class MyRequestController extends GetxController {
     }
   }
 
+  Future connectRequest() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      var response = await customDio.post(
+        "/orders/connect",
+        {
+          "data": {
+            "orderId": currentRequest,
+          },
+        },
+        sign: true,
+      );
 
+      var json = jsonDecode(response.toString());
+
+      return(json["success"]);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future connectAllRequest() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      var response = await customDio.post(
+        "/orders/connect-all",
+        {},
+        sign: true,
+      );
+      // api/orders/connect-all
+
+      var json = jsonDecode(response.toString());
+
+      return(json["success"]);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 
   Future completeRequest() async {
     try {

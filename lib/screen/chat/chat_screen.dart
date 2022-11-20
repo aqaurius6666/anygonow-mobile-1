@@ -97,7 +97,13 @@ class ChatScreen extends StatelessWidget {
                               color: Color(0xFFFF511A), fontSize: getWidth(16)),
                         ),
                         onPress: () {
-                          customerDetailPopup(context: context);
+                          customerDetailPopup(
+                            startTime: messageController.currentConversation["startDate"],
+                            serviceName: messageController.currentConversation["serviceName"],
+                            zipcode: messageController.currentConversation["customerZipcode"],
+                            email: messageController.currentConversation["customerMail"],
+                            phone: messageController.currentConversation["customerPhone"],
+                          );
                         },
                       ),
                     )

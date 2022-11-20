@@ -99,7 +99,6 @@ class ManageAdvertiseController extends GetxController {
       if (json["data"]["result"] != null) {
         listAdvertise.value = json["data"]["result"];
       }
-      print(listAdvertise.value);
 
       return true;
     } catch (e) {
@@ -119,8 +118,6 @@ class ManageAdvertiseController extends GetxController {
       if (json["data"]["result"] != null) {
         currentAdvertise.value = json["data"]["result"][0];
       }
-      print('123');
-      print(currentAdvertise.value);
 
       return true;
     } catch (e) {
@@ -134,9 +131,9 @@ class ManageAdvertiseController extends GetxController {
       CustomDio customDio = CustomDio();
       var response = await customDio.get("stripe/payment-method");
       var json = jsonDecode(response.toString());
-      print(json);
       var payment = json["data"];
       paymentMethod.value = payment;
+      print('123');
       print(paymentMethod.value);
       loading.value = false;
       return response;
@@ -166,7 +163,6 @@ class ManageAdvertiseController extends GetxController {
       var json = jsonDecode(response.toString());
       var payment = json["data"];
       bsPaymentMethod.value = payment;
-      print(bsPaymentMethod.value);
       loading.value = false;
       return response;
     } catch (e, s) {
@@ -198,10 +194,8 @@ class ManageAdvertiseController extends GetxController {
       var json = jsonDecode(res.toString());
       if (json["success"]==true) {
         // setup promote
-        print(dataSetup);
         var response = await customDio.post("businesses/buy-promote/setup", {"data": dataSetup}, sign: true);
         var json = jsonDecode(response.toString());
-        print(json["data"]["status"]);
         if (json["data"]["status"] == "succeeded") {
           // buy promote
           var dataAdvertise = {
@@ -223,16 +217,12 @@ class ManageAdvertiseController extends GetxController {
             loadingBuyAd.value = false;
             Get.back();
             Get.to(() => PopupNotification());
-          } 
+            return true;
+          }
         }
         // String clientSecret = json["data"]["clientSecret"];
       }
-
-
-
-
-
-      // return res;
+      return false;
     } catch (e, s) {
       loading.value = false;
       return null;
