@@ -9,7 +9,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 
-Future cancelRequestPopup() {
+Future cancelRequestPopup(VoidCallback callback) {
   return Get.defaultDialog(
     titlePadding: EdgeInsets.all(0),
     contentPadding: EdgeInsets.only(
@@ -56,7 +56,7 @@ Future cancelRequestPopup() {
                 ),
               ),
             ),
-            onPress: () => Get.back(),
+            onPress: callback,
           ),
           SizedBox(
             height: getHeight(8),
@@ -186,10 +186,12 @@ Future feedbackPopup({
               if (res) {
                 Get.back();
                 Get.put(MyRequestUserController()).feedback.text = "";
-                CustomDialog(context, "SUCCESS").show({"message": "Send feedback successfully"});
+                CustomDialog(context, "SUCCESS")
+                    .show({"message": "Send feedback successfully"});
               } else {
                 Get.back();
-                CustomDialog(context, "FAILED").show({"message": "Send feedback failed"});
+                CustomDialog(context, "FAILED")
+                    .show({"message": "Send feedback failed"});
               }
             },
           ),

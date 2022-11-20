@@ -110,17 +110,9 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
           ],
           bottom: TabBar(
             onTap: (index) {
-              if (index == 0) {
-                if (!accountController.isBusinessScreen.value) {
-                  accountController.isEditting.value = false;
-                  accountController.isBusinessScreen.value = true;
-                } else {
-                  if (accountController.isBusinessScreen.value) {
-                    accountController.isEditting.value = false;
-                    accountController.isBusinessScreen.value = false;
-                  }
-                }
-              }
+              accountController.isEditting.value = false;
+              accountController.isBusinessScreen.value =
+                  !accountController.isBusinessScreen.value;
             },
             labelColor: const Color(0xFFFF511A),
             indicatorColor: const Color(0xFFFF511A),
@@ -199,49 +191,49 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                                   Icons.add_a_photo_outlined,
                                 ),
                               )
-                            : Obx(() => GestureDetector(
-                                  onTap: () async {
-                                    if (!accountController.isEditting.value) {
-                                      return;
-                                    }
-                                    XFile? pickedFile =
-                                        await ImagePicker().pickImage(
-                                      source: ImageSource.gallery,
-                                      maxWidth: 1800,
-                                      maxHeight: 1800,
-                                    );
-                                    if (pickedFile != null) {
-                                      setState(() {
-                                        logoFile = File(pickedFile.path);
-                                      });
-                                    }
-                                  },
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(56),
-                                        child: Container(
-                                            width: getHeight(60),
-                                            height: getHeight(60),
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: logoFile.path != ""
-                                                ? Image.file(
-                                                    logoFile,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : accountController
-                                                            .logoImage.value !=
-                                                        ""
-                                                    ? getImage(
-                                                        accountController
-                                                            .logoImage.value,
-                                                        width: getWidth(60),
-                                                        height: getHeight(60),
-                                                        fit: BoxFit.cover)
-                                                    : SvgPicture.asset(
-                                                        "assets/icons/image-default.svg"))),
+                            : GestureDetector(
+                                onTap: () async {
+                                  if (!accountController.isEditting.value) {
+                                    return;
+                                  }
+                                  XFile? pickedFile =
+                                      await ImagePicker().pickImage(
+                                    source: ImageSource.gallery,
+                                    maxWidth: 1800,
+                                    maxHeight: 1800,
+                                  );
+                                  if (pickedFile != null) {
+                                    setState(() {
+                                      logoFile = File(pickedFile.path);
+                                    });
+                                  }
+                                },
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(56),
+                                    child: Container(
+                                        width: getHeight(60),
+                                        height: getHeight(60),
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: logoFile.path != ""
+                                            ? Image.file(
+                                                logoFile,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Obx(() => accountController
+                                                        .logoImage.value !=
+                                                    ""
+                                                ? getImage(
+                                                    accountController
+                                                        .logoImage.value,
+                                                    width: getWidth(60),
+                                                    height: getHeight(60),
+                                                    fit: BoxFit.cover)
+                                                : SvgPicture.asset(
+                                                    "assets/icons/image-default.svg"))),
                                   ),
                                 )),
                         SizedBox(
@@ -297,57 +289,60 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                                   Icons.add_a_photo_outlined,
                                 ),
                               )
-                            : Obx(() => GestureDetector(
-                                  onTap: () async {
-                                    if (!accountController.isEditting.value) {
-                                      return;
-                                    }
-                                    XFile? pickedFile =
-                                        await ImagePicker().pickImage(
-                                      source: ImageSource.gallery,
-                                      maxWidth: 1800,
-                                      maxHeight: 1800,
-                                    );
-                                    if (pickedFile != null) {
-                                      setState(() {
-                                        bannerFile = File(pickedFile.path);
-                                      });
-                                    }
-                                  },
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                      height: getWidth(100),
-                                      width: getWidth(194),
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                      ),
-                                      alignment: Alignment.centerLeft,
-                                      child: bannerFile.path != ""
-                                          ? Image.file(
-                                              bannerFile,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : accountController
-                                                      .bannerImage.value !=
-                                                  ""
-                                              ? getImage(accountController
-                                                  .bannerImage.value)
-                                              : SvgPicture.asset(
-                                                  "assets/icons/image-default.svg"),
+                            : GestureDetector(
+                                onTap: () async {
+                                  if (!accountController.isEditting.value) {
+                                    return;
+                                  }
+                                  XFile? pickedFile =
+                                      await ImagePicker().pickImage(
+                                    source: ImageSource.gallery,
+                                    maxWidth: 1800,
+                                    maxHeight: 1800,
+                                  );
+                                  if (pickedFile != null) {
+                                    setState(() {
+                                      bannerFile = File(pickedFile.path);
+                                    });
+                                  }
+                                },
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    height: getWidth(100),
+                                    width: getWidth(194),
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.rectangle,
                                     ),
+                                    alignment: Alignment.centerLeft,
+                                    child: bannerFile.path != ""
+                                        ? Image.file(
+                                            bannerFile,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Obx(
+                                            () => accountController
+                                                        .bannerImage.value !=
+                                                    ""
+                                                ? getImage(accountController
+                                                    .bannerImage.value)
+                                                : SvgPicture.asset(
+                                                    "assets/icons/image-default.svg"),
+                                          ),
                                   ),
                                 )),
                         SizedBox(
                           height: getHeight(18),
                         ),
-                        inputRegular(
-                          context,
-                          label: "Business name",
-                          hintText: "",
-                          textEditingController: accountController.business,
-                          enabled: accountController.isEditting.value,
-                          required: true,
+                        Obx(
+                          () => inputRegular(
+                            context,
+                            label: "Business name",
+                            hintText: "",
+                            textEditingController: accountController.business,
+                            enabled: accountController.isEditting.value,
+                            required: true,
+                          ),
                         ),
                         SizedBox(
                           height: getHeight(18),
@@ -373,36 +368,40 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                                                 : const Color(0xFF999999)),
                                   ),
                                 )
-                              : inputRegular(
-                                  context,
-                                  label: "Professional Category",
-                                  required: true,
-                                  hintText: "",
-                                  maxLines: 4,
-                                  height:
-                                      accountController.category.text.length /
-                                              40 *
-                                              28 +
-                                          36,
-                                  textEditingController:
-                                      accountController.category,
-                                  keyboardType: TextInputType.multiline,
-                                  enabled: accountController.isEditting.value,
+                              : Obx(
+                                  () => inputRegular(
+                                    context,
+                                    label: "Professional Category",
+                                    required: true,
+                                    hintText: "",
+                                    maxLines: 4,
+                                    height:
+                                        accountController.category.text.length /
+                                                40 *
+                                                28 +
+                                            36,
+                                    textEditingController:
+                                        accountController.category,
+                                    keyboardType: TextInputType.multiline,
+                                    enabled: accountController.isEditting.value,
+                                  ),
                                 ),
                         ),
                         SizedBox(
                           height: getHeight(24),
                         ),
-                        inputRegular(context,
-                            label: "Description",
-                            hintText: "",
-                            enabled: accountController.isEditting.value,
-                            textEditingController:
-                                accountController.description,
-                            maxLines: 6,
-                            keyboardType: TextInputType.multiline,
-                            height: 120,
-                            minLines: 4),
+                        Obx(
+                          () => inputRegular(context,
+                              label: "Description",
+                              hintText: "",
+                              enabled: accountController.isEditting.value,
+                              textEditingController:
+                                  accountController.description,
+                              maxLines: 6,
+                              keyboardType: TextInputType.multiline,
+                              height: 120,
+                              minLines: 4),
+                        ),
                       ],
                     ),
                   ),
@@ -419,30 +418,34 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
             ),
             child: ListView(
               children: [
-                inputRegular(
-                  context,
-                  label: "Phone number",
-                  hintText: "",
-                  required: true,
-                  textEditingController: accountController.phoneNumber,
-                  enabled: accountController.isEditting.value,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                  ],
+                Obx(
+                  () => inputRegular(
+                    context,
+                    label: "Phone number",
+                    hintText: "",
+                    required: true,
+                    textEditingController: accountController.phoneNumber,
+                    enabled: accountController.isEditting.value,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: getHeight(16),
                 ),
                 Stack(children: [
-                  inputRegular(
-                    context,
-                    label: "State",
-                    hintText: "",
-                    enabled: accountController.isEditting.value,
-                    textEditingController: accountController.state,
-                    height: 54,
-                    required: true,
+                  Obx(
+                    () => inputRegular(
+                      context,
+                      label: "State",
+                      hintText: "",
+                      enabled: accountController.isEditting.value,
+                      textEditingController: accountController.state,
+                      height: 54,
+                      required: true,
+                    ),
                   ),
                   Obx(() => accountController.isEditting.value
                       ? Container(
@@ -460,68 +463,80 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                 SizedBox(
                   height: getHeight(16),
                 ),
-                inputRegular(
-                  context,
-                  label: "City",
-                  hintText: "",
-                  required: true,
-                  textEditingController: accountController.city,
-                  enabled: accountController.isEditting.value,
+                Obx(
+                  () => inputRegular(
+                    context,
+                    label: "City",
+                    hintText: "",
+                    required: true,
+                    textEditingController: accountController.city,
+                    enabled: accountController.isEditting.value,
+                  ),
                 ),
                 SizedBox(
                   height: getHeight(16),
                 ),
-                inputRegular(
-                  context,
-                  label: "Country",
-                  hintText: "",
-                  textEditingController: accountController.country,
-                  enabled: accountController.isEditting.value,
+                Obx(
+                  () => inputRegular(
+                    context,
+                    label: "Country",
+                    hintText: "",
+                    textEditingController: accountController.country,
+                    enabled: accountController.isEditting.value,
+                  ),
                 ),
                 SizedBox(
                   height: getHeight(16),
                 ),
-                inputRegular(
-                  context,
-                  label: "Address 1",
-                  hintText: "",
-                  required: true,
-                  textEditingController: accountController.address1,
-                  enabled: accountController.isEditting.value,
+                Obx(
+                  () => inputRegular(
+                    context,
+                    label: "Address 1",
+                    hintText: "",
+                    required: true,
+                    textEditingController: accountController.address1,
+                    enabled: accountController.isEditting.value,
+                  ),
                 ),
                 SizedBox(
                   height: getHeight(16),
                 ),
-                inputRegular(
-                  context,
-                  label: "Address 2",
-                  hintText: "",
-                  textEditingController: accountController.address2,
-                  enabled: accountController.isEditting.value,
+                Obx(
+                  () => inputRegular(
+                    context,
+                    label: "Address 2",
+                    hintText: "",
+                    textEditingController: accountController.address2,
+                    enabled: accountController.isEditting.value,
+                  ),
                 ),
                 SizedBox(
                   height: getHeight(16),
                 ),
-                inputRegular(
-                  context,
-                  label: "Zipcode",
-                  hintText: "",
-                  required: true,
-                  textEditingController: accountController.zipcode,
-                  enabled: accountController.isEditting.value,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                  ],
+                Obx(
+                  () => inputRegular(
+                    context,
+                    label: "Zipcode",
+                    hintText: "",
+                    required: true,
+                    textEditingController: accountController.zipcode,
+                    enabled: accountController.isEditting.value,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: getHeight(16),
                 ),
-                inputRegular(
-                  context,
-                  hintText: "Website",
-                  textEditingController: accountController.website,
-                  enabled: accountController.isEditting.value,
+                Obx(
+                  () => inputRegular(
+                    context,
+                    hintText: "Website",
+                    textEditingController: accountController.website,
+                    enabled: accountController.isEditting.value,
+                  ),
                 ),
               ],
             ),

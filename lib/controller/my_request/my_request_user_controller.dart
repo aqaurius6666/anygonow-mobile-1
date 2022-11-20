@@ -85,4 +85,27 @@ class MyRequestUserController extends GetxController {
       return false;
     }
   }
+
+  Future cancelRequest({required String orderId}) async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] = Get.put(GlobalController()).user.value.certificate.toString();
+      var response = await customDio.post(
+        "/orders/cancel",
+        {
+          "data": {
+            "orderId": orderId,
+          },
+        },
+        sign: true,
+      );
+
+      var json = jsonDecode(response.toString());
+
+      return(json["success"]);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

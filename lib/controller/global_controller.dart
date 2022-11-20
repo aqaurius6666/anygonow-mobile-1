@@ -19,7 +19,10 @@ class Category {
 }
 
 class GlobalController extends GetxController {
-  static final String baseWebUrlFormat = dotenv.env["WEB_URL"].toString();
+  static final String baseWebUrlFormat =
+      ["", "null"].contains(dotenv.env["WEB_URL"].toString())
+          ? "https://handyman-2.uetbc.xyz"
+          : dotenv.env["WEB_URL"].toString();
   static final String baseWebUrl =
       baseWebUrlFormat[baseWebUrlFormat.length - 1] == "/"
           ? baseWebUrlFormat

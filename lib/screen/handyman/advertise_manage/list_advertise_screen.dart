@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
@@ -72,7 +73,8 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                     style: TextStyle(
                       color: Color.fromARGB(255, 56, 100, 255),
                       fontSize: getWidth(14),
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'TTNorm',
                     ),
                   ),
                   SizedBox(
@@ -125,12 +127,10 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                                       Container(
                                         child: Row(
                                           children: [
-                                            const Icon(
-                                              Icons.lock,
-                                              color:
-                                                  Color.fromARGB(255, 80, 80, 80),
+                                            SvgPicture.asset(
+                                              'assets/icons/star.svg',
                                             ),
-                                            SizedBox(width: getWidth(4)),
+                                            SizedBox(width: getWidth(7)),
                                             Text(
                                               !manageAdvertiseController.isBuy.value 
                                               ? (manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"][index]["serviceName"])

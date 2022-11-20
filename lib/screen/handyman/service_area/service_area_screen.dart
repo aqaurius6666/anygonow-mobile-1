@@ -54,7 +54,7 @@ class ServiceAreaScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
-                Get.to(() => HandymanHomePageScreen());
+                // Get.to(() => HandymanHomePageScreen());
               }),
         ],
       ),

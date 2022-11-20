@@ -6,6 +6,9 @@ import 'package:untitled/screen/handyman/my_request/my_request_screen.dart';
 import 'package:untitled/screen/my_request/my_request_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/image.dart';
+import 'package:untitled/widgets/pop-up/cancel_request_popup.dart';
+import 'package:untitled/widgets/pop-up/password-reset.dart';
 
 class MyProjectScreen extends StatelessWidget {
   ProjectController projectController = Get.put(ProjectController());
@@ -40,18 +43,18 @@ class MyProjectScreen extends StatelessWidget {
           children: List.generate(
             projectController.projectList.length,
             (index) => requestItem(
-              projectController: projectController,
-              title: projectController.projectList[index]["serviceName"] ?? "",
-              image: projectController.projectList[index]["image"] ?? "",
-              total:
-                  projectController.projectList[index]["total"]?.toString() ??
-                      "",
-              zipcode: projectController.projectList[index]["zipcode"] ?? "",
-              serviceId:
-                  projectController.projectList[index]["serviceId"] ?? "",
-              context: context,
-              index: index
-            ),
+                projectController: projectController,
+                title:
+                    projectController.projectList[index]["serviceName"] ?? "",
+                image: projectController.projectList[index]["image"] ?? "",
+                total:
+                    projectController.projectList[index]["total"]?.toString() ??
+                        "",
+                zipcode: projectController.projectList[index]["zipcode"] ?? "",
+                serviceId:
+                    projectController.projectList[index]["serviceId"] ?? "",
+                context: context,
+                index: index),
           ),
         );
       }),
@@ -59,16 +62,26 @@ class MyProjectScreen extends StatelessWidget {
   }
 }
 
-Container requestItem({
-  required ProjectController projectController,
-  String? title,
-  required String image,
-  required String total,
-  required String zipcode,
-  required String serviceId,
-  required BuildContext context,
-  required int index
-}) {
+Container requestItem(
+    {required ProjectController projectController,
+    String? title,
+    required String image,
+    required String total,
+    required String zipcode,
+    required String serviceId,
+    required BuildContext context,
+    required int index}) {
+  cancel() async {
+    var res = await projectController.cancelProject(
+        zipcode, serviceId, context, index);
+    if (res) {
+      showPopUp(
+        message: "Cancel request successfully",
+        success: true,
+      );
+    }
+  }
+
   return Container(
     margin: EdgeInsets.only(
       top: getHeight(24),
@@ -101,10 +114,10 @@ Container requestItem({
       children: [
         Row(
           children: [
-            Container(
+            getImage(
+              "",
               width: getWidth(20),
               height: getWidth(20),
-              color: Colors.grey,
             ),
             SizedBox(
               width: getWidth(4),
@@ -172,7 +185,8 @@ Container requestItem({
             ),
           ),
           onPress: () async {
-            await Get.put(MyRequestUserController()).getRequests(serviceId, zipcode);
+            await Get.put(MyRequestUserController())
+                .getRequests(serviceId, zipcode);
             Get.to(MyRequestUserScreen());
           },
         ),
@@ -196,9 +210,8 @@ Container requestItem({
               ),
             ),
           ),
-          onPress: () {
-            projectController.cancelProject(zipcode, serviceId, context, index);
-            
+          onPress: () async {
+            await cancelRequestPopup(() => {cancel(), Get.back()});
           },
         ),
       ],

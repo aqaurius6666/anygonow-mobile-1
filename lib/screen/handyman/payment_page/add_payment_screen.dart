@@ -118,9 +118,17 @@ Container confirmButtonContainer(BuildContext context, PaymentController payment
                       ),
                     ),
                     onPressed: () async {
+                      var expireDate = paymentController.expiryDate.text.split('/');
+                      if (paymentController.cardNumber.text == "") {
+                        CustomDialog(context, "FAILED").show({"message": 'Card number is required'});
+                        return;
+                      }
+                      if (int.parse(expireDate.first) > 12 || int.parse(expireDate.first) == 0) {
+                        CustomDialog(context, "FAILED").show({"message": 'The expiration date is not in the correct format'});
+                        return;
+                      }
                       paymentController.loading.value = true;
                       var _card = CardDetails();
-                      var expireDate = paymentController.expiryDate.text.split('/');
                       if (paymentController.cardNumber.text != "") {
                         _card = _card.copyWith(number: paymentController.cardNumber.text.replaceAll(" ", ""));
                       }

@@ -12,7 +12,11 @@ Container getImage(String? src,
   return Container(
       decoration: decoration,
       child: src == null || src == ""
-          ? Container()
+          ? Image.asset(
+              "assets/default.png",
+              height: height,
+              width: width,
+            )
           : src.contains(".svg")
               ? SvgPicture.network(getCDN(src),
                   height: height, fit: fit ?? BoxFit.contain)
