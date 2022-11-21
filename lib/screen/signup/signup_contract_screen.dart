@@ -135,8 +135,8 @@ class SignupContractScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     String url = GlobalController.baseWebUrl;
-                    String termsUrl = url + "terms";
-                    await launch(termsUrl);
+                    String privacyUrl = url + "privacy";
+                    await launch(privacyUrl);
                   },
                   child: Text(
                     "Privacy Policy",

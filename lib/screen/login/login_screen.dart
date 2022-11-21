@@ -171,6 +171,8 @@ Container confirmButtonContainer(
                         Get.delete<MainScreenController>();
                         Get.put(GlobalController()).currentPage.value = 0;
                         Get.delete<BuyAdvertiseScreen>();
+                        Get.delete<ManageAdvertiseController>();
+                        Get.delete<AccountController>();
                         int? role = globalController.user.value.role;
                         int? process = globalController.user.value.process;
                         await Get.put(GlobalController()).getCategories();
@@ -183,14 +185,20 @@ Container confirmButtonContainer(
                             CustomDialog(context, "SUCCESS").show({
                               "message": "You need to complete your information"
                             });
+                            Get.put(AccountController()).isEditting.value = true;
                           }
                         } else {
+                          Get.to(() => HandymanHomePageScreen());
                           if (process == 1) {
+                            await Get.put(AccountController()).getBusinessInfo();
                             Get.to(() => BusinessManagementScreen());
+                            CustomDialog(context, "SUCCESS").show({"message": "You need to update information"});
                             AccountController().isBusinessScreen.value = true;
                             Get.put(AccountController()).isEditting.value = true;
                           } else if (process == 2) {
+                            await Get.put(AccountController()).getBusinessInfo();
                             Get.to(() => BusinessManagementScreen());
+                            CustomDialog(context, "SUCCESS").show({"message": "You need to update information"});
                             AccountController().isBusinessScreen.value = false;
                             Get.put(AccountController()).isEditting.value = true;
                           } else {

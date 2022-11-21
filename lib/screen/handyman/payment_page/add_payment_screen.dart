@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/payment_method/payment_method_controller.dart';
+import 'package:untitled/screen/handyman/payment_page/payment_page_screen.dart';
 import 'package:untitled/service/stripe.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/dialog.dart';
@@ -145,7 +146,12 @@ Container confirmButtonContainer(BuildContext context, PaymentController payment
                       var result = await StripeService.createNewPayment(paymentMethod, context);
                       if (result != null) {
                         await paymentController.getPaymentMethods();
-                        CustomDialog(context, "SUCCESS").show({"message": "success_add_payment"});
+                        paymentController.cardNumber.text = "";
+                        paymentController.expiryDate.text = "";
+                        paymentController.cvvCode.text = "";
+
+                        // CustomDialog(context, "SUCCESS").show({"message": "success_add_payment"});
+                        Get.back();
                       } else {
                         CustomDialog(context, "FAILED").show({"message": "failed_add_payment"});
                       }

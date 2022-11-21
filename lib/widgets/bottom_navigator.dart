@@ -350,7 +350,28 @@ Container bottomBrandDetail({String id = ""}) {
                   color: Color(0xffff511a),
                 ),
               ),
-              onPressed: () async {},
+              onPressed: () async {
+                var request = Get.put(MyRequestUserController());
+                var message = Get.put(MessageController());
+                await request.getRequests("", "");
+
+                message.connectedMessageIds = List.generate(
+                  request.connectedRequests.length,
+                      (index) => request.connectedRequests[index]
+                  ["conversationId"],
+                );
+
+                message.completedMessageIds = List.generate(
+                  request.completedRequests.length,
+                      (index) => request.completedRequests[index]
+                  ["conversationId"],
+                );
+
+                await message.getMessages();
+
+                Get.put(GlobalController()).onChangeTab(1);
+                Get.back();
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -382,11 +403,14 @@ Container bottomBrandDetail({String id = ""}) {
                 if (res) {
                   showPopUp(
                     message: "Request has been sent successfully",
+                    cancel: "Cancel",
+                    confirm: "View detail",
                   );
                 } else {
                   showPopUp(
                     message: "Request has already been sent",
                     success: false,
+                    cancel: "Cancel",
                   );
                 }
                 mainScreenController.requests.clear();
@@ -424,7 +448,7 @@ Container bottomSearchResult() {
                 ),
               ),
               onPressed: () async {
-
+                Get.put(MainScreenController()).requests.clear();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -475,4 +499,3 @@ Container bottomSearchResult() {
     ),
   );
 }
-

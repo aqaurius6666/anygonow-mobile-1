@@ -24,6 +24,8 @@ class MessageController extends GetxController {
 
   RxString currentService = "".obs;
 
+  Map<String, dynamic> currentConversation = {};
+
   Future getMessages() async {
     try {
       var response;

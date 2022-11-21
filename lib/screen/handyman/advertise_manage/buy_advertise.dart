@@ -28,6 +28,7 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
   @override
   Widget build(BuildContext context) {
     manageAdvertiseController.getBusinessesPaymentMethod();
+    manageAdvertiseController.getPaymentMethods();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -326,6 +327,7 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                               ],
                             )),
                     SizedBox(height: getHeight(24)),
+                    manageAdvertiseController.paymentMethod["last4"] != null ? SizedBox() :
                     Bouncing(
                       onPress: () {
                         Get.to(() => AddCard());
@@ -354,6 +356,52 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                     manageAdvertiseController.loadingBuyAd.value == false ?
                     Bouncing(
                       onPress:  () async {
+                        if (manageAdvertiseController.registrationDate.text == "") {
+                          CustomDialog(context, "FAILED").show({
+                            "message":
+                                "Registration Date is required"
+                          });
+                          return;
+                        }
+                        if (manageAdvertiseController.registrationDate.text == "") {
+                          CustomDialog(context, "FAILED").show({
+                            "message":
+                                "Expiry Date is required"
+                          });
+                          return;
+                        }
+                        if (manageAdvertiseController.registrationDate.text == "") {
+                          CustomDialog(context, "FAILED").show({
+                            "message":
+                                "Category is required"
+                          });
+                          return;
+                        }
+                        if (manageAdvertiseController.registrationDate.text == "") {
+                          CustomDialog(context, "FAILED").show({
+                            "message":
+                                "Service areas is required"
+                          });
+                          return;
+                        }
+                        if (manageAdvertiseController.paymentMethod["last4"] == null || manageAdvertiseController.paymentMethod["last4"] == "") {
+                          CustomDialog(context, "FAILED").show({
+                            "message":
+                                "You don't have a card yet"
+                          });
+                          return;
+                        }
+                        int kc = _calculateTimeDiff(
+                          manageAdvertiseController.registrationDate.text,
+                          manageAdvertiseController.expiryDate.text);
+                        if (kc <= 0) {
+                          CustomDialog(context, "FAILED").show({
+                            "message":
+                                "Expiry date must be greater than Registration date"
+                          });
+                          return;
+                        }
+
                         await manageAdvertiseController.setBusinessesPaymentMethod();
                         // Get.off(() => PopupNotification());
                       },
@@ -462,6 +510,6 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
     if (difference > 0) {
       return difference;
     }
-    return 0;
+    return difference;
   }
 }

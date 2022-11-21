@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/model/custom_dio.dart';
 
 import '../../global_controller.dart';
@@ -33,7 +34,8 @@ class MyRequestController extends GetxController {
   Future rejectRequest() async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.post(
         "/orders/reject",
         {
@@ -46,19 +48,63 @@ class MyRequestController extends GetxController {
 
       var json = jsonDecode(response.toString());
 
-      return(json["success"]);
+      return (json["success"]);
     } catch (e) {
       print(e);
       return false;
     }
   }
 
+  Future connectRequest() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+      var response = await customDio.post(
+        "/orders/connect",
+        {
+          "data": {
+            "orderId": currentRequest,
+          },
+        },
+        sign: true,
+      );
 
+      var json = jsonDecode(response.toString());
+
+      return (json["success"]);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future connectAllRequest() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+      var response = await customDio.post(
+        "/orders/connect-all",
+        {},
+        sign: true,
+      );
+      // api/orders/connect-all
+
+      var json = jsonDecode(response.toString());
+
+      return (json["success"]);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 
   Future completeRequest() async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.post(
         "/orders/complete",
         {
@@ -71,11 +117,20 @@ class MyRequestController extends GetxController {
 
       var json = jsonDecode(response.toString());
 
-      return(json["success"]);
+      if (json["success"]) {
+        Get.put(MyRequestUserController()).completedRequests.add(
+            Get.put(MyRequestUserController())
+                .connectedRequests
+                .firstWhere((element) => element["id"] == currentRequest));
+        Get.put(MyRequestUserController())
+            .connectedRequests
+            .removeWhere((element) => element["id"] == currentRequest);
+      }
+
+      return (json["success"]);
     } catch (e) {
       print(e);
       return false;
     }
   }
-
 }

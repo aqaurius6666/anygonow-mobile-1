@@ -6,6 +6,7 @@ import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/screen/chat/chat_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
+import 'package:untitled/widgets/image.dart';
 
 class MessageScreen extends StatelessWidget {
   MessageController messageController = Get.put(MessageController());
@@ -39,61 +40,73 @@ class MessageScreen extends StatelessWidget {
     );
   }
 
-  ListView connectedTab(List<dynamic> requests) {
+  Container connectedTab(List<dynamic> requests) {
     // print(requests);
-    return ListView(
-      children: List.generate(requests.length, (index) {
-        var messages = messageController.connectedMessageList[index];
-        return messageItem(
-          message: messages.isNotEmpty
-              ? messages[messages.length - 1]["payload"]
-              : "Connected",
-          business: requests[index]["serviceName"],
-          img: requests[index]["businessLogo"],
-          time: messages.isNotEmpty
-              ? messageController
-                  .getTimeSent(messages[messages.length - 1]["timestamp"])
-              : "",
-          index: index,
-          completed: false,
-        );
-      }),
+    return Container(
+      child: Obx(() {
+          return ListView(
+            children: List.generate(requests.length, (index) {
+              var messages = messageController.connectedMessageList[index];
+              return messageItem(
+                  message: messages.isNotEmpty
+                      ? messages[messages.length - 1]["payload"]
+                      : "Connected",
+                  business: requests[index]["serviceName"],
+                  img: requests[index]["businessLogo"],
+                  time: messages.isNotEmpty
+                      ? messageController
+                          .getTimeSent(messages[messages.length - 1]["timestamp"])
+                      : "",
+                  index: index,
+                  completed: false,
+                  conversation: requests[index]);
+            }),
+          );
+        }
+      ),
     );
   }
 
-  ListView completedTab(List<dynamic> requests) {
+  Container completedTab(List<dynamic> requests) {
     print(requests);
-    return ListView(
-      children: List.generate(requests.length, (index) {
-        var messages = messageController.completedMessageList[index];
-        return messageItem(
-          message: messages.isNotEmpty
-              ? messages[messages.length - 1]["payload"]
-              : "Completed",
-          business: requests[index]["serviceName"],
-          img: requests[index]["businessLogo"],
-          time: messages.isNotEmpty
-              ? messageController
-                  .getTimeSent(messages[messages.length - 1]["timestamp"])
-              : "",
-          index: index,
-          completed: true,
-        );
-      }),
+    return Container(
+      child: Obx(() {
+          return ListView(
+            children: List.generate(requests.length, (index) {
+              var messages = messageController.completedMessageList[index];
+              return messageItem(
+                  message: messages.isNotEmpty
+                      ? messages[messages.length - 1]["payload"]
+                      : "Service request: " + requests[index]["serviceName"],
+                  business: requests[index]["businessName"],
+                  img: requests[index]["businessLogo"],
+                  time: messages.isNotEmpty
+                      ? messageController
+                          .getTimeSent(messages[messages.length - 1]["timestamp"])
+                      : "",
+                  index: index,
+                  completed: true,
+                  conversation: requests[index]);
+            }),
+          );
+        }
+      ),
     );
   }
 
-  GestureDetector messageItem({
-    String img = "",
-    String business = "",
-    String message = "",
-    String time = "",
-    int index = 0,
-    bool completed = false,
-  }) {
+  GestureDetector messageItem(
+      {String img = "",
+      String business = "",
+      String service = "",
+      String message = "",
+      String time = "",
+      int index = 0,
+      bool completed = false,
+      conversation}) {
     return GestureDetector(
       onTap: () {
-        print("time" + time);
+        // print("time" + time);
+        messageController.currentConversation = conversation;
         messageController.index = index;
         messageController.completedChat = completed;
         messageController.chats.clear();
@@ -125,10 +138,10 @@ class MessageScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            getImage(
+              img,
               height: getHeight(56),
               width: getHeight(56),
-              color: Colors.grey,
             ),
             SizedBox(
               height: getHeight(56),

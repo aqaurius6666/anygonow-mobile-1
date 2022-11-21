@@ -23,7 +23,8 @@ class MyRequestUserController extends GetxController {
       completedRequests.clear();
       // print(serviceId);
 
-      response = await customDio.get("/orders?status=0&serviceId=$serviceId&zipcode=$zipcode");
+      response = await customDio
+          .get("/orders?status=0&serviceId=$serviceId&zipcode=$zipcode");
 
       var json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
@@ -31,21 +32,21 @@ class MyRequestUserController extends GetxController {
       }
       print(json);
 
-      response = await customDio.get("/orders?status=1&serviceId=$serviceId&zipcode=$zipcode");
+      response = await customDio
+          .get("/orders?status=1&serviceId=$serviceId&zipcode=$zipcode");
       json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
         connectedRequests.value = json["data"]["result"];
       }
       print(json);
 
-
-      response = await customDio.get("/orders?status=4&serviceId=$serviceId&zipcode=$zipcode");
+      response = await customDio
+          .get("/orders?status=4&serviceId=$serviceId&zipcode=$zipcode");
       json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
         completedRequests.value = json["data"]["result"];
       }
       print(json);
-
 
       return true;
     } catch (e) {
@@ -89,7 +90,8 @@ class MyRequestUserController extends GetxController {
   Future cancelRequest({required String orderId}) async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = Get.put(GlobalController()).user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          Get.put(GlobalController()).user.value.certificate.toString();
       var response = await customDio.post(
         "/orders/cancel",
         {
@@ -102,7 +104,10 @@ class MyRequestUserController extends GetxController {
 
       var json = jsonDecode(response.toString());
 
-      return(json["success"]);
+      if (json["success"]) {
+        pendingRequests.removeWhere((element) => element["id"] == orderId);
+      }
+      return (json["success"]);
     } catch (e) {
       print(e);
       return false;

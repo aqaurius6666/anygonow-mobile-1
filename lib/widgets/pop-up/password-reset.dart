@@ -1,13 +1,54 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
+import 'package:untitled/controller/project/project_controller.dart';
+import 'package:untitled/screen/project/project_screen.dart';
+
+// import 'package:get/get_core/src/get_main.dart';
+// import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:untitled/utils/config.dart';
 
 import '../bounce_button.dart';
 
-Future showPopUp({String message = "", bool success = true}) {
+Future showPopUp(
+    {String message = "",
+    bool success = true,
+    String cancel = "",
+    String confirm = ""}) {
   return Get.defaultDialog(
+    cancel: cancel == ""
+        ? null
+        : Bouncing(
+            child: Container(
+              alignment: Alignment.center,
+              height: getHeight(50),
+              width: getWidth(90),
+              margin: EdgeInsets.only(
+                bottom: getHeight(10),
+              ),
+              color: Colors.grey,
+              child: Text(cancel),
+            ),
+            onPress: () => Get.back(),
+          ),
+    confirm: confirm == ""
+        ? null
+        : Bouncing(
+            child: Container(
+              alignment: Alignment.center,
+              height: getHeight(50),
+              width: getWidth(90),
+              margin: EdgeInsets.only(
+                bottom: getHeight(10),
+              ),
+              color: const Color(0xffff511a),
+              child: Text(confirm),
+            ),
+            onPress: () async {
+              await Get.put(ProjectController()).getProjects();
+              Get.off(MyProjectScreen());
+            },
+          ),
     titlePadding: EdgeInsets.all(0),
     contentPadding: EdgeInsets.all(0),
     titleStyle: TextStyle(fontSize: 0),
