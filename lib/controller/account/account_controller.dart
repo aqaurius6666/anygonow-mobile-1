@@ -162,7 +162,6 @@ class AccountController extends GetxController {
   Future editBusinessContact() async {
     try {
       var userID = globalController.user.value.id.toString();
-      isLoading.value = true;
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] =
           globalController.user.value.certificate.toString();
@@ -176,10 +175,12 @@ class AccountController extends GetxController {
           "data": {
             "address1": address1.text,
             "address2": address2.text,
-            "stateId": stateInfos.isNotEmpty ? stateInfos[0].id : "",
+            "stateId": stateInfos.isNotEmpty ? stateInfos[0].id.toString() : "",
             "city": city.text,
             "zipcode": zipcode.text,
-            "state": state.text,
+            // "state": state.text,
+            "id": userID,
+            "UserId": userID,
           }
         },
       );

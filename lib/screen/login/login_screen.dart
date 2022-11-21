@@ -28,7 +28,6 @@ import 'package:untitled/widgets/layout.dart';
 
 enum LoginOption { customer, professional }
 
-<<<<<<< HEAD
 bool _initialUriIsHandled = false;
 class LoginScreen extends StatefulWidget {
   @override
@@ -39,27 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
   StreamSubscription? _sub;
   ResetPasswordController resetPasswordController = Get.put(ResetPasswordController());
 
-  // Future<void> initUniLinks() async {
-  //   // ... check initialLink
-  //   print("Loading");
-
-  //   // Attach a listener to the stream
-  //   _sub = linkStream.listen((String? link) {
-  //     print(link);
-  //     if (link != null) {
-  //       print("listener is working");
-  //       var uri = Uri.parse(link);
-  //       if (uri.queryParameters["otp"] != null &&
-  //           uri.queryParameters["otpId"] != null) {
-  //         print(uri.queryParameters["id"].toString());
-  //         Get.to(() => ResetPasswordScreen());
-  //       }
-  //     }
-  //   }, onError: (err) {
-  //     // Handle exception by warning the user their action did not succeed
-  //     print(err);
-  //   });
-  // }
   
   Future<void> _handleInitialUri() async {
     // In this example app this is an almost useless guard, but it is here to
@@ -67,14 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
     // was a weidget that will be disposed of (ex. a navigation route change).
     if (!_initialUriIsHandled) {
       _initialUriIsHandled = true;
-      Get.snackbar('Title' ,'_handleInitialUri called');
       try {
         final uri = await getInitialUri();
         if (uri == null) {
-          print('no initial uri');
         } else {
-          print('got initial uri: $uri');
-          print('123 reset');
           resetPasswordController.otp = uri.queryParameters["otp"]!;
           resetPasswordController.otpId = uri.queryParameters["otpId"]!;
           Get.to(() => ResetPasswordScreen());
@@ -82,26 +56,17 @@ class _LoginScreenState extends State<LoginScreen> {
         if (!mounted) return;
       } on PlatformException {
         // Platform messages may fail but we ignore the exception
-        print('falied to get initial uri');
       } on FormatException catch (err) {
         if (!mounted) return;
-        print('malformed initial uri');
       }
     }
   }
   @override
   void initState() {
     super.initState();
-    // initUniLinks();
     _handleInitialUri();
     print("initState");
   }
-=======
-class LoginScreen extends StatelessWidget {
-
-  
-
->>>>>>> b0a085eb7f74d0ba7de551a92a6ec7a54c1e02bd
 
   @override
   Widget build(BuildContext context) {
@@ -265,17 +230,12 @@ Container confirmButtonContainer(
                             CustomDialog(context, "SUCCESS").show({
                               "message": "You need to complete your information"
                             });
-<<<<<<< HEAD
                             Get.put(AccountController()).isEditting.value =
                                 true;
-=======
-                            Get.put(AccountController()).isEditting.value = true;
->>>>>>> b0a085eb7f74d0ba7de551a92a6ec7a54c1e02bd
                           }
                         } else {
                           Get.to(() => HandymanHomePageScreen());
                           if (process == 1) {
-<<<<<<< HEAD
                             await Get.put(AccountController())
                                 .getBusinessInfo();
                             Get.to(() => BusinessManagementScreen());
@@ -293,19 +253,6 @@ Container confirmButtonContainer(
                             AccountController().isBusinessScreen.value = false;
                             Get.put(AccountController()).isEditting.value =
                                 true;
-=======
-                            await Get.put(AccountController()).getBusinessInfo();
-                            Get.to(() => BusinessManagementScreen());
-                            CustomDialog(context, "SUCCESS").show({"message": "You need to update information"});
-                            AccountController().isBusinessScreen.value = true;
-                            Get.put(AccountController()).isEditting.value = true;
-                          } else if (process == 2) {
-                            await Get.put(AccountController()).getBusinessInfo();
-                            Get.to(() => BusinessManagementScreen());
-                            CustomDialog(context, "SUCCESS").show({"message": "You need to update information"});
-                            AccountController().isBusinessScreen.value = false;
-                            Get.put(AccountController()).isEditting.value = true;
->>>>>>> b0a085eb7f74d0ba7de551a92a6ec7a54c1e02bd
                           } else {
                             await Get.put(MyRequestController()).getRequests();
                             await Get.put(ManageAdvertiseController())

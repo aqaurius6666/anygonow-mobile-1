@@ -69,6 +69,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                     }
 
                     var result = await accountController.editBusinessInfo();
+                    accountController.isLoading.value = false;
                     print(result);
                     if (result != null) {
                       accountController.getBusinessInfo();
@@ -85,7 +86,11 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                           .show({"message": "missing_field"});
                       return;
                     }
+                    accountController.isLoading.value = true;
                     var result = await accountController.editBusinessContact();
+                    print(result);
+                    print("123result");
+                    accountController.isLoading.value = false;
                     if (result != null) {
                       accountController.getBusinessInfo();
                       // accountController.isBusinessScreen.value = false;
@@ -113,21 +118,42 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                     }
                   }
                 }
-                accountController.isLoading.value = false;
                 accountController.isEditting.value =
                     !accountController.isEditting.value;
               },
               child: Obx(
                 () => Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(right: getHeight(16)),
-                    child: Text(
-                      accountController.isEditting.value ? "Update" : "Edit",
-                      style: TextStyle(
-                          color: const Color(0xFF3864FF),
-                          fontSize: getHeight(14),
-                          decoration: TextDecoration.underline),
-                    )),
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(right: getHeight(16)),
+                      child: accountController.isEditting.value ? 
+                      (
+                        accountController.isLoading.value ?
+                        Container(
+                          width: getWidth(20),
+                          height: getWidth(20),
+                          color: Colors.white,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                        : Text(
+                        "Update",
+                        style: TextStyle(
+                            color: const Color(0xFF3864FF),
+                            fontSize: getHeight(14),
+                            decoration: TextDecoration.underline
+                        ),
+                      )
+                      )
+                      : Text(
+                        "Edit",
+                        style: TextStyle(
+                            color: const Color(0xFF3864FF),
+                            fontSize: getHeight(14),
+                            decoration: TextDecoration.underline
+                        ),
+                      ),
+                    ),
               ),
             ),
           ],

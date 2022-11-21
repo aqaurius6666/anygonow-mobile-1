@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/rating_center/rating_center_controller.dart';
+import 'package:untitled/screen/handyman/user/user_screen.dart';
 import 'package:untitled/utils/cdn.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -33,6 +34,7 @@ class RatingCenterScreen extends StatelessWidget {
             ),
             onPressed: () {
               Get.back();
+              // Get.to(() => HandymanUserScreen());
             }),
         elevation: 0,
       ),
