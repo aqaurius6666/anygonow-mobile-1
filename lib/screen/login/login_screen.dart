@@ -28,6 +28,7 @@ import 'package:untitled/widgets/layout.dart';
 
 enum LoginOption { customer, professional }
 
+<<<<<<< HEAD
 bool _initialUriIsHandled = false;
 class LoginScreen extends StatefulWidget {
   @override
@@ -95,6 +96,12 @@ class _LoginScreenState extends State<LoginScreen> {
     _handleInitialUri();
     print("initState");
   }
+=======
+class LoginScreen extends StatelessWidget {
+
+  
+
+>>>>>>> b0a085eb7f74d0ba7de551a92a6ec7a54c1e02bd
 
   @override
   Widget build(BuildContext context) {
@@ -258,12 +265,17 @@ Container confirmButtonContainer(
                             CustomDialog(context, "SUCCESS").show({
                               "message": "You need to complete your information"
                             });
+<<<<<<< HEAD
                             Get.put(AccountController()).isEditting.value =
                                 true;
+=======
+                            Get.put(AccountController()).isEditting.value = true;
+>>>>>>> b0a085eb7f74d0ba7de551a92a6ec7a54c1e02bd
                           }
                         } else {
                           Get.to(() => HandymanHomePageScreen());
                           if (process == 1) {
+<<<<<<< HEAD
                             await Get.put(AccountController())
                                 .getBusinessInfo();
                             Get.to(() => BusinessManagementScreen());
@@ -281,6 +293,19 @@ Container confirmButtonContainer(
                             AccountController().isBusinessScreen.value = false;
                             Get.put(AccountController()).isEditting.value =
                                 true;
+=======
+                            await Get.put(AccountController()).getBusinessInfo();
+                            Get.to(() => BusinessManagementScreen());
+                            CustomDialog(context, "SUCCESS").show({"message": "You need to update information"});
+                            AccountController().isBusinessScreen.value = true;
+                            Get.put(AccountController()).isEditting.value = true;
+                          } else if (process == 2) {
+                            await Get.put(AccountController()).getBusinessInfo();
+                            Get.to(() => BusinessManagementScreen());
+                            CustomDialog(context, "SUCCESS").show({"message": "You need to update information"});
+                            AccountController().isBusinessScreen.value = false;
+                            Get.put(AccountController()).isEditting.value = true;
+>>>>>>> b0a085eb7f74d0ba7de551a92a6ec7a54c1e02bd
                           } else {
                             await Get.put(MyRequestController()).getRequests();
                             await Get.put(ManageAdvertiseController())

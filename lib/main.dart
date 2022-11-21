@@ -10,6 +10,7 @@ import 'package:untitled/flavour_config.dart';
 import 'package:untitled/i18n.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:untitled/screen/reset_password/reset_password_screen.dart';
 import 'package:untitled/service/stripe.dart';
 import 'package:flutter/services.dart' show PlatformException;
 
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
   
 
   Widget home() {
-    return LoginScreen();
+    return HomePage();
   }
 
   // Future<void> initUniLinks() async {
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
   //     // return?
   //   }
   // }
+<<<<<<< HEAD
 
   // Future<void> initUniUris() async {
   //   // Platform messages may fail, so we use a try/catch PlatformException.
@@ -84,3 +86,65 @@ class MyApp extends StatelessWidget {
   //   // NOTE: Don't forget to call _sub.cancel() in dispose()
   // }
 }
+=======
+
+  // Future<void> initUniUris() async {
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     final initialUri = await getInitialUri();
+  //     // Use the uri and warn the user, if it is not correct,
+  //     // but keep in mind it could be `null`.
+  //   } on FormatException {
+  //     // Handle exception by warning the user their action did not succeed
+  //     // return?
+  //   }
+  // }
+
+  
+
+  //   // NOTE: Don't forget to call _sub.cancel() in dispose()
+  // }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+  @override
+  _HomePageState createState() => _HomePageState();
+
+}
+
+class _HomePageState extends State<HomePage> {
+  late StreamSubscription _sub;
+
+  Future<void> initUniLinks() async {
+    // ... check initialLink
+    print("Loading");
+
+    // Attach a listener to the stream
+    _sub = linkStream.listen((String? link) {
+      if (link != null) {
+        print("listener is working");
+        var uri = Uri.parse(link);
+        if (uri.queryParameters["id"] != null) {
+          print(uri.queryParameters["id"].toString());
+          Get.to(() => ResetPasswordScreen(), routeName: '/resetpassword');
+        }
+      }
+    }, onError: (err) {
+      // Handle exception by warning the user their action did not succeed
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initUniLinks();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LoginScreen();
+  }
+
+}
+>>>>>>> b0a085eb7f74d0ba7de551a92a6ec7a54c1e02bd

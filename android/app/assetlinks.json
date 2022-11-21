@@ -3,8 +3,8 @@
       "relation": ["delegate_permission/common.handle_all_urls"],
       "target": {
         "namespace": "android_app",
-        "package_name": "handyman",
-        "sha256_cert_fingerprints": "CA:4F:AE:EA:8C:1C:C2:7C:0D:2F:08:C5:C0:52:4D:CF:82:F2:99:FE:DF:F8:B1:8D:CA:62:4A:43:D4:23:B5:97"
+        "package_name": "com.anygonow",
+        "sha256_cert_fingerprints": "A0:18:3E:50:54:AE:87:C3:AF:51:5C:E0:5F:FE:7E:18:12:FD:2B:BC:D6:FE:4B:54:7C:6B:1A:79:BB:9B:9F:02"
       }
     }
 ]
