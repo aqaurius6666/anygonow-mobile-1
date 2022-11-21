@@ -66,10 +66,11 @@ class RatingCenterScreen extends StatelessWidget {
                   RatingBarIndicator(
                     rating: ratingCenterController.averageRate.value,
                     itemSize: getHeight(20),
-                    itemBuilder: (context, index) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
+                    // itemBuilder: (context, index) => const Icon(
+                    //   Icons.star,
+                    //   color: Colors.amber,
+                    // ),
+                    itemBuilder: (context, index) => SvgPicture.asset('assets/icons/Star.svg'),
                     itemCount: 5,
                   ),
                   SizedBox(
@@ -163,7 +164,8 @@ class RatingCenterScreen extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Icon(Icons.star, color: Colors.amber,),
+              SizedBox(width: getWidth(4),),
+              SvgPicture.asset('assets/icons/star1.svg', width: getHeight(15), height: getHeight(15)),
             ],
           ),
           Text(
@@ -270,11 +272,8 @@ class RatingCenterScreen extends StatelessWidget {
               margin: EdgeInsets.only(top: getHeight(40), left: getWidth(32)),
               child: RatingBarIndicator(
                 rating: item.rate,
-                itemSize: getHeight(20),
-                itemBuilder: (context, index) => const Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
+                itemSize: getHeight(13),
+                itemBuilder: (context, index) => SvgPicture.asset('assets/icons/star2.svg'),
                 itemCount: 5,
               ),
             ),
