@@ -12,9 +12,6 @@ import 'package:untitled/service/date_format.dart';
 import 'package:untitled/service/response_validator.dart';
 import 'package:untitled/widgets/dialog.dart';
 
-// import 'package:untitled/utils/utils.dart';
-// import 'package:untitled/widgets/dialog.dart';
-
 class ChangePasswordController extends GetxController {
   GlobalController globalController = Get.put(GlobalController());
   LoginPageController loginPageController = Get.put(LoginPageController());
@@ -31,6 +28,7 @@ class ChangePasswordController extends GetxController {
   var focusConfirmPassword = false.obs;
 
   var isEditting = false.obs;
+  final RegExp passwordReg0 = RegExp(r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$');
 
   @override
   void onInit() {
@@ -70,7 +68,8 @@ class ChangePasswordController extends GetxController {
 
   Future<bool> checkPassword(String password) async {
     var mail = globalController.user.value.mail;
-    var responseCredential = await loginPageController.getCredential(mail ?? "");
+    var responseCredential =
+        await loginPageController.getCredential(mail ?? "");
     Status validateUsername = ResponseValidator.check(responseCredential);
     if (validateUsername.status == "OK") {
       var data = responseCredential.data["data"];
@@ -84,17 +83,16 @@ class ChangePasswordController extends GetxController {
       Status validatePassword = new Status();
 
       if (privateKey == null)
-        validatePassword = new Status(status: "ERROR", message: "WRONG.PASSWORD");
+        validatePassword =
+            new Status(status: "ERROR", message: "WRONG.PASSWORD");
       else
         validatePassword = new Status(status: "SUCCESS", message: "SUCCESS");
 
       if (validatePassword.status == "SUCCESS") {
         var certificateInfo = SignatureService.getCertificateInfo(userId);
-        String signature = SignatureService.getSignature(certificateInfo, privateKey as String);
-        int times = TimeService
-            .getTimeNow()
-            .toUtc()
-            .millisecondsSinceEpoch;
+        String signature = SignatureService.getSignature(
+            certificateInfo, privateKey as String);
+        int times = TimeService.getTimeNow().toUtc().millisecondsSinceEpoch;
         List<String> certificateList = SignatureService.getCertificateLogin(
             certificateInfo,
             userId,
@@ -120,9 +118,11 @@ class ChangePasswordController extends GetxController {
   }
 
   bool checkCurrentPassword(String password) {
-    var encryptedPrivateKey = globalController.user.value.encryptedPrivateKey ?? "";
+    var encryptedPrivateKey =
+        globalController.user.value.encryptedPrivateKey ?? "";
     String? privateKey = globalController.user.value.privateKey ?? "";
-    String privateKeyGenerated = decryptAESCryptoJS(encryptedPrivateKey, password) ?? "";
+    String privateKeyGenerated =
+        decryptAESCryptoJS(encryptedPrivateKey, password) ?? "";
     if (privateKey != "" && privateKey == privateKeyGenerated) return true;
     return false;
   }
@@ -130,7 +130,8 @@ class ChangePasswordController extends GetxController {
   Future sendNewKeyPair({required encryptedKeyPair}) async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
 
       var response = await customDio.post(
         "/auth/password",
@@ -155,6 +156,10 @@ class ChangePasswordController extends GetxController {
   void changePassword(context) async {
     if (newPassword.text == "") {
       CustomDialog(context, "FAILED").show({"message": "password_not_empty"});
+    } else if (newPassword.text.length < 8 ||
+        !passwordReg0.hasMatch(newPassword.text)) {
+      CustomDialog(context, "FAILED")
+          .show({"message": "invalid_newPassword_rule", "height": 300.0});
     } else if (newPassword.text != confirmPassword.text) {
       CustomDialog(context, "FAILED").show({"message": "cfpassword_not_match"});
     } else {
@@ -165,21 +170,21 @@ class ChangePasswordController extends GetxController {
         var encryptedKeyPair = generateKeyPairAndEncrypt(newPassword.text);
         var response = await sendNewKeyPair(encryptedKeyPair: encryptedKeyPair);
         if (response != null) {
-          String newEncryptedPrivateKey = encryptedKeyPair["encryptedPrivateKey"];
+          String newEncryptedPrivateKey =
+              encryptedKeyPair["encryptedPrivateKey"];
           String newPrivateKey = encryptedKeyPair["privateKey"];
 
-          globalController.user.value.encryptedPrivateKey = newEncryptedPrivateKey;
+          globalController.user.value.encryptedPrivateKey =
+              newEncryptedPrivateKey;
 
           globalController.user.value.privateKey = newPrivateKey;
-          var certificateInfo = SignatureService.getCertificateInfo(globalController.user.value.id);
-          String signature = SignatureService.getSignature(certificateInfo, newPrivateKey);
-          int times = TimeService
-              .getTimeNow()
-              .toUtc()
-              .millisecondsSinceEpoch;
+          var certificateInfo = SignatureService.getCertificateInfo(
+              globalController.user.value.id);
+          String signature =
+              SignatureService.getSignature(certificateInfo, newPrivateKey);
+          int times = TimeService.getTimeNow().toUtc().millisecondsSinceEpoch;
 
-          List<String> certificateList =
-          SignatureService.getCertificateLogin(
+          List<String> certificateList = SignatureService.getCertificateLogin(
               certificateInfo,
               globalController.user.value.id,
               newPrivateKey,
@@ -193,10 +198,12 @@ class ChangePasswordController extends GetxController {
           newPassword.clear();
           confirmPassword.clear();
           isEditting.value = false;
-          CustomDialog(context, "SUCCESS").show({"message": "success_change_password"});
+          CustomDialog(context, "SUCCESS")
+              .show({"message": "success_change_password"});
         } else {
           isEditting.value = false;
-          CustomDialog(context, "FAILED").show({"message": "failed_change_password"});
+          CustomDialog(context, "FAILED")
+              .show({"message": "failed_change_password"});
         }
       } else {
         CustomDialog(context, "FAILED").show({"message": "wrong_password"});

@@ -19,7 +19,7 @@ jobs:
 - job: ANDROID
   displayName: Build_Android_APK
   pool:
-    name: AndroidBuilder
+    name: Builder
   steps:
   - checkout: self
   - task: FlutterInstall@0

@@ -7,18 +7,26 @@ import 'package:untitled/model/custom_dio.dart';
 import 'package:untitled/model/unauthorize_dio.dart';
 import 'package:untitled/utils/cdn.dart';
 
-Container getImage(String? src, {Key? key, width, height, fit, BoxDecoration? decoration}) {
+Container getImage(String? src,
+    {Key? key, width, height, fit, BoxDecoration? decoration}) {
   return Container(
       decoration: decoration,
       child: src == null || src == ""
-          ? Container()
+          ? Image.asset(
+              "assets/default.png",
+              height: height,
+              width: width,
+            )
           : src.contains(".svg")
-              ? SvgPicture.network(getCDN(src), height: height, fit: fit ?? BoxFit.contain)
-              : Image.network(getCDN(src), height: height, fit: fit ?? BoxFit.contain));
+              ? SvgPicture.network(getCDN(src),
+                  height: height, fit: fit ?? BoxFit.contain)
+              : Image.network(getCDN(src),
+                  height: height, fit: fit ?? BoxFit.contain));
 }
 
 class ImageService {
-  static Future<dynamic> getPreSignedURL(String filename, int contentLength) async {
+  static Future<dynamic> getPreSignedURL(
+      String filename, int contentLength) async {
     try {
       CustomDio customDio = CustomDio();
       var response = await customDio.post("upload-url", {
@@ -35,7 +43,8 @@ class ImageService {
     }
   }
 
-  static Future<String> handleUploadImage(String filename, int contentLength, File file) async {
+  static Future<String> handleUploadImage(
+      String filename, int contentLength, File file) async {
     try {
       UnauthorizedDio customDio = UnauthorizedDio();
       var response = await getPreSignedURL(filename, contentLength);
@@ -50,7 +59,6 @@ class ImageService {
       await customDio.normalPost(url, data: formData);
       return url + headers["key"];
     } catch (e, s) {
-      print(e);
       return "";
     }
   }

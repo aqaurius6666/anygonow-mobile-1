@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
+import 'package:untitled/model/custom_dio.dart';
+import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 
-Future cancelRequestPopup() {
+Future cancelRequestPopup(VoidCallback callback) {
   return Get.defaultDialog(
     titlePadding: EdgeInsets.all(0),
     contentPadding: EdgeInsets.only(
@@ -54,7 +57,7 @@ Future cancelRequestPopup() {
                 ),
               ),
             ),
-            onPress: () => Get.back(),
+            onPress: callback,
           ),
           SizedBox(
             height: getHeight(8),
@@ -171,7 +174,7 @@ Future feedbackPopup({
                 color: Color(0xFFFF0000),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(
+              child: const Text(
                 "Send feedback",
                 style: TextStyle(
                   color: Colors.white,
@@ -183,6 +186,13 @@ Future feedbackPopup({
                   .sendFeedback(orderId, rate, serviceId, businessId);
               if (res) {
                 Get.back();
+                Get.put(MyRequestUserController()).feedback.text = "";
+                CustomDialog(context, "SUCCESS")
+                    .show({"message": "Send feedback successfully"});
+              } else {
+                Get.back();
+                CustomDialog(context, "FAILED")
+                    .show({"message": "Send feedback failed"});
               }
             },
           ),
@@ -219,14 +229,12 @@ Future feedbackPopup({
 }
 
 Future customerDetailPopup({
-  required BuildContext context,
-  String startTime = "000",
+  int startTime = 0,
   String serviceName = "",
   String zipcode = "",
   String email = "",
   String phone = "",
 }) {
-  double rate = 0;
   return Get.defaultDialog(
     titlePadding: EdgeInsets.only(
       top: getHeight(20),
@@ -236,7 +244,7 @@ Future customerDetailPopup({
       left: getWidth(16),
       right: getWidth(16),
     ),
-    titleStyle: TextStyle(
+    titleStyle: const TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w700,
     ),
@@ -252,8 +260,8 @@ Future customerDetailPopup({
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Start time:"),
-              Text("$startTime"),
+              const Text("Start time:"),
+              Text(TimeService.stringToDateTime4(startTime)!),
             ],
           ),
           Container(
@@ -305,10 +313,10 @@ Future customerDetailPopup({
               alignment: Alignment.center,
               height: getHeight(48),
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
               ),
-              child: Text(
+              child: const Text(
                 "Close",
                 style: TextStyle(
                   color: Color(0xFFFF0000),

@@ -57,23 +57,35 @@ class MainScreenController extends GetxController {
 
   int filter = 0;
 
-  RxBool missingSearchField = false.obs;
+  RxString missingSearchField = "".obs;
+
+  void clearData() {
+    searchText.text = "";
+    searchZipcode.text = "";
+    hasSearched.value = false;
+  }
 
   @override
   void onInit() {
+    super.onInit();
+    searchText.text = "";
+    searchZipcode.text = "";
     getProNear = getProfessionalNear();
     getMostInterest = getMostInterested();
     hasSearched.value = false;
     var keyboardVisibilityController = KeyboardVisibilityController();
 
-    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
       isKeyboardVisible.value = visible;
     });
-    super.onInit();
   }
 
   @override
   void dispose() {
+    // searchText.text = "";
+    // searchZipcode.text = "";
+    // hasSearched.value = false;
     keyboardSubscription.cancel();
     super.dispose();
   }
@@ -81,7 +93,8 @@ class MainScreenController extends GetxController {
   Future<List<Business>> getProfessionalNear() async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.get("/businesses/near");
       var json = jsonDecode(response.toString());
 
@@ -108,7 +121,8 @@ class MainScreenController extends GetxController {
   Future<List<Business>> getMostInterested() async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.get("/businesses/interest");
       var json = jsonDecode(response.toString());
 
@@ -188,11 +202,26 @@ class MainScreenController extends GetxController {
   Future getBusinesses() async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
-      Category? value = categories.firstWhereOrNull((element) => element.name == searchText.text);
-      if (value != null && searchZipcode.text != "") {
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+
+      if (searchText.text == "") {
+        missingSearchField.value = "service";
+        if (searchZipcode.text == "") {
+          missingSearchField.value = "zipcode and service";
+        }
+        return false;
+      }
+      if (searchZipcode.text == "") {
+        missingSearchField.value = "zipcode";
+        return false;
+      }
+      Category? value = categories
+          .firstWhereOrNull((element) => element.name == searchText.text);
+      if (value != null) {
         categoryId = value != null ? value.id : "";
-        var response = await customDio.get("/businesses?categoryId=$categoryId&zipcode=${searchZipcode.text}&query=$filter");
+        var response = await customDio.get(
+            "/businesses?categoryId=$categoryId&zipcode=${searchZipcode.text}&query=$filter");
         var json = jsonDecode(response.toString());
 
         if (json["data"]["result"] != null) {
@@ -212,12 +241,10 @@ class MainScreenController extends GetxController {
         } else {
           businesses.clear();
         }
-        missingSearchField.value = false;
+        missingSearchField.value = "";
         return (true);
-      } else {
-        missingSearchField.value = true;
+      } else
         return false;
-      }
     } catch (e) {
       print(e);
       return (false);
@@ -227,7 +254,8 @@ class MainScreenController extends GetxController {
   Future sendRequest() async {
     try {
       CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
       var response = await customDio.post(
         "/orders",
         {

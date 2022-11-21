@@ -20,6 +20,12 @@ class TimeService {
     return time;
   }
 
+  static String? stringToDateTime4(int dateTime) {
+    if (dateTime == null) return null;
+    DateTime temp = DateTime.fromMillisecondsSinceEpoch(dateTime);
+    return DateFormat("dd-MM-yyyy").format(temp);
+  }
+
   static DateTime stringToDateTime3(String dateTime) {
     return DateTime.now();
   }

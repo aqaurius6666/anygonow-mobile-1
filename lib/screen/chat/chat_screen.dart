@@ -5,6 +5,7 @@ import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/message/message_controller.dart';
+import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/bounce_button.dart';
@@ -17,7 +18,7 @@ class ChatScreen extends StatelessWidget {
     MessageController messageController = Get.put(MessageController());
     return Scaffold(
         appBar: appBar(
-            title: "On top mover",
+            title: messageController.currentService.value,
             bottom: Get.put(GlobalController()).user.value.role == 1 &&
                     !messageController.completedChat
                 ? PreferredSize(
@@ -46,7 +47,12 @@ class ChatScreen extends StatelessWidget {
                                 ),
                               ),
                               onPress: () async {
-                                await Get.put(MyRequestController()).rejectRequest();
+                                var res = await Get.put(MyRequestController()).rejectRequest();
+                                if (res) {
+                                  messageController.connectedMessageList.removeAt(messageController.index);
+                                  Get.put(MyRequestUserController()).connectedRequests.removeAt(messageController.index);
+                                  Get.back();
+                                }
                               },
                             ),
                           ),
@@ -73,7 +79,15 @@ class ChatScreen extends StatelessWidget {
                                 ),
                               ),
                               onPress: () async {
-                                await Get.put(MyRequestController()).completeRequest();
+                                var res = await Get.put(MyRequestController()).completeRequest();
+                                if (res) {
+                                  messageController.completedMessageList.add(messageController.connectedMessageList.elementAt(messageController.index));
+                                  // Get.put(MyRequestUserController()).completedRequests.add(Get.put(MyRequestUserController()).connectedRequests.elementAt(messageController.index);
+                                  
+                                  messageController.connectedMessageList.removeAt(messageController.index);
+                                  // Get.put(MyRequestUserController()).connectedRequests.removeAt(messageController.index);
+                                  Get.back();
+                                }
                               },
                             ),
                           )
@@ -97,7 +111,13 @@ class ChatScreen extends StatelessWidget {
                               color: Color(0xFFFF511A), fontSize: getWidth(16)),
                         ),
                         onPress: () {
-                          customerDetailPopup(context: context);
+                          customerDetailPopup(
+                            startTime: messageController.currentConversation["startDate"],
+                            serviceName: messageController.currentConversation["serviceName"],
+                            zipcode: messageController.currentConversation["customerZipcode"],
+                            email: messageController.currentConversation["customerMail"],
+                            phone: messageController.currentConversation["customerPhone"],
+                          );
                         },
                       ),
                     )

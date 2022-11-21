@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/signup/signup_controller.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/screen/signup/check_email_screen.dart';
 import 'package:untitled/utils/config.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 import 'package:untitled/widgets/app_name.dart';
 import 'package:untitled/widgets/layout.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignupContractScreen extends StatelessWidget {
   @override
@@ -14,7 +17,9 @@ class SignupContractScreen extends StatelessWidget {
     SignupController signupController = Get.put(SignupController());
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      bottomNavigationBar: Padding(padding: EdgeInsets.only(top: getHeight(0)), child: confirmButtonContainer(context, signupController)),
+      bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(top: getHeight(0)),
+          child: confirmButtonContainer(context, signupController)),
       body: Container(
         color: Colors.white,
         padding: EdgeInsets.only(
@@ -48,12 +53,14 @@ class SignupContractScreen extends StatelessWidget {
             SizedBox(
               height: getHeight(12),
             ),
-            inputRegular(
+            inputPhoneNUmber(
               context,
               label: "phone".tr,
               hintText: "Enter your phone",
               required: true,
               textEditingController: signupController.phoneNumber,
+              numberOnly: true,
+              maxLength: 12,
             ),
             SizedBox(
               height: getHeight(12),
@@ -102,19 +109,43 @@ class SignupContractScreen extends StatelessWidget {
                 ),
                 Text(
                   "I agree to the ",
-                  style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      fontSize: getHeight(14), fontWeight: FontWeight.w500),
                 ),
-                Text(
-                  "Term of Use",
-                  style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.w500, color: Color(0xFF3864FF), decoration: TextDecoration.underline),
+                GestureDetector(
+                  onTap: () async {
+                    String url = GlobalController.baseWebUrl;
+                    String termsUrl = url + "terms";
+                    await launch(termsUrl);
+                  },
+                  child: Text(
+                    "Term of Use",
+                    style: TextStyle(
+                        fontSize: getHeight(14),
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF3864FF),
+                        decoration: TextDecoration.underline),
+                  ),
                 ),
                 Text(
                   " and ",
-                  style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      fontSize: getHeight(14), fontWeight: FontWeight.w500),
                 ),
-                Text(
-                  "Privacy Policy",
-                  style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.w500, color: Color(0xFF3864FF), decoration: TextDecoration.underline),
+                GestureDetector(
+                  onTap: () async {
+                    String url = GlobalController.baseWebUrl;
+                    String privacyUrl = url + "privacy";
+                    await launch(privacyUrl);
+                  },
+                  child: Text(
+                    "Privacy Policy",
+                    style: TextStyle(
+                        fontSize: getHeight(14),
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF3864FF),
+                        decoration: TextDecoration.underline),
+                  ),
                 ),
               ],
             )
@@ -125,7 +156,8 @@ class SignupContractScreen extends StatelessWidget {
   }
 }
 
-Container confirmButtonContainer(BuildContext context, SignupController signupController) {
+Container confirmButtonContainer(
+    BuildContext context, SignupController signupController) {
   return bottomContainerLayout(
     height: 108,
     child: Column(
@@ -141,12 +173,53 @@ Container confirmButtonContainer(BuildContext context, SignupController signupCo
               ),
             ),
             onPressed: () async {
-              if (signupController.email.text != "" && signupController.password.text != "" && signupController.isAgree.value == true && signupController.confirmPassword.text != "") {
-                var result = await signupController.signup();
-                Get.to(() => CheckEmailScreen());
+              // if (signupController.email.text != "" && signupController.password.text != "" && signupController.isAgree.value == true && signupController.confirmPassword.text != "") {
+              //   var result = await signupController.signup();
+              //   Get.to(() => CheckEmailScreen());
+              // }
+              bool emailValid = RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(signupController.email.text);
+              if (!emailValid) {
+                CustomDialog(context, "FAILED")
+                    .show({"message": "Email invalidate"});
+                return;
               }
+              bool phoneValid = RegExp(r'(^(?:[+0]9)?[0-9]{7,12}$)')
+                  .hasMatch(signupController.phoneNumber.text);
+              if (!phoneValid) {
+                CustomDialog(context, "FAILED").show({
+                  "message":
+                      "Phone numbers are only alphanumeric and have 7-12 characters"
+                });
+                return;
+              }
+              bool passValid =
+                  RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')
+                      .hasMatch(signupController.password.text);
+              if (!passValid) {
+                CustomDialog(context, "FAILED").show({
+                  "message":
+                      "Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number"
+                });
+                return;
+              }
+              if (signupController.password.text !=
+                  signupController.confirmPassword.text) {
+                CustomDialog(context, "FAILED")
+                    .show({"message": "Re-entered password is incorrect"});
+                return;
+              }
+              if (signupController.isAgree.value == false) {
+                CustomDialog(context, "FAILED")
+                    .show({"message": "You do not agree to the terms of use"});
+                return;
+              }
+              var result = await signupController.signup();
+              Get.to(() => CheckEmailScreen());
             },
-            child: Text("continue".tr, style: const TextStyle(color: Colors.white)),
+            child: Text("continue".tr,
+                style: const TextStyle(color: Colors.white)),
           ),
         ),
         SizedBox(

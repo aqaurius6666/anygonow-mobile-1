@@ -10,14 +10,17 @@ class CustomDialog {
   void show([optionData]) {
     AlertDialog alert;
     var message = optionData != null ? optionData["message"] : null;
+    var height = optionData != null ? optionData["height"] : null;
     if (type == "SUCCESS") {
       alert = alertDialogSuccess(context, message);
     } else if (type == "HELP") {
-      alert = alertHelpdeskDialog(context, optionData["title"], optionData["message"], optionData["image"]);
+      alert = alertHelpdeskDialog(context, optionData["title"],
+          optionData["message"], optionData["image"]);
     } else if (type == "CONFIRM") {
-      alert = alertConfirmDialog(context, optionData["title"], optionData["message"], optionData["onConfirm"]);
+      alert = alertConfirmDialog(context, optionData["title"],
+          optionData["message"], optionData["onConfirm"]);
     } else if (type == "FAILED") {
-      alert = alertDialogFailed(context, message);
+      alert = alertDialogFailed(context, message, height);
     } else {
       alert = alertDialog(context, message);
     }
@@ -79,7 +82,10 @@ AlertDialog alertDialogSuccess(context, message) {
                       },
                       child: Text(
                         'close'.tr,
-                        style: TextStyle(color: Colors.black, fontSize: getHeight(17), fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: getHeight(17),
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -93,15 +99,16 @@ AlertDialog alertDialogSuccess(context, message) {
     ),
   );
 }
-AlertDialog alertDialogFailed(context, message) {
+
+AlertDialog alertDialogFailed(context, message, height) {
   return AlertDialog(
     content: Container(
       width: getWidth(343),
-      height: getHeight(253),
+      height: getHeight(height ?? 253),
       child: Column(
         children: [
           Container(
-            height: getHeight(120),
+            height: getHeight(60),
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/icons/failed-icon2.png'),
@@ -109,11 +116,11 @@ AlertDialog alertDialogFailed(context, message) {
             ),
           ),
           SizedBox(
-            height: getHeight(27),
+            height: getHeight(15),
           ),
           Text(
             message != null ? message.toString().tr : "common_failed".tr,
-            style: TextStyle(fontSize: getHeight(17)),
+            style: TextStyle(fontSize: getHeight(16)),
             textAlign: TextAlign.center,
           ),
           SizedBox(
@@ -140,7 +147,10 @@ AlertDialog alertDialogFailed(context, message) {
                       },
                       child: Text(
                         'close'.tr,
-                        style: TextStyle(color: Colors.black, fontSize: getHeight(17), fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: getHeight(17),
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -191,7 +201,10 @@ AlertDialog alertDialog(context, message) {
                       },
                       child: Text(
                         'close'.tr,
-                        style: TextStyle(color: Colors.black, fontSize: getHeight(17), fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: getHeight(17),
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -222,7 +235,8 @@ AlertDialog alertHelpdeskDialog(context, title, helptext, image) {
           ),
           Text(
             helptext,
-            style: TextStyle(fontSize: getHeight(12), fontWeight: FontWeight.normal),
+            style: TextStyle(
+                fontSize: getHeight(12), fontWeight: FontWeight.normal),
             textAlign: TextAlign.center,
           ),
           image != null
@@ -259,7 +273,10 @@ AlertDialog alertHelpdeskDialog(context, title, helptext, image) {
                       },
                       child: Text(
                         'close'.tr,
-                        style: TextStyle(color: Colors.black, fontSize: getHeight(17), fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: getHeight(17),
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -282,7 +299,7 @@ AlertDialog alertConfirmDialog(context, title, message, onConfirm) {
       child: Column(
         children: [
           Text(
-            title,
+            title ?? "",
             style: TextStyle(fontSize: getHeight(16)),
           ),
           SizedBox(
@@ -290,7 +307,8 @@ AlertDialog alertConfirmDialog(context, title, message, onConfirm) {
           ),
           Text(
             message,
-            style: TextStyle(fontSize: getHeight(14), fontWeight: FontWeight.normal),
+            style: TextStyle(
+                fontSize: getHeight(14), fontWeight: FontWeight.normal),
             textAlign: TextAlign.center,
           ),
           Expanded(
@@ -315,7 +333,10 @@ AlertDialog alertConfirmDialog(context, title, message, onConfirm) {
                       },
                       child: Text(
                         'confirm'.tr,
-                        style: TextStyle(color: Colors.white, fontSize: getHeight(17), fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: getHeight(17),
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -334,7 +355,10 @@ AlertDialog alertConfirmDialog(context, title, message, onConfirm) {
                       },
                       child: Text(
                         'close'.tr,
-                        style: TextStyle(color: Colors.black, fontSize: getHeight(17), fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: getHeight(17),
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),

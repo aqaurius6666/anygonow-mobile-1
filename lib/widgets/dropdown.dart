@@ -17,3 +17,22 @@ ButtonTheme getDropDown(List<String> itemList, Function(String) callback) {
         }),
   );
 }
+
+ButtonTheme getStateDropDown(
+    List<dynamic> itemList, Function(dynamic element) callback) {
+  return ButtonTheme(
+    alignedDropdown: true,
+    child: DropdownButton(
+        isExpanded: true,
+        underline: const SizedBox(),
+        items: itemList.map<DropdownMenuItem<String>>((item) {
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Text(item.name ?? ""),
+          );
+        }).toList(),
+        onChanged: (dynamic value) {
+          callback(value);
+        }),
+  );
+}

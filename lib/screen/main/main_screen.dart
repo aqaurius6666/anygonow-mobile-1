@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/main/main_screen_model.dart';
@@ -11,29 +10,40 @@ import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/cdn.dart';
 import 'package:untitled/utils/common-function.dart';
 import 'package:untitled/utils/config.dart';
+import 'package:untitled/widgets/bottom_navigator.dart';
 import 'package:untitled/widgets/bounce_button.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/dropdown.dart';
-import 'package:untitled/widgets/image.dart';
 import 'package:untitled/widgets/input.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreenController mainScreenController = Get.put(MainScreenController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: Obx(() {
-        return mainScreenController.isKeyboardVisible.value
-            ? Container(
-                child: Bouncing(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        bottomNavigationBar: Obx(() {
+          return mainScreenController.hasSearched.value ? bottomSearchResult() : SizedBox();
+        }
+        ),
+        floatingActionButton: Obx(() {
+          return mainScreenController.isKeyboardVisible.value
+              ? Bouncing(
                   onPress: () async {
                     var res = await mainScreenController.getBusinesses();
                     if (res) {
                       mainScreenController.hasSearched.value = true;
                       FocusManager.instance.primaryFocus?.unfocus();
                     } else {
-                      print("not found");
+                      mainScreenController.isKeyboardVisible.value = false;
+                      CustomDialog(context, "FAILED").show({
+                        "message":
+                            "You need to enter ${mainScreenController.missingSearchField} to continue the process!"
+                      });
                     }
                   },
                   child: Container(
@@ -53,138 +63,138 @@ class MainScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-              )
-            : Container();
-      }),
-      body: Stack(
-        children: [
-          Container(
-            height: getHeight(500),
-            color: const Color(0xFF07BAAD),
-          ),
-          ListView(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            children: [
-              Obx(() {
-                return mainScreenController.hasSearched.value
-                    ? SizedBox(
-                        height: getHeight(12),
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: getWidth(16), top: getHeight(30)),
-                            child: Text(
-                              "Hi ${globalController.user.value.fullName ?? globalController.user.value.username}, have a good day 👋",
-                              style: TextStyle(
-                                fontSize: getHeight(18),
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                )
+              : Container();
+        }),
+        body: Stack(
+          children: [
+            Container(
+              height: getHeight(500),
+              color: const Color(0xFF07BAAD),
+            ),
+            ListView(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              children: [
+                Obx(() {
+                  return mainScreenController.hasSearched.value
+                      ? SizedBox(
+                          height: getHeight(12),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: getWidth(16), top: getHeight(30)),
+                              child: Text(
+                                "Hi ${globalController.user.value.fullName ?? globalController.user.value.username}, have a good day 👋",
+                                style: TextStyle(
+                                  fontSize: getHeight(18),
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: getWidth(16),
-                            ),
-                            child: Text(
-                              TimeService.currentTimeDayOfWeek(DateTime.now()),
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: getHeight(14)),
-                            ),
-                          ),
-                          SizedBox(
-                            height: getHeight(12),
-                          ),
-                        ],
-                      );
-              }),
-              Row(
-                children: [
-                  Obx(() {
-                    return mainScreenController.hasSearched.value
-                        ? Container(
-                            margin: EdgeInsets.only(left: getWidth(2)),
-                            width: getWidth(54),
-                            height: getHeight(32),
-                            child: Bouncing(
-                              child: Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Icon(
-                                    Icons.arrow_back_ios,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: getWidth(16),
+                              ),
+                              child: Text(
+                                TimeService.currentTimeDayOfWeek(
+                                    DateTime.now()),
+                                style: TextStyle(
                                     color: Colors.white,
-                                    size: getHeight(30),
-                                  )),
-                              onPress: () {
-                                mainScreenController.hasSearched.value = false;
-                              },
-                            ),
-                          )
-                        : const SizedBox();
-                  }),
-                  SizedBox(
-                    width: getWidth(14),
-                  ),
-                  Obx(() {
-                    return Container(
-                      height: getHeight(40),
-                      width: mainScreenController.hasSearched.value
-                          ? getWidth(287)
-                          : getWidth(343),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: const Color(0xFFC4C4C4),
-                          width: getWidth(1),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 68,
-                            child: Container(
-                              child: inputSearch(
-                                context,
-                                hintText: "Search by service",
-                                textEditingController:
-                                    mainScreenController.searchText,
-                                onSearch: () async {
-                                  var res = await mainScreenController
-                                      .getBusinesses();
-                                  if (res) {
-                                    mainScreenController.hasSearched.value =
-                                        true;
-                                  } else {
-                                    print("not found");
-                                  }
-                                },
-                                options: List.generate(
-                                    mainScreenController.categories.length,
-                                    (index) => mainScreenController
-                                        .categories[index].name),
-                                prefixIcon: "assets/icons/search.svg",
+                                    fontSize: getHeight(14)),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: SvgPicture.asset(
-                              "assets/icons/line.svg",
+                            SizedBox(
+                              height: getHeight(12),
                             ),
+                          ],
+                        );
+                }),
+                Row(
+                  children: [
+                    Obx(() {
+                      return mainScreenController.hasSearched.value
+                          ? Container(
+                              margin: EdgeInsets.only(left: getWidth(2)),
+                              width: getWidth(54),
+                              height: getHeight(32),
+                              child: Bouncing(
+                                child: Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Colors.white,
+                                      size: getHeight(30),
+                                    )),
+                                onPress: () {
+                                  mainScreenController.hasSearched.value =
+                                      false;
+                                },
+                              ),
+                            )
+                          : const SizedBox();
+                    }),
+                    SizedBox(
+                      width: getWidth(14),
+                    ),
+                    Obx(() {
+                      return Container(
+                        height: getHeight(40),
+                        width: mainScreenController.hasSearched.value
+                            ? getWidth(287)
+                            : getWidth(343),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: const Color(0xFFC4C4C4),
+                            width: getWidth(1),
                           ),
-                          Expanded(
-                            flex: 30,
-                            child: inputSearch(
-                              context,
-                              hintText: "Zipcode",
-                              textEditingController:
-                                  mainScreenController.searchZipcode,
-                              onSearch: () async {
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 68,
+                              child: Container(
+                                child: inputSearch(
+                                  context,
+                                  hintText: "Search by service",
+                                  textEditingController:
+                                      mainScreenController.searchText,
+                                  onSearch: () async {
+                                    var res = await mainScreenController
+                                        .getBusinesses();
+                                    if (res) {
+                                      mainScreenController.hasSearched.value =
+                                          true;
+                                    } else {
+                                      print('not found');
+                                    }
+                                  },
+                                  options: List.generate(
+                                      mainScreenController.categories.length,
+                                      (index) => mainScreenController
+                                          .categories[index].name),
+                                  prefixIcon: "assets/icons/search.svg",
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: SvgPicture.asset(
+                                "assets/icons/line.svg",
+                              ),
+                            ),
+                            Expanded(
+                              flex: 30,
+                              child: inputSearch(context,
+                                  hintText: "Zipcode",
+                                  textEditingController: mainScreenController
+                                      .searchZipcode, onSearch: () async {
                                 var res =
                                     await mainScreenController.getBusinesses();
                                 if (res) {
@@ -193,40 +203,43 @@ class MainScreen extends StatelessWidget {
                                   print("not found");
                                 }
                               },
-                              options: [],
-                              prefixIcon: "assets/icons/location.svg",
+                                  options: [],
+                                  prefixIcon: "assets/icons/location.svg",
+                                  maxLength: 6,
+                                  numberOnly: true),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ],
-              ),
-              SizedBox(
-                height: getHeight(12),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: getWidth(16),),
-                child: Obx(() {
-                    return Text(
-                      mainScreenController.missingSearchField.value ? "Missing text field" : "",
-                      style: TextStyle(color: Colors.red),
-                    );
-                  }
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: getHeight(12),
-              ),
-              Obx(() {
-                return mainScreenController.hasSearched.value
-                    ? searchResults(context)
-                    : mainScreenDisplay();
-              }),
-            ],
-          ),
-        ],
+                SizedBox(
+                  height: getHeight(24),
+                ),
+                // Padding(
+                //   padding: EdgeInsets.only(
+                //     left: getWidth(16),
+                //   ),
+                //   child: Obx(() {
+                //     return Text(
+                //       mainScreenController.missingSearchField.value
+                //           ? "Missing text field"
+                //           : "",
+                //       style: TextStyle(color: Colors.red),
+                //     );
+                //   }),
+                // ),
+
+                Obx(() {
+                  return mainScreenController.hasSearched.value
+                      ? searchResults(context)
+                      : mainScreenDisplay();
+                }),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -303,31 +316,35 @@ class MainScreen extends StatelessWidget {
           SizedBox(
             height: getHeight(12),
           ),
-          GridView.count(
-            shrinkWrap: true,
-            childAspectRatio: (167 / 48),
-            crossAxisCount: 2,
-            children: List.generate(
-              globalController.categories.sublist(0, 4).length,
-              (index) {
-                var colors = getPairColor(
-                    index > 3 ? Random().nextInt(4) : 0 + index % 4);
-                return Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: getWidth(4), vertical: getHeight(4)),
-                    height: getHeight(48),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: Color(colors[0])),
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          globalController.categories[index].name,
-                          style: TextStyle(
-                            color: Color(colors[1]),
-                          ),
-                        )));
-              },
+          Obx(
+            () => GridView.count(
+              shrinkWrap: true,
+              childAspectRatio: (167 / 48),
+              crossAxisCount: 2,
+              children: List.generate(
+                globalController.categories.length >= 4
+                    ? globalController.categories.sublist(0, 4).length
+                    : globalController.categories.length,
+                (index) {
+                  var colors = getPairColor(
+                      index > 3 ? Random().nextInt(4) : 0 + index % 4);
+                  return Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: getWidth(4), vertical: getHeight(4)),
+                      height: getHeight(48),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: Color(colors[0])),
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            globalController.categories[index].name,
+                            style: TextStyle(
+                              color: Color(colors[1]),
+                            ),
+                          )));
+                },
+              ),
             ),
           ),
           SizedBox(
@@ -466,7 +483,7 @@ class MainScreen extends StatelessWidget {
                 reviews: mainScreenController.businesses[index].rating["review"]
                         ?.toInt() ??
                     0,
-                isSearchResult: false,
+                isSearchResult: true,
                 about: mainScreenController
                         .businesses[index].bussiness["descriptions"] ??
                     "",
@@ -475,6 +492,7 @@ class MainScreen extends StatelessWidget {
                         0,
                 id: mainScreenController.businesses[index].bussiness["id"] ??
                     "",
+                controller: mainScreenController,
               );
             }),
           ),

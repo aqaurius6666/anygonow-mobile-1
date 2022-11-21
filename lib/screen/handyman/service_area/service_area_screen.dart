@@ -1,40 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/handyman/service_area/service_area_controller.dart';
 import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/layout.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class ServiceAreaScreen extends StatelessWidget {
-  ServiceAreaController serviceAreaController = Get.put(ServiceAreaController());
+  ServiceAreaController serviceAreaController =
+      Get.put(ServiceAreaController());
+
+  // final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(title: "Service Areas"),
-      bottomNavigationBar: Padding(padding: EdgeInsets.only(top: getHeight(0)), child: confirmButtonContainer(context)),
-      body: Container(
-        width: double.infinity,
-        child: ListView(
-          children: [
-            // FlutterMap(
-            //   mapController: serviceAreaController.mapController,
-            //   options: MapOptions(
-            //     center: serviceAreaController. buildMap(),
-            //     minZoom: 5.0,
-            //   ),
-            //   layers: [
-            //     TileLayerOptions(
-            //       urlTemplate:
-            //           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            //       subdomains: ['a', 'b', 'c'],
-            //     )
-            //   ],
-            // )
-          ],
-        ),
-      ),
+    print(Get.put(GlobalController()).user.value.certificate.toString());
+
+    // flutterWebviewPlugin.evalJavascript("(function() { try { window.localStorage.setItem('persist:userInfo', {auth: ${Get.put(GlobalController()).user.value.certificate.toString()}}); } catch (err) { return err; } })();");
+
+    return WebviewScaffold(
+      withLocalStorage: true,
+      url: GlobalController.baseWebUrl + "?page=services_areas",
+      headers: {
+        "Authorization":
+            Get.put(GlobalController()).user.value.certificate.toString(),
+      },
+      withJavascript: true,
+      debuggingEnabled: true,
     );
   }
 
@@ -46,7 +40,8 @@ class ServiceAreaScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           OutlinedButton(
-              child: Text("update".tr, style: const TextStyle(color: Colors.white)),
+              child: Text("update".tr,
+                  style: const TextStyle(color: Colors.white)),
               style: OutlinedButton.styleFrom(
                 backgroundColor: const Color(0xffff511a),
                 side: const BorderSide(
@@ -54,7 +49,7 @@ class ServiceAreaScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
-                Get.to(() => HandymanHomePageScreen());
+                // Get.to(() => HandymanHomePageScreen());
               }),
         ],
       ),

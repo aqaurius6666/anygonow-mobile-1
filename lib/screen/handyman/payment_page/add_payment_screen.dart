@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/payment_method/payment_method_controller.dart';
+import 'package:untitled/screen/handyman/payment_page/payment_page_screen.dart';
 import 'package:untitled/service/stripe.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/dialog.dart';
@@ -69,9 +70,9 @@ class AddPaymentScreen extends StatelessWidget {
                     context,
                     label: "Expiration date",
                     required: true,
-                    hintText: "MM/YYYY",
+                    hintText: "MM/YY",
                     textEditingController: paymentController.expiryDate,
-                    maxLength: 7,
+                    maxLength: 5,
                   ),
                 ),
                 SizedBox(
@@ -118,9 +119,17 @@ Container confirmButtonContainer(BuildContext context, PaymentController payment
                       ),
                     ),
                     onPressed: () async {
+                      var expireDate = paymentController.expiryDate.text.split('/');
+                      if (paymentController.cardNumber.text == "") {
+                        CustomDialog(context, "FAILED").show({"message": 'Card number is required'});
+                        return;
+                      }
+                      if (int.parse(expireDate.first) > 12 || int.parse(expireDate.first) == 0) {
+                        CustomDialog(context, "FAILED").show({"message": 'The expiration date is not in the correct format'});
+                        return;
+                      }
                       paymentController.loading.value = true;
                       var _card = CardDetails();
-                      var expireDate = paymentController.expiryDate.text.split('/');
                       if (paymentController.cardNumber.text != "") {
                         _card = _card.copyWith(number: paymentController.cardNumber.text.replaceAll(" ", ""));
                       }
@@ -137,7 +146,12 @@ Container confirmButtonContainer(BuildContext context, PaymentController payment
                       var result = await StripeService.createNewPayment(paymentMethod, context);
                       if (result != null) {
                         await paymentController.getPaymentMethods();
-                        CustomDialog(context, "SUCCESS").show({"message": "success_add_payment"});
+                        paymentController.cardNumber.text = "";
+                        paymentController.expiryDate.text = "";
+                        paymentController.cvvCode.text = "";
+
+                        // CustomDialog(context, "SUCCESS").show({"message": "success_add_payment"});
+                        Get.back();
                       } else {
                         CustomDialog(context, "FAILED").show({"message": "failed_add_payment"});
                       }

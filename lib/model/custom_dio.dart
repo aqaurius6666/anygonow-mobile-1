@@ -13,7 +13,9 @@ import 'package:untitled/service/date_format.dart';
 class CustomDio {
   GlobalController globalController = Get.put(GlobalController());
   static final String baseUrlFormat = dotenv.env["SERVER_URL"].toString();
-  static final String baseUrl = baseUrlFormat[baseUrlFormat.length - 1] == "/" ? baseUrlFormat : baseUrlFormat + "/";
+  static final String baseUrl = baseUrlFormat[baseUrlFormat.length - 1] == "/"
+      ? baseUrlFormat
+      : baseUrlFormat + "/";
 
   static CustomDio _instance() => CustomDio._();
 
@@ -79,17 +81,22 @@ class CustomDio {
   }
 
   Future<Response<T>> normalPost<T>(
-      String path, {
-        data,
-        Map<String, dynamic>? queryParameters,
-        Options? options,
-        CancelToken? cancelToken,
-        ProgressCallback? onSendProgress,
-        ProgressCallback? onReceiveProgress,
-      }) {
-   return _dio.post(path, data: data, queryParameters: queryParameters, options: options, cancelToken: cancelToken, onReceiveProgress: onSendProgress, onSendProgress: onSendProgress);
+    String path, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) {
+    return _dio.post(path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onSendProgress,
+        onSendProgress: onSendProgress);
   }
-
 
   Future post(String url, dynamic params,
       {Options? options, bool? sign}) async {
@@ -104,7 +111,7 @@ class CustomDio {
     var privateKey = globalController.user.value.privateKey ?? "";
     if (privateKey != "") {
       var bodySignature =
-      signMessage(privateKey, hashMessage(jsonEncode(data)));
+          signMessage(privateKey, hashMessage(jsonEncode(data)));
       finalData = jsonEncode({"data": data, "_signature": bodySignature});
     } else {
       finalData = jsonEncode({"data": data});
@@ -124,7 +131,7 @@ class CustomDio {
     var privateKey = globalController.user.value.privateKey ?? "";
     if (privateKey != "") {
       var bodySignature =
-      signMessage(privateKey, hashMessage(jsonEncode(data)));
+          signMessage(privateKey, hashMessage(jsonEncode(data)));
       finalData = jsonEncode({"data": data, "_signature": bodySignature});
     } else {
       finalData = jsonEncode({"data": data});
@@ -143,7 +150,7 @@ class CustomDio {
     var privateKey = globalController.user.value.privateKey ?? "";
     if (privateKey != "") {
       var bodySignature =
-      signMessage(privateKey, hashMessage(jsonEncode(data)));
+          signMessage(privateKey, hashMessage(jsonEncode(data)));
       finalData = jsonEncode({"data": data, "_signature": bodySignature});
     } else {
       finalData = jsonEncode({"data": data});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
@@ -27,7 +28,7 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // manageAdvertiseController.getListAdvertise();
+    manageAdvertiseController.getListAdvertise();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -72,7 +73,8 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                     style: TextStyle(
                       color: Color.fromARGB(255, 56, 100, 255),
                       fontSize: getWidth(14),
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'TTNorm',
                     ),
                   ),
                   SizedBox(
@@ -89,13 +91,14 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                     height: getHeight(24),
                   ),
                   Obx(()=> 
+                    manageAdvertiseController.listAdvertise.isNotEmpty ?
                     Container(
                       width: getWidth(375),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'With ' + manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["name"] + ' you will get',
+                              'With ' + (manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["name"]) + ' you will get',
                               style: TextStyle(
                                 fontSize: getWidth(18),
                                 fontWeight: FontWeight.w600,
@@ -116,22 +119,21 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                               child: Column(
                                 children: List.generate(
                                   !manageAdvertiseController.isBuy.value ? 
-                                   manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"].length
-                                  : manageAdvertiseController.currentAdvertise["serviceInfo"].length,
+                                   (manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"].length)
+                                  : (manageAdvertiseController.currentAdvertise["serviceInfo"].length),
                                   (index) => Column(
                                     children: [
                                       SizedBox(height: getHeight(12)),
                                       Container(
                                         child: Row(
                                           children: [
-                                            const Icon(
-                                              Icons.lock,
-                                              color:
-                                                  Color.fromARGB(255, 80, 80, 80),
+                                            SvgPicture.asset(
+                                              'assets/icons/star.svg',
                                             ),
-                                            SizedBox(width: getWidth(4)),
+                                            SizedBox(width: getWidth(7)),
                                             Text(
-                                              !manageAdvertiseController.isBuy.value ? manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"][index]["serviceName"]
+                                              !manageAdvertiseController.isBuy.value 
+                                              ? (manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"][index]["serviceName"])
                                               : manageAdvertiseController.currentAdvertise["serviceInfo"][index]["serviceName"],
                                               style: TextStyle(
                                                 fontSize: getWidth(16),
@@ -161,7 +163,8 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                             ),
                             SizedBox(height: getHeight(12)),
                             Text(
-                              !manageAdvertiseController.isBuy.value ? manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["description"]
+                              !manageAdvertiseController.isBuy.value 
+                              ? (manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["description"])
                               : manageAdvertiseController.currentAdvertise["description"],
                               style: TextStyle(
                                 fontSize: getWidth(14),
@@ -171,6 +174,23 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                             ),
                             SizedBox(height: getHeight(24)),
                           ]),
+                    ) : 
+                    Container(
+                      child: Center(
+                        child: Column(
+                          children: [
+                            SizedBox(height: getHeight(50)),
+                            Text(
+                              'No ad packs yet',
+                              style: TextStyle(
+                                fontFamily: 'TTNorm',
+                                fontSize: getWidth(20),
+                                fontWeight: FontWeight.w600,
+                              )
+                            ),
+                          ],
+                        )
+                      ),
                     ),
                   ),
                 ],
@@ -192,7 +212,7 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
           onPageChanged: (value) {
             manageAdvertiseController.onChangeIndexCurrentAd(value);
           },
-          itemCount: manageAdvertiseController.listAdvertise.length,
+          itemCount: manageAdvertiseController.listAdvertise.isNotEmpty ? manageAdvertiseController.listAdvertise.length : 0,
           itemBuilder: (BuildContext context, index) =>
               itemAdvertise(
                 name: manageAdvertiseController.listAdvertise[index]["name"], 

@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -18,6 +19,14 @@ class Category {
 }
 
 class GlobalController extends GetxController {
+  static final String baseWebUrlFormat =
+      ["", "null"].contains(dotenv.env["WEB_URL"].toString())
+          ? "https://anygonow.com"
+          : dotenv.env["WEB_URL"].toString();
+  static final String baseWebUrl =
+      baseWebUrlFormat[baseWebUrlFormat.length - 1] == "/"
+          ? baseWebUrlFormat
+          : baseWebUrlFormat + "/";
   var db;
   Rx<User> user = User().obs;
   RxList<Category> categories = <Category>[].obs;
@@ -32,7 +41,7 @@ class GlobalController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    pageController = PageController(initialPage: 0, keepPage: true);
+    pageController = PageController(initialPage: 0, keepPage: false);
     currentPage.value = 0;
   }
 
@@ -42,7 +51,7 @@ class GlobalController extends GetxController {
       pageController.jumpToPage(value);
     } catch (e) {
       currentPage.value = value;
-      pageController = PageController(initialPage: value, keepPage: true);
+      pageController = PageController(initialPage: value, keepPage: false);
     }
   }
 
@@ -70,7 +79,7 @@ class GlobalController extends GetxController {
       }
 
       return (true);
-    }catch(e) {
+    } catch (e) {
       print(e);
       return false;
     }

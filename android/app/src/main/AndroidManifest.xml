@@ -54,7 +54,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with https://YOUR_HOST -->
-                <data android:scheme="https" android:host="handyman.uetbc.xyz"/>
+                <data 
+                    android:scheme="https" 
+                    android:host="handyman-2.uetbc.xyz"
+                />
             </intent-filter>
             
             <meta-data

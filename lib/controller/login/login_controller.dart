@@ -27,6 +27,11 @@ class LoginPageController extends GetxController {
     isHidePassword.value = !isHidePassword.value;
   }
 
+  void onClearData() {
+    username.text = "";
+    password.text = "";
+  }
+
   Future getPing(List<String> certificateList) async {
     try {
       CustomDio customDio = CustomDio();
@@ -77,7 +82,8 @@ class LoginPageController extends GetxController {
         var publicKey = data['publicKey'];
         var encryptedPrivateKey = data['encryptedPrivateKey'];
         var userName = username.text;
-        String? privateKey = decryptAESCryptoJS(encryptedPrivateKey, password.text);
+        String? privateKey =
+            decryptAESCryptoJS(encryptedPrivateKey, password.text);
 
         Status validatePassword = Status();
 
@@ -89,9 +95,17 @@ class LoginPageController extends GetxController {
 
         if (validatePassword.status == "SUCCESS") {
           var certificateInfo = SignatureService.getCertificateInfo(userId);
-          String signature = SignatureService.getSignature(certificateInfo, privateKey as String);
+          String signature = SignatureService.getSignature(
+              certificateInfo, privateKey as String);
           int times = DateTime.now().toUtc().millisecondsSinceEpoch;
-          List<String> certificateList = SignatureService.getCertificateLogin(certificateInfo, userId, privateKey, encryptedPrivateKey, signature, publicKey, times);
+          List<String> certificateList = SignatureService.getCertificateLogin(
+              certificateInfo,
+              userId,
+              privateKey,
+              encryptedPrivateKey,
+              signature,
+              publicKey,
+              times);
 
           var responsePing = await getPing(certificateList);
           print(responsePing);
@@ -108,6 +122,7 @@ class LoginPageController extends GetxController {
             userInfo.certificate = certificateList[0];
             userInfo.role = jsonResponse["data"]["role"];
             userInfo.process = jsonResponse["data"]["process"] ?? 0;
+            userInfo.avatar = jsonResponse["data"]["image"];
 
             CustomDio customDio = CustomDio();
 
@@ -116,8 +131,10 @@ class LoginPageController extends GetxController {
               var contactInfo = jsonDecode(contactResponse.toString());
               var userResponse = await customDio.get("/users/$userId");
               var userInformation = jsonDecode(userResponse.toString());
-              userInfo.zipcode = int.parse(contactInfo["data"]["contact"]["zipcode"] ?? "100");
-              var firstName = userInformation["data"]["user"]["firstName"] ?? "";
+              userInfo.zipcode =
+                  int.parse(contactInfo["data"]["contact"]["zipcode"] ?? "100");
+              var firstName =
+                  userInformation["data"]["user"]["firstName"] ?? "";
               var lastName = userInformation["data"]["user"]["lastName"] ?? "";
               userInfo.fullName = firstName + " " + lastName;
             }
