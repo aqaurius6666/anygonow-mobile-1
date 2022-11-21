@@ -23,9 +23,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await globalController.getStates();
-  // Timer.periodic(new Duration(seconds: 1), (timer) {
-  //   Get.put(MessageController()).getMessages();
-  // });
+  Timer.periodic(new Duration(seconds: 1), (timer) {
+    Get.put(MessageController()).getMessages();
+  });
   runApp(MyApp());
 }
 

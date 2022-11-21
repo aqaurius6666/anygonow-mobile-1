@@ -32,8 +32,8 @@ class MessageController extends GetxController {
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] =
           Get.put(GlobalController()).user.value.certificate.toString();
-      completedMessageList.clear();
-      connectedMessageList.clear();
+      // completedMessageList.clear();
+      // connectedMessageList.clear();
       var json;
 
       for (int i = 0; i < connectedMessageIds.length; ++i) {

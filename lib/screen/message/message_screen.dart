@@ -44,26 +44,29 @@ class MessageScreen extends StatelessWidget {
     // print(requests);
     return Container(
       child: Obx(() {
-          return ListView(
-            children: List.generate(requests.length, (index) {
+        return ListView(
+          children: List.generate(requests.length, (index) {
+            if (index < messageController.connectedMessageList.length) {
               var messages = messageController.connectedMessageList[index];
               return messageItem(
-                  message: messages.isNotEmpty
-                      ? messages[messages.length - 1]["payload"]
-                      : "Connected",
-                  business: requests[index]["serviceName"],
-                  img: requests[index]["businessLogo"],
-                  time: messages.isNotEmpty
-                      ? messageController
-                          .getTimeSent(messages[messages.length - 1]["timestamp"])
-                      : "",
-                  index: index,
-                  completed: false,
-                  conversation: requests[index]);
-            }),
-          );
-        }
-      ),
+                message: messages.isNotEmpty
+                    ? messages[messages.length - 1]["payload"]
+                    : "Connected",
+                business: requests[index]["serviceName"],
+                img: requests[index]["businessLogo"],
+                time: messages.isNotEmpty
+                    ? messageController
+                        .getTimeSent(messages[messages.length - 1]["timestamp"])
+                    : "",
+                index: index,
+                completed: false,
+                conversation: requests[index],
+              );
+            } else
+              return SizedBox();
+          }),
+        );
+      }),
     );
   }
 
@@ -71,26 +74,29 @@ class MessageScreen extends StatelessWidget {
     print(requests);
     return Container(
       child: Obx(() {
-          return ListView(
-            children: List.generate(requests.length, (index) {
+        return ListView(
+          children: List.generate(requests.length, (index) {
+            if (index < messageController.completedMessageList.length) {
               var messages = messageController.completedMessageList[index];
               return messageItem(
-                  message: messages.isNotEmpty
-                      ? messages[messages.length - 1]["payload"]
-                      : "Service request: " + requests[index]["serviceName"],
-                  business: requests[index]["businessName"],
-                  img: requests[index]["businessLogo"],
-                  time: messages.isNotEmpty
-                      ? messageController
-                          .getTimeSent(messages[messages.length - 1]["timestamp"])
-                      : "",
-                  index: index,
-                  completed: true,
-                  conversation: requests[index]);
-            }),
-          );
-        }
-      ),
+                message: messages.isNotEmpty
+                    ? messages[messages.length - 1]["payload"]
+                    : "Service request: " + requests[index]["serviceName"],
+                business: requests[index]["businessName"],
+                img: requests[index]["businessLogo"],
+                time: messages.isNotEmpty
+                    ? messageController
+                        .getTimeSent(messages[messages.length - 1]["timestamp"])
+                    : "",
+                index: index,
+                completed: true,
+                conversation: requests[index],
+              );
+            } else
+              return SizedBox();
+          }),
+        );
+      }),
     );
   }
 

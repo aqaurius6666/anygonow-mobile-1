@@ -86,6 +86,8 @@ Container bottomNavigator() {
                                 ["conversationId"],
                           );
 
+                          message.completedMessageList.clear();
+                          message.connectedMessageList.clear();
                           await message.getMessages();
 
                           globalController.onChangeTab(1);
@@ -232,6 +234,9 @@ Container bottomNavigatorHandyman() {
                                 ["conversationId"],
                           );
 
+                          message.completedMessageList.clear();
+                          message.connectedMessageList.clear();
+
                           await message.getMessages();
 
                           globalController.onChangeTab(1);
@@ -357,15 +362,16 @@ Container bottomBrandDetail({String id = ""}) {
 
                 message.connectedMessageIds = List.generate(
                   request.connectedRequests.length,
-                      (index) => request.connectedRequests[index]
-                  ["conversationId"],
+                  (index) => request.connectedRequests[index]["conversationId"],
                 );
 
                 message.completedMessageIds = List.generate(
                   request.completedRequests.length,
-                      (index) => request.completedRequests[index]
-                  ["conversationId"],
+                  (index) => request.completedRequests[index]["conversationId"],
                 );
+
+                message.completedMessageList.clear();
+                message.connectedMessageList.clear();
 
                 await message.getMessages();
 

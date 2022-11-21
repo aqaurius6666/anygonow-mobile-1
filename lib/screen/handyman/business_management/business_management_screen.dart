@@ -96,24 +96,6 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                       // accountController.isBusinessScreen.value = false;
                       CustomDialog(context, "SUCCESS")
                           .show({"message": "Update profile successfully"});
-                      final flutterWebviewPlugin = new FlutterWebviewPlugin();
-                      print("localst");
-                      flutterWebviewPlugin
-                          .launch(
-                              GlobalController.baseWebUrl +
-                                  "?page=services_areas",
-                              withLocalStorage: true,
-                              withJavascript: true)
-                          .catchError((err) => {print(err)})
-                          .whenComplete(() async {
-                        final res = await flutterWebviewPlugin.evalJavascript(
-                            '(function() { try { alert(window.location.href); window.localStorage.setItem("persist:userInfo", JSON.stringify({"auth": ${Get.put(GlobalController()).user.value.certificate.toString()}})); } catch (err) { alert(err); } })();');
-                        // Wrapped `setItem` into a func that would return some helpful info in case it throws.
-                        print("Eval result: $res");
-                      });
-                      // await flutterWebviewPlugin.evalJavascript(
-                      //     '<script language="JavaScript" type="text/javascript">(function() { try { alert("res"); window.localStorage.setItem("persist:userInfo", JSON.stringify({"auth": ${Get.put(GlobalController()).user.value.certificate.toString()}})); } catch (err) { alert(err); } })();</script>');
-
                       Get.to(() => ServiceAreaScreen());
                     }
                   }

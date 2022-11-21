@@ -23,6 +23,7 @@ GestureDetector handymanItem({
   MainScreenController? controller,
 }) {
   bool selected = false;
+  RxBool searchResult = isSearchResult.obs;
   return GestureDetector(
     onTap: () async {
       var brandDetailController = Get.put(BrandDetailController());
@@ -41,7 +42,7 @@ GestureDetector handymanItem({
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side:  controller?.requests.contains(id) ?? false
+          side: searchResult.value && (controller?.requests.contains(id) ?? false)
               ? BorderSide(
                   color: Color(0xFFFF511A),
                   width: 1,
@@ -56,7 +57,8 @@ GestureDetector handymanItem({
                 Expanded(
                   flex: 42,
                   child: image != ""
-                      ? getImage(image,
+                      ? getImage(
+                          image,
                           height: getHeight(120),
                           fit: BoxFit.cover,
                           decoration: const BoxDecoration(
@@ -64,7 +66,8 @@ GestureDetector handymanItem({
                               bottomLeft: Radius.circular(8),
                               topLeft: Radius.circular(8),
                             ),
-                          ))
+                          ),
+                        )
                       : Container(
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
@@ -129,9 +132,12 @@ GestureDetector handymanItem({
                                     height: getWidth(20),
                                     width: getWidth(20),
                                     child: Obx(() {
-                                      selected = controller?.requests.contains(id) ?? false;
+                                      selected =
+                                          controller?.requests.contains(id) ??
+                                              false;
                                       return Checkbox(
-                                        value: controller?.requests.contains(id),
+                                        value:
+                                            controller?.requests.contains(id),
                                         onChanged: (value) => {
                                           selected = value ?? false,
                                           if (selected)
