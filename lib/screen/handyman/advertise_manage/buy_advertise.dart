@@ -403,6 +403,7 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                         }
 
                         await manageAdvertiseController.setBusinessesPaymentMethod();
+                        
                         // Get.off(() => PopupNotification());
                       },
                       child: Container(
