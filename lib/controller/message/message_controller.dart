@@ -38,6 +38,8 @@ class MessageController extends GetxController {
       // connectedMessageList.clear();
       var json;
 
+      // print("connected: $connectedMessageIds");
+
       for (int i = 0; i < connectedMessageIds.length; ++i) {
         response = await customDio.post(
           "/chat/${connectedMessageIds[i]}/fetch",
@@ -54,6 +56,7 @@ class MessageController extends GetxController {
         json = jsonDecode(response.toString());
 
         if (i < connectedMessageList.length) {
+          print("$i and $connectedMessageList");
           if (json["data"]["chats"] != null) {
             connectedMessageList[i] = json["data"]["chats"];
           } else {
@@ -61,12 +64,14 @@ class MessageController extends GetxController {
           }
         } else {
           if (json["data"]["chats"] != null) {
-            connectedMessageList[i].add(json["data"]["chats"]);
+            connectedMessageList.add(json["data"]["chats"]);
           } else {
-            connectedMessageList[i].add(json["data"]["chats"]);
+            connectedMessageList.add([]);
           }
         }
       }
+
+      print("connected: $connectedMessageList");
 
       for (int i = 0; i < completedMessageIds.length; ++i) {
         response = await customDio.post(
