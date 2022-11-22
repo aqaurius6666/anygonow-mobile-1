@@ -24,6 +24,8 @@ class MessageController extends GetxController {
 
   RxString currentService = "".obs;
 
+  RxString currentCate = "".obs;
+
   Map<String, dynamic> currentConversation = {};
 
   Future getMessages() async {
@@ -50,10 +52,19 @@ class MessageController extends GetxController {
         );
 
         json = jsonDecode(response.toString());
-        if (json["data"]["chats"] != null) {
-          connectedMessageList.add(json["data"]["chats"]);
+
+        if (i < connectedMessageList.length) {
+          if (json["data"]["chats"] != null) {
+            connectedMessageList[i] = json["data"]["chats"];
+          } else {
+            connectedMessageList[i] = [];
+          }
         } else {
-          connectedMessageList.add([]);
+          if (json["data"]["chats"] != null) {
+            connectedMessageList[i].add(json["data"]["chats"]);
+          } else {
+            connectedMessageList[i].add(json["data"]["chats"]);
+          }
         }
       }
 
@@ -71,10 +82,18 @@ class MessageController extends GetxController {
         );
 
         json = jsonDecode(response.toString());
-        if (json["data"]["chats"] != null) {
-          completedMessageList.add(json["data"]["chats"]);
+        if (i < completedMessageList.length) {
+          if (json["data"]["chats"] != null) {
+            completedMessageList[i] = json["data"]["chats"];
+          } else {
+            completedMessageList[i] = [];
+          }
         } else {
-          completedMessageList.add([]);
+          if (json["data"]["chats"] != null) {
+            completedMessageList.add(json["data"]["chats"]);
+          } else {
+            completedMessageList.add([]);
+          }
         }
       }
 
@@ -82,7 +101,7 @@ class MessageController extends GetxController {
           ? completedMessageList[index].reversed.toList()
           : connectedMessageList[index].reversed.toList();
 
-      print(chats[0]);
+      print("fdnsakfnla" + chats[0].toString());
       return true;
     } catch (e) {
       print(e);

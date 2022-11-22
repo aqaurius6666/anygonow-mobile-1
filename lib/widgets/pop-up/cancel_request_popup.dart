@@ -112,7 +112,7 @@ Future feedbackPopup({
       fontWeight: FontWeight.w700,
     ),
     radius: 8,
-    title: "Local clean feedback",
+    title: title ?? "",
     content: Container(
       width: getWidth(352),
       child: Column(

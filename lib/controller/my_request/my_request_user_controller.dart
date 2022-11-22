@@ -24,7 +24,7 @@ class MyRequestUserController extends GetxController {
       // print(serviceId);
 
       response = await customDio
-          .get("/orders?status=0&serviceId=$serviceId&zipcode=$zipcode");
+          .get("/orders?status=0&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0");
 
       var json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
@@ -33,7 +33,7 @@ class MyRequestUserController extends GetxController {
       print(json);
 
       response = await customDio
-          .get("/orders?status=1&serviceId=$serviceId&zipcode=$zipcode");
+          .get("/orders?status=1&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0");
       json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
         connectedRequests.value = json["data"]["result"];
@@ -41,7 +41,7 @@ class MyRequestUserController extends GetxController {
       print(json);
 
       response = await customDio
-          .get("/orders?status=4&serviceId=$serviceId&zipcode=$zipcode");
+          .get("/orders?status=4&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0");
       json = jsonDecode(response.toString());
       if (json["data"]["result"] != null) {
         completedRequests.value = json["data"]["result"];

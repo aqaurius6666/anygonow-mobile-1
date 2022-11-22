@@ -51,8 +51,9 @@ class MessageScreen extends StatelessWidget {
               return messageItem(
                 message: messages.isNotEmpty
                     ? messages[messages.length - 1]["payload"]
-                    : "Connected",
-                business: requests[index]["serviceName"],
+                    : "Service request: " + requests[index]["serviceName"],
+                business: requests[index]["businessName"],
+                service: requests[index]["serviceName"],
                 img: requests[index]["businessLogo"],
                 time: messages.isNotEmpty
                     ? messageController
@@ -83,6 +84,7 @@ class MessageScreen extends StatelessWidget {
                     ? messages[messages.length - 1]["payload"]
                     : "Service request: " + requests[index]["serviceName"],
                 business: requests[index]["businessName"],
+                service: requests[index]["serviceName"],
                 img: requests[index]["businessLogo"],
                 time: messages.isNotEmpty
                     ? messageController
@@ -130,6 +132,7 @@ class MessageScreen extends StatelessWidget {
         }
 
         messageController.currentService.value = business;
+        messageController.currentCate.value = service;
 
         Get.to(ChatScreen());
       },

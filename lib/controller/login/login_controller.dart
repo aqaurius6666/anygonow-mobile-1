@@ -127,16 +127,16 @@ class LoginPageController extends GetxController {
             CustomDio customDio = CustomDio();
 
             if (userInfo.role == null || userInfo.role == 0) {
-              var contactResponse = await customDio.get("/contacts/$userId");
-              var contactInfo = jsonDecode(contactResponse.toString());
-              var userResponse = await customDio.get("/users/$userId");
-              var userInformation = jsonDecode(userResponse.toString());
-              userInfo.zipcode =
-                  int.parse(contactInfo["data"]["contact"]["zipcode"] ?? "100");
-              var firstName =
-                  userInformation["data"]["user"]["firstName"] ?? "";
-              var lastName = userInformation["data"]["user"]["lastName"] ?? "";
-              userInfo.fullName = firstName + " " + lastName;
+              // var contactResponse = await customDio.get("/contacts/$userId");
+              // var contactInfo = jsonDecode(contactResponse.toString());
+              // var userResponse = await customDio.get("/users/$userId");
+              // var userInformation = jsonDecode(userResponse.toString());
+              // userInfo.zipcode =
+              //     int.parse(contactInfo["data"]["contact"]["zipcode"] ?? "100");
+              // var firstName =
+              //     userInformation["data"]["user"]["firstName"] ?? "";
+              // var lastName = userInformation["data"]["user"]["lastName"] ?? "";
+              // userInfo.fullName = firstName + " " + lastName;
             }
 
             Get.put(GlobalController()).user.value = userInfo;

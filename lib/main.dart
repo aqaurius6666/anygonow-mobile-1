@@ -13,6 +13,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:untitled/service/stripe.dart';
 import 'package:flutter/services.dart' show PlatformException;
 
+import 'controller/message/message_controller.dart';
+
 
 GlobalController globalController = Get.put(GlobalController());
 
