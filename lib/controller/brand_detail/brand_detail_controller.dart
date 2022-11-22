@@ -25,6 +25,11 @@ class BrandDetailController extends GetxController {
   List<dynamic> comments = <Comments>[];
   RxDouble averageRate = 0.0.obs;
   RxInt totalReviews = 0.obs;
+  RxInt fiveStar = 0.obs;
+  RxInt fourStar = 0.obs;
+  RxInt threeStar = 0.obs;
+  RxInt twoStar = 0.obs;
+  RxInt oneStar = 0.obs;
 
   Future getBusinessDetail({String id = ""}) async {
     try {
@@ -95,6 +100,23 @@ class BrandDetailController extends GetxController {
         for (int i = 0; i < responseData.length; i++) {
           Rating item = Rating();
           item.rate = responseData[i]["rate"];
+
+          if (item.rate == 5) {
+            fiveStar.value = responseData[i]["review"];
+          }
+          if (item.rate == 4) {
+            fourStar.value = responseData[i]["review"];
+          }
+          if (item.rate == 3) {
+            threeStar.value = responseData[i]["review"];
+          }
+          if (item.rate == 2) {
+            twoStar.value = responseData[i]["review"];
+          }
+          if (item.rate == 1) {
+            oneStar.value = responseData[i]["review"];
+          }
+        
           item.review = responseData[i]["review"];
           total += item.rate * item.review;
           totalItems += item.review;

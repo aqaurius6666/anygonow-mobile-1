@@ -348,7 +348,7 @@ class BrandDetailScreen extends StatelessWidget {
                               width: getWidth(8),
                             ),
                             Text(
-                              "Total 4",
+                              "Total " + brandDetailController.totalReviews.value.toString(),
                               style: TextStyle(
                                 fontSize: getHeight(14),
                               ),
@@ -365,46 +365,116 @@ class BrandDetailScreen extends StatelessWidget {
           SizedBox(
             height: getHeight(14),
           ),
-          GridView.count(
-            shrinkWrap: true,
-            childAspectRatio: (174 / 60),
-            crossAxisCount: 3,
-            children: List.generate(5, (index) {
-              return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: Color(0xFF999999),
-                    ),
-                  ),
-                  margin: EdgeInsets.all(getWidth(4)),
-                  child: Row(
-                    children: [
-                      SizedBox(width: getWidth(5)),
-                      Text(
-                        (index + 1).toString(),
-                        style: TextStyle(
-                          fontSize: getHeight(12),
-                        ),
-                      ),
-                      SizedBox(width: getWidth(2)),
-                      const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 12,
-                      ),
-                      SizedBox(width: getWidth(2)),
-                      Text(
-                        "${brandDetailController.ratings.length > index ? brandDetailController.ratings[index].review : 0} reviews",
-                        style: TextStyle(
-                          color: const Color(0xFF999999),
-                          fontSize: getHeight(12),
-                        ),
-                      ),
-                      SizedBox(width: getWidth(5)),
-                    ],
-                  ));
-            }),
+          // GridView.count(
+          //   shrinkWrap: true,
+          //   childAspectRatio: (174 / 60),
+          //   crossAxisCount: 3,
+          //   children: List.generate(5, (index) {
+          //     return Container(
+          //         decoration: BoxDecoration(
+          //           borderRadius: BorderRadius.circular(10),
+          //           border: Border.all(
+          //             color: Color(0xFF999999),
+          //           ),
+          //         ),
+          //         margin: EdgeInsets.all(getWidth(4)),
+          //         child: Row(
+          //           children: [
+          //             SizedBox(width: getWidth(5)),
+          //             Text(
+          //               (index + 1).toString(),
+          //               style: TextStyle(
+          //                 fontSize: getHeight(12),
+          //               ),
+          //             ),
+          //             SizedBox(width: getWidth(2)),
+          //             const Icon(
+          //               Icons.star,
+          //               color: Colors.amber,
+          //               size: 12,
+          //             ),
+          //             SizedBox(width: getWidth(2)),
+          //             Text(
+          //               "${brandDetailController.ratings.length > index ? brandDetailController.ratings[index].review : 0} reviews",
+          //               style: TextStyle(
+          //                 color: const Color(0xFF999999),
+          //                 fontSize: getHeight(12),
+          //               ),
+          //             ),
+          //             SizedBox(width: getWidth(5)),
+          //           ],
+          //         ));
+          //   }),
+          // ),
+          
+
+          Obx(() => 
+              Row(
+                children: [
+                  itemRating(index: '5', totalReviews: brandDetailController.fiveStar.value),
+                  SizedBox(width: getWidth(4), ),
+                  itemRating(index: '4', totalReviews: brandDetailController.fourStar.value),
+                ],  
+              ),
+            ),
+            SizedBox(height: getHeight(6)),
+            Obx(() => 
+              Row(
+                children: [
+                  itemRating(index: '3', totalReviews: brandDetailController.threeStar.value),
+                  SizedBox(width: getWidth(4), ),
+                  itemRating(index: '2', totalReviews: brandDetailController.twoStar.value),
+                ],
+              ),
+            ),
+            SizedBox(height: getHeight(6)),
+            Obx(() => 
+              Row(
+                children: [
+                  itemRating(index: '1', totalReviews: brandDetailController.oneStar.value),
+                ],
+              ),
+            ),
+            SizedBox(height: getHeight(16)),
+        ],
+      ),
+    );
+  }
+
+  Container itemRating({String index = '', int totalReviews = 0}) {
+    return Container(
+      width: getWidth(130),
+      padding: EdgeInsets.symmetric(vertical: getHeight(6), horizontal: getWidth(6)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: Color.fromARGB(255, 224, 224, 224)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Text(
+                index,
+                style: TextStyle(
+                  fontFamily: 'TTNorm',
+                  fontSize: getHeight(16),
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(width: getWidth(4),),
+              SvgPicture.asset('assets/icons/star1.svg', width: getHeight(15), height: getHeight(15)),
+            ],
+          ),
+          Text(
+            totalReviews.toString() + ' reviews',
+            style: TextStyle(
+              fontSize: getHeight(14),
+              fontFamily: 'TTNorm',
+              color: Color(0xFF999999),
+            ),
           ),
         ],
       ),
@@ -444,8 +514,10 @@ class BrandDetailScreen extends StatelessWidget {
 
   Container commentItem(dynamic item) {
     return Container(
-        margin: EdgeInsets.only(bottom: getHeight(40)),
-        child: Stack(
+        padding: EdgeInsets.only(bottom: getHeight(40)),
+        width: getWidth(375),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -463,35 +535,41 @@ class BrandDetailScreen extends StatelessWidget {
                 SizedBox(
                   width: getWidth(8),
                 ),
-                Stack(children: [
-                  Row(
-                    children: [
-                      Text(
-                        item.customerName.replaceAll(" ", "") != ""
-                            ? item.customerName
-                            : "Anonymous",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: getHeight(14),
-                        ),
-                      ),
-                      SizedBox(width: getWidth(160)),
-                      Text(
-                        DateTime.fromMillisecondsSinceEpoch(item.createdAt)
-                            .toString()
-                            .split(" ")[0],
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontSize: getHeight(12),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: getWidth(160),
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   Container(
-                    margin: EdgeInsets.only(top: getHeight(20)),
+                    width: getWidth(220),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          item.customerName.replaceAll(" ", "") != ""
+                              ? item.customerName
+                              : "Anonymous",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: getHeight(14),
+                          ),
+                        ),
+                        // SizedBox(width: getWidth(160)),
+                        Text(
+                          DateTime.fromMillisecondsSinceEpoch(item.createdAt)
+                              .toString()
+                              .split(" ")[0],
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: getHeight(12),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: getWidth(160),
+                  // ),
+                  Container(
+                    margin: EdgeInsets.only(top: getHeight(2)),
                     child: Text(
                       "Customer service: " + item.serviceOrder,
                       style: TextStyle(
@@ -504,7 +582,7 @@ class BrandDetailScreen extends StatelessWidget {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(top: getHeight(40), left: getWidth(32)),
+              margin: EdgeInsets.only(top: getHeight(4), left: getWidth(32)),
               child: RatingBarIndicator(
                 rating: item.rate,
                 itemSize: getHeight(20),
@@ -516,7 +594,7 @@ class BrandDetailScreen extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: getHeight(70), left: getWidth(32)),
+              margin: EdgeInsets.only(top: getHeight(10), left: getWidth(32)),
               width: double.infinity,
               padding: EdgeInsets.symmetric(
                   vertical: getHeight(8), horizontal: getWidth(8)),

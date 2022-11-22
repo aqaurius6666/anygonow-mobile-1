@@ -123,6 +123,7 @@ class RatingCenterScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: getHeight(16)),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -209,8 +210,10 @@ class RatingCenterScreen extends StatelessWidget {
 
   Container commentItem(dynamic item) {
     return Container(
-        margin: EdgeInsets.only(bottom: getHeight(40)),
-        child: Stack(
+        padding: EdgeInsets.only(bottom: getHeight(40)),
+        width: getWidth(375),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -220,45 +223,49 @@ class RatingCenterScreen extends StatelessWidget {
                     child: Container(
                       width: getHeight(32),
                       height: getHeight(32),
-                      child: item.image != null && item.image != "" ? Image.network(
-                        getCDN(item.image),
-                        fit: BoxFit.cover
-                      ) : Container()
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.blueGrey),
                     ),
                   ),
                 ),
                 SizedBox(
                   width: getWidth(8),
                 ),
-                Stack(children: [
-                  Row(
-                    children: [
-                      Text(
-                        item.customerName.replaceAll(" ", "") != ""
-                            ? item.customerName
-                            : "Anonymous",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: getHeight(14),
-                        ),
-                      ),
-                      SizedBox(width: getWidth(160)),
-                      Text(
-                        DateTime.fromMillisecondsSinceEpoch(item.createdAt)
-                            .toString()
-                            .split(" ")[0],
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontSize: getHeight(12),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: getWidth(160),
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   Container(
-                    margin: EdgeInsets.only(top: getHeight(20)),
+                    width: getWidth(220),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          item.customerName.replaceAll(" ", "") != ""
+                              ? item.customerName
+                              : "Anonymous",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: getHeight(14),
+                          ),
+                        ),
+                        // SizedBox(width: getWidth(160)),
+                        Text(
+                          DateTime.fromMillisecondsSinceEpoch(item.createdAt)
+                              .toString()
+                              .split(" ")[0],
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: getHeight(12),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: getWidth(160),
+                  // ),
+                  Container(
+                    margin: EdgeInsets.only(top: getHeight(2)),
                     child: Text(
                       "Customer service: " + item.serviceOrder,
                       style: TextStyle(
@@ -271,16 +278,19 @@ class RatingCenterScreen extends StatelessWidget {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(top: getHeight(40), left: getWidth(32)),
+              margin: EdgeInsets.only(top: getHeight(4), left: getWidth(32)),
               child: RatingBarIndicator(
                 rating: item.rate,
-                itemSize: getHeight(13),
-                itemBuilder: (context, index) => SvgPicture.asset('assets/icons/star2.svg'),
+                itemSize: getHeight(20),
+                itemBuilder: (context, index) => const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
                 itemCount: 5,
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: getHeight(70), left: getWidth(32)),
+              margin: EdgeInsets.only(top: getHeight(10), left: getWidth(32)),
               width: double.infinity,
               padding: EdgeInsets.symmetric(
                   vertical: getHeight(8), horizontal: getWidth(8)),

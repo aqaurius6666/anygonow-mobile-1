@@ -20,6 +20,7 @@ GestureDetector handymanItem({
   bool isSearchResult = false,
   String about = "",
   String id = "",
+  bool startDate = false,
   MainScreenController? controller,
 }) {
   bool selected = false;
@@ -125,6 +126,23 @@ GestureDetector handymanItem({
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
+
+                                startDate == true ?
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: getHeight(2), horizontal: getHeight(2),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 39, 218, 69),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: const Text(
+                                    'AD',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ): Container(),
                               ],
                             ),
                             isSearchResult
