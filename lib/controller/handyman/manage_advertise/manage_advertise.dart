@@ -38,6 +38,9 @@ class ManageAdvertiseController extends GetxController {
   RxInt indexCurrentAd = 0.obs;
   RxInt indexCurrentAdOrder = 0.obs;
 
+  RxString categoryName = "".obs;
+  RxString zipcode = "".obs;
+
   @override
   void onInit() {
     // TODO: implement onInit

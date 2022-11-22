@@ -35,12 +35,14 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => {Get.back()},
         ),
-        title: Text(
-          manageAdvertiseController.currentAdvertise["name"],
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: getWidth(24),
-            fontWeight: FontWeight.w700,
+        title: Obx(() => 
+          Text(
+            manageAdvertiseController.currentAdvertise["name"],
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: getWidth(24),
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
         shadowColor: Color.fromARGB(255, 197, 187, 187),
@@ -161,33 +163,28 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                               SizedBox(
                                 height: getHeight(4),
                               ),
-                              // inputRegular(
-                              //   context,
-                              //   textEditingController: inputText,
-                              //   hintText: "Category",
-                              // ),
-                              inputSelect(
-                                context,
-                                hintText: "Category",
-                                textEditingController:
-                                    manageAdvertiseController.category,
-                                options: List.generate(
-                                  manageAdvertiseController
-                                              .currentAdvertise["serviceInfo"] !=
-                                          null
-                                      ? manageAdvertiseController
-                                          .currentAdvertise["serviceInfo"].length
-                                      : 0,
-                                  (index) => manageAdvertiseController
-                                              .currentAdvertise["serviceInfo"] !=
-                                          null
-                                      ? manageAdvertiseController
-                                              .currentAdvertise["serviceInfo"]
-                                          [index]["serviceName"]
-                                      : "",
-                                ),
-                                // options: List.generate(manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"].length, (index) => manageAdvertiseController.listAdvertise[manageAdvertiseController.indexCurrentAd.value]["serviceInfo"][index]["serviceName"]),
-                                // suffixIcon: "assets/icons/date.svg",
+                              Obx(()=> 
+                                inputSelect(
+                                  context,
+                                  hintText: "Category",
+                                  textEditingController:
+                                      manageAdvertiseController.category,
+                                  options: List.generate(
+                                    manageAdvertiseController
+                                                .currentAdvertise["serviceInfo"] !=
+                                            null
+                                        ? manageAdvertiseController
+                                            .currentAdvertise["serviceInfo"].length
+                                        : 0,
+                                    (index) => manageAdvertiseController
+                                                .currentAdvertise["serviceInfo"] !=
+                                            null
+                                        ? manageAdvertiseController
+                                                .currentAdvertise["serviceInfo"]
+                                            [index]["serviceName"]
+                                        : "",
+                                  ),
+                              ),
                               ),
                             ]),
                       )
@@ -204,24 +201,21 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                               SizedBox(
                                 height: getHeight(4),
                               ),
-                              // inputRegular(
-                              //   context,
-                              //   textEditingController: inputText,
-                              //   hintText: "Service areas",
-                              // ),
-                              inputSelect(
-                                context,
-                                hintText: "Service areas",
-                                textEditingController:
-                                    manageAdvertiseController.serviceArea,
-                                options: List.generate(
-                                    manageAdvertiseController.currentAdvertise["zipcodes"] != null
-                                        ? manageAdvertiseController.currentAdvertise["zipcodes"].length
-                                        : 0,
-                                    (index) => manageAdvertiseController.currentAdvertise["zipcodes"] !=null
-                                        ? manageAdvertiseController.currentAdvertise["zipcodes"][index]
-                                        : ""),
-                                // suffixIcon: "assets/icons/date.svg",
+                              Obx(()=> 
+                                inputSelect(
+                                  context,
+                                  hintText: "Service areas",
+                                  textEditingController:
+                                      manageAdvertiseController.serviceArea,
+                                  options: List.generate(
+                                      manageAdvertiseController.currentAdvertise["zipcodes"] != null
+                                          ? manageAdvertiseController.currentAdvertise["zipcodes"].length
+                                          : 0,
+                                      (index) => manageAdvertiseController.currentAdvertise["zipcodes"] !=null
+                                          ? manageAdvertiseController.currentAdvertise["zipcodes"][index]
+                                          : ""),
+                                  // suffixIcon: "assets/icons/date.svg",
+                                ),
                               ),
                             ]),
                       )

@@ -82,26 +82,63 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                   SizedBox(
                     height: getHeight(16),
                   ),
-                  Obx(() => 
-                    manageAdvertiseController.listAdvertiseOrder.isNotEmpty ? Container(
-                      width: getWidth(311),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            (manageAdvertiseController.indexCurrentAdOrder.value + 1).toString() + '/' + manageAdvertiseController.listAdvertiseOrder.length.toString(),
-                            style: TextStyle(
-                              fontFamily: 'TTNorm',
-                              fontSize: getHeight(16),
-                              fontWeight: FontWeight.w700,
+                  Obx(
+                    () => manageAdvertiseController
+                            .listAdvertiseOrder.isNotEmpty
+                        ? Container(
+                            width: getWidth(120),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Bouncing(
+                                  onPress: () async{
+                                    manageAdvertiseController.clearState();
+                                    manageAdvertiseController.listAdvertiseOrder.value = [];
+                                    await manageAdvertiseController.getListAdvertise();
+                                  },
+                                  child: Container(
+                                    width: getWidth(120),
+                                    height: getHeight(40),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color:
+                                              Color.fromARGB(255, 255, 81, 26),
+                                          width: 1,
+                                        )),
+                                    child: Center(
+                                      child: Text('See more',
+                                          style: TextStyle(
+                                              fontSize: getWidth(16),
+                                              color: Color.fromARGB(
+                                                  255, 255, 81, 26),
+                                              fontFamily: 'TTNorm',
+                                              fontWeight: FontWeight.w700)),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  (manageAdvertiseController
+                                                  .indexCurrentAdOrder.value +
+                                              1)
+                                          .toString() +
+                                      '/' +
+                                      manageAdvertiseController
+                                          .listAdvertiseOrder.length
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontFamily: 'TTNorm',
+                                    fontSize: getHeight(16),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ) : Container(),
+                          )
+                        : Container(),
                   ),
                   SizedBox(
-                    height: getHeight(6),
+                    height: getHeight(16),
                   ),
                   Obx(
                     () => Container(
@@ -119,182 +156,174 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                   SizedBox(
                     height: getHeight(24),
                   ),
-                  Obx( () =>
-                    manageAdvertiseController.listAdvertiseOrder.isEmpty
+                  Obx(() => manageAdvertiseController.listAdvertiseOrder.isEmpty
                       ? Container(
-                                  width: getWidth(375),
+                          width: getWidth(375),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'With ' +
+                                      (manageAdvertiseController.listAdvertise[
+                                          manageAdvertiseController
+                                              .indexCurrentAd.value]["name"]) +
+                                      ' you will get',
+                                  style: TextStyle(
+                                    fontSize: getWidth(18),
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'TTNorm',
+                                  ),
+                                ),
+                                SizedBox(height: getHeight(24)),
+                                Text(
+                                  'Services',
+                                  style: TextStyle(
+                                    fontSize: getWidth(18),
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'TTNorm',
+                                  ),
+                                ),
+                                SizedBox(height: getHeight(16)),
+                                Container(
                                   child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'With ' +
-                                              (manageAdvertiseController
-                                                      .listAdvertise[manageAdvertiseController.indexCurrentAd.value]["name"]) +
-                                              ' you will get',
-                                          style: TextStyle(
-                                            fontSize: getWidth(18),
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: 'TTNorm',
-                                          ),
-                                        ),
-                                        SizedBox(height: getHeight(24)),
-                                        Text(
-                                          'Services',
-                                          style: TextStyle(
-                                            fontSize: getWidth(18),
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: 'TTNorm',
-                                          ),
-                                        ),
-                                        SizedBox(height: getHeight(16)),
-                                        Container(
-                                          child: Column(
-                                            children: List.generate(
-                                              (manageAdvertiseController
-                                                .listAdvertise[manageAdvertiseController
-                                                              .indexCurrentAd
-                                                              .value]["serviceInfo"].length),
-                                              (index) => Column(children: [
-                                                SizedBox(height: getHeight(12)),
-                                                Container(
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                        'assets/icons/star.svg',
-                                                      ),
-                                                      SizedBox(
-                                                          width: getWidth(7)),
-                                                      Text(
-                                                        (manageAdvertiseController
-                                                                        .listAdvertise[
-                                                                    manageAdvertiseController
-                                                                        .indexCurrentAd
-                                                                        .value]["serviceInfo"][index]
-                                                                ["serviceName"]),
-                                                        style: TextStyle(
-                                                          fontSize:
-                                                              getWidth(16),
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontFamily: 'TTNorm',
-                                                          color: Color.fromARGB(
-                                                              255, 80, 80, 80),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ]),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: getHeight(24)),
-                                        Text(
-                                          'Description',
-                                          style: TextStyle(
-                                            fontSize: getWidth(18),
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: 'TTNorm',
-                                          ),
-                                        ),
+                                    children: List.generate(
+                                      (manageAdvertiseController
+                                          .listAdvertise[
+                                              manageAdvertiseController
+                                                  .indexCurrentAd
+                                                  .value]["serviceInfo"]
+                                          .length),
+                                      (index) => Column(children: [
                                         SizedBox(height: getHeight(12)),
-                                        Text(
-                                          (manageAdvertiseController
-                                                      .listAdvertise[
-                                                  manageAdvertiseController
-                                                      .indexCurrentAd
-                                                      .value]["description"]),
-                                          style: TextStyle(
-                                            fontSize: getWidth(14),
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: 'TTNorm',
+                                        Container(
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/icons/star.svg',
+                                              ),
+                                              SizedBox(width: getWidth(7)),
+                                              Text(
+                                                (manageAdvertiseController
+                                                            .listAdvertise[
+                                                        manageAdvertiseController
+                                                            .indexCurrentAd
+                                                            .value]["serviceInfo"]
+                                                    [index]["serviceName"]),
+                                                style: TextStyle(
+                                                  fontSize: getWidth(16),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: 'TTNorm',
+                                                  color: Color.fromARGB(
+                                                      255, 80, 80, 80),
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                        SizedBox(height: getHeight(24)),
-                                      ]
+                                      ]),
                                     ),
-                          )                                            
+                                  ),
+                                ),
+                                SizedBox(height: getHeight(24)),
+                                Text(
+                                  'Description',
+                                  style: TextStyle(
+                                    fontSize: getWidth(18),
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'TTNorm',
+                                  ),
+                                ),
+                                SizedBox(height: getHeight(12)),
+                                Text(
+                                  (manageAdvertiseController.listAdvertise[
+                                      manageAdvertiseController.indexCurrentAd
+                                          .value]["description"]),
+                                  style: TextStyle(
+                                    fontSize: getWidth(14),
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'TTNorm',
+                                  ),
+                                ),
+                                SizedBox(height: getHeight(24)),
+                              ]),
+                        )
                       : Container(
-                            width: getWidth(375),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'With ' +
+                          width: getWidth(375),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'With ' +
+                                      (manageAdvertiseController
+                                              .listAdvertiseOrder[
+                                          manageAdvertiseController
+                                              .indexCurrentAdOrder
+                                              .value]["name"]) +
+                                      ' you will get',
+                                  style: TextStyle(
+                                    fontSize: getWidth(18),
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'TTNorm',
+                                  ),
+                                ),
+                                SizedBox(height: getHeight(24)),
+                                Text(
+                                  'Services',
+                                  style: TextStyle(
+                                    fontSize: getWidth(18),
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'TTNorm',
+                                  ),
+                                ),
+                                SizedBox(height: getHeight(16)),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/icons/star.svg',
+                                      ),
+                                      SizedBox(width: getWidth(7)),
+                                      Text(
                                         (manageAdvertiseController
                                                 .listAdvertiseOrder[
                                             manageAdvertiseController
                                                 .indexCurrentAdOrder
-                                                .value]["name"]) +
-                                        ' you will get',
-                                    style: TextStyle(
-                                      fontSize: getWidth(18),
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'TTNorm',
-                                    ),
-                                  ),
-                                  SizedBox(height: getHeight(24)),
-                                  Text(
-                                    'Services',
-                                    style: TextStyle(
-                                      fontSize: getWidth(18),
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'TTNorm',
-                                    ),
-                                  ),
-                                  SizedBox(height: getHeight(16)),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/icons/star.svg',
+                                                .value]["categoryName"]),
+                                        style: TextStyle(
+                                          fontSize: getWidth(16),
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'TTNorm',
+                                          color:
+                                              Color.fromARGB(255, 80, 80, 80),
                                         ),
-                                        SizedBox(width: getWidth(7)),
-                                        Text(
-                                          (manageAdvertiseController
-                                                          .listAdvertiseOrder[
-                                                      manageAdvertiseController
-                                                          .indexCurrentAdOrder
-                                                          .value]["categoryName"])
-                                              ,
-                                          style: TextStyle(
-                                            fontSize: getWidth(16),
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: 'TTNorm',
-                                            color:
-                                                Color.fromARGB(255, 80, 80, 80),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(height: getHeight(24)),
-                                  Text(
-                                    'Description',
-                                    style: TextStyle(
-                                      fontSize: getWidth(18),
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'TTNorm',
-                                    ),
+                                ),
+                                SizedBox(height: getHeight(24)),
+                                Text(
+                                  'Description',
+                                  style: TextStyle(
+                                    fontSize: getWidth(18),
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'TTNorm',
                                   ),
-                                  SizedBox(height: getHeight(12)),
-                                  Text(
-                                    
-                                        (manageAdvertiseController
-                                                .listAdvertiseOrder[
-                                            manageAdvertiseController
-                                                .indexCurrentAdOrder
-                                                .value]["description"]),
-                                    style: TextStyle(
-                                      fontSize: getWidth(14),
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: 'TTNorm',
-                                    ),
+                                ),
+                                SizedBox(height: getHeight(12)),
+                                Text(
+                                  (manageAdvertiseController.listAdvertiseOrder[
+                                      manageAdvertiseController
+                                          .indexCurrentAdOrder
+                                          .value]["description"]),
+                                  style: TextStyle(
+                                    fontSize: getWidth(14),
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'TTNorm',
                                   ),
-                                  SizedBox(height: getHeight(24)),
-                                ]),
-                          )),
+                                ),
+                                SizedBox(height: getHeight(24)),
+                              ]),
+                        )),
                 ],
               ),
             ),
@@ -392,6 +421,7 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                               manageAdvertiseController.indexCurrentAd.value]
                           ["id"]);
                   await manageAdvertiseController.getPaymentMethods();
+                  manageAdvertiseController.NoChangeBuy();
                   Get.to(() => BuyAdvertiseScreen());
                 },
                 child: Container(
@@ -450,8 +480,24 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
         Positioned(
           bottom: 0,
           child: Bouncing(
-            onPress: () {
-              manageAdvertiseController.clearState();
+            onPress: () async {
+              
+              await manageAdvertiseController.getItemAdvertise(
+                      manageAdvertiseController.listAdvertiseOrder[
+                              manageAdvertiseController.indexCurrentAdOrder.value]
+                          ["advertisePackageId"]);
+              await manageAdvertiseController.getPaymentMethods();
+              int index = manageAdvertiseController.indexCurrentAdOrder.value;
+              
+              manageAdvertiseController.NoChangeBuy();
+              print(manageAdvertiseController.listAdvertiseOrder[
+                              index]
+                          ["categoryName"]);
+              manageAdvertiseController.category.text = manageAdvertiseController.listAdvertiseOrder[index]
+                          ["categoryName"];
+              manageAdvertiseController.serviceArea.text = manageAdvertiseController.listAdvertiseOrder[index]
+                          ["zipcode"];
+              Get.to(() => BuyAdvertiseScreen());
             },
             child: Container(
               width: getWidth(319),
@@ -462,21 +508,13 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                     color: Color.fromARGB(255, 255, 81, 26),
                     width: 1,
                   )),
-              child: GestureDetector(
-                onTap: () async{
-                  // manageAdvertiseController.NoChangeBuy();
-                  manageAdvertiseController.listAdvertiseOrder.value = [];
-
-                  await manageAdvertiseController.getListAdvertise();
-                },
-                child: Center(
-                  child: Text('Buy more',
-                      style: TextStyle(
-                          fontSize: getWidth(16),
-                          color: Color.fromARGB(255, 255, 81, 26),
-                          fontFamily: 'TTNorm',
-                          fontWeight: FontWeight.w700)),
-                ),
+              child: Center(
+                child: Text('Buy more',
+                    style: TextStyle(
+                        fontSize: getWidth(16),
+                        color: Color.fromARGB(255, 255, 81, 26),
+                        fontFamily: 'TTNorm',
+                        fontWeight: FontWeight.w700)),
               ),
             ),
           ),
