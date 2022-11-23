@@ -16,7 +16,7 @@
         </intent>
     </queries>
    <application
-        android:label="Handyman"
+        android:label="AnyGoNow"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
