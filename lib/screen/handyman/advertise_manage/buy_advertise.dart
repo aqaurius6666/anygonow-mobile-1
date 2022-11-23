@@ -166,6 +166,7 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                               Obx(()=> 
                                 inputSelect(
                                   context,
+                                  enabled: manageAdvertiseController.enableInput.value,
                                   hintText: "Category",
                                   textEditingController:
                                       manageAdvertiseController.category,
@@ -204,6 +205,7 @@ class _BuyAdvertiseScreenState extends State<BuyAdvertiseScreen> {
                               Obx(()=> 
                                 inputSelect(
                                   context,
+                                  enabled: manageAdvertiseController.enableInput.value,
                                   hintText: "Service areas",
                                   textEditingController:
                                       manageAdvertiseController.serviceArea,

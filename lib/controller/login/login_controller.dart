@@ -8,6 +8,7 @@ import 'package:untitled/model/User.dart';
 import 'package:untitled/model/custom_dio.dart';
 import 'package:untitled/model/status.dart';
 import 'package:untitled/screen/login/login_screen.dart';
+import 'package:untitled/screen/signup/reset_password_account.dart';
 import 'package:untitled/service/response_validator.dart';
 
 import '../global_controller.dart';
@@ -18,10 +19,17 @@ class LoginPageController extends GetxController {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
 
+  TextEditingController emailVerify = TextEditingController();
+  TextEditingController pwVerify = TextEditingController();
+  TextEditingController cpwVerify = TextEditingController();
+  RxBool isLoadingVerify = false.obs;
+
   RxBool isHidePassword = true.obs;
   RxBool isLoading = false.obs;
   var messValidateUsername = "".obs;
   var messValidatePassword = "".obs;
+
+
 
   void changeHidePassword() {
     isHidePassword.value = !isHidePassword.value;
@@ -82,6 +90,7 @@ class LoginPageController extends GetxController {
         var publicKey = data['publicKey'];
         var encryptedPrivateKey = data['encryptedPrivateKey'];
         var userName = username.text;
+        bool shouldChangeMail = data["shouldChangeMail"];
         print("123login");
         print(encryptedPrivateKey);
         print(password.text);
@@ -152,6 +161,12 @@ class LoginPageController extends GetxController {
             }
 
             Get.put(GlobalController()).user.value = userInfo;
+
+            // print();
+
+            if (shouldChangeMail == true) {
+              Get.to(() => ResetPasswordAccount());
+            }
             return true;
           } else {
             messValidatePassword.value = "invalid_password";

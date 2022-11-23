@@ -618,6 +618,7 @@ Container inputSelect(
   required List<String> options,
   String prefixIcon = "",
   String suffixIcon = "",
+  bool enabled = true,
 }) {
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _autocompleteKey = GlobalKey();
@@ -640,6 +641,7 @@ Container inputSelect(
                 FocusNode focusNode,
                 VoidCallback onFieldSubmitted) {
               return TextFormField(
+                enabled: enabled,
                 focusNode: _focusNode,
                 controller: textEditingController,
                 style: TextStyle(

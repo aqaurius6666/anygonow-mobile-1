@@ -422,6 +422,7 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                           ["id"]);
                   await manageAdvertiseController.getPaymentMethods();
                   manageAdvertiseController.NoChangeBuy();
+                  manageAdvertiseController.enableInput.value = true;
                   Get.to(() => BuyAdvertiseScreen());
                 },
                 child: Container(
@@ -490,9 +491,7 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
               int index = manageAdvertiseController.indexCurrentAdOrder.value;
               
               manageAdvertiseController.NoChangeBuy();
-              print(manageAdvertiseController.listAdvertiseOrder[
-                              index]
-                          ["categoryName"]);
+              manageAdvertiseController.enableInput.value = false;
               manageAdvertiseController.category.text = manageAdvertiseController.listAdvertiseOrder[index]
                           ["categoryName"];
               manageAdvertiseController.serviceArea.text = manageAdvertiseController.listAdvertiseOrder[index]
