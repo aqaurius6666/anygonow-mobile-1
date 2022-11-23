@@ -60,10 +60,17 @@ jobs:
       customApkTargetPlatform: 'android-arm,android-arm64,android-x64'
       buildFlavour: 'development'
       debugMode: true
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: Android APK'
+  - task: GitHubRelease@1
     inputs:
-      PathtoPublish: './build/app/outputs/flutter-apk'
-      ArtifactName: 'android'
-      publishLocation: 'Container'
+      gitHubConnection: 'aqaurius6666'
+      repositoryName: '$(RELEASE_REPO)'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'userSpecifiedTag'
+      tag: '1.3.$(Build.BuildNumber)'
+      title: 'Release 1.3.$(Build.BuildNumber)'
+      releaseNotesSource: 'inline'
+      releaseNotesInline: 'Anygonow Mobile app'
+      assets: './build/app/outputs/flutter-apk/*'
+      changeLogCompareToRelease: 'lastFullRelease'
+      changeLogType: 'commitBased'

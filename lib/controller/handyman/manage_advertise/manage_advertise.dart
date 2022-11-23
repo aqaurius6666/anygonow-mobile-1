@@ -29,11 +29,17 @@ class ManageAdvertiseController extends GetxController {
   var loadingBuyAd = false.obs;
 
   RxList<dynamic> listAdvertise = [].obs;
+  RxList<dynamic> listAdvertiseOrder = [].obs;
   var currentAdvertise = {}.obs;
 
   PageController? pageController;
-  RxBool isBuy = false.obs;
+  PageController? pageControllerOrder;
+  RxBool isBuy = true.obs;
   RxInt indexCurrentAd = 0.obs;
+  RxInt indexCurrentAdOrder = 0.obs;
+
+  RxString categoryName = "".obs;
+  RxString zipcode = "".obs;
 
   @override
   void onInit() {
@@ -41,13 +47,15 @@ class ManageAdvertiseController extends GetxController {
     cardNumber.addListener(() {});
     expiryDateCard.addListener(() {});
     cvvCode.addListener(() {});
-    pageController = PageController(initialPage: 0, keepPage: true, viewportFraction: 0.9);
+    pageController = PageController(initialPage: 0, keepPage: false, viewportFraction: 0.9);
+    pageControllerOrder = PageController(initialPage: 0, keepPage: false, viewportFraction: 0.9);
     super.onInit();
   }
 
   void clearState() {
     isBuy.value = false;
     indexCurrentAd.value = 0;
+    indexCurrentAdOrder.value = 0;
     currentAdvertise.value = {};
   }
 
@@ -56,7 +64,6 @@ class ManageAdvertiseController extends GetxController {
   }
 
   void NoChangeBuy() {
-    isBuy.value = false;
     registrationDate.text = "";
     expiryDate.text = "";
     category.text = "";
@@ -65,8 +72,8 @@ class ManageAdvertiseController extends GetxController {
     expiryDateCard.text = "";
     cvvCode.text = "";
     totalPrice.value = 0;
-    currentAdvertise.value = {};
     indexCurrentAd.value = 0;
+    indexCurrentAdOrder.value = 0;
   }
 
   void clearInfoAddCard() {
@@ -81,7 +88,16 @@ class ManageAdvertiseController extends GetxController {
       pageController!.jumpToPage(value);
     } catch (e) {
       indexCurrentAd.value = value;
-      pageController = PageController(initialPage: value, keepPage: true);
+      pageController = PageController(initialPage: value, keepPage: false);
+    }
+  }
+  void onChangeIndexCurrentAdOrder(value) {
+    try {
+      indexCurrentAdOrder.value = value;
+      pageControllerOrder!.jumpToPage(value);
+    } catch (e) {
+      indexCurrentAdOrder.value = value;
+      pageControllerOrder = PageController(initialPage: value, keepPage: false);
     }
   }
 
@@ -99,6 +115,24 @@ class ManageAdvertiseController extends GetxController {
       if (json["data"]["result"] != null) {
         listAdvertise.value = json["data"]["result"];
       }
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future getListAdvertiseOrder() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+      var response = await customDio.get("/businesses/promote/order");
+      listAdvertiseOrder.clear();
+      var json = jsonDecode(response.toString());
+      if (json["data"]["result"] != null) {
+        listAdvertiseOrder.value = json["data"]["result"];
+      }
+      print(json["data"]["result"]);
 
       return true;
     } catch (e) {
@@ -215,6 +249,7 @@ class ManageAdvertiseController extends GetxController {
           var jsonBuyAd = jsonDecode(responseBuyAd.toString());
           if(jsonBuyAd["success"] == true) {
             loadingBuyAd.value = false;
+            
             Get.back();
             Get.to(() => PopupNotification());
             return true;
@@ -222,6 +257,7 @@ class ManageAdvertiseController extends GetxController {
         }
         // String clientSecret = json["data"]["clientSecret"];
       }
+      loadingBuyAd.value = false;
       return false;
     } catch (e, s) {
       loading.value = false;

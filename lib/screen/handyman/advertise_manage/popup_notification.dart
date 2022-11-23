@@ -58,8 +58,9 @@ class PopupNotification extends StatelessWidget {
                 children: [
                   Container(
                     child: Bouncing(
-                      onPress: () {
+                      onPress: () async{
                         manageAdvertiseController.ChangeBuy();
+                        await manageAdvertiseController.getListAdvertiseOrder();
                         Get.back();
                       },
                       child: Container(

@@ -492,6 +492,7 @@ class MainScreen extends StatelessWidget {
                         0,
                 id: mainScreenController.businesses[index].bussiness["id"] ??
                     "",
+                startDate: mainScreenController.businesses[index].bussiness["startDate"] != null ? true : false,
                 controller: mainScreenController,
               );
             }),

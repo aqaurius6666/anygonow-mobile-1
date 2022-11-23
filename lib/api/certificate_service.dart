@@ -82,10 +82,11 @@ String? encryptAESCryptoJS(String plainText, String passphrase) {
 
 String? decryptAESCryptoJS(String encrypted, String passphrase) {
   try {
+    encrypted = encrypted.replaceAll('\n', '');
     Uint8List encryptedBytesWithSalt = base64.decode(encrypted);
 
     Uint8List encryptedBytes =
-    encryptedBytesWithSalt.sublist(16, encryptedBytesWithSalt.length);
+        encryptedBytesWithSalt.sublist(16, encryptedBytesWithSalt.length);
     final salt = encryptedBytesWithSalt.sublist(8, 16);
     var keyndIV = deriveKeyAndIV(passphrase, salt);
     final key = encrypt.Key(keyndIV.item1);
@@ -94,7 +95,7 @@ String? decryptAESCryptoJS(String encrypted, String passphrase) {
     final encrypter = encrypt.Encrypter(
         encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: "PKCS7"));
     final decrypted =
-    encrypter.decrypt64(base64.encode(encryptedBytes), iv: iv);
+        encrypter.decrypt64(base64.encode(encryptedBytes), iv: iv);
     return decrypted;
   } catch (s, e) {
     print("error: " + e.toString());
@@ -178,7 +179,7 @@ Map<String, dynamic> generateKeyPairAndEncrypt(String password) {
   var d = privateKey.d;
   final privateKeyDecode = secp.PrivateKey(d as BigInt);
   String publicKeyBase64 =
-  convertHexToBase64(privateKeyDecode.publicKey.toCompressedHex());
+      convertHexToBase64(privateKeyDecode.publicKey.toCompressedHex());
   String privateKeyBase64 = convertHexToBase64(privateKeyDecode.toHex());
   var encryptedPrivateKey = encryptAESCryptoJS(privateKeyBase64, password);
   final Map<String, dynamic> encryptedKeyPair = {

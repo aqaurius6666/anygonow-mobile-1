@@ -82,9 +82,17 @@ class LoginPageController extends GetxController {
         var publicKey = data['publicKey'];
         var encryptedPrivateKey = data['encryptedPrivateKey'];
         var userName = username.text;
+        print("123login");
+        print(encryptedPrivateKey);
+        print(password.text);
+
         String? privateKey =
             decryptAESCryptoJS(encryptedPrivateKey, password.text);
 
+            
+        print("123 key");
+        print(privateKey);
+        
         Status validatePassword = Status();
 
         if (privateKey == null) {
@@ -92,9 +100,12 @@ class LoginPageController extends GetxController {
         } else {
           validatePassword = Status(status: "SUCCESS", message: "SUCCESS");
         }
+        // print("123login");
+        // print(validatePassword);
 
         if (validatePassword.status == "SUCCESS") {
           var certificateInfo = SignatureService.getCertificateInfo(userId);
+          // print(certificateInfo);
           String signature = SignatureService.getSignature(
               certificateInfo, privateKey as String);
           int times = DateTime.now().toUtc().millisecondsSinceEpoch;
@@ -108,6 +119,7 @@ class LoginPageController extends GetxController {
               times);
 
           var responsePing = await getPing(certificateList);
+          
           print(responsePing);
           Status validateServer2 = ResponseValidator.check(responsePing);
           var jsonResponse = jsonDecode(responsePing.toString());
@@ -127,16 +139,16 @@ class LoginPageController extends GetxController {
             CustomDio customDio = CustomDio();
 
             if (userInfo.role == null || userInfo.role == 0) {
-              var contactResponse = await customDio.get("/contacts/$userId");
-              var contactInfo = jsonDecode(contactResponse.toString());
-              var userResponse = await customDio.get("/users/$userId");
-              var userInformation = jsonDecode(userResponse.toString());
-              userInfo.zipcode =
-                  int.parse(contactInfo["data"]["contact"]["zipcode"] ?? "100");
-              var firstName =
-                  userInformation["data"]["user"]["firstName"] ?? "";
-              var lastName = userInformation["data"]["user"]["lastName"] ?? "";
-              userInfo.fullName = firstName + " " + lastName;
+              // var contactResponse = await customDio.get("/contacts/$userId");
+              // var contactInfo = jsonDecode(contactResponse.toString());
+              // var userResponse = await customDio.get("/users/$userId");
+              // var userInformation = jsonDecode(userResponse.toString());
+              // userInfo.zipcode =
+              //     int.parse(contactInfo["data"]["contact"]["zipcode"] ?? "100");
+              // var firstName =
+              //     userInformation["data"]["user"]["firstName"] ?? "";
+              // var lastName = userInformation["data"]["user"]["lastName"] ?? "";
+              // userInfo.fullName = firstName + " " + lastName;
             }
 
             Get.put(GlobalController()).user.value = userInfo;

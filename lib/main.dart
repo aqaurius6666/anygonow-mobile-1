@@ -13,6 +13,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:untitled/service/stripe.dart';
 import 'package:flutter/services.dart' show PlatformException;
 
+import 'controller/message/message_controller.dart';
+
 
 GlobalController globalController = Get.put(GlobalController());
 
@@ -23,9 +25,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await globalController.getStates();
-  // Timer.periodic(new Duration(seconds: 1), (timer) {
-  //   Get.put(MessageController()).getMessages();
-  // });
+  Timer.periodic(new Duration(seconds: 1), (timer) {
+    Get.put(MessageController()).getMessages();
+  });
   runApp(MyApp());
 }
 

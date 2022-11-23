@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/controller/message/message_controller.dart';
@@ -86,6 +87,8 @@ Container bottomNavigator() {
                                 ["conversationId"],
                           );
 
+                          message.completedMessageList.clear();
+                          message.connectedMessageList.clear();
                           await message.getMessages();
 
                           globalController.onChangeTab(1);
@@ -232,6 +235,9 @@ Container bottomNavigatorHandyman() {
                                 ["conversationId"],
                           );
 
+                          message.completedMessageList.clear();
+                          message.connectedMessageList.clear();
+
                           await message.getMessages();
 
                           globalController.onChangeTab(1);
@@ -264,7 +270,9 @@ Container bottomNavigatorHandyman() {
                   }),
                   Obx(() {
                     return Bouncing(
-                      onPress: () {
+                      onPress: () async{
+                        await Get.put(ManageAdvertiseController()).getListAdvertiseOrder();
+                        await Get.put(ManageAdvertiseController()).getListAdvertise();
                         globalController.onChangeTab(2);
                       },
                       child: Container(
@@ -357,15 +365,16 @@ Container bottomBrandDetail({String id = ""}) {
 
                 message.connectedMessageIds = List.generate(
                   request.connectedRequests.length,
-                      (index) => request.connectedRequests[index]
-                  ["conversationId"],
+                  (index) => request.connectedRequests[index]["conversationId"],
                 );
 
                 message.completedMessageIds = List.generate(
                   request.completedRequests.length,
-                      (index) => request.completedRequests[index]
-                  ["conversationId"],
+                  (index) => request.completedRequests[index]["conversationId"],
                 );
+
+                message.completedMessageList.clear();
+                message.connectedMessageList.clear();
 
                 await message.getMessages();
 

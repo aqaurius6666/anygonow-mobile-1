@@ -238,6 +238,7 @@ class MainScreenController extends GetxController {
 
           businesses.clear();
           businesses.value = res;
+          print(res);
         } else {
           businesses.clear();
         }
