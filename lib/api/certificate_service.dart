@@ -82,8 +82,8 @@ String? encryptAESCryptoJS(String plainText, String passphrase) {
 
 String? decryptAESCryptoJS(String encrypted, String passphrase) {
   try {
-    encrypted = encrypted.replaceAll('\n', '');
-    Uint8List encryptedBytesWithSalt = base64.decode(encrypted);
+    var text = encrypted.replaceAll('\n', '');
+    Uint8List encryptedBytesWithSalt = base64.decode(text);
 
     Uint8List encryptedBytes =
         encryptedBytesWithSalt.sublist(16, encryptedBytesWithSalt.length);
