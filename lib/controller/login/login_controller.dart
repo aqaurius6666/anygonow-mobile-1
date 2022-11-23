@@ -196,4 +196,17 @@ class LoginPageController extends GetxController {
     }
   }
 
+  Future checkMailAccount() async {
+    try {
+      CustomDio customDio = CustomDio();
+      var keyPair = generateKeyPairAndEncrypt(pwVerify.text);
+      var response = await customDio.get(
+          "/check-valid-mail?mail=$emailVerify",
+      );
+      return response;
+    } catch (e, s) {
+      return null;
+    }
+  }
+
 }

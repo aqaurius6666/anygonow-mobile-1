@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:untitled/api/certificate_service.dart';
 import 'package:untitled/controller/login/login_controller.dart';
 import 'package:untitled/utils/config.dart';
+import 'package:untitled/widgets/app_name.dart';
 import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/input.dart';
 
@@ -13,32 +14,33 @@ class ResetPasswordAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Color(0xFF454B52),
-            ),
-            onPressed: () {
-              Get.back();
-            }),
-        elevation: 0,
-      ),
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(
-              vertical: getHeight(16), horizontal: getWidth(16)),
+          padding: EdgeInsets.only(
+            left: getWidth(16),
+            right: getWidth(16),
+            top: getHeight(62),
+          ),
           child: Column(
             children: [
               Expanded(
                 child: ListView(physics: BouncingScrollPhysics(), children: [
-                  inputRegular(context,
-                      label: "Email",
-                      hintText: "name@email.com",
-                      textEditingController: loginPageController.emailVerify),
-                  SizedBox(height: getHeight(16)),
+                  getAppName(),
+                  SizedBox(
+                    height: getHeight(24),
+                  ),
+                  Text(
+                    'Setup new password',
+                    style: TextStyle(
+                      fontSize: getHeight(24),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),                
+                  SizedBox(
+                    height: getHeight(40),
+                  ),  
+                  
                   Obx(() => inputPassword(
                         context,
                         label: "password".tr,
@@ -57,22 +59,23 @@ class ResetPasswordAccount extends StatelessWidget {
                         changeHide: loginPageController.changeHidePassword,
                       )),
                   SizedBox(height: getHeight(26)),
-                  OutlinedButton(
+
+                  Obx(() => 
+                    loginPageController.isLoadingVerify.value == true ?
+                      Container(
+                        color: Colors.white,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       backgroundColor: const Color(0xffff511a),
                       side: const BorderSide(
                         color: Color(0xffff511a),
                       ),
                     ),
-                    onPressed: () async {
-                      bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(loginPageController.emailVerify.text);
-                      if (!emailValid) {
-                        CustomDialog(context, "FAILED")
-                            .show({"message": "Email invalidate"});
-                        return;
-                      }
+                    onPressed: () async {                    
                       bool passValid =
                           RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')
                               .hasMatch(loginPageController.pwVerify.text);
@@ -90,6 +93,8 @@ class ResetPasswordAccount extends StatelessWidget {
                         return;
                       }
 
+                      loginPageController.isLoadingVerify.value = true;
+
                       var response = await loginPageController.changeEmailAndPassword();
                       print("123 respone");
                       print(response);
@@ -106,11 +111,14 @@ class ResetPasswordAccount extends StatelessWidget {
                         });
                       }
 
+                      loginPageController.isLoadingVerify.value = false;
+
 
                       
                     },
-                    child: const Text("Confirm",
+                    child: const Text("Continue",
                         style: TextStyle(color: Colors.white)),
+                  ),
                   ),
                 ]),
               ),

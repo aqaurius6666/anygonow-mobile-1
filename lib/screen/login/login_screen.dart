@@ -18,6 +18,7 @@ import 'package:untitled/screen/handyman/business_management/business_management
 import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
 import 'package:untitled/screen/home_page/home_page_screen.dart';
 import 'package:untitled/screen/reset_password/reset_password_screen.dart';
+import 'package:untitled/screen/signup/reset_mail_account.dart';
 import 'package:untitled/screen/signup/reset_password_account.dart';
 import 'package:untitled/screen/signup/signup_welcome_screen.dart';
 import 'package:untitled/utils/config.dart';
@@ -220,7 +221,7 @@ Container confirmButtonContainer(
                         // print("123login");
                         // print(result);
                         controller.isLoading.value = false;
-                        controller.onClearData();
+                        
                         Get.delete<MainScreenController>();
                         Get.put(GlobalController()).currentPage.value = 0;
                         Get.delete<BuyAdvertiseScreen>();
@@ -230,10 +231,17 @@ Container confirmButtonContainer(
                         int? process = globalController.user.value.process;
                         await Get.put(GlobalController()).getCategories();
                         await Get.put(MainScreenController()).getCategories();
-                        if (controller.shouldChangeMail.value == true) {
+                        print("123 username");
+                        print(controller.username.text);
+                        if (controller.shouldChangeMail.value == true && controller.username.text.contains("@anygonow.com")) {
+                            Get.to(() => ResetMailAccount());
+                            return;
+                        }
+                        if (controller.shouldChangeMail.value == true && !controller.username.text.contains("@anygonow.com")) {
                             Get.to(() => ResetPasswordAccount());
                             return;
                         }
+                        controller.onClearData();
                         if (role == null || role == 0) {
                           Get.to(HomePageScreen());
                           if (process == 1) {
