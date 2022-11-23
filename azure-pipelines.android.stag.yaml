@@ -53,8 +53,8 @@ jobs:
       target: 'aab'
       projectDirectory: '.'
       splitPerAbi: true
-      buildName: '1.0.0'
-      buildNumber: '$(Build.BuildNumber)'
+      buildName: '1.1.0'
+      buildNumber: '$(Build.BuildId)'
       extraArgs: '--release'
       buildFlavour: 'prod'
   # - task: CmdLine@2
@@ -85,10 +85,10 @@ jobs:
   - task: CmdLine@2
     inputs:
       script: 'rm ./android/key.properties'
-
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: Android Bundle'
     inputs:
-      PathtoPublish: './build/app/outputs/bundle'
+      PathtoPublish: '$(system.defaultworkingdirectory)/build/app/outputs/bundle'
       ArtifactName: 'android'
       publishLocation: 'Container'
+      Parallel: true 

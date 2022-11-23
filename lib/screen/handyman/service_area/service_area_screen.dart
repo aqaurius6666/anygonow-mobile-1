@@ -1,61 +1,80 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/handyman/service_area/service_area_controller.dart';
-import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
-import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/layout.dart';
 
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class ServiceAreaScreen extends StatelessWidget {
   ServiceAreaController serviceAreaController =
       Get.put(ServiceAreaController());
 
 
+
+  // final flutterWebviewPlugin = FlutterWebviewPlugin();
+
+
   @override
   Widget build(BuildContext context) {
+
+    final Set<JavascriptChannel> jsChannels = {
+      JavascriptChannel(
+          name: 'Print',
+          onMessageReceived: (JavascriptMessage message) async {
+            print('message.message: ${message.message}');
+            var json = jsonDecode(message.message);
+            List<String> zipcodes = [];
+            for (int i = 0; i < json["zipcodes"].length; i++) {
+              zipcodes.add(json["zipcodes"][i]);
+            }
+            await Get.put(ServiceAreaController().saveZipcode(zipcodes));
+          }),
+    };
+
     print(Get.put(GlobalController()).user.value.certificate.toString());
+    var flutterWebviewPlugin = FlutterWebviewPlugin();
 
     // flutterWebviewPlugin.evalJavascript("(function() { try { window.localStorage.setItem('persist:userInfo', {auth: ${Get.put(GlobalController()).user.value.certificate.toString()}}); } catch (err) { return err; } })();");
 
-    return InAppWebView(
-      initialUrlRequest: URLRequest(
-        url: Uri.parse(GlobalController.baseWebUrl + "?page=services_areas"),
-      ),
-      initialOptions: InAppWebViewGroupOptions(
-        android: AndroidInAppWebViewOptions(
-          thirdPartyCookiesEnabled: true,
-        ),
-      ),
-      onLoadStop: (controller, url) async {
-        var res = await controller.evaluateJavascript(source: '(function() { try { window.localStorage.setItem("persist:userInfo", `{"auth":"{\"_privateKey\":\"jEw6i4p1I7ggsFyECKiqCUYbqO9U2BokJ2LXkeVsmWA=\",\"_certificate\":{\"signature\":\"s3VgfXvZp8r0lRT+yR0X+pMJyaTSimNTRefYWNR4Bq1OPORrZH3joLt2qQWXKR5JT2W2sietA8VKT2/jLFZx4Q==\",\"certificateInfo\":{\"id\":\"1aca3d75-ca9b-4c8b-a1c3-715e4ac53b41\",\"timestamp\":1651142408000,\"exp\":2592000},\"publicKey\":\"AgUlkWFnykjCJZVHw1Zyl3cVvxDJRSz+Sl1f3QhVmN6i\"},\"identifier\":\"tratran050101@gmail.com\",\"id\":\"1aca3d75-ca9b-4c8b-a1c3-715e4ac53b41\",\"encryptedPrivateKey\":\"U2FsdGVkX1+jHCyTKSmONJpLfDjUW2mq8icuz/3qDUdSUacpD+SOrx8/x07o41QEQJXa8/EK8uIdluposLGUwg==\"}","_persist":"{\"version\":-1,\"rehydrated\":true}"}`); } catch (err) { alert(err); } })();');
-        print("Eval result: $res");
-      },
-    );
-  }
+    var base64cert = base64.encode(
+        utf8.encode(Get.put(GlobalController()).user.value.certificate ?? ""));
+    print(GlobalController.baseWebUrl + "map?certificate=$base64cert");
 
-  Container confirmButtonContainer(BuildContext context) {
-    return bottomContainerLayout(
-      height: 60,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          OutlinedButton(
-              child: Text("update".tr,
-                  style: const TextStyle(color: Colors.white)),
-              style: OutlinedButton.styleFrom(
-                backgroundColor: const Color(0xffff511a),
-                side: const BorderSide(
-                  color: Color(0xffff511a),
-                ),
-              ),
-              onPressed: () async {
-                // Get.to(() => HandymanHomePageScreen());
-              }),
-        ],
+    flutterWebviewPlugin.onUrlChanged.listen((state) async {
+      print("abcdscds" + state);
+      if (state.contains("https://handyman-2.uetbc.xyz/map")) {
+        // String script =
+        //     'window.addEventListener("message", receiveMessage, false);' +
+        //         'function receiveMessage(event) {Print.postMessage(event.data);}';
+        // flutterWebviewPlugin.evalJavascript(script);
+        final res = await flutterWebviewPlugin.evalJavascript(
+            '(function() { try { window.addEventListener("message", receiveMessage, false); function receiveMessage(event) {Print.postMessage(event.data);} var elem = document.getElementsByTagName("button"); elem[0].addEventListener("click", function() { setTimeout(() => {var x = localStorage.getItem("business"); if (x != null) { window.postMessage(x);}}, 1000) });} catch (err) {  } })();');
+        print("dsadjsk$res");
+      }
+    });
+    // flutterWebviewPlugin
+    //     .launch(
+    //   GlobalController.baseWebUrl + "map?certificate=$base64cert",
+    //   withLocalStorage: true,
+    //   withJavascript: true,
+    // )
+    //     .whenComplete(() {
+    //   final res = flutterWebviewPlugin.evalJavascript(
+    //       '(function() { try { var elem = document.getElementById("updateBtn"); elem.addEventListener("click", function() {var x = localStorage.getItem("business"); if (x != null) var json = JSON.parse(x); });} catch (err) { alert(err); } })();');
+    //   print("Eval result: $res");
+    // });
+
+    return Scaffold(
+      appBar: appBar(),
+      body: WebviewScaffold(
+        url: GlobalController.baseWebUrl + "map?certificate=$base64cert",
+        javascriptChannels: jsChannels,
+        withJavascript: true,
+        withLocalStorage: true,
       ),
     );
   }

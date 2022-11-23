@@ -26,6 +26,7 @@ class LoginPageController extends GetxController {
 
   RxBool isHidePassword = true.obs;
   RxBool isLoading = false.obs;
+  RxBool shouldChangeMail = false.obs;
   var messValidateUsername = "".obs;
   var messValidatePassword = "".obs;
 
@@ -90,17 +91,12 @@ class LoginPageController extends GetxController {
         var publicKey = data['publicKey'];
         var encryptedPrivateKey = data['encryptedPrivateKey'];
         var userName = username.text;
-        bool shouldChangeMail = data["shouldChangeMail"];
-        print("123login");
-        print(encryptedPrivateKey);
-        print(password.text);
+        shouldChangeMail.value = data["shouldChangeMail"] != null ? true : false;
 
         String? privateKey =
             decryptAESCryptoJS(encryptedPrivateKey, password.text);
 
-            
-        print("123 key");
-        print(privateKey);
+
         
         Status validatePassword = Status();
 
@@ -163,10 +159,6 @@ class LoginPageController extends GetxController {
             Get.put(GlobalController()).user.value = userInfo;
 
             // print();
-
-            if (shouldChangeMail == true) {
-              Get.to(() => ResetPasswordAccount());
-            }
             return true;
           } else {
             messValidatePassword.value = "invalid_password";
@@ -182,4 +174,39 @@ class LoginPageController extends GetxController {
     }
     return false;
   }
+
+  Future changeEmailAndPassword() async {
+    try {
+      CustomDio customDio = CustomDio();
+      var keyPair = generateKeyPairAndEncrypt(pwVerify.text);
+      var response = await customDio.put(
+          "/auth/change-mail-and-pass",
+          {
+            "data": {
+              "userId": "",
+              "mail": emailVerify.text,
+              "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
+              "publicKey": keyPair["publicKey"],
+            }
+          },
+      );
+      return response;
+    } catch (e, s) {
+      return null;
+    }
+  }
+
+  Future checkMailAccount() async {
+    try {
+      CustomDio customDio = CustomDio();
+      var keyPair = generateKeyPairAndEncrypt(pwVerify.text);
+      var response = await customDio.get(
+          "/check-valid-mail?mail=$emailVerify",
+      );
+      return response;
+    } catch (e, s) {
+      return null;
+    }
+  }
+
 }

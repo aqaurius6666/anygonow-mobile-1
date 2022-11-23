@@ -27,7 +27,6 @@ class ForgotPasswordController extends GetxController {
 
       return true;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -49,6 +48,7 @@ class ForgotPasswordController extends GetxController {
       }
       return true;
     } catch (e) {
+      print(e);
       return false;
     }
   }
