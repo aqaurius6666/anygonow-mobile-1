@@ -91,8 +91,7 @@ class LoginPageController extends GetxController {
         var publicKey = data['publicKey'];
         var encryptedPrivateKey = data['encryptedPrivateKey'];
         var userName = username.text;
-        shouldChangeMail.value = data["shouldChangeMail"];
-
+        shouldChangeMail.value = data["shouldChangeMail"] != null ? true : false;
 
         String? privateKey =
             decryptAESCryptoJS(encryptedPrivateKey, password.text);
