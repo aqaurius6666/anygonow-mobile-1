@@ -18,6 +18,7 @@ import 'package:untitled/screen/handyman/business_management/business_management
 import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
 import 'package:untitled/screen/home_page/home_page_screen.dart';
 import 'package:untitled/screen/reset_password/reset_password_screen.dart';
+import 'package:untitled/screen/signup/reset_password_account.dart';
 import 'package:untitled/screen/signup/signup_welcome_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
@@ -49,6 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
         final uri = await getInitialUri();
         if (uri == null) {
         } else {
+          print(uri);
+          if (uri.toString().contains("active-account")) {
+            Get.to(() => LoginScreen());
+            return;
+          }
           resetPasswordController.otp = uri.queryParameters["otp"]!;
           resetPasswordController.otpId = uri.queryParameters["otpId"]!;
           Get.to(() => ResetPasswordScreen());
@@ -224,6 +230,10 @@ Container confirmButtonContainer(
                         int? process = globalController.user.value.process;
                         await Get.put(GlobalController()).getCategories();
                         await Get.put(MainScreenController()).getCategories();
+                        if (controller.shouldChangeMail.value == true) {
+                            Get.to(() => ResetPasswordAccount());
+                            return;
+                        }
                         if (role == null || role == 0) {
                           Get.to(HomePageScreen());
                           if (process == 1) {
