@@ -71,6 +71,8 @@ class MyRequestController extends GetxController {
       );
 
       var json = jsonDecode(response.toString());
+      print("ketnoi");
+      print(json);
 
       return (json["success"]);
     } catch (e) {
@@ -92,6 +94,8 @@ class MyRequestController extends GetxController {
       // api/orders/connect-all
 
       var json = jsonDecode(response.toString());
+      print("ketnoi");
+      print(json);
 
       return (json["success"]);
     } catch (e) {
@@ -99,6 +103,24 @@ class MyRequestController extends GetxController {
       return false;
     }
   }
+
+  Future getPaymentMethod() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+      var response = await customDio.get(
+        "/businesses/payment-method",
+      );
+      var json = jsonDecode(response.toString());
+      return (json);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+
 
   Future completeRequest() async {
     try {

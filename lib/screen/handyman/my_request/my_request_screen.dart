@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
+import 'package:untitled/screen/handyman/payment_page/payment_page_screen.dart';
 import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
@@ -45,6 +46,12 @@ class MyRequestScreen extends StatelessWidget {
                 ),
                 Bouncing(
                   onPress: () async {
+                    var res1 = await Get.put(MyRequestController()).getPaymentMethod();
+                    print(res1["data"]);
+                    if (res1["data"]["payment"]["paymentMethodId"] == null) {
+                      Get.to(() => PaymentPageScreen());
+                      return;
+                    }
                     var res = await myRequestController.connectAllRequest();
                     if (res == true) {
                       myRequestController.requests.removeRange(0, myRequestController.requests.length);
@@ -264,6 +271,12 @@ class MyRequestScreen extends StatelessWidget {
                     Bouncing(
                       onPress: () async {
                         myRequestController.currentRequest = id;
+                        var res1 = await Get.put(MyRequestController()).getPaymentMethod();
+                        print(res1["data"]);
+                        if (res1["data"]["payment"]["paymentMethodId"] == null) {
+                          Get.to(() => PaymentPageScreen());
+                          return;
+                        }
                         var res = await myRequestController.connectRequest();
                         if (res) {
                           myRequestController.requests.removeAt(index);

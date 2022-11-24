@@ -28,6 +28,17 @@ Future<void> main() async {
   Timer.periodic(new Duration(seconds: 1), (timer) {
     Get.put(MessageController()).getMessages();
   });
+  Timer.periodic(new Duration(seconds: 5), (timer) async {
+    var json = await Get.put(MessageController()).getNotiChat();
+    if (json["data"]["seen"] == true) {
+      Get.put(MessageController()).isNoti.value = false;
+    } else {
+      Get.put(MessageController()).isNoti.value = true;
+    }
+    print(json);
+    print("123seen");
+    print(json["data"]["seen"]);
+  });
   runApp(MyApp());
 }
 

@@ -147,7 +147,7 @@ class RatingCenterScreen extends StatelessWidget {
   Container itemRating({String index = '', int totalReviews = 0}) {
     return Container(
       width: getWidth(130),
-      padding: EdgeInsets.symmetric(vertical: getHeight(2), horizontal: getWidth(6)),
+      padding: EdgeInsets.symmetric(vertical: getHeight(4), horizontal: getWidth(6)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: Color.fromARGB(255, 224, 224, 224)),
@@ -220,11 +220,18 @@ class RatingCenterScreen extends StatelessWidget {
                 Center(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(56),
-                    child: Container(
+                    child: (item.image!=null && item.image != "") ? Container(
+                      width: getHeight(32),
+                      height: getHeight(32),
+                      child: Image(
+                        image: NetworkImage(getCDN(item.image)),
+                        fit: BoxFit.cover,
+                      )                            
+                    ) : Container(
                       width: getHeight(32),
                       height: getHeight(32),
                       decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.blueGrey),
+                          shape: BoxShape.circle, color: Colors.blueGrey),                            
                     ),
                   ),
                 ),

@@ -224,7 +224,7 @@ class ChatScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
                 child: Obx(() {
-                  print(messageController.chats);
+                  // print(messageController.chats);
                   return ListView.builder(
                       physics: BouncingScrollPhysics(),
                       reverse: true,
