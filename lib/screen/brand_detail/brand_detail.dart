@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/utils/cdn.dart';
 import 'package:untitled/utils/common-function.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -524,11 +525,18 @@ class BrandDetailScreen extends StatelessWidget {
                 Center(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(56),
-                    child: Container(
+                    child: (item.image!=null && item.image != "") ? Container(
+                      width: getHeight(32),
+                      height: getHeight(32),
+                      child: Image(
+                        image: NetworkImage(getCDN(item.image)),
+                        fit: BoxFit.cover,
+                      )                            
+                    ) : Container(
                       width: getHeight(32),
                       height: getHeight(32),
                       decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.blueGrey),
+                          shape: BoxShape.circle, color: Colors.blueGrey),                            
                     ),
                   ),
                 ),

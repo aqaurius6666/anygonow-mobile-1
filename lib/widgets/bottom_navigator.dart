@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,8 @@ import 'bounce_button.dart';
 
 Container bottomNavigator() {
   GlobalController globalController = Get.put(GlobalController());
+  MessageController messageController = Get.put(MessageController());
+  
   return Container(
     height: getHeight(80),
     width: double.infinity,
@@ -37,8 +41,9 @@ Container bottomNavigator() {
                 children: [
                   Obx(() {
                     return Bouncing(
-                      onPress: () {
+                      onPress:  () async {
                         Get.put(MainScreenController()).getProfessionalNear();
+                        
                         globalController.onChangeTab(0);
                       },
                       child: Container(
@@ -70,10 +75,12 @@ Container bottomNavigator() {
                   Obx(() {
                     return Bouncing(
                       onPress: () async {
-                        if (globalController.currentPage != 1) {
+                        if (globalController.currentPage.value != 1) {
                           var request = Get.put(MyRequestUserController());
                           var message = Get.put(MessageController());
                           await request.getRequests("", "");
+                          await message.putNotiChat();
+                          message.isNoti.value = false;
 
                           message.connectedMessageIds = List.generate(
                             request.connectedRequests.length,
@@ -99,6 +106,28 @@ Container bottomNavigator() {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Get.put(MessageController()).isNoti.value == true ?
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  width: getWidth(8),
+                                  height: getWidth(8),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                                Container(
+                                  width: getWidth(8),
+                                  height: getWidth(8),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 240, 76, 64),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                              ],
+                            ): Container(),
                             SvgPicture.asset(
                               "assets/icons/chat.svg",
                               width: getWidth(24),
@@ -222,6 +251,8 @@ Container bottomNavigatorHandyman() {
                           var request = Get.put(MyRequestUserController());
                           var message = Get.put(MessageController());
                           await request.getRequests("", "");
+                          await message.putNotiChat();
+                          message.isNoti.value = false;
 
                           message.connectedMessageIds = List.generate(
                             request.connectedRequests.length,
@@ -248,6 +279,28 @@ Container bottomNavigatorHandyman() {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Get.put(MessageController()).isNoti.value == true ?
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  width: getWidth(8),
+                                  height: getWidth(8),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                                Container(
+                                  width: getWidth(8),
+                                  height: getWidth(8),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 240, 76, 64),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                              ],
+                            ): Container(),
                             SvgPicture.asset(
                               "assets/icons/message.svg",
                               width: getWidth(24),

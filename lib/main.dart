@@ -25,8 +25,18 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await globalController.getStates();
-  Timer.periodic(new Duration(seconds: 1), (timer) {
+  print("123"); 
+  print(globalController.user.value.certificate);
+  Timer.periodic(new Duration(seconds: 5), (timer) {
     Get.put(MessageController()).getMessages();
+  });
+  Timer.periodic(new Duration(seconds: 5), (timer) async {
+    var json = await Get.put(MessageController()).getNotiChat();
+    if (json["data"]["seen"] == true) {
+      Get.put(MessageController()).isNoti.value = false;
+    } else {
+      Get.put(MessageController()).isNoti.value = true;
+    }
   });
   runApp(MyApp());
 }

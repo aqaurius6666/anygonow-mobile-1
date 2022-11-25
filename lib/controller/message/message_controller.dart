@@ -15,8 +15,10 @@ class MessageController extends GetxController {
   List<String> completedMessageIds = [];
 
   TextEditingController composedChat = TextEditingController();
+  GlobalController globalController = Get.put(GlobalController());
 
   RxList<dynamic> chats = [].obs;
+  RxBool isNoti = false.obs;
 
   String chatId = "";
   int index = 0;
@@ -56,7 +58,7 @@ class MessageController extends GetxController {
         json = jsonDecode(response.toString());
 
         if (i < connectedMessageList.length) {
-          print("$i and $connectedMessageList");
+          // print("$i and $connectedMessageList");
           if (json["data"]["chats"] != null) {
             connectedMessageList[i] = json["data"]["chats"];
           } else {
@@ -71,7 +73,7 @@ class MessageController extends GetxController {
         }
       }
 
-      print("connected: $connectedMessageList");
+      // print("connected: $connectedMessageList");
 
       for (int i = 0; i < completedMessageIds.length; ++i) {
         response = await customDio.post(
@@ -106,7 +108,7 @@ class MessageController extends GetxController {
           ? completedMessageList[index].reversed.toList()
           : connectedMessageList[index].reversed.toList();
 
-      print("fdnsakfnla" + chats[0].toString());
+      // print("fdnsakfnla" + chats[0].toString());
       return true;
     } catch (e) {
       print(e);
@@ -140,10 +142,54 @@ class MessageController extends GetxController {
       json = jsonDecode(response.toString());
 
       return json["success"];
-      print(response);
+      // print(response);
     } catch (e) {
       print(e);
       return false;
     }
   }
+
+//   export const getNotiChat = () => {
+//   return axios.get(API_BASE_URL + '/chat/notification');
+// };
+
+// export const putNotiChat = () => {
+//   return axios.put(API_BASE_URL + '/chat/notification', {});
+// };
+
+  Future getNotiChat() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+      var response = await customDio.get(
+        "/chat/notification",
+      );
+      var json = jsonDecode(response.toString());
+      return (json);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future putNotiChat() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+      var response = await customDio.put(
+        "/chat/notification",
+        {
+          "data": {}
+        },
+      );
+      var json = jsonDecode(response.toString());
+      return (json);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
 }

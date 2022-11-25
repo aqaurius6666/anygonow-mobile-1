@@ -176,9 +176,19 @@ class LoginPageController extends GetxController {
   }
 
   Future changeEmailAndPassword() async {
+    
     try {
+      
       CustomDio customDio = CustomDio();
       var keyPair = generateKeyPairAndEncrypt(pwVerify.text);
+      var data = {
+        "userId": "",
+        "mail": emailVerify.text,
+        "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
+        "publicKey": keyPair["publicKey"],
+      };
+      print("123data");
+      print(data);
       var response = await customDio.put(
           "/auth/change-mail-and-pass",
           {

@@ -20,6 +20,9 @@ class SignupController extends GetxController {
   RxBool isCustomerMode = true.obs;
   RxBool isAgree = false.obs;
 
+  String otp = "";
+  String otpId = "";
+
   void resetInput() {
     email.clear();
     phoneNumber.clear();
@@ -78,7 +81,7 @@ class SignupController extends GetxController {
             }
           : {
               "mail": email.text,
-              "phone": email.text,
+              "phone": phoneNumber.text,
               "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
               "publicKey": keyPair["publicKey"],
               "referral": referral.text
@@ -96,6 +99,33 @@ class SignupController extends GetxController {
     } catch (e, s) {
       print(e);
       return null;
+    }
+  }
+
+  Future verifyMail() async {
+     try {
+      CustomDio customDio = CustomDio();
+      var response = await customDio
+          .post(
+            "/auth/otp",
+            { "data": {
+                "otp": otp,
+                "otpId": otpId,
+              }
+            }
+          );
+
+      var json = jsonDecode(response.toString());
+      print("123jsson");
+      print(json);
+      if (json["success"] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 }

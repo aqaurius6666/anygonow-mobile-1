@@ -11,6 +11,7 @@ import 'package:untitled/controller/handyman/my_request/my_request_controller.da
 import 'package:untitled/controller/login/login_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/controller/reset_password/reset_password_controller.dart';
+import 'package:untitled/controller/signup/signup_controller.dart';
 import 'package:untitled/screen/account/account_screen.dart';
 import 'package:untitled/screen/forgot_password/forgot_password_screen.dart';
 import 'package:untitled/screen/handyman/advertise_manage/buy_advertise.dart';
@@ -39,7 +40,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   StreamSubscription? _sub;
   ResetPasswordController resetPasswordController = Get.put(ResetPasswordController());
-
+  SignupController signupController = Get.put(SignupController());
   
   Future<void> _handleInitialUri() async {
     // In this example app this is an almost useless guard, but it is here to
@@ -53,7 +54,12 @@ class _LoginScreenState extends State<LoginScreen> {
         } else {
           print(uri);
           if (uri.toString().contains("active-account")) {
-            Get.to(() => LoginScreen());
+            signupController.otp = uri.queryParameters["otp"]!;
+            signupController.otpId = uri.queryParameters["otpId"]!;
+            var data = await signupController.verifyMail();
+            if (data == true) {
+              Get.to(() => LoginScreen());
+            }
             return;
           }
           resetPasswordController.otp = uri.queryParameters["otp"]!;

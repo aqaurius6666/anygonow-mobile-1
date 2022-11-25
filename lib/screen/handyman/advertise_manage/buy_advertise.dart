@@ -1,11 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
 import 'package:untitled/screen/handyman/advertise_manage/add_card.dart';
-import 'package:untitled/screen/handyman/advertise_manage/popup_notification.dart';
 import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/bounce_button.dart';
