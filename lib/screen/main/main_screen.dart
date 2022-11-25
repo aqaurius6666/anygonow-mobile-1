@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/main/main_screen_model.dart';
@@ -17,8 +18,8 @@ import 'package:untitled/widgets/dropdown.dart';
 import 'package:untitled/widgets/input.dart';
 
 class MainScreen extends StatelessWidget {
-  MainScreenController mainScreenController = Get.put(MainScreenController());
 
+  MainScreenController mainScreenController = Get.put(MainScreenController());
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -189,25 +190,27 @@ class MainScreen extends StatelessWidget {
                                 "assets/icons/line.svg",
                               ),
                             ),
-                            Expanded(
-                              flex: 30,
-                              child: inputSearch(context,
-                                  hintText: "Zipcode",
-                                  textEditingController: mainScreenController
-                                      .searchZipcode, onSearch: () async {
-                                var res =
-                                    await mainScreenController.getBusinesses();
-                                if (res) {
-                                  mainScreenController.hasSearched.value = true;
-                                } else {
-                                  print("not found");
-                                }
-                              },
-                                  options: [],
-                                  prefixIcon: "assets/icons/location.svg",
-                                  maxLength: 6,
-                                  numberOnly: true),
-                            ),
+                            Obx(() => 
+                              Expanded(
+                                flex: 30,
+                                child: inputSearch(context,
+                                    hintText: Get.put(GlobalController()).zipcodeUser.value,
+                                    textEditingController: mainScreenController
+                                        .searchZipcode, onSearch: () async {
+                                  var res =
+                                      await mainScreenController.getBusinesses();
+                                  if (res) {
+                                    mainScreenController.hasSearched.value = true;
+                                  } else {
+                                    print("not found");
+                                  }
+                                },
+                                    options: [],
+                                    prefixIcon: "assets/icons/location.svg",
+                                    maxLength: 6,
+                                    numberOnly: true),
+                              ),
+                            )
                           ],
                         ),
                       );

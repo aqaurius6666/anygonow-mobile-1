@@ -36,26 +36,37 @@ class GlobalController extends GetxController {
   RxList<Category> categories = <Category>[].obs;
   String? userAgent;
 
+  RxDouble lat = 0.0.obs;
+  RxDouble long = 0.0.obs;
+
+  RxString zipcodeUser = "".obs;
+
   late PageController pageController;
   RxInt currentPage = 0.obs;
 
   List<StateModal> states = [];
+  late Timer timer;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    Timer.periodic(new Duration(seconds: 5), (timer) async {
-    var json = await Get.put(NotiController()).getNotiChat();
-    if (json["data"]["seen"] == true) {
-      Get.put(NotiController()).isNoti.value = false;
-    } else {
-      Get.put(NotiController()).isNoti.value = true;
-    }
-  });
+    timer = Timer.periodic(new Duration(seconds: 5), (timer) async {
+      var json = await Get.put(NotiController()).getNotiChat();
+      if (json["data"]["seen"] == true) {
+        Get.put(NotiController()).isNoti.value = false;
+      } else {
+        Get.put(NotiController()).isNoti.value = true;
+      }
+    });
     pageController = PageController(initialPage: 0, keepPage: false);
     currentPage.value = 0;
   }
+
+  // @override
+  // void onClose() {
+  //   timer.cancel();
+  // }
 
   void onChangeTab(int value) {
     try {
