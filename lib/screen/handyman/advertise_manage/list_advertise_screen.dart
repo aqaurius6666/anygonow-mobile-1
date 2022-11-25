@@ -157,7 +157,8 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                     height: getHeight(24),
                   ),
                   Obx(() => manageAdvertiseController.listAdvertiseOrder.isEmpty
-                      ? Container(
+                      ? (manageAdvertiseController.listAdvertise.isNotEmpty ?
+                         Container(
                           width: getWidth(375),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,11 +189,12 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                                   child: Column(
                                     children: List.generate(
                                       (manageAdvertiseController
+                                          .listAdvertise.isNotEmpty ? manageAdvertiseController
                                           .listAdvertise[
                                               manageAdvertiseController
                                                   .indexCurrentAd
                                                   .value]["serviceInfo"]
-                                          .length),
+                                          .length : 0),
                                       (index) => Column(children: [
                                         SizedBox(height: getHeight(12)),
                                         Container(
@@ -204,11 +206,12 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                                               SizedBox(width: getWidth(7)),
                                               Text(
                                                 (manageAdvertiseController
+                                                            .listAdvertise.isNotEmpty ? manageAdvertiseController
                                                             .listAdvertise[
                                                         manageAdvertiseController
                                                             .indexCurrentAd
                                                             .value]["serviceInfo"]
-                                                    [index]["serviceName"]),
+                                                    [index]["serviceName"] : ""),
                                                 style: TextStyle(
                                                   fontSize: getWidth(16),
                                                   fontWeight: FontWeight.w600,
@@ -246,7 +249,7 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                                 ),
                                 SizedBox(height: getHeight(24)),
                               ]),
-                        )
+                        ): Container())
                       : Container(
                           width: getWidth(375),
                           child: Column(
@@ -254,11 +257,11 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                               children: [
                                 Text(
                                   'With ' +
-                                      (manageAdvertiseController
+                                      (manageAdvertiseController.listAdvertiseOrder.isNotEmpty ? manageAdvertiseController
                                               .listAdvertiseOrder[
                                           manageAdvertiseController
                                               .indexCurrentAdOrder
-                                              .value]["name"]) +
+                                              .value]["name"] : "") +
                                       ' you will get',
                                   style: TextStyle(
                                     fontSize: getWidth(18),
@@ -285,10 +288,11 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                                       SizedBox(width: getWidth(7)),
                                       Text(
                                         (manageAdvertiseController
+                                                .listAdvertiseOrder.isNotEmpty ? manageAdvertiseController
                                                 .listAdvertiseOrder[
                                             manageAdvertiseController
                                                 .indexCurrentAdOrder
-                                                .value]["categoryName"]),
+                                                .value]["categoryName"]: ""),
                                         style: TextStyle(
                                           fontSize: getWidth(16),
                                           fontWeight: FontWeight.w600,
@@ -311,10 +315,10 @@ class _ListAdvertiseScreenState extends State<ListAdvertiseScreen> {
                                 ),
                                 SizedBox(height: getHeight(12)),
                                 Text(
-                                  (manageAdvertiseController.listAdvertiseOrder[
+                                  (manageAdvertiseController.listAdvertiseOrder.isNotEmpty ? manageAdvertiseController.listAdvertiseOrder[
                                       manageAdvertiseController
                                           .indexCurrentAdOrder
-                                          .value]["description"]),
+                                          .value]["description"] : ""),
                                   style: TextStyle(
                                     fontSize: getWidth(14),
                                     fontWeight: FontWeight.w500,

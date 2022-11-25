@@ -123,7 +123,7 @@ class MessageScreen extends StatelessWidget {
     required MessageController messageController,
   }) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         // print("time" + time);
         messageController.currentConversation = conversation;
         messageController.index = index;
@@ -144,6 +144,10 @@ class MessageScreen extends StatelessWidget {
 
         messageController.currentService.value = business;
         messageController.currentCate.value = service;
+
+        var noti = Get.put(NotiController());
+        await noti.putNotiChat();
+        noti.isNoti.value = false;
 
         Get.to(ChatScreen());
       },
