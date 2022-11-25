@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/message/message_controller.dart';
+import 'package:untitled/controller/message/noti_controller.dart';
 import 'package:untitled/model/User.dart';
 import 'package:untitled/model/custom_dio.dart';
 
@@ -42,6 +45,14 @@ class GlobalController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    Timer.periodic(new Duration(seconds: 5), (timer) async {
+    var json = await Get.put(NotiController()).getNotiChat();
+    if (json["data"]["seen"] == true) {
+      Get.put(NotiController()).isNoti.value = false;
+    } else {
+      Get.put(NotiController()).isNoti.value = true;
+    }
+  });
     pageController = PageController(initialPage: 0, keepPage: false);
     currentPage.value = 0;
   }
