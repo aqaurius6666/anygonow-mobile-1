@@ -30,17 +30,18 @@ jobs:
     inputs:
       mode: 'auto'
       channel: 'stable'
-      version: 'latest'
+      version: 'custom'
+      customVersion: '2.10.1'
   - task: CmdLine@2
     displayName: Upgrade & clean Flutter
     inputs:
       script: |
-        $(FlutterToolPath)/flutter upgrade \
+        $(FlutterToolPath)/flutter clean \
         cd ios \
         pod deintegrate \
         rm Flutter/Flutter.podspec \
         rm podfile.lock \
-        $(FlutterToolPath)/flutter clean
+
   - task: CmdLine@2
     inputs:
       script: 'printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=%s\n" "$(KEY_PASSWORD)" "$(KEY_PASSWORD)" "$(KEY_ALIAS)" "$(mySecureFile.secureFilePath)"> ./android/key.properties'
