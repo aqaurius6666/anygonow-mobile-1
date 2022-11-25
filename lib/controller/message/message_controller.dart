@@ -18,7 +18,6 @@ class MessageController extends GetxController {
   GlobalController globalController = Get.put(GlobalController());
 
   RxList<dynamic> chats = [].obs;
-  RxBool isNoti = false.obs;
 
   String chatId = "";
   int index = 0;
@@ -29,6 +28,20 @@ class MessageController extends GetxController {
   RxString currentCate = "".obs;
 
   Map<String, dynamic> currentConversation = {};
+  late Timer timer;
+  @override
+  void onInit() {
+    timer = Timer.periodic(new Duration(seconds: 5), (timer) {
+      getMessages();
+    });
+    super.onInit();
+  }
+  @override
+  void onClose() {
+    print("close");
+    timer.cancel();
+    super.onClose();
+  }
 
   Future getMessages() async {
     try {
@@ -157,39 +170,8 @@ class MessageController extends GetxController {
 //   return axios.put(API_BASE_URL + '/chat/notification', {});
 // };
 
-  Future getNotiChat() async {
-    try {
-      CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] =
-          globalController.user.value.certificate.toString();
-      var response = await customDio.get(
-        "/chat/notification",
-      );
-      var json = jsonDecode(response.toString());
-      return (json);
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
 
-  Future putNotiChat() async {
-    try {
-      CustomDio customDio = CustomDio();
-      customDio.dio.options.headers["Authorization"] =
-          globalController.user.value.certificate.toString();
-      var response = await customDio.put(
-        "/chat/notification",
-        {
-          "data": {}
-        },
-      );
-      var json = jsonDecode(response.toString());
-      return (json);
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
+
+
 
 }

@@ -16,7 +16,8 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MessageController messageController = Get.put(MessageController());
-    MyRequestUserController requestUserController = Get.put(MyRequestUserController());
+    MyRequestUserController requestUserController =
+        Get.put(MyRequestUserController());
     return Scaffold(
         appBar: appBar(
             title: messageController.currentService.value,
@@ -105,83 +106,102 @@ class ChatScreen extends StatelessWidget {
                     ),
                   )
                 : Get.put(GlobalController()).user.value.role != 1 &&
-                messageController.completedChat ? PreferredSize(
-              preferredSize: Size.fromHeight(getHeight(40)),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: getHeight(0),
-                  left: getWidth(16),
-                  right: getWidth(16),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 50,
-                      child: Bouncing(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Write review",
-                            style: TextStyle(
-                              color: Color(0xFFFF511A),
-                              fontWeight: FontWeight.w700,
-                              fontSize: getWidth(16),
-                            ),
+                        messageController.completedChat
+                    ? PreferredSize(
+                        preferredSize: Size.fromHeight(getHeight(40)),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            bottom: getHeight(0),
+                            left: getWidth(16),
+                            right: getWidth(16),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 50,
+                                child: Bouncing(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Write review",
+                                      style: TextStyle(
+                                        color: Color(0xFFFF511A),
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: getWidth(16),
+                                      ),
+                                    ),
+                                  ),
+                                  onPress: () async {
+                                    feedbackPopup(
+                                      context: context,
+                                      title: messageController
+                                          .currentService.value,
+                                      service:
+                                          messageController.currentCate.value,
+                                      serviceId: requestUserController
+                                              .completedRequests[
+                                          messageController.index]["serviceId"],
+                                      businessId: requestUserController
+                                                  .completedRequests[
+                                              messageController.index]
+                                          ["businessId"],
+                                      orderId: requestUserController
+                                              .completedRequests[
+                                          messageController.index]["id"],
+                                    );
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                flex: 0,
+                                child: Container(
+                                  width: 1,
+                                  height: getHeight(40),
+                                  color: Color(0xFFE6E6E6),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 50,
+                                child: Bouncing(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Send request",
+                                      style: TextStyle(
+                                        color: Color(0xFFFF511A),
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: getWidth(16),
+                                      ),
+                                    ),
+                                  ),
+                                  onPress: () async {
+                                    var brandDetailController =
+                                        Get.put(BrandDetailController());
+                                    String id = requestUserController
+                                            .completedRequests[
+                                        messageController.index]["businessId"];
+                                    var res = await brandDetailController
+                                        .getBusinessDetail(id: id);
+                                    var serviceRes = await brandDetailController
+                                        .getBusinessServices(id: id);
+                                    var ratingRes = await brandDetailController
+                                        .getBusinessRating(id: id);
+                                    await brandDetailController
+                                        .getBusinessFeedback(id: id);
+                                    if (res != null &&
+                                        serviceRes &&
+                                        ratingRes) {
+                                      Get.to(BrandDetailScreen());
+                                    }
+                                  },
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                        onPress: () async {
-                          feedbackPopup(
-                            context: context,
-                            title: messageController.currentService.value,
-                            service: messageController.currentCate.value,
-                            serviceId: requestUserController.completedRequests[messageController.index]["serviceId"],
-                            businessId: requestUserController.completedRequests[messageController.index]["businessId"],
-                            orderId: requestUserController.completedRequests[messageController.index]["id"],
-                          );
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      flex: 0,
-                      child: Container(
-                        width: 1,
-                        height: getHeight(40),
-                        color: Color(0xFFE6E6E6),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 50,
-                      child: Bouncing(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Send request",
-                            style: TextStyle(
-                              color: Color(0xFFFF511A),
-                              fontWeight: FontWeight.w700,
-                              fontSize: getWidth(16),
-                            ),
-                          ),
-                        ),
-                        onPress: () async {
-                          var brandDetailController = Get.put(BrandDetailController());
-                          String id = requestUserController.completedRequests[messageController.index]["businessId"];
-                          var res = await brandDetailController.getBusinessDetail(id: id);
-                          var serviceRes = await brandDetailController.getBusinessServices(id: id);
-                          var ratingRes = await brandDetailController.getBusinessRating(id: id);
-                          await brandDetailController.getBusinessFeedback(id: id);
-                          if (res != null && serviceRes && ratingRes) {
-                            Get.to(BrandDetailScreen());
-                          }
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-             : null,
+                      )
+                    : null,
             actions: Get.put(GlobalController()).user.value.role == 1 &&
                     !messageController.completedChat
                 ? [

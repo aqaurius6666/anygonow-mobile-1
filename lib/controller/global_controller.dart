@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/message/message_controller.dart';
 import 'package:untitled/model/User.dart';
 import 'package:untitled/model/custom_dio.dart';
 
@@ -47,6 +48,9 @@ class GlobalController extends GetxController {
 
   void onChangeTab(int value) {
     try {
+      if (value != 1) {
+        Get.delete<MessageController>();
+      }
       currentPage.value = value;
       pageController.jumpToPage(value);
     } catch (e) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/message/message_controller.dart';
+import 'package:untitled/controller/message/noti_controller.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/screen/chat/chat_screen.dart';
 import 'package:untitled/utils/config.dart';
@@ -9,12 +10,14 @@ import 'package:untitled/widgets/app_bar.dart';
 import 'package:untitled/widgets/image.dart';
 
 class MessageScreen extends StatelessWidget {
-  MessageController messageController = Get.put(MessageController());
   MyRequestUserController requestController =
       Get.put(MyRequestUserController());
 
   @override
   Widget build(BuildContext context) {
+
+    MessageController messageController = Get.put(MessageController());
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -32,15 +35,18 @@ class MessageScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            connectedTab(requestController.connectedRequests),
-            completedTab(requestController.completedRequests),
+            connectedTab(
+                requestController.connectedRequests, messageController),
+            completedTab(
+                requestController.completedRequests, messageController),
           ],
         ),
       ),
     );
   }
 
-  Container connectedTab(List<dynamic> requests) {
+  Container connectedTab(
+      List<dynamic> requests, MessageController messageController) {
     // print(requests);
     return Container(
       child: Obx(() {
@@ -62,6 +68,7 @@ class MessageScreen extends StatelessWidget {
                 index: index,
                 completed: false,
                 conversation: requests[index],
+                messageController: messageController,
               );
             } else
               return SizedBox();
@@ -71,7 +78,8 @@ class MessageScreen extends StatelessWidget {
     );
   }
 
-  Container completedTab(List<dynamic> requests) {
+  Container completedTab(
+      List<dynamic> requests, MessageController messageController) {
     // print(requests);
     return Container(
       child: Obx(() {
@@ -93,6 +101,7 @@ class MessageScreen extends StatelessWidget {
                 index: index,
                 completed: true,
                 conversation: requests[index],
+                messageController: messageController,
               );
             } else
               return SizedBox();
@@ -102,15 +111,17 @@ class MessageScreen extends StatelessWidget {
     );
   }
 
-  GestureDetector messageItem(
-      {String img = "",
-      String business = "",
-      String service = "",
-      String message = "",
-      String time = "",
-      int index = 0,
-      bool completed = false,
-      conversation}) {
+  GestureDetector messageItem({
+    String img = "",
+    String business = "",
+    String service = "",
+    String message = "",
+    String time = "",
+    int index = 0,
+    bool completed = false,
+    conversation,
+    required MessageController messageController,
+  }) {
     return GestureDetector(
       onTap: () {
         // print("time" + time);

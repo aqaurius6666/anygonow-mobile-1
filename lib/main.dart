@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/message/noti_controller.dart';
 import 'package:untitled/flavour_config.dart';
 import 'package:untitled/i18n.dart';
 import 'package:untitled/screen/login/login_screen.dart';
@@ -27,15 +28,15 @@ Future<void> main() async {
   await globalController.getStates();
   print("123"); 
   print(globalController.user.value.certificate);
-  Timer.periodic(new Duration(seconds: 5), (timer) {
-    Get.put(MessageController()).getMessages();
-  });
+  // Timer.periodic(new Duration(seconds: 5), (timer) {
+  //   Get.put(MessageController()).getMessages();
+  // });
   Timer.periodic(new Duration(seconds: 5), (timer) async {
-    var json = await Get.put(MessageController()).getNotiChat();
+    var json = await Get.put(NotiController()).getNotiChat();
     if (json["data"]["seen"] == true) {
-      Get.put(MessageController()).isNoti.value = false;
+      Get.put(NotiController()).isNoti.value = false;
     } else {
-      Get.put(MessageController()).isNoti.value = true;
+      Get.put(NotiController()).isNoti.value = true;
     }
   });
   runApp(MyApp());
