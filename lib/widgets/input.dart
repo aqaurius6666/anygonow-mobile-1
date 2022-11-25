@@ -382,7 +382,8 @@ Container inputSearch(
                   hintText: hintText,
                   contentPadding: EdgeInsets.only(
                     right: getWidth(16),
-                    top: getHeight(2),
+                    top: getHeight(4),
+                    bottom: getHeight(2)
                   ),
                   labelStyle: TextStyle(
                       color: Color(0xFF878C92), fontSize: getHeight(16)),
