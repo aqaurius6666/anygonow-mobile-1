@@ -16,6 +16,7 @@ class Comments {
   double rate = 0.0;
   String serviceOrder = "";
   String comment = "";
+  String image = "";
 }
 
 class BrandDetailController extends GetxController {

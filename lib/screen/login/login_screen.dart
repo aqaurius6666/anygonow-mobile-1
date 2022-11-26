@@ -243,7 +243,7 @@ Container confirmButtonContainer(
                             Get.to(() => ResetMailAccount());
                             return;
                         }
-                        if (controller.shouldChangeMail.value == true && !controller.username.text.contains("@anygonow.com")) {
+                        if (controller.isDefaultPassword.value == true && !controller.username.text.contains("@anygonow.com")) {
                             Get.to(() => ResetPasswordAccount());
                             return;
                         }

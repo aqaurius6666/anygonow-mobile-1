@@ -56,8 +56,9 @@ class MyApp extends StatelessWidget {
   }
 
   Widget home() {
-    print({"db": globalController.db.get("user").role});
 
+    // print("Start app...");
+    
     if (globalController.user.value.id != null) {
       var role = globalController.user.value.role;
       if (role == null || role == 0) {
