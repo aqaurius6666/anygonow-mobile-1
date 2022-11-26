@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'User.g.dart';
 
-@JsonSerializable()
+@HiveType(typeId: 1)
 class User {
   User({
     this.id,
@@ -42,16 +42,12 @@ class User {
   String? certificate;
   @HiveField(9)
   int? role;
-  @HiveField(9)
+  @HiveField(10)
   int? process;
-  @HiveField(10)
+  @HiveField(11)
   int? zipcode;
-  @HiveField(10)
+  @HiveField(12)
   String? fullName;
-  @HiveField(10)
+  @HiveField(13)
   String? avatar;
-
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

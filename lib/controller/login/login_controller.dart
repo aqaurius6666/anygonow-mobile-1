@@ -30,8 +30,6 @@ class LoginPageController extends GetxController {
   var messValidateUsername = "".obs;
   var messValidatePassword = "".obs;
 
-
-
   void changeHidePassword() {
     isHidePassword.value = !isHidePassword.value;
   }
@@ -91,13 +89,12 @@ class LoginPageController extends GetxController {
         var publicKey = data['publicKey'];
         var encryptedPrivateKey = data['encryptedPrivateKey'];
         var userName = username.text;
-        shouldChangeMail.value = data["shouldChangeMail"] != null ? true : false;
+        shouldChangeMail.value =
+            data["shouldChangeMail"] != null ? true : false;
 
         String? privateKey =
             decryptAESCryptoJS(encryptedPrivateKey, password.text);
 
-
-        
         Status validatePassword = Status();
 
         if (privateKey == null) {
@@ -124,7 +121,7 @@ class LoginPageController extends GetxController {
               times);
 
           var responsePing = await getPing(certificateList);
-          
+
           print(responsePing);
           Status validateServer2 = ResponseValidator.check(responsePing);
           var jsonResponse = jsonDecode(responsePing.toString());
@@ -155,7 +152,7 @@ class LoginPageController extends GetxController {
               // var lastName = userInformation["data"]["user"]["lastName"] ?? "";
               // userInfo.fullName = firstName + " " + lastName;
             }
-
+            Get.put(GlobalController()).db.put("user", userInfo);
             Get.put(GlobalController()).user.value = userInfo;
 
             // print();
@@ -176,9 +173,7 @@ class LoginPageController extends GetxController {
   }
 
   Future changeEmailAndPassword() async {
-    
     try {
-      
       CustomDio customDio = CustomDio();
       var keyPair = generateKeyPairAndEncrypt(pwVerify.text);
       var data = {
@@ -190,15 +185,15 @@ class LoginPageController extends GetxController {
       print("123data");
       print(data);
       var response = await customDio.put(
-          "/auth/change-mail-and-pass",
-          {
-            "data": {
-              "userId": "",
-              "mail": emailVerify.text,
-              "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
-              "publicKey": keyPair["publicKey"],
-            }
-          },
+        "/auth/change-mail-and-pass",
+        {
+          "data": {
+            "userId": "",
+            "mail": emailVerify.text,
+            "encryptedPrivateKey": keyPair["encryptedPrivateKey"],
+            "publicKey": keyPair["publicKey"],
+          }
+        },
       );
       return response;
     } catch (e, s) {
@@ -212,7 +207,7 @@ class LoginPageController extends GetxController {
       String newMail = emailVerify.text.replaceAll("+", "%2B");
       // var keyPair = generateKeyPairAndEncrypt(pwVerify.text);
       var response = await customDio.get(
-          "/check-valid-mail?mail=$newMail",
+        "/check-valid-mail?mail=$newMail",
       );
       var json = jsonDecode(response.toString());
       if (json["data"]["isValidate"] != null) {
@@ -223,5 +218,4 @@ class LoginPageController extends GetxController {
       return null;
     }
   }
-
 }

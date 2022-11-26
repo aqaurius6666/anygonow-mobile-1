@@ -19,12 +19,17 @@ import 'package:untitled/widgets/image.dart';
 
 class HandymanUserScreen extends StatelessWidget {
   GlobalController globalController = Get.put(GlobalController());
-  RatingCenterController ratingCenterController = Get.put(RatingCenterController());
+  RatingCenterController ratingCenterController =
+      Get.put(RatingCenterController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBar(title: "Profile", hideBackButton: true, centerTitle: false, leadingWidth: 0),
+      appBar: appBar(
+          title: "Profile",
+          hideBackButton: true,
+          centerTitle: false,
+          leadingWidth: 0),
       body: SafeArea(
         child: Container(
           color: const Color.fromRGBO(243, 245, 250, 1),
@@ -54,8 +59,12 @@ class HandymanUserScreen extends StatelessWidget {
                                 child: Container(
                                     width: getHeight(60),
                                     height: getHeight(60),
-                                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                                    child: SvgPicture.asset("assets/icons/account.svg", width: getWidth(60), height: getHeight(60))),
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle),
+                                    child: SvgPicture.asset(
+                                        "assets/icons/account.svg",
+                                        width: getWidth(60),
+                                        height: getHeight(60))),
                               ),
                               SizedBox(
                                 width: getWidth(18),
@@ -63,8 +72,13 @@ class HandymanUserScreen extends StatelessWidget {
                               FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Text(
-                                  Get.put(GlobalController()).user.value.username.toString(),
-                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                                  Get.put(GlobalController())
+                                      .user
+                                      .value
+                                      .username
+                                      .toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ],
@@ -97,7 +111,8 @@ class HandymanUserScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -114,7 +129,8 @@ class HandymanUserScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         'Manage your business',
-                                        style: TextStyle(fontSize: getHeight(16)),
+                                        style:
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -148,7 +164,8 @@ class HandymanUserScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -165,7 +182,8 @@ class HandymanUserScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         "Service Areas",
-                                        style: TextStyle(fontSize: getHeight(16)),
+                                        style:
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -199,7 +217,8 @@ class HandymanUserScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -216,7 +235,8 @@ class HandymanUserScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         "Payment Center",
-                                        style: TextStyle(fontSize: getHeight(16)),
+                                        style:
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -250,7 +270,8 @@ class HandymanUserScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -267,7 +288,8 @@ class HandymanUserScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         "Payment Summary",
-                                        style: TextStyle(fontSize: getHeight(16)),
+                                        style:
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -303,7 +325,8 @@ class HandymanUserScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -320,7 +343,8 @@ class HandymanUserScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         "Rating Center",
-                                        style: TextStyle(fontSize: getHeight(16)),
+                                        style:
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -354,7 +378,8 @@ class HandymanUserScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -371,7 +396,8 @@ class HandymanUserScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         "Change Password",
-                                        style: TextStyle(fontSize: getHeight(16)),
+                                        style:
+                                            TextStyle(fontSize: getHeight(16)),
                                       )
                                     ],
                                   ),
@@ -418,15 +444,17 @@ class HandymanUserScreen extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        // Get.delete<>();
-                                        
+                                        Get.put(GlobalController())
+                                            .db
+                                            .deleteFromDisk();
                                         Get.offAll(() => LoginScreen());
                                       },
                                       child: SizedBox(
                                         width: getWidth(200),
                                         child: Text(
                                           "Log out",
-                                          style: TextStyle(fontSize: getHeight(16)),
+                                          style: TextStyle(
+                                              fontSize: getHeight(16)),
                                         ),
                                       ),
                                     ),
