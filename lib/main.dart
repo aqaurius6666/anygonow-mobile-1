@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/location/location.dart';
 import 'package:untitled/controller/message/noti_controller.dart';
 import 'package:untitled/flavour_config.dart';
 import 'package:untitled/i18n.dart';
@@ -13,6 +14,7 @@ import 'package:untitled/screen/login/login_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:untitled/service/stripe.dart';
 import 'package:flutter/services.dart' show PlatformException;
+import 'package:geolocator/geolocator.dart';
 
 import 'controller/message/message_controller.dart';
 
@@ -26,19 +28,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await globalController.getStates();
-  print("123"); 
-  print(globalController.user.value.certificate);
   // Timer.periodic(new Duration(seconds: 5), (timer) {
   //   Get.put(MessageController()).getMessages();
   // });
-  Timer.periodic(new Duration(seconds: 5), (timer) async {
-    var json = await Get.put(NotiController()).getNotiChat();
-    if (json["data"]["seen"] == true) {
-      Get.put(NotiController()).isNoti.value = false;
-    } else {
-      Get.put(NotiController()).isNoti.value = true;
-    }
-  });
+  var location = ZipcodeUser.determinePosition();
   runApp(MyApp());
 }
 

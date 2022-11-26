@@ -74,6 +74,7 @@ class MainScreenController extends GetxController {
     getMostInterest = getMostInterested();
     hasSearched.value = false;
     var keyboardVisibilityController = KeyboardVisibilityController();
+    searchZipcode.text = globalController.zipcodeUser.value;
 
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {

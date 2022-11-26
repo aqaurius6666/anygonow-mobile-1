@@ -87,11 +87,10 @@ class ResetMailAccount extends StatelessWidget {
 
                           loginPageController.isLoadingVerify.value = true;      
 
-                          var response = await loginPageController.checkMailAccount();
+                          var isValidate = await loginPageController.checkMailAccount();
                           print("123 respone");
-                          print(response);
-                          // var success = response["success"];
-                          if (response != null) {
+                          print(isValidate);
+                          if (isValidate == true) {
                             Get.to(()=> ResetPasswordAccount());
                           } else {
                             CustomDialog(context, "FAILED").show({
