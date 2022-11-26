@@ -63,8 +63,9 @@ dependencies:
   geocoding: ^2.0.4
   firebase_core: ^1.17.1
   firebase_messaging: ^11.4.1
+  flutter_local_notifications:
   hive_flutter: ^1.1.0
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -90,7 +91,6 @@ dev_dependencies:
   flutter_keyboard_visibility: ^5.2.0
   flutter_launcher_icons: ^0.9.2
   intl: ^0.17.0
-  hive_generator:
 
 flutter_icons:
   android: true

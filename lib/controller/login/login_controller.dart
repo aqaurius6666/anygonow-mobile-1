@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/api/certificate_service.dart';
@@ -157,7 +158,9 @@ class LoginPageController extends GetxController {
             }
             Get.put(GlobalController()).db.put("user", userInfo);
             Get.put(GlobalController()).user.value = userInfo;
-
+            String? token = await FirebaseMessaging.instance.getToken();
+            print(token);
+            await subscribe(token: token.toString());
             // print();
             return true;
           } else {
@@ -173,6 +176,29 @@ class LoginPageController extends GetxController {
       }
     }
     return false;
+  }
+
+  Future subscribe({required String token}) async {
+    try {
+      GlobalController globalController = Get.put(GlobalController());
+      var response;
+      var userID = globalController.user.value.id.toString();
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+
+      response = await customDio.post("/subscribe", {
+        "data": {"deviceId": token}
+      });
+
+      var json = jsonDecode(response.toString());
+      print(json.toString());
+      return (json["success"]);
+    } catch (e, s) {
+      print(e);
+      print(s);
+      return null;
+    }
   }
 
   Future changeEmailAndPassword() async {

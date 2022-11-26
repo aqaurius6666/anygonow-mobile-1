@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:896341355518:android:bfefadf0e32f6312092eaf",
+        "mobilesdk_app_id": "1:896341355518:android:4afb0589734fc552092eaf",
         "android_client_info": {
           "package_name": "com.anygonow"
         }
@@ -29,6 +29,13 @@
             {
               "client_id": "896341355518-u50ah95g0dgio8hdbp537n27b66k897k.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "896341355518-c0sg7m6drici44geu13ru24t1j2ae7ml.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "handyman.app"
+              }
             }
           ]
         }
