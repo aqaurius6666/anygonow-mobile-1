@@ -63,14 +63,7 @@ dependencies:
   geocoding: ^2.0.4
   firebase_core: ^1.17.1
   firebase_messaging: ^11.4.1
-<<<<<<< HEAD
-<<<<<<< HEAD
   hive_flutter: ^1.1.0
-=======
->>>>>>> cddd263 (fix: firebase)
-=======
-  hive_flutter: ^1.1.0
->>>>>>> 88574af (config db)
   
 dev_dependencies:
   flutter_test:
