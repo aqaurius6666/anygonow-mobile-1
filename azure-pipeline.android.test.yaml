@@ -58,7 +58,6 @@ jobs:
       buildNumber: '$(Build.BuildNumber)'
       apkTargetPlatform: 'custom'
       customApkTargetPlatform: 'android-arm,android-arm64,android-x64'
-      buildFlavour: 'development'
       debugMode: true
   - task: GitHubRelease@1
     inputs:
