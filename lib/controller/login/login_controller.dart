@@ -27,6 +27,7 @@ class LoginPageController extends GetxController {
   RxBool isHidePassword = true.obs;
   RxBool isLoading = false.obs;
   RxBool shouldChangeMail = false.obs;
+  RxBool isDefaultPassword = false.obs;
   var messValidateUsername = "".obs;
   var messValidatePassword = "".obs;
 
@@ -91,6 +92,8 @@ class LoginPageController extends GetxController {
         var userName = username.text;
         shouldChangeMail.value =
             data["shouldChangeMail"] != null ? true : false;
+        isDefaultPassword.value =
+            data["isDefaultPassword"] != null ? true : false;
 
         String? privateKey =
             decryptAESCryptoJS(encryptedPrivateKey, password.text);

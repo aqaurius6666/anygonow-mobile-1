@@ -44,7 +44,7 @@ class ResetMailAccount extends StatelessWidget {
                     height: getHeight(4),
                   ),
                   Text(
-                    "Please enter your email address. This email will be used for subsequent logins",
+                    "Please change your email address. This email will be used for subsequent logins",
                     style: TextStyle(
                       fontSize: getHeight(16),
                       color: const Color(0xff999999),
