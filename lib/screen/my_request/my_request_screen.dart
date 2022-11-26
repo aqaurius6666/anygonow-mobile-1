@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
+import 'package:untitled/screen/brand_detail/brand_detail.dart';
 import 'package:untitled/service/date_format.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
@@ -191,23 +193,36 @@ class MyRequestUserScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              getImage(
-                image,
-                width: getWidth(20),
-                height: getWidth(20),
-              ),
-              SizedBox(
-                width: getWidth(4),
-              ),
-              Text(
-                title ?? "Local Clean",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
+          GestureDetector(
+            onTap: () async {
+              var id = businessId;
+              var bdController = Get.put(BrandDetailController());
+              var res = await bdController.getBusinessDetail(id: id);
+              var serviceRes = await bdController.getBusinessServices(id: id);
+              var ratingRes = await bdController.getBusinessRating(id: id);
+              await bdController.getBusinessFeedback(id: id);
+              if (res != null && serviceRes && ratingRes) {
+                Get.to(BrandDetailScreen());
+              }
+            },
+            child: Row(
+              children: [
+                getImage(
+                  image,
+                  width: getWidth(20),
+                  height: getWidth(20),
                 ),
-              )
-            ],
+                SizedBox(
+                  width: getWidth(4),
+                ),
+                Text(
+                  title ?? "Local Clean",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
