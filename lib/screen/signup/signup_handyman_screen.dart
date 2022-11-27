@@ -211,7 +211,12 @@ Container confirmButtonContainer(
                     .show({"message": "You do not agree to the terms of use"});
                 return;
               }
-              await signupController.signup();
+              var ret = await signupController.signup();
+              if (!ret) {
+                CustomDialog(context, "FAILED")
+                    .show({"message": "Email or phone number is existed!"});
+                return;
+              }
               Get.to(() => CheckEmailScreen());
             },
             child: Text("continue".tr,
