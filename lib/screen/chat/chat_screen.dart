@@ -36,16 +36,19 @@ class ChatScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.arrow_back_ios)),
+                              IconButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  icon: Icon(Icons.arrow_back_ios)),
                               GestureDetector(
-                                onTap: () {                                 
-                                },
-                                child: Text(messageController.currentService.value, 
+                                onTap: () {},
+                                child: Text(
+                                  messageController.currentService.value,
                                   style: TextStyle(
-                                    fontSize: getWidth(20),
-                                    fontFamily: 'TTNorm',
-                                    fontWeight: FontWeight.w600
-                                  ),
+                                      fontSize: getWidth(20),
+                                      fontFamily: 'TTNorm',
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ],
@@ -68,8 +71,9 @@ class ChatScreen extends StatelessWidget {
                                     ),
                                   ),
                                   onPress: () async {
-                                    var res = await Get.put(MyRequestController())
-                                        .rejectRequest();
+                                    var res =
+                                        await Get.put(MyRequestController())
+                                            .rejectRequest();
                                     if (res) {
                                       messageController.connectedMessageList
                                           .removeAt(messageController.index);
@@ -104,12 +108,15 @@ class ChatScreen extends StatelessWidget {
                                     ),
                                   ),
                                   onPress: () async {
-                                    var res = await Get.put(MyRequestController())
-                                        .completeRequest();
+                                    var res =
+                                        await Get.put(MyRequestController())
+                                            .completeRequest();
                                     if (res) {
-                                      messageController.completedMessageList.add(
-                                          messageController.connectedMessageList
-                                              .elementAt(messageController.index));
+                                      messageController.completedMessageList
+                                          .add(messageController
+                                              .connectedMessageList
+                                              .elementAt(
+                                                  messageController.index));
                                       // Get.put(MyRequestUserController()).completedRequests.add(Get.put(MyRequestUserController()).connectedRequests.elementAt(messageController.index);
 
                                       messageController.connectedMessageList
@@ -140,31 +147,44 @@ class ChatScreen extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.arrow_back_ios)),
+                                  IconButton(
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      icon: Icon(Icons.arrow_back_ios)),
                                   GestureDetector(
                                     onTap: () async {
-                                      var id = messageController.currentConversation["businessId"];
-                                      var bdController = Get.put(BrandDetailController());
-                                      var res = await bdController.getBusinessDetail(id: id);
-                                      var serviceRes = await bdController.getBusinessServices(id: id);
-                                      var ratingRes = await bdController.getBusinessRating(id: id);
-                                      await bdController.getBusinessFeedback(id: id);
-                                      if (res != null && serviceRes && ratingRes) {
-                                        Get.to(BrandDetailScreen());
+                                      var id = messageController
+                                          .currentConversation["businessId"];
+                                      var bdController =
+                                          Get.put(BrandDetailController());
+                                      var res = await bdController
+                                          .getBusinessDetail(id: id);
+                                      var serviceRes = await bdController
+                                          .getBusinessServices(id: id);
+                                      var ratingRes = await bdController
+                                          .getBusinessRating(id: id);
+                                      await bdController.getBusinessFeedback(
+                                          id: id);
+                                      if (res != null &&
+                                          serviceRes &&
+                                          ratingRes) {
+                                        Get.to(() => BrandDetailScreen());
                                       }
                                     },
-                                    child: Text(messageController.currentService.value, 
+                                    child: Text(
+                                      messageController.currentService.value,
                                       style: TextStyle(
-                                        fontSize: getWidth(20),
-                                        fontFamily: 'TTNorm',
-                                        fontWeight: FontWeight.w600
-                                      ),
+                                          fontSize: getWidth(20),
+                                          fontFamily: 'TTNorm',
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     flex: 50,
@@ -185,11 +205,12 @@ class ChatScreen extends StatelessWidget {
                                           context: context,
                                           title: messageController
                                               .currentService.value,
-                                          service:
-                                              messageController.currentCate.value,
+                                          service: messageController
+                                              .currentCate.value,
                                           serviceId: requestUserController
-                                                  .completedRequests[
-                                              messageController.index]["serviceId"],
+                                                      .completedRequests[
+                                                  messageController.index]
+                                              ["serviceId"],
                                           businessId: requestUserController
                                                       .completedRequests[
                                                   messageController.index]
@@ -227,20 +248,23 @@ class ChatScreen extends StatelessWidget {
                                         var brandDetailController =
                                             Get.put(BrandDetailController());
                                         String id = requestUserController
-                                                .completedRequests[
-                                            messageController.index]["businessId"];
+                                                    .completedRequests[
+                                                messageController.index]
+                                            ["businessId"];
                                         var res = await brandDetailController
                                             .getBusinessDetail(id: id);
-                                        var serviceRes = await brandDetailController
-                                            .getBusinessServices(id: id);
-                                        var ratingRes = await brandDetailController
-                                            .getBusinessRating(id: id);
+                                        var serviceRes =
+                                            await brandDetailController
+                                                .getBusinessServices(id: id);
+                                        var ratingRes =
+                                            await brandDetailController
+                                                .getBusinessRating(id: id);
                                         await brandDetailController
                                             .getBusinessFeedback(id: id);
                                         if (res != null &&
                                             serviceRes &&
                                             ratingRes) {
-                                          Get.to(BrandDetailScreen());
+                                          Get.to(() => BrandDetailScreen());
                                         }
                                       },
                                     ),

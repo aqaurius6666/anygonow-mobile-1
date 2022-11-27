@@ -57,6 +57,9 @@ class CustomDio {
       InterceptorsWrapper(
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
+          if (options.path == "/chat/notification") {
+            return handler.next(options);
+          }
           print({"onRequest": options.uri});
           return handler.next(options); //continue
         },
@@ -67,8 +70,10 @@ class CustomDio {
           return handler.next(response);
         },
         onError: (DioError error, ErrorInterceptorHandler handler) async {
-          print({'onError': error});
-          print({'onError2': error.response});
+          print("heeloodasd");
+          print(error.message.toString());
+          // print({'onError': error});
+          // print({'onError2': error.response});
           return handler.next(error); //continue
         },
       ),

@@ -15,7 +15,6 @@ class MessageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     MessageController messageController = Get.put(MessageController());
 
     return DefaultTabController(
@@ -50,6 +49,7 @@ class MessageScreen extends StatelessWidget {
     // print(requests);
     return Container(
       child: Obx(() {
+        if (requests.isEmpty) return Container();
         return ListView(
           children: List.generate(requests.length, (index) {
             if (index < messageController.connectedMessageList.length) {
@@ -83,6 +83,7 @@ class MessageScreen extends StatelessWidget {
     // print(requests);
     return Container(
       child: Obx(() {
+        if (requests.isEmpty) return Container();
         return ListView(
           children: List.generate(requests.length, (index) {
             if (index < messageController.completedMessageList.length) {

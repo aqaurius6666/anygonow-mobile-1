@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
@@ -13,22 +11,29 @@ class NotificationController extends GetxController {
     // TODO: implement onInit
     //background but kill
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
-      if (message != null) {
-        print("bam vafo noti");
-      }
+      if (message == null) return;
+      print("bam vafo noti");
+      print("Noti background but kill");
+      print(message.notification!.body);
+      print(message.notification!.title);
+      print(message.data);
     });
 
     //foreground
     FirebaseMessaging.onMessage.listen((message) {
+      print("Noti foreground");
       print(message.notification!.body);
       print(message.notification!.title);
+      print(message.data);
       LocalNotificationService.display(message);
     });
 
     //background but opened
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+      print("Noti background but opened");
       print(message.notification!.body);
       print(message.notification!.title);
+      print(message.data);
       // await notiAction(message.data["id"]);
     });
 

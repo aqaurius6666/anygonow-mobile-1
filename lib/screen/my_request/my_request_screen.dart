@@ -202,7 +202,7 @@ class MyRequestUserScreen extends StatelessWidget {
               var ratingRes = await bdController.getBusinessRating(id: id);
               await bdController.getBusinessFeedback(id: id);
               if (res != null && serviceRes && ratingRes) {
-                Get.to(BrandDetailScreen());
+                Get.to(() => BrandDetailScreen());
               }
             },
             child: Row(
