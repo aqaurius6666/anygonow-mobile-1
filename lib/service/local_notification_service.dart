@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:untitled/controller/notification/notification_controller.dart';
 
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -15,7 +19,11 @@ class LocalNotificationService {
             ));
     notificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String? route) async {
-      print(route);
+      print({"route333": route});
+      if (route == null || route == "") return;
+      var data = jsonDecode(route);
+      NotificationController controller = Get.put(NotificationController());
+      await controller.handleNotification(data);
     });
   }
 
@@ -31,10 +39,11 @@ class LocalNotificationService {
           styleInformation: BigTextStyleInformation(''),
         ),
         iOS: IOSNotificationDetails(
-            sound: "a_long_cold_string.wav",
-            presentAlert: true,
-            presentBadge: true,
-            presentSound: true),
+          sound: "a_long_cold_string.wav",
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
       );
 
       await notificationsPlugin.show(
@@ -42,6 +51,7 @@ class LocalNotificationService {
         message.notification!.title,
         message.notification!.body!,
         notificationDetails,
+        payload: jsonEncode(message.data),
       );
     } on Exception catch (e) {
       print(e);
