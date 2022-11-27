@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/screen/brand_detail/brand_detail.dart';
 import 'package:untitled/utils/config.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:untitled/widgets/image.dart';
 
 GestureDetector handymanItem({
@@ -33,7 +31,7 @@ GestureDetector handymanItem({
       var ratingRes = await brandDetailController.getBusinessRating(id: id);
       await brandDetailController.getBusinessFeedback(id: id);
       if (res != null && serviceRes && ratingRes) {
-        Get.to(BrandDetailScreen());
+        Get.to(() => BrandDetailScreen());
       }
     },
     child: Obx(() {
@@ -43,12 +41,13 @@ GestureDetector handymanItem({
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: searchResult.value && (controller?.requests.contains(id) ?? false)
-              ? BorderSide(
-                  color: Color(0xFFFF511A),
-                  width: 1,
-                )
-              : BorderSide.none,
+          side:
+              searchResult.value && (controller?.requests.contains(id) ?? false)
+                  ? BorderSide(
+                      color: Color(0xFFFF511A),
+                      width: 1,
+                    )
+                  : BorderSide.none,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,23 +125,26 @@ GestureDetector handymanItem({
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-
-                                startDate == true ?
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: getHeight(2), horizontal: getHeight(2),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 39, 218, 69),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: const Text(
-                                    'AD',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ): Container(),
+                                startDate == true
+                                    ? Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: getHeight(2),
+                                          horizontal: getHeight(2),
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color:
+                                              Color.fromARGB(255, 39, 218, 69),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        child: const Text(
+                                          'AD',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      )
+                                    : Container(),
                               ],
                             ),
                             isSearchResult
@@ -156,13 +158,20 @@ GestureDetector handymanItem({
                                       return Checkbox(
                                         value:
                                             controller?.requests.contains(id),
-                                        onChanged: (value) => {
-                                          selected = value ?? false,
-                                          if (selected)
-                                            controller?.requests.add(id)
-                                          else
+                                        onChanged: (value) {
+                                          selected = value ?? false;
+                                          print("da chon");
+                                          if (selected) {
+                                            var mainScreenController =
+                                                Get.put(MainScreenController());
+                                            if (!mainScreenController
+                                                .listBussinessOrder
+                                                .contains(id)) {
+                                              controller?.requests.add(id);
+                                            }
+                                          } else
                                             controller?.requests.removeWhere(
-                                                (element) => element == id)
+                                                (element) => element == id);
                                         },
                                         activeColor: Color(0xFFFF511A),
                                       );

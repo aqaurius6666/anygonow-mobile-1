@@ -36,6 +36,8 @@ class MainScreenController extends GetxController {
   RxList<Business> businessNearList = <Business>[].obs;
   RxList<Business> mostInterested = <Business>[].obs;
 
+  RxList<dynamic> listBussinessOrder = [].obs;
+
   RxList<Business> businesses = <Business>[].obs;
 
   RxList<Category> categories = <Category>[].obs;
@@ -281,6 +283,32 @@ class MainScreenController extends GetxController {
     } catch (e) {
       print(e);
       return false;
+    }
+  }
+
+  Future<List<Business>> getListOrderAlready() async {
+    try {
+      listBussinessOrder.value = [];
+      Category? value = categories.firstWhereOrNull((element) => element.name == searchText.text);
+      if (value != null) {
+        categoryId = value != null ? value.id : "";
+      }
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] =
+          globalController.user.value.certificate.toString();
+      var response = await customDio.get("/orders/already-ordered?categoryId=$categoryId&zipcode=${searchZipcode.text}");
+      var json = jsonDecode(response.toString());
+
+      List<dynamic> responseData = json["data"]["businessId"];
+
+      print("123listorder");
+      print(responseData);
+
+      listBussinessOrder.value = responseData;
+      return [];
+    } catch (e) {
+      print(e);
+      return ([]);
     }
   }
 }

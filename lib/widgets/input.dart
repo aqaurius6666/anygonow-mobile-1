@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -260,7 +262,7 @@ Container inputPhoneNUmber(
                 child: TextFormField(
                   inputFormatters: numberOnly
                       ? <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          FilteringTextInputFormatter.allow(RegExp(r'[+0-9]')),
                           LengthLimitingTextInputFormatter(
                               maxLength != 0 ? maxLength : null)
                         ]
@@ -381,12 +383,11 @@ Container inputSearch(
                   disabledBorder: InputBorder.none,
                   hintText: hintText,
                   contentPadding: EdgeInsets.only(
-                    right: getWidth(16),
-                    top: getHeight(4),
-                    bottom: getHeight(2)
-                  ),
+                      right: getWidth(16),
+                      top: getHeight(4),
+                      bottom: getHeight(2)),
                   labelStyle: TextStyle(
-                      color: Color(0xFF878C92), fontSize: getHeight(16)),
+                      color: const Color(0xFF878C92), fontSize: getHeight(16)),
                 ),
               );
             },
@@ -436,7 +437,7 @@ Container inputWithHint(BuildContext context,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(getHeight(4)),
       border: Border.all(
-        color: err ? Colors.red : Color(0xFFE7E8EA),
+        color: err ? Colors.red : const Color(0xFFE7E8EA),
         width: getHeight(1),
       ),
     ),
@@ -460,8 +461,8 @@ Container inputWithHint(BuildContext context,
               hintText: hintText,
               contentPadding:
                   EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
-              labelStyle:
-                  TextStyle(color: Color(0xFF878C92), fontSize: getHeight(16)),
+              labelStyle: TextStyle(
+                  color: const Color(0xFF878C92), fontSize: getHeight(16)),
             ),
           ),
         ),
@@ -484,8 +485,8 @@ Container inputSignup(BuildContext context,
         color: err
             ? Colors.red
             : focus
-                ? Color(0xFF61B3FF)
-                : Color(0xFFE7E8EA),
+                ? const Color(0xFF61B3FF)
+                : const Color(0xFFE7E8EA),
         width: getHeight(1),
       ),
     ),
@@ -504,8 +505,8 @@ Container inputSignup(BuildContext context,
               labelText: hintText,
               contentPadding:
                   EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
-              labelStyle:
-                  TextStyle(color: Color(0xFF878C92), fontSize: getHeight(16)),
+              labelStyle: TextStyle(
+                  color: const Color(0xFF878C92), fontSize: getHeight(16)),
             ),
           ),
         ),
@@ -532,8 +533,8 @@ Container inputPasswordSignup(
         color: err
             ? Colors.red
             : focus
-                ? Color(0xFF61B3FF)
-                : Color(0xFFE7E8EA),
+                ? const Color(0xFF61B3FF)
+                : const Color(0xFFE7E8EA),
         width: getHeight(1),
       ),
     ),
@@ -555,8 +556,8 @@ Container inputPasswordSignup(
                 disabledBorder: InputBorder.none,
                 labelText: hintText,
                 contentPadding: EdgeInsets.only(left: getWidth(16)),
-                labelStyle:
-                    TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
+                labelStyle: TextStyle(
+                    color: const Color(0xFF878C92), fontSize: getWidth(16)),
               )),
         ),
         IconButton(
@@ -582,7 +583,7 @@ Container inputOnChange(BuildContext context,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(getHeight(4)),
       border: Border.all(
-        color: Color(0xFFE7E8EA),
+        color: const Color(0xFFE7E8EA),
         width: getHeight(1),
       ),
     ),
@@ -602,8 +603,8 @@ Container inputOnChange(BuildContext context,
               labelText: hintText,
               contentPadding:
                   EdgeInsets.only(left: getWidth(16), right: getWidth(16)),
-              labelStyle:
-                  TextStyle(color: Color(0xFF878C92), fontSize: getWidth(16)),
+              labelStyle: TextStyle(
+                  color: const Color(0xFF878C92), fontSize: getWidth(16)),
             ),
           ),
         ),
@@ -627,7 +628,8 @@ Container inputSelect(
     padding:
         EdgeInsets.symmetric(vertical: getWidth(16), horizontal: getWidth(16)),
     decoration: BoxDecoration(
-      border: Border.all(width: 1, color: Color.fromARGB(255, 242, 239, 244)),
+      border:
+          Border.all(width: 1, color: const Color.fromARGB(255, 242, 239, 244)),
       borderRadius: BorderRadius.circular(8),
     ),
     child: Row(
@@ -688,7 +690,7 @@ Container inputSelect(
                     top: getHeight(2),
                   ),
                   labelStyle: TextStyle(
-                      color: Color.fromARGB(255, 195, 196, 197),
+                      color: const Color.fromARGB(255, 195, 196, 197),
                       fontSize: getHeight(16)),
                 ),
               );

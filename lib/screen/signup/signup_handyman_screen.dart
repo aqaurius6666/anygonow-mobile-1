@@ -182,12 +182,11 @@ Container confirmButtonContainer(
                     .show({"message": "Email invalidate"});
                 return;
               }
-              bool phoneValid = RegExp(r'(^(?:[+0]9)?[0-9]{7,12}$)')
+              bool phoneValid = RegExp(r'(^\+1[0-9]{3}[0-9]{3}[0-9]{4}$)')
                   .hasMatch(signupController.phoneNumber.text);
               if (!phoneValid) {
                 CustomDialog(context, "FAILED").show({
-                  "message":
-                      "Phone numbers are only alphanumeric and have 7-12 characters"
+                  "message": "Phone numbers must be in the format: +1AAABBBCCCC"
                 });
                 return;
               }

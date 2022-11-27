@@ -14,9 +14,7 @@ class NotiController extends GetxController {
           Get.put(GlobalController()).user.value.certificate.toString();
       var response = await customDio.put(
         "/chat/notification",
-        {
-          "data": {}
-        },
+        {"data": {}},
       );
       var json = jsonDecode(response.toString());
       return (json);
@@ -37,8 +35,9 @@ class NotiController extends GetxController {
       var json = jsonDecode(response.toString());
       return (json);
     } catch (e) {
-      print(e);
-      return false;
+      return {
+        "data": {"seen": false}
+      };
     }
   }
 }
