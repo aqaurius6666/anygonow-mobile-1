@@ -478,6 +478,7 @@ Container bottomBrandDetail({String id = ""}) {
                   );
                 }
                 mainScreenController.requests.clear();
+                await mainScreenController.getListOrderAlready();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -546,6 +547,7 @@ Container bottomSearchResult() {
                   );
                 }
                 mainScreenController.requests.clear();
+                await mainScreenController.getListOrderAlready();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

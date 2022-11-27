@@ -35,6 +35,7 @@ class MainScreen extends StatelessWidget {
           return mainScreenController.isKeyboardVisible.value
               ? Bouncing(
                   onPress: () async {
+                    await mainScreenController.getListOrderAlready();
                     var res = await mainScreenController.getBusinesses();
                     if (res) {
                       mainScreenController.hasSearched.value = true;

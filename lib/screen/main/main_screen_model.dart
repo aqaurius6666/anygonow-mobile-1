@@ -8,6 +8,7 @@ import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/screen/brand_detail/brand_detail.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/image.dart';
 
 GestureDetector handymanItem({
@@ -156,13 +157,18 @@ GestureDetector handymanItem({
                                       return Checkbox(
                                         value:
                                             controller?.requests.contains(id),
-                                        onChanged: (value) => {
-                                          selected = value ?? false,
-                                          if (selected)
-                                            controller?.requests.add(id)
+                                        onChanged: (value) {
+                                          selected = value ?? false;
+                                          print("da chon");
+                                          if (selected) {
+                                            var mainScreenController = Get.put(MainScreenController());
+                                              if (!mainScreenController.listBussinessOrder.contains(id)) {
+                                                controller?.requests.add(id);
+                                              }
+                                          }
                                           else
                                             controller?.requests.removeWhere(
-                                                (element) => element == id)
+                                                (element) => element == id);
                                         },
                                         activeColor: Color(0xFFFF511A),
                                       );
