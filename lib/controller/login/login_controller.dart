@@ -79,9 +79,9 @@ class LoginPageController extends GetxController {
     messValidateUsername.value = "";
     messValidatePassword.value = "";
     if (username.text == "") {
-      messValidateUsername.value = "invalid_username";
+      messValidateUsername.value = "signin.email_required";
     } else if (password.text == "") {
-      messValidatePassword.value = "invalid_password";
+      messValidatePassword.value = "signin.password_required";
     } else {
       var responseCredential = await getCredential(username.text);
       Status validateUsername = ResponseValidator.check(responseCredential);
@@ -106,8 +106,6 @@ class LoginPageController extends GetxController {
         } else {
           validatePassword = Status(status: "SUCCESS", message: "SUCCESS");
         }
-        // print("123login");
-        // print(validatePassword);
 
         if (validatePassword.status == "SUCCESS") {
           var certificateInfo = SignatureService.getCertificateInfo(userId);
@@ -126,7 +124,7 @@ class LoginPageController extends GetxController {
 
           var responsePing = await getPing(certificateList);
 
-          print(responsePing);
+          // print(responsePing);
           Status validateServer2 = ResponseValidator.check(responsePing);
           var jsonResponse = jsonDecode(responsePing.toString());
           if (validateServer2.status == "OK") {
@@ -159,20 +157,20 @@ class LoginPageController extends GetxController {
             Get.put(GlobalController()).db.put("user", userInfo);
             Get.put(GlobalController()).user.value = userInfo;
             String? token = await FirebaseMessaging.instance.getToken();
-            print(token);
+            // print(token);
             await subscribe(token: token.toString());
             // print();
             return true;
           } else {
-            messValidatePassword.value = "invalid_password";
+            messValidatePassword.value = "signin.invalid";
           }
         } else {
-          messValidatePassword.value = "invalid_password";
+          messValidatePassword.value = "signin.invalid";
         }
       } else if (validateUsername.status == "ERROR.SERVER") {
-        messValidateUsername.value = "invalid_username";
+        messValidateUsername.value = "signin.invalid";
       } else {
-        messValidateUsername.value = "invalid_username";
+        messValidateUsername.value = "signin.invalid";
       }
     }
     return false;

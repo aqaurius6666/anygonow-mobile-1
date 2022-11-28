@@ -16,8 +16,11 @@ class Messages extends Translations {
           'continue': "Continue",
           "signinNow": "Sign-in now",
           "signin": "Sign in",
-          "invalid_username": "Your email address or phone number is invalid !",
-          "invalid_password": "Your password is invalid !",
+          "signin.invalid" : "Your credential is invalid!",
+          "signin.email_required" : "Please fill in your email address!",
+          "signin.password_required" : "Please fill in your password!",
+          "invalid_username": "Your credential is invalid !",
+          "invalid_password": "Your credential is invalid !",
 
           // account text
           "account.fill_required" : "You must fill in all required fields!",
