@@ -22,31 +22,28 @@ class MyRequestUserController extends GetxController {
       connectedRequests.clear();
       completedRequests.clear();
       // print(serviceId);
-
-      response = await customDio
-          .get("/orders?status=0&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0");
-
-      var json = jsonDecode(response.toString());
+      var responses = await Future.wait([customDio
+          .get("/orders?status=0&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0"),
+        customDio
+            .get("/orders?status=1&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0"),
+        customDio
+            .get("/orders?status=4&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0")
+      ]);
+      print(responses);
+      var json = jsonDecode(responses[0].toString());
       if (json["data"]["result"] != null) {
         pendingRequests.value = json["data"]["result"];
       }
-      print(json);
 
-      response = await customDio
-          .get("/orders?status=1&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0");
-      json = jsonDecode(response.toString());
+      json = jsonDecode(responses[1].toString());
       if (json["data"]["result"] != null) {
         connectedRequests.value = json["data"]["result"];
       }
-      print(json);
 
-      response = await customDio
-          .get("/orders?status=4&serviceId=$serviceId&zipcode=$zipcode&limit=99&offset=0");
-      json = jsonDecode(response.toString());
+      json = jsonDecode(responses[2].toString());
       if (json["data"]["result"] != null) {
         completedRequests.value = json["data"]["result"];
       }
-      print(json);
 
       return true;
     } catch (e) {

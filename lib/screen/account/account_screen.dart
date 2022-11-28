@@ -218,30 +218,32 @@ class _AccountScreenState extends State<AccountScreen> {
               SizedBox(
                 height: getHeight(16),
               ),
-              Obx(() => inputRegular(
+              inputRegular(
                     context,
                     label: "Email Address",
                     hintText: "",
                     textEditingController: accountController.email,
-                    enabled: accountController.isEditting.value,
+                    // enabled: accountController.isEditting.value,
                     required: true,
-                  )),
+                    enabled: false,
+                  ),
               SizedBox(
                 height: getHeight(16),
               ),
-              Obx(() => inputRegular(
+              inputRegular(
                     context,
                     label: "Phone number",
                     hintText: "",
                     textEditingController: accountController.phoneNumber,
                     required: true,
-                    enabled: accountController.isEditting.value,
+                    // enabled: accountController.isEditting.value,
                     keyboardType: TextInputType.number,
+                    enabled: false,
                     maxLength: 12,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                     ],
-                  )),
+                  ),
               SizedBox(
                 height: getHeight(24),
               ),
@@ -322,9 +324,9 @@ class _AccountScreenState extends State<AccountScreen> {
                     enabled: accountController.isEditting.value,
                     required: true,
                     maxLength: 6,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
                     ],
                   )),
               SizedBox(

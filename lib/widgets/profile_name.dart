@@ -11,7 +11,7 @@ class ProfileName extends StatelessWidget {
     return Obx(() => FittedBox(
       fit: BoxFit.fitWidth,
       child: Text(
-        (globalController.user.value.name ??
+        (globalController.user.value.fullName ??
             globalController
                 .user.value.username)
             .toString(),

@@ -16,12 +16,12 @@ class ProfileAvatar extends StatelessWidget {
         borderRadius: BorderRadius.circular(56),
         child: Container(
           width: getWidth(60),
-          height: getHeight(60),
+          height: getWidth(60),
           decoration: const BoxDecoration(shape: BoxShape.circle),
           child: Obx(
             () => globalController.user.value.avatar != null
                 ? getImage(globalController.user.value.avatar,
-                    height: getHeight(60),
+                    height: getWidth(60),
                     width: getWidth(60),
                     fit: BoxFit.cover)
                 : SvgPicture.asset("assets/icons/account.svg",

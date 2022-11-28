@@ -46,7 +46,7 @@ class User {
   @HiveField(10)
   int? process;
   @HiveField(11)
-  int? zipcode;
+  String? zipcode;
   @HiveField(12)
   String? fullName;
   @HiveField(13)

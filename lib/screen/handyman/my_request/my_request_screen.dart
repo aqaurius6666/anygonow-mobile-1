@@ -44,7 +44,7 @@ class MyRequestScreen extends StatelessWidget {
                     color: const Color(0xFF999999),
                   ),
                 ),
-                Bouncing(
+                myRequestController.requests.isNotEmpty ? Bouncing(
                   onPress: () async {
                     var res1 = await Get.put(MyRequestController()).getPaymentMethod();
                     print(res1["data"]);
@@ -69,7 +69,7 @@ class MyRequestScreen extends StatelessWidget {
                       decorationColor: Color(0xFF3864FF),
                     ),
                   ),
-                ),
+                ) : Container(),
               ],
             ),
           ),

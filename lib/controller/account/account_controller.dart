@@ -34,6 +34,20 @@ class AccountController extends GetxController {
   RxString logoImage = "".obs;
   RxString bannerImage = "".obs;
 
+  @override
+  void onInit() {
+    zipcode.addListener(() {
+      _onZipCodeChange();
+    });
+    super.onInit();
+  }
+
+  void _onZipCodeChange() {
+    if (zipcode.value.text != zipcode.value.text.toUpperCase()) {
+      zipcode.text = zipcode.value.text.toUpperCase();
+    }
+    zipcode.selection = TextSelection.collapsed(offset: zipcode.text.length);
+  }
   Future getUserInfo() async {
     try {
       var userID = globalController.user.value.id.toString();
@@ -104,14 +118,22 @@ class AccountController extends GetxController {
 
       var json = jsonDecode(response.toString());
       if (json["data"] != null) {
+
         globalController.user.value.avatar = json["data"]["user"]["image"];
         globalController.user.value.phone = json["data"]["user"]["phone"];
         globalController.user.value.name = json["data"]["user"]["name"];
         globalController.user.value.fullName = json["data"]["user"]["name"];
-        return json["data"]["user"];
       } else {
         return null;
       }
+      var json2 = jsonDecode(response2.toString());
+      if (json2["data"] != null) {
+        globalController.user.value.zipcode = json2["data"]["contact"]["zipcode"];
+      } else {
+        return null;
+      }
+      globalController.user.refresh();
+      return json["data"]["user"];
     } catch (e, s) {
       print(e);
       return null;

@@ -28,7 +28,7 @@ class UserAdapter extends TypeAdapter<User> {
       certificate: fields[8] as String?,
       role: fields[9] as int?,
       process: fields[10] as int?,
-      zipcode: fields[11] as int?,
+      zipcode: fields[11] as String?,
       fullName: fields[12] as String?,
       avatar: fields[13] as String?,
     );

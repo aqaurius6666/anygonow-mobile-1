@@ -627,9 +627,9 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                     required: true,
                     textEditingController: accountController.zipcode,
                     enabled: accountController.isEditting.value,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
                     ],
                   ),
                 ),
