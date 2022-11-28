@@ -56,7 +56,7 @@ class ResetMailAccount extends StatelessWidget {
                   ),            
                   inputRegular(context,
                       label: "Email",
-                      hintText: "name@email.com",
+                      hintText: "hint.email_address".tr,
                       textEditingController: loginPageController.emailVerify),
               
                   SizedBox(height: getHeight(26)),

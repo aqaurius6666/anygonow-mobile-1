@@ -15,6 +15,14 @@ class Messages extends Translations {
           "cfPassword": "Confirm password",
           'continue': "Continue",
           "signinNow": "Sign-in now",
+          // hint
+          "hint.phone_number" : "Enter your phone number",
+          "hint.email_address" : "Enter your email address",
+          "hint.password" : "Enter your password",
+          "hint.cf_password" : "Re-enter your password",
+          "hint.referral_code" : "Enter you referral code",
+
+          // sign in
           "signin": "Sign in",
           "signin.invalid" : "Your credential is invalid!",
           "signin.email_required" : "Please fill in your email address!",
