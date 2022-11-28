@@ -23,6 +23,10 @@ class HandymanUserScreen extends StatelessWidget {
       Get.put(RatingCenterController());
   @override
   Widget build(BuildContext context) {
+    print(globalController.user.value.fullName);
+    print(globalController.user.value.username);
+    var profileName = globalController.user.value.name ??
+        globalController.user.value.username;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(
@@ -72,11 +76,7 @@ class HandymanUserScreen extends StatelessWidget {
                               FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Text(
-                                  Get.put(GlobalController())
-                                      .user
-                                      .value
-                                      .username
-                                      .toString(),
+                                  profileName.toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w600),
                                 ),

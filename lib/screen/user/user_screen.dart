@@ -16,6 +16,7 @@ import 'package:untitled/widgets/image.dart';
 class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var profileName = Get.put(GlobalController()).user.value.fullName ?? Get.put(GlobalController()).user.value.username;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -82,11 +83,13 @@ class UserScreen extends StatelessWidget {
                                       width: getWidth(60),
                                       height: getHeight(60),
                                       fit: BoxFit.cover)
-                                  : Container(
-                                      width: getWidth(48),
-                                      height: getWidth(48),
-                                      color: Colors.black,
-                                    ),
+                                  :
+                                  SvgPicture.asset("assets/icons/account.svg", width: getWidth(48), height: getHeight(48), fit: BoxFit.cover)
+                              // Container(
+                              //         width: getWidth(48),
+                              //         height: getWidth(48),
+                              //         color: Colors.black,
+                              //       ),
                             ),
                           ),
                           SizedBox(
@@ -95,11 +98,7 @@ class UserScreen extends StatelessWidget {
                           FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(
-                              Get.put(GlobalController())
-                                  .user
-                                  .value
-                                  .username
-                                  .toString(),
+                              profileName.toString(),
                               style: TextStyle(
                                   fontSize: getWidth(16),
                                   fontWeight: FontWeight.w500),

@@ -153,6 +153,8 @@ class LoginPageController extends GetxController {
               //     userInformation["data"]["user"]["firstName"] ?? "";
               // var lastName = userInformation["data"]["user"]["lastName"] ?? "";
               // userInfo.fullName = firstName + " " + lastName;
+              userInfo.name = jsonResponse["data"]["user"]["name"];
+              userInfo.fullName = jsonResponse["data"]["user"]["name"];
             }
             Get.put(GlobalController()).db.put("user", userInfo);
             Get.put(GlobalController()).user.value = userInfo;
