@@ -46,7 +46,7 @@ class SignupContractScreen extends StatelessWidget {
             inputRegular(
               context,
               label: "email".tr,
-              hintText: "name@email.com",
+              hintText: "hint.email_address".tr,
               required: true,
               textEditingController: signupController.email,
             ),
@@ -56,11 +56,11 @@ class SignupContractScreen extends StatelessWidget {
             inputPhoneNUmber(
               context,
               label: "phone".tr,
-              hintText: "Enter your phone",
+              hintText: "hint.phone_number".tr,
               required: true,
               textEditingController: signupController.phoneNumber,
               numberOnly: true,
-              maxLength: 12,
+              maxLength: 10,
             ),
             SizedBox(
               height: getHeight(12),
@@ -69,7 +69,7 @@ class SignupContractScreen extends StatelessWidget {
                   context,
                   label: "password".tr,
                   controller: signupController.password,
-                  hintText: "Enter your password",
+                  hintText: "hint.password".tr,
                   isHide: signupController.isHidePassword.value,
                   changeHide: signupController.changeHidePassword,
                   required: true,
@@ -81,7 +81,7 @@ class SignupContractScreen extends StatelessWidget {
                   context,
                   label: "cfPassword".tr,
                   controller: signupController.confirmPassword,
-                  hintText: "Enter your password",
+                  hintText: "hint.cf_password".tr,
                   required: true,
                   isHide: signupController.isHideCfPassword.value,
                   changeHide: signupController.changeHideCfPassword,
@@ -93,7 +93,7 @@ class SignupContractScreen extends StatelessWidget {
               context,
               label: "referCode".tr,
               textEditingController: signupController.referral,
-              hintText: "Enter referral code",
+              hintText: "hint.referral_code".tr,
             ),
             SizedBox(
               height: getHeight(12),
@@ -182,14 +182,14 @@ Container confirmButtonContainer(
                   .hasMatch(signupController.email.text);
               if (!emailValid) {
                 CustomDialog(context, "FAILED")
-                    .show({"message": "Email invalidate"});
+                    .show({"message": "signup.email_invalid".tr });
                 return;
               }
-              bool phoneValid = RegExp(r'(^\+1[0-9]{3}[0-9]{3}[0-9]{4}$)')
+              bool phoneValid = RegExp(r'(^[0-9]{10}$)')
                   .hasMatch(signupController.phoneNumber.text);
               if (!phoneValid) {
                 CustomDialog(context, "FAILED").show({
-                  "message": "Phone numbers must be in the format: +1AAABBBCCCC"
+                  "message": "signup.phone_number_invalid".tr
                 });
                 return;
               }
@@ -198,26 +198,25 @@ Container confirmButtonContainer(
                       .hasMatch(signupController.password.text);
               if (!passValid) {
                 CustomDialog(context, "FAILED").show({
-                  "message":
-                      "Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number"
+                  "message": "signup.password_rule".tr
                 });
                 return;
               }
               if (signupController.password.text !=
                   signupController.confirmPassword.text) {
                 CustomDialog(context, "FAILED")
-                    .show({"message": "Re-entered password is incorrect"});
+                    .show({"message": "signup.re_password_wrong".tr});
                 return;
               }
               if (signupController.isAgree.value == false) {
                 CustomDialog(context, "FAILED")
-                    .show({"message": "You do not agree to the terms of use"});
+                    .show({"message": "signup.terms_not_check".tr });
                 return;
               }
               var ret = await signupController.signup();
               if (!ret) {
                 CustomDialog(context, "FAILED")
-                    .show({"message": "Email or phone number is existed!"});
+                    .show({"message": "signup.email_phone_existed".tr});
                 return;
               }
               Get.to(() => CheckEmailScreen());

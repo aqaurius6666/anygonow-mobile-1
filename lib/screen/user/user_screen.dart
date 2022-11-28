@@ -11,11 +11,15 @@ import 'package:untitled/screen/change_password/change_password_screen.dart';
 import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/screen/project/project_screen.dart';
 import 'package:untitled/utils/config.dart';
+import 'package:untitled/widgets/profile_avatar.dart';
 import 'package:untitled/widgets/image.dart';
+import 'package:untitled/widgets/profile_name.dart';
 
 class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var profileName = Get.put(GlobalController()).user.value.fullName ??
+        Get.put(GlobalController()).user.value.username;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -74,37 +78,11 @@ class UserScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Obx(
-                            () => ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: globalController.user.value.avatar != null
-                                  ? getImage(globalController.user.value.avatar,
-                                      width: getWidth(60),
-                                      height: getHeight(60),
-                                      fit: BoxFit.cover)
-                                  : Container(
-                                      width: getWidth(48),
-                                      height: getWidth(48),
-                                      color: Colors.black,
-                                    ),
-                            ),
-                          ),
+                          ProfileAvatar(),
                           SizedBox(
-                            width: getWidth(8),
+                            width: getWidth(18),
                           ),
-                          FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: Text(
-                              Get.put(GlobalController())
-                                  .user
-                                  .value
-                                  .username
-                                  .toString(),
-                              style: TextStyle(
-                                  fontSize: getWidth(16),
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
+                          ProfileName(),
                         ],
                       ),
                       SizedBox(

@@ -105,37 +105,33 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
               },
               child: Obx(
                 () => Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(right: getHeight(16)),
-                      child: accountController.isEditting.value ? 
-                      (
-                        accountController.isLoading.value ?
-                        Container(
-                          width: getWidth(20),
-                          height: getWidth(20),
-                          color: Colors.white,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
-                        : Text(
-                        "Update",
-                        style: TextStyle(
-                            color: const Color(0xFF3864FF),
-                            fontSize: getHeight(14),
-                            decoration: TextDecoration.underline
-                        ),
-                      )
-                      )
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(right: getHeight(16)),
+                  child: accountController.isEditting.value
+                      ? (accountController.isLoading.value
+                          ? Container(
+                              width: getWidth(20),
+                              height: getWidth(20),
+                              color: Colors.white,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : Text(
+                              "Update",
+                              style: TextStyle(
+                                  color: const Color(0xFF3864FF),
+                                  fontSize: getHeight(14),
+                                  decoration: TextDecoration.underline),
+                            ))
                       : Text(
-                        "Edit",
-                        style: TextStyle(
-                            color: const Color(0xFF3864FF),
-                            fontSize: getHeight(14),
-                            decoration: TextDecoration.underline
+                          "Edit",
+                          style: TextStyle(
+                              color: const Color(0xFF3864FF),
+                              fontSize: getHeight(14),
+                              decoration: TextDecoration.underline),
                         ),
-                      ),
-                    ),
+                ),
               ),
             ),
           ],
@@ -205,74 +201,146 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         SizedBox(
                           height: getHeight(10),
                         ),
-                        logoFile.path == "" &&
-                                accountController.logoImage.value == ""
-                            ? GestureDetector(
-                                onTap: () async {
-                                  if (!accountController.isEditting.value) {
-                                    return;
-                                  }
-                                  XFile? pickedFile =
-                                      await ImagePicker().pickImage(
-                                    source: ImageSource.gallery,
-                                    maxWidth: 1800,
-                                    maxHeight: 1800,
-                                  );
-                                  if (pickedFile != null) {
-                                    setState(() {
-                                      logoFile = File(pickedFile.path);
-                                    });
-                                  }
-                                },
-                                child: const Icon(
-                                  Icons.add_a_photo_outlined,
-                                ),
-                              )
-                            : GestureDetector(
-                                onTap: () async {
-                                  if (!accountController.isEditting.value) {
-                                    return;
-                                  }
-                                  XFile? pickedFile =
-                                      await ImagePicker().pickImage(
-                                    source: ImageSource.gallery,
-                                    maxWidth: 1800,
-                                    maxHeight: 1800,
-                                  );
-                                  if (pickedFile != null) {
-                                    setState(() {
-                                      logoFile = File(pickedFile.path);
-                                    });
-                                  }
-                                },
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(56),
-                                    child: Container(
-                                        width: getHeight(60),
-                                        height: getHeight(60),
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: logoFile.path != ""
-                                            ? Image.file(
-                                                logoFile,
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Obx(() => accountController
-                                                        .logoImage.value !=
-                                                    ""
-                                                ? getImage(
-                                                    accountController
-                                                        .logoImage.value,
-                                                    width: getWidth(60),
-                                                    height: getHeight(60),
-                                                    fit: BoxFit.cover)
-                                                : SvgPicture.asset(
-                                                    "assets/icons/image-default.svg"))),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: logoFile.path == "" &&
+                                  accountController.logoImage.value == ""
+                              ? GestureDetector(
+                                  onTap: () async {
+                                    if (!accountController.isEditting.value) {
+                                      return;
+                                    }
+                                    XFile? pickedFile =
+                                        await ImagePicker().pickImage(
+                                      source: ImageSource.gallery,
+                                      maxWidth: 1800,
+                                      maxHeight: 1800,
+                                    );
+                                    if (pickedFile != null) {
+                                      setState(() {
+                                        logoFile = File(pickedFile.path);
+                                      });
+                                    }
+                                  },
+                                  child: const Icon(
+                                    Icons.add_a_photo_outlined,
                                   ),
-                                )),
+                                )
+                              : Obx(
+                                  () => Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(56),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            XFile? pickedFile =
+                                                await ImagePicker().pickImage(
+                                              source: ImageSource.gallery,
+                                              maxWidth: 1800,
+                                              maxHeight: 1800,
+                                            );
+                                            if (pickedFile != null) {
+                                              setState(() {
+                                                logoFile =
+                                                    File(pickedFile.path);
+                                              });
+                                            }
+                                          },
+                                          child: Container(
+                                              width: getWidth(60),
+                                              height: getHeight(60),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: accountController
+                                                              .logoImage
+                                                              .value !=
+                                                          ""
+                                                      ? Colors.blueGrey
+                                                      : Colors.transparent),
+                                              child: logoFile.path != ""
+                                                  ? Image.file(
+                                                      logoFile,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : getImage(
+                                                      accountController
+                                                          .logoImage.value,
+                                                      width: getWidth(60),
+                                                      height: getHeight(60),
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                        )),
+                                  ),
+                                ),
+                        ),
+                        // logoFile.path == "" &&
+                        //         accountController.logoImage.value == ""
+                        //     ? GestureDetector(
+                        //         onTap: () async {
+                        //           if (!accountController.isEditting.value) {
+                        //             return;
+                        //           }
+                        //           XFile? pickedFile =
+                        //               await ImagePicker().pickImage(
+                        //             source: ImageSource.gallery,
+                        //             maxWidth: 1800,
+                        //             maxHeight: 1800,
+                        //           );
+                        //           if (pickedFile != null) {
+                        //             setState(() {
+                        //               logoFile = File(pickedFile.path);
+                        //             });
+                        //           }
+                        //         },
+                        //         child: const Icon(
+                        //           Icons.add_a_photo_outlined,
+                        //         ),
+                        //       )
+                        //     : GestureDetector(
+                        //         onTap: () async {
+                        //           if (!accountController.isEditting.value) {
+                        //             return;
+                        //           }
+                        //           XFile? pickedFile =
+                        //               await ImagePicker().pickImage(
+                        //             source: ImageSource.gallery,
+                        //             maxWidth: 1800,
+                        //             maxHeight: 1800,
+                        //           );
+                        //           if (pickedFile != null) {
+                        //             setState(() {
+                        //               logoFile = File(pickedFile.path);
+                        //             });
+                        //           }
+                        //         },
+                        //         child: Align(
+                        //           alignment: Alignment.centerLeft,
+                        //           child: ClipRRect(
+                        //             borderRadius: BorderRadius.circular(56),
+                        //             child: Container(
+                        //                 width: getHeight(60),
+                        //                 height: getHeight(60),
+                        //                 decoration: const BoxDecoration(
+                        //                   shape: BoxShape.circle,
+                        //                 ),
+                        //                 child: logoFile.path != ""
+                        //                     ? Image.file(
+                        //                         logoFile,
+                        //                         fit: BoxFit.cover,
+                        //                       )
+                        //                     : Obx(() => accountController
+                        //                                 .logoImage.value !=
+                        //                             ""
+                        //                         ? getImage(
+                        //                             accountController
+                        //                                 .logoImage.value,
+                        //                             width: getWidth(60),
+                        //                             height: getHeight(60),
+                        //                             fit: BoxFit.cover)
+                        //                         : SvgPicture.asset(
+                        //                             "assets/icons/image-default.svg"))),
+                        //           ),
+                        //         )),
                         SizedBox(
                           height: getHeight(18),
                         ),
@@ -371,15 +439,15 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         SizedBox(
                           height: getHeight(18),
                         ),
-                        // Obx(() => 
+                        // Obx(() =>
                         inputRegular(
-                            context,
-                            label: "Business name",
-                            hintText: "",
-                            textEditingController: accountController.business,
-                            enabled: accountController.isEditting.value,
-                            required: true,
-                          ),
+                          context,
+                          label: "Business name",
+                          hintText: "",
+                          textEditingController: accountController.business,
+                          enabled: accountController.isEditting.value,
+                          required: true,
+                        ),
                         // ),
                         SizedBox(
                           height: getHeight(18),
@@ -389,6 +457,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                               ? MultiSelectDialogField(
                                   title: const Text("Category"),
                                   items: globalController.categories
+                                      .sublist(0, 30)
                                       .map((e) => MultiSelectItem(e, e.name))
                                       .toList(),
                                   listType: MultiSelectListType.CHIP,
@@ -427,17 +496,17 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         SizedBox(
                           height: getHeight(24),
                         ),
-                        // Obx(() => 
+                        // Obx(() =>
                         inputRegular(context,
-                              label: "Description",
-                              hintText: "",
-                              enabled: accountController.isEditting.value,
-                              textEditingController:
-                                  accountController.description,
-                              maxLines: 6,
-                              keyboardType: TextInputType.multiline,
-                              height: 120,
-                              minLines: 4),
+                            label: "Description",
+                            hintText: "",
+                            enabled: accountController.isEditting.value,
+                            textEditingController:
+                                accountController.description,
+                            maxLines: 6,
+                            keyboardType: TextInputType.multiline,
+                            height: 120,
+                            minLines: 4),
                         // ),
                       ],
                     ),

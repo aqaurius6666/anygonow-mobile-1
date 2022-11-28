@@ -15,9 +15,33 @@ class Messages extends Translations {
           "cfPassword": "Confirm password",
           'continue': "Continue",
           "signinNow": "Sign-in now",
+          // hint
+          "hint.phone_number" : "Enter your phone number",
+          "hint.email_address" : "Enter your email address",
+          "hint.password" : "Enter your password",
+          "hint.cf_password" : "Re-enter your password",
+          "hint.referral_code" : "Enter you referral code",
+
+          // sign in
           "signin": "Sign in",
-          "invalid_username": "Your email address or phone number is invalid !",
-          "invalid_password": "Your password is invalid !",
+          "signin.invalid" : "Your credential is invalid!",
+          "signin.email_required" : "Please fill in your email address!",
+          "signin.password_required" : "Please fill in your password!",
+          "invalid_username": "Your credential is invalid !",
+          "invalid_password": "Your credential is invalid !",
+
+          // account text
+          "account.fill_required" : "You must fill in all required fields!",
+          "account.zipcode_invalid": "Zipcode is invalid!",
+          "account.phone_number_invalid": "Phone number is invalid!",
+          "account.update_success" : "Update information successfully!",
+          // sign up text
+          "signup.phone_number_invalid" : "Phone number is invalid!",
+          "signup.email_invalid" : "Email address is invalid!",
+          "signup.terms_not_check" : "You do not agree to the terms of use",
+          "signup.email_phone_existed" : "Email address or phone number is existed!",
+          "signup.re_password_wrong" : "Re-entered password is incorrect",
+          "signup.password_rule" : "Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number",
           "error_server": "Server is not working !",
           "close": "Close",
           "confirm": "Confirm",

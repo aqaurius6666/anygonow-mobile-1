@@ -58,20 +58,24 @@ class _AccountScreenState extends State<AccountScreen> {
                         accountController.city.text == "" ||
                         accountController.zipcode.text == "") {
                       CustomDialog(context, "FAILED").show({
-                        "message": "You must fill in all required fields",
+                        "message": "account.fill_required".tr,
                         "height": 200.0
                       });
                       return;
                     }
-                    if (accountController.zipcode.text.length > 6) {
-                      CustomDialog(context, "FAILED").show(
-                          {"message": "Invalid zipcode", "height": 200.0});
+                    if (accountController.zipcode.text.isEmpty) {
+                      CustomDialog(context, "FAILED").show({
+                        "message": "account.zipcode_invalid".tr,
+                        "height": 200.0
+                      });
                       return;
                     }
-                    if (accountController.phoneNumber.text.length < 7 ||
-                        accountController.phoneNumber.text.length > 12) {
-                      CustomDialog(context, "FAILED").show(
-                          {"message": "Invalid phone number", "height": 200.0});
+                    if (!RegExp(r'(^[0-9]{10}$)')
+                        .hasMatch(accountController.phoneNumber.text)) {
+                      CustomDialog(context, "FAILED").show({
+                        "message": "account.phone_number_invalid".tr,
+                        "height": 200.0
+                      });
                       return;
                     }
                     var result = await accountController.editUserInfo();
@@ -79,7 +83,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       accountController.isEditting.value =
                           !accountController.isEditting.value;
                       CustomDialog(context, "SUCCESS")
-                          .show({"message": "Update information successfully"});
+                          .show({"message": "account.update_success".tr});
                     }
                     return;
                   }
@@ -142,8 +146,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             });
                           }
                         },
-                        child: SvgPicture.asset(
-                          "assets/icons/account.svg",
+                        child: const Icon(
+                          Icons.add_a_photo_outlined,
                         ),
                       )
                     : Obx(() => Align(
@@ -165,7 +169,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 }
                               },
                               child: Container(
-                                  width: getHeight(60),
+                                  width: getWidth(60),
                                   height: getHeight(60),
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
@@ -182,7 +186,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                       : getImage(
                                           accountController.logoImage.value,
                                           width: getWidth(60),
-                                          height: getHeight(60))),
+                                          height: getHeight(60),
+                                          fit: BoxFit.cover,
+                                        )),
                             ),
                           ),
                         )),

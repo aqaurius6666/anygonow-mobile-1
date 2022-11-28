@@ -39,8 +39,15 @@ class BrandDetailScreen extends StatelessWidget {
                             null
                         ? Colors.grey
                         : Colors.transparent,
-                    child: getImage(brandDetailController
-                        .business.bussiness["bannerImage"]),
+                    child: brandDetailController
+                                .business.bussiness["bannerImage"] !=
+                            null
+                        ? getImage(getCDN(brandDetailController
+                            .business.bussiness["bannerImage"]))
+                        : SvgPicture.asset(
+                            "assets/icons/banner-default.svg",
+                            fit: BoxFit.cover,
+                          ),
                   ),
                   Container(
                       margin: EdgeInsets.only(top: getHeight(160)),
@@ -57,11 +64,16 @@ class BrandDetailScreen extends StatelessWidget {
                                           null
                                       ? Colors.blueGrey
                                       : Colors.transparent),
-                              child: getImage(
-                                  brandDetailController
-                                      .business.bussiness["logoImage"],
-                                  width: getWidth(60),
-                                  height: getHeight(60))),
+                              child: brandDetailController
+                                          .business.bussiness["logoImage"] !=
+                                      null
+                                  ? getImage(
+                                      brandDetailController
+                                          .business.bussiness["logoImage"],
+                                      width: getWidth(60),
+                                      height: getHeight(60))
+                                  : SvgPicture.asset(
+                                      "assets/icons/account.svg")),
                         ),
                       )),
                 ],
@@ -250,7 +262,11 @@ class BrandDetailScreen extends StatelessWidget {
               SizedBox(
                 width: getWidth(16),
               ),
-              getImage(data!.image, width: getWidth(62), height: getHeight(62)),
+              data!.image != ""
+                  ? getImage(data.image,
+                      width: getWidth(62), height: getHeight(62))
+                  : SvgPicture.asset("assets/icons/banner-default.svg",
+                      width: getWidth(62), height: getHeight(62)),
               SizedBox(
                 width: getWidth(16),
               ),
@@ -349,7 +365,9 @@ class BrandDetailScreen extends StatelessWidget {
                               width: getWidth(8),
                             ),
                             Text(
-                              "Total " + brandDetailController.totalReviews.value.toString(),
+                              "Total " +
+                                  brandDetailController.totalReviews.value
+                                      .toString(),
                               style: TextStyle(
                                 fontSize: getHeight(14),
                               ),
@@ -407,36 +425,49 @@ class BrandDetailScreen extends StatelessWidget {
           //         ));
           //   }),
           // ),
-          
 
-          Obx(() => 
-              Row(
-                children: [
-                  itemRating(index: '5', totalReviews: brandDetailController.fiveStar.value),
-                  SizedBox(width: getWidth(4), ),
-                  itemRating(index: '4', totalReviews: brandDetailController.fourStar.value),
-                ],  
-              ),
+          Obx(
+            () => Row(
+              children: [
+                itemRating(
+                    index: '5',
+                    totalReviews: brandDetailController.fiveStar.value),
+                SizedBox(
+                  width: getWidth(4),
+                ),
+                itemRating(
+                    index: '4',
+                    totalReviews: brandDetailController.fourStar.value),
+              ],
             ),
-            SizedBox(height: getHeight(6)),
-            Obx(() => 
-              Row(
-                children: [
-                  itemRating(index: '3', totalReviews: brandDetailController.threeStar.value),
-                  SizedBox(width: getWidth(4), ),
-                  itemRating(index: '2', totalReviews: brandDetailController.twoStar.value),
-                ],
-              ),
+          ),
+          SizedBox(height: getHeight(6)),
+          Obx(
+            () => Row(
+              children: [
+                itemRating(
+                    index: '3',
+                    totalReviews: brandDetailController.threeStar.value),
+                SizedBox(
+                  width: getWidth(4),
+                ),
+                itemRating(
+                    index: '2',
+                    totalReviews: brandDetailController.twoStar.value),
+              ],
             ),
-            SizedBox(height: getHeight(6)),
-            Obx(() => 
-              Row(
-                children: [
-                  itemRating(index: '1', totalReviews: brandDetailController.oneStar.value),
-                ],
-              ),
+          ),
+          SizedBox(height: getHeight(6)),
+          Obx(
+            () => Row(
+              children: [
+                itemRating(
+                    index: '1',
+                    totalReviews: brandDetailController.oneStar.value),
+              ],
             ),
-            SizedBox(height: getHeight(16)),
+          ),
+          SizedBox(height: getHeight(16)),
         ],
       ),
     );
@@ -445,7 +476,8 @@ class BrandDetailScreen extends StatelessWidget {
   Container itemRating({String index = '', int totalReviews = 0}) {
     return Container(
       width: getWidth(130),
-      padding: EdgeInsets.symmetric(vertical: getHeight(6), horizontal: getWidth(6)),
+      padding:
+          EdgeInsets.symmetric(vertical: getHeight(6), horizontal: getWidth(6)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: Color.fromARGB(255, 224, 224, 224)),
@@ -465,8 +497,11 @@ class BrandDetailScreen extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(width: getWidth(4),),
-              SvgPicture.asset('assets/icons/star1.svg', width: getHeight(15), height: getHeight(15)),
+              SizedBox(
+                width: getWidth(4),
+              ),
+              SvgPicture.asset('assets/icons/star1.svg',
+                  width: getHeight(15), height: getHeight(15)),
             ],
           ),
           Text(
@@ -525,27 +560,26 @@ class BrandDetailScreen extends StatelessWidget {
                 Center(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(56),
-                    child: (item.image!=null && item.image != "") ? Container(
-                      width: getHeight(32),
-                      height: getHeight(32),
-                      child: Image(
-                        image: NetworkImage(getCDN(item.image)),
-                        fit: BoxFit.cover,
-                      )                            
-                    ) : Container(
-                      width: getHeight(32),
-                      height: getHeight(32),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.blueGrey),                            
-                    ),
+                    child: (item.image != null && item.image != "")
+                        ? Container(
+                            width: getHeight(32),
+                            height: getHeight(32),
+                            child: Image(
+                              image: NetworkImage(getCDN(item.image)),
+                              fit: BoxFit.cover,
+                            ))
+                        : Container(
+                            width: getHeight(32),
+                            height: getHeight(32),
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.blueGrey),
+                          ),
                   ),
                 ),
                 SizedBox(
                   width: getWidth(8),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Container(
                     width: getWidth(220),
                     child: Row(

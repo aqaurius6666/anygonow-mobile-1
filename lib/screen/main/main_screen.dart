@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,6 @@ import 'package:untitled/widgets/dropdown.dart';
 import 'package:untitled/widgets/input.dart';
 
 class MainScreen extends StatelessWidget {
-
   MainScreenController mainScreenController = Get.put(MainScreenController());
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,10 @@ class MainScreen extends StatelessWidget {
       },
       child: Scaffold(
         bottomNavigationBar: Obx(() {
-          return mainScreenController.hasSearched.value ? bottomSearchResult() : SizedBox();
-        }
-        ),
+          return mainScreenController.hasSearched.value
+              ? bottomSearchResult()
+              : SizedBox();
+        }),
         floatingActionButton: Obx(() {
           return mainScreenController.isKeyboardVisible.value
               ? Bouncing(
@@ -90,7 +91,7 @@ class MainScreen extends StatelessWidget {
                               padding: EdgeInsets.only(
                                   left: getWidth(16), top: getHeight(30)),
                               child: Text(
-                                "Hi ${globalController.user.value.fullName ?? globalController.user.value.username}, have a good day 👋",
+                                "Hi ${globalController.user.value.name ?? globalController.user.value.username}, have a good day 👋",
                                 style: TextStyle(
                                   fontSize: getHeight(18),
                                   fontWeight: FontWeight.w500,
@@ -191,17 +192,20 @@ class MainScreen extends StatelessWidget {
                                 "assets/icons/line.svg",
                               ),
                             ),
-                            Obx(() => 
-                              Expanded(
+                            Obx(
+                              () => Expanded(
                                 flex: 30,
                                 child: inputSearch(context,
-                                    hintText: Get.put(GlobalController()).zipcodeUser.value,
+                                    hintText: Get.put(GlobalController())
+                                        .zipcodeUser
+                                        .value,
                                     textEditingController: mainScreenController
                                         .searchZipcode, onSearch: () async {
-                                  var res =
-                                      await mainScreenController.getBusinesses();
+                                  var res = await mainScreenController
+                                      .getBusinesses();
                                   if (res) {
-                                    mainScreenController.hasSearched.value = true;
+                                    mainScreenController.hasSearched.value =
+                                        true;
                                   } else {
                                     print("not found");
                                   }
@@ -333,20 +337,33 @@ class MainScreen extends StatelessWidget {
                   var colors = getPairColor(
                       index > 3 ? Random().nextInt(4) : 0 + index % 4);
                   return Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: getWidth(4), vertical: getHeight(4)),
-                      height: getHeight(48),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: Color(colors[0])),
-                      child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            globalController.categories[index].name,
-                            style: TextStyle(
-                              color: Color(colors[1]),
-                            ),
-                          )));
+                    margin: EdgeInsets.symmetric(
+                        horizontal: getWidth(4), vertical: getHeight(4)),
+                    height: getHeight(48),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Color(colors[0])),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: AutoSizeText(
+                        globalController.categories[index].name,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(colors[1]),
+                        ),
+                      ),
+                    ),
+                    // child: Align(
+                    //     alignment: Alignment.center,
+                    //     child: Text(
+                    //       globalController.categories[index].name,
+                    //       style: TextStyle(
+                    //         color: Color(colors[1]),
+                    //       ),
+                    //     )
+                    //     )
+                  );
                 },
               ),
             ),
@@ -496,7 +513,11 @@ class MainScreen extends StatelessWidget {
                         0,
                 id: mainScreenController.businesses[index].bussiness["id"] ??
                     "",
-                startDate: mainScreenController.businesses[index].bussiness["startDate"] != null ? true : false,
+                startDate: mainScreenController
+                            .businesses[index].bussiness["startDate"] !=
+                        null
+                    ? true
+                    : false,
                 controller: mainScreenController,
               );
             }),

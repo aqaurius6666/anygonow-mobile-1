@@ -77,7 +77,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             inputRegular(
               context,
               label: "email_or_phone".tr,
-              hintText: "name@email.com",
+              hintText: "hint.email_address".tr,
               textEditingController: forgotPasswordController.email,
             ),
             SizedBox(

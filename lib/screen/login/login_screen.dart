@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             inputRegular(context,
                 label: "email_or_phone".tr,
-                hintText: "name@email.com",
+                hintText: "hint.email_address".tr,
                 textEditingController: loginPageController.username),
             Obx(
               () => loginPageController.messValidateUsername.value != ""
@@ -153,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   context,
                   label: "password".tr,
                   controller: loginPageController.password,
-                  hintText: "Enter your password",
+                  hintText: "hint.password".tr,
                   isHide: loginPageController.isHidePassword.value,
                   changeHide: loginPageController.changeHidePassword,
                 )),

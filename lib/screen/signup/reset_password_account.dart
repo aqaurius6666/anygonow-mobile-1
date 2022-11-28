@@ -49,7 +49,7 @@ class ResetPasswordAccount extends StatelessWidget {
                           context,
                           label: "password".tr,
                           controller: loginPageController.pwVerify,
-                          hintText: "Enter your password",
+                          hintText: "hint.password".tr,
                           isHide: loginPageController.isHidePassword.value,
                           changeHide: loginPageController.changeHidePassword,
                         )),

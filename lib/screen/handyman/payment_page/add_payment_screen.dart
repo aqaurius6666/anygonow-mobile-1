@@ -60,7 +60,9 @@ class AddPaymentScreen extends StatelessWidget {
               inputRegular(context, label: "Card number",
                   hintText: "0000-0000-0000-0000",
                   required: true,
-                  textEditingController: paymentController.cardNumber, maxLength: 19),
+                  textEditingController: paymentController.cardNumber, maxLength: 19,
+                  keyboardType: TextInputType.number,
+              ),
               SizedBox(
                 height: getHeight(16),
               ),
@@ -73,6 +75,7 @@ class AddPaymentScreen extends StatelessWidget {
                     hintText: "MM/YY",
                     textEditingController: paymentController.expiryDate,
                     maxLength: 5,
+                    keyboardType: TextInputType.number,
                   ),
                 ),
                 SizedBox(
@@ -86,6 +89,7 @@ class AddPaymentScreen extends StatelessWidget {
                     hintText: "000",
                     maxLength: 3,
                     textEditingController: paymentController.cvvCode,
+                    keyboardType: TextInputType.number,
                   ),
                 ),
               ]),

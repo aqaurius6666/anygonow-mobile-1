@@ -20,6 +20,7 @@ class User {
     this.zipcode,
     this.fullName,
     this.avatar,
+    this.businessName,
   });
 
   @HiveField(0)
@@ -50,4 +51,6 @@ class User {
   String? fullName;
   @HiveField(13)
   String? avatar;
+  @HiveField(14)
+  String? businessName;
 }

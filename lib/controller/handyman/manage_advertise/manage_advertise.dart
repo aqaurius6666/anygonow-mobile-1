@@ -47,11 +47,31 @@ class ManageAdvertiseController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     cardNumber.addListener(() {});
-    expiryDateCard.addListener(() {});
+    expiryDateCard.addListener(onExpiryDateChange);
     cvvCode.addListener(() {});
     pageController = PageController(initialPage: 0, keepPage: false, viewportFraction: 0.9);
     pageControllerOrder = PageController(initialPage: 0, keepPage: false, viewportFraction: 0.9);
     super.onInit();
+  }
+
+  void onExpiryDateChange() {
+    var value = expiryDateCard.value.text;
+    if (value.isEmpty) {
+      return;
+    }
+    if (value.length == 1) {
+      if (int.parse(value) == 0) {
+        expiryDateCard.text = "";
+      }
+      if (int.parse(value) >= 2) {
+        expiryDateCard.text = "0" + value;
+      }
+    }
+    if (value.length == 2) {
+      if (int.parse(value) >= 13) {
+        expiryDateCard.text = "1";
+      }
+    }
   }
 
   void clearState() {
