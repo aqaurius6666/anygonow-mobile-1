@@ -58,20 +58,20 @@ class _AccountScreenState extends State<AccountScreen> {
                         accountController.city.text == "" ||
                         accountController.zipcode.text == "") {
                       CustomDialog(context, "FAILED").show({
-                        "message": "You must fill in all required fields",
+                        "message": "account.fill_required".tr,
                         "height": 200.0
                       });
                       return;
                     }
-                    if (accountController.zipcode.text.length > 6) {
+                    if (accountController.zipcode.text.isEmpty) {
                       CustomDialog(context, "FAILED").show(
-                          {"message": "Invalid zipcode", "height": 200.0});
+                          {"message": "account.zipcode_invalid".tr, "height": 200.0});
                       return;
                     }
-                    if (accountController.phoneNumber.text.length < 7 ||
-                        accountController.phoneNumber.text.length > 12) {
+                    if (!RegExp(r'(^[0-9]{10}$)')
+                        .hasMatch(accountController.phoneNumber.text)) {
                       CustomDialog(context, "FAILED").show(
-                          {"message": "Invalid phone number", "height": 200.0});
+                          {"message": "account.phone_number_invalid".tr, "height": 200.0});
                       return;
                     }
                     var result = await accountController.editUserInfo();
@@ -79,7 +79,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       accountController.isEditting.value =
                           !accountController.isEditting.value;
                       CustomDialog(context, "SUCCESS")
-                          .show({"message": "Update information successfully"});
+                          .show({"message": "account.update_success".tr });
                     }
                     return;
                   }

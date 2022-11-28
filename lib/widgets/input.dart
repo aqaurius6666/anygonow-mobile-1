@@ -262,7 +262,7 @@ Container inputPhoneNUmber(
                 child: TextFormField(
                   inputFormatters: numberOnly
                       ? <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'[+0-9]')),
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           LengthLimitingTextInputFormatter(
                               maxLength != 0 ? maxLength : null)
                         ]
