@@ -1,0 +1,94 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - releases/*
+  batch: true
+
+name: $(Rev:r)
+
+
+jobs:
+- job: ANDROID
+  displayName: Build_Android_APK
+  pool:
+    name: AndroidBuilder
+  steps:
+  - checkout: self
+  - task: DownloadSecureFile@1
+    name: mySecureFile
+    inputs:
+      secureFile: '$(KEY_ALIAS).keystore'
+
+  - task: CmdLine@2
+    inputs:
+      script: 'printf "SERVER_URL=%s\nUPDATE_VERSION_URL=%s\nUPDATE_VERSION_API=%s\n" "$SERVER_URL" "$UPDATE_VERSION_URL"  "$UPDATE_VERSION_API" > .env'
+  - task: FlutterInstall@0
+    inputs:
+      mode: 'auto'
+      channel: 'stable'
+      version: 'custom'
+      customVersion: '2.10.1'
+  - task: CmdLine@2
+    displayName: Upgrade & clean Flutter
+    inputs:
+      script: |
+        $(FlutterToolPath)/flutter clean \
+        cd ios \
+        pod deintegrate \
+        rm Flutter/Flutter.podspec \
+        rm podfile.lock \
+
+  - task: CmdLine@2
+    inputs:
+      script: 'printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=%s\n" "$(KEY_PASSWORD)" "$(KEY_PASSWORD)" "$(KEY_ALIAS)" "$(mySecureFile.secureFilePath)"> ./android/key.properties'
+
+  - task: CmdLine@2
+    inputs:
+      script: 'cat ./android/key.properties'
+  - task: FlutterBuild@0
+    inputs:
+      target: 'aab'
+      projectDirectory: '.'
+      splitPerAbi: true
+      buildName: '1.1.0'
+      buildNumber: '$(Build.BuildId)'
+      extraArgs: '--release'
+  # - task: CmdLine@2
+  #   displayName: 'Signing and aligning AAB file(s) app\build\outputs\bundle\release\app-release.aab'
+  #   inputs:
+  #     script: 'jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore $(mySecureFile.secureFilePath) -storepass $(KEY_PASSWORD) -keypass $(KEY_PASSWORD) $(system.defaultworkingdirectory)/build/app/outputs/bundle/release/app-release.aab $(KEY_ALIAS).alias'
+
+  # - task: AndroidSigning@3
+  #   displayName: 'Signing and aligning APK file(s) **/*.aab'
+  #   inputs:
+  #     apkFiles: './build/app/outputs/bundle/release/*.aab'
+  #     apksign: true
+  #     apksignerKeystoreFile: $(KEY_ALIAS).keystore
+  #     apksignerKeystorePassword: $(KEY_PASSWORD)
+  #     apksignerKeystoreAlias: $(KEY_ALIAS).alias
+  #     apksignerKeyPassword: $(KEY_PASSWORD)
+  #     zipalign: false
+  # - task: AndroidSigning@2
+  #   inputs:
+  #     apkFiles: './build/app/outputs/bundle/release/*.aab' 
+  #     jarsign: true 
+  #     jarsignerKeystoreFile: '$(KEY_ALIAS).keystore'
+  #     jarsignerKeystorePassword: '$(KEY_PASSWORD)'
+  #     jarsignerKeystoreAlias: '$(KEY_ALIAS)'
+  #     jarsignerKeyPassword: '$(KEY_PASSWORD)'
+  #     jarsignerArguments: '-sigalg SHA256withRSA -digestalg SHA-256'
+  #     zipalign: true
+  - task: CmdLine@2
+    inputs:
+      script: 'rm ./android/key.properties'
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: Android Bundle'
+    inputs:
+      PathtoPublish: '$(system.defaultworkingdirectory)/build/app/outputs/bundle'
+      ArtifactName: 'android'
+      publishLocation: 'Container'
+      Parallel: true 

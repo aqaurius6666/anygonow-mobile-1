@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "896341355518",
+    "project_id": "handyman-d9ead",
+    "storage_bucket": "handyman-d9ead.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896341355518:android:bfefadf0e32f6312092eaf",
+        "android_client_info": {
+          "package_name": "com.anygonow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896341355518-u50ah95g0dgio8hdbp537n27b66k897k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi0WZvV8hfDFseWYW9GBH4Wc1slMlku7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896341355518-u50ah95g0dgio8hdbp537n27b66k897k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
