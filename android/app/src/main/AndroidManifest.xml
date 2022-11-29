@@ -54,19 +54,8 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="handyman.uetbc.xyz"/>
-            </intent-filter>
-
-             <!-- App Links -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with https://YOUR_HOST -->
-                <data 
-                    android:scheme="https" 
-                    android:host="handyman-2.uetbc.xyz"
-                />
+                <data android:scheme="http" android:host="anygonow.com" />
+                <data android:scheme="https" />
             </intent-filter>
             
             <meta-data
