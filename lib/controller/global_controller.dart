@@ -19,6 +19,18 @@ class Category {
   String name = "";
   int numberOrder = 0;
   String image = "";
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) || other is Category && other.id == id;
+  }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => id.hashCode;
+
+
+
 }
 
 class GlobalController extends GetxController {

@@ -26,8 +26,6 @@ class ServiceAreaController extends GetxController {
         },
       );
       // var json = jsonDecode(response.toString());
-
-      print(response);
       return (true);
     } catch (e) {
       print(e);

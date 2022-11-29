@@ -71,6 +71,7 @@ class CustomDio {
         },
         onError: (DioError error, ErrorInterceptorHandler handler) async {
           print("heeloodasd");
+          print(error.message);
           print(error.message.toString());
           // print({'onError': error});
           // print({'onError2': error.response});

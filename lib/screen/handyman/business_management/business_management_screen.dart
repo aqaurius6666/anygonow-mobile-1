@@ -6,11 +6,13 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:untitled/controller/account/account_controller.dart';
+import 'package:untitled/controller/category/category_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/app_bar.dart';
+import 'package:untitled/widgets/category_select_field.dart';
 import 'package:untitled/widgets/dialog.dart';
 import 'package:untitled/widgets/dropdown.dart';
 import 'package:untitled/widgets/image.dart';
@@ -30,6 +32,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
   @override
   Widget build(BuildContext context) {
     AccountController accountController = Get.put(AccountController());
+    CategoryController categoryController = Get.put(CategoryController());
     accountController.getBusinessInfo();
 
     return DefaultTabController(
@@ -47,7 +50,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                 if (accountController.isEditting.value) {
                   if (accountController.isBusinessScreen.value) {
                     if (accountController.business.text == "" ||
-                        accountController.tags.isEmpty) {
+                        categoryController.curCategory.isEmpty) {
                       CustomDialog(context, "FAILED")
                           .show({"message": "missing_field"});
                       return;
@@ -70,12 +73,15 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
 
                     var result = await accountController.editBusinessInfo();
                     accountController.isLoading.value = false;
-                    print(result);
+                    print({"adsasdasd": result});
                     if (result != null) {
                       accountController.getBusinessInfo();
                       // accountController.isBusinessScreen.value = false;
                       CustomDialog(context, "SUCCESS")
                           .show({"message": "Update profile successfully"});
+                    } else {
+                      CustomDialog(context, "FAILED")
+                          .show({"message": "Update profile failed"});
                     }
                   } else {
                     if (accountController.phoneNumber.text == "" ||
@@ -452,47 +458,49 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                         SizedBox(
                           height: getHeight(18),
                         ),
-                        Obx(
-                          () => accountController.isEditting.value
-                              ? MultiSelectDialogField(
-                                  title: const Text("Category"),
-                                  items: globalController.categories
-                                      .sublist(0, 30)
-                                      .map((e) => MultiSelectItem(e, e.name))
-                                      .toList(),
-                                  listType: MultiSelectListType.CHIP,
-                                  onConfirm: (values) {
-                                    accountController.tags.value = values;
-                                  },
-                                  buttonText: Text(
-                                    "Professional Category*",
-                                    style: TextStyle(
-                                        fontSize: getHeight(14),
-                                        color:
-                                            accountController.isEditting.value
-                                                ? Colors.black
-                                                : const Color(0xFF999999)),
-                                  ),
-                                )
-                              : Obx(
-                                  () => inputRegular(
-                                    context,
-                                    label: "Professional Category",
-                                    required: true,
-                                    hintText: "",
-                                    maxLines: 4,
-                                    height:
-                                        accountController.category.text.length /
-                                                40 *
-                                                28 +
-                                            36,
-                                    textEditingController:
-                                        accountController.category,
-                                    keyboardType: TextInputType.multiline,
-                                    enabled: accountController.isEditting.value,
-                                  ),
-                                ),
-                        ),
+                        CategorySelectField(),
+                        // Obx(
+                        //   () => accountController.isEditting.value
+                        //       ? MultiSelectDialogField(
+                        //           title: const Text("Category"),
+                        //           initialValue: accountController.tags.toList(),
+                        //           items: globalController.categories
+                        //               .sublist(0, 30)
+                        //               .map((e) => MultiSelectItem(e, e.name))
+                        //               .toList(),
+                        //           listType: MultiSelectListType.CHIP,
+                        //           onConfirm: (values) {
+                        //             accountController.tags.value = values;
+                        //           },
+                        //           buttonText: Text(
+                        //             "Professional Category*",
+                        //             style: TextStyle(
+                        //                 fontSize: getHeight(14),
+                        //                 color:
+                        //                     accountController.isEditting.value
+                        //                         ? Colors.black
+                        //                         : const Color(0xFF999999)),
+                        //           ),
+                        //         )
+                        //       : Obx(
+                        //           () => inputRegular(
+                        //             context,
+                        //             label: "Professional Category",
+                        //             required: true,
+                        //             hintText: "",
+                        //             maxLines: 4,
+                        //             height:
+                        //                 accountController.category.text.length /
+                        //                         40 *
+                        //                         28 +
+                        //                     36,
+                        //             textEditingController:
+                        //                 accountController.category,
+                        //             keyboardType: TextInputType.multiline,
+                        //             enabled: accountController.isEditting.value,
+                        //           ),
+                        //         ),
+                        // ),
                         SizedBox(
                           height: getHeight(24),
                         ),
@@ -628,6 +636,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
                     textEditingController: accountController.zipcode,
                     enabled: accountController.isEditting.value,
                     keyboardType: TextInputType.text,
+                    maxLength: 6,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
                     ],

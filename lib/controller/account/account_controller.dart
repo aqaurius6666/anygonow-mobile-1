@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
+import 'package:untitled/controller/category/category_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/model/custom_dio.dart';
 import 'package:untitled/utils/cdn.dart';
@@ -24,6 +25,7 @@ class AccountController extends GetxController {
   TextEditingController country = TextEditingController();
 
   GlobalController globalController = Get.put(GlobalController());
+  CategoryController categoryController = Get.put(CategoryController());
   final textFieldTagsController = TextFieldTagsController();
   RxList<dynamic> tags = [].obs;
 
@@ -165,7 +167,9 @@ class AccountController extends GetxController {
         {
           "data": {
             "id": userID,
-            "categoryIds": tags.value.map((tag) {
+            "categoryIds": categoryController.curCategory.value.map((tag) {
+              print(tag.id);
+              print(tag.name);
               return tag.id;
             }).toList(),
           }
@@ -236,15 +240,15 @@ class AccountController extends GetxController {
           globalController.user.value.certificate.toString();
       var response = await customDio.get("/businesses/$userID");
       var response2 = await customDio.get("/contacts/$userID");
-      var response3 = await customDio.get("/businesses/$userID/services");
+      // var response3 = await customDio.get("/businesses/$userID/services");
 
       var json = jsonDecode(response.toString());
       var json2 = jsonDecode(response2.toString());
-      var json3 = jsonDecode(response3.toString());
+      // var json3 = jsonDecode(response3.toString());
 
       var businessData = json["data"]["business"];
       var contact = json2["data"]["contact"];
-      var serviceData = json3["data"]["result"];
+      // var serviceData = json3["data"]["result"];
 
       business.text = businessData["name"] ?? "";
       description.text = businessData["descriptions"] ?? "";
@@ -260,23 +264,23 @@ class AccountController extends GetxController {
       zipcode.text = contact["zipcode"] ?? "";
       country.text = contact["country"] ?? "";
 
-      List<Category> res = [];
+      // List<Category> res = [];
 
-      for (int i = 0; i < serviceData.length; i++) {
-        Category item = Category();
-        item.id = serviceData[i]["id"] ?? "";
-        item.name = serviceData[i]["name"] ?? "";
-        item.numberOrder = serviceData[i]["numberOrder"] ?? 0;
-        item.image = getCDN(serviceData[i]["image"] ?? "");
-        res.add(item);
-      }
+      // for (int i = 0; i < serviceData.length; i++) {
+      //   Category item = Category();
+      //   item.id = serviceData[i]["id"] ?? "";
+      //   item.name = serviceData[i]["name"] ?? "";
+      //   item.numberOrder = serviceData[i]["numberOrder"] ?? 0;
+      //   item.image = getCDN(serviceData[i]["image"] ?? "");
+      //   res.add(item);
+      // }
 
-      tags.value = res;
-      category.text = serviceData != null
-          ? serviceData.map((e) {
-              return e["name"];
-            }).join(", ")
-          : "";
+      // tags.value = res;
+      // category.text = serviceData != null
+      //     ? serviceData.map((e) {
+      //         return e["name"];
+      //       }).join(", ")
+      //     : "";
 
       return json["data"];
     } catch (e, s) {

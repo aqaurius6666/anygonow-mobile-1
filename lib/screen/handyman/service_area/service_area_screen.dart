@@ -22,6 +22,10 @@ class ServiceAreaScreen extends StatelessWidget {
           onMessageReceived: (JavascriptMessage message) async {
             var json = jsonDecode(message.message);
             List<String> zipcodes = [];
+            print({"jsondata" : json});
+            if (json["zipcodes"] == null) {
+              return;
+            }
             for (int i = 0; i < json["zipcodes"].length; i++) {
               zipcodes.add(json["zipcodes"][i]);
             }
