@@ -341,7 +341,8 @@ Container inputSearch(
                         LengthLimitingTextInputFormatter(
                             maxLength != 0 ? maxLength : null)
                       ]
-                    : null,
+                    : [LengthLimitingTextInputFormatter(
+                    maxLength != 0 ? maxLength : null)],
                 // maxLength: maxLength == 0 ? null : maxLength,
                 focusNode: _focusNode,
                 controller: textEditingController,
@@ -394,19 +395,26 @@ Container inputSearch(
             optionsViewBuilder: (BuildContext context,
                 AutocompleteOnSelected<String> onSelected,
                 Iterable<String> options) {
-              return Material(
-                elevation: 4.0,
-                child: ListView(
-                  children: options
-                      .map((String option) => GestureDetector(
-                            onTap: () {
-                              onSelected(option);
-                            },
-                            child: ListTile(
-                              title: Text(option),
-                            ),
-                          ))
-                      .toList(),
+              return Align(
+                alignment: Alignment.topLeft,
+                child: Material(
+                  elevation: 4.0,
+                  child: SizedBox(
+                    height: getHeight(300),
+                    width: getWidth(220),
+                    child: ListView(
+                      children: options
+                          .map((String option) => GestureDetector(
+                                onTap: () {
+                                  onSelected(option);
+                                },
+                                child: ListTile(
+                                  title: Text(option),
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                  ),
                 ),
               );
             },

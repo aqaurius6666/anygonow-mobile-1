@@ -55,6 +55,8 @@ class MessageScreen extends StatelessWidget {
             if (index < messageController.connectedMessageList.length) {
               var messages = messageController.connectedMessageList[index];
               return messageItem(
+                zipcode: requests[index]["customerZipcode"],
+                categoryId: requests[index]["categoryId"],
                 message: messages.isNotEmpty
                     ? messages[messages.length - 1]["payload"]
                     : "Service request: " + requests[index]["serviceName"],
@@ -89,6 +91,8 @@ class MessageScreen extends StatelessWidget {
             if (index < messageController.completedMessageList.length) {
               var messages = messageController.completedMessageList[index];
               return messageItem(
+                zipcode: requests[index]["customerZipcode"],
+                categoryId: requests[index]["categoryId"],
                 message: messages.isNotEmpty
                     ? messages[messages.length - 1]["payload"]
                     : "Service request: " + requests[index]["serviceName"],
@@ -116,8 +120,10 @@ class MessageScreen extends StatelessWidget {
     String img = "",
     String business = "",
     String service = "",
+    String categoryId = "",
     String message = "",
     String time = "",
+    String zipcode = "",
     int index = 0,
     bool completed = false,
     conversation,
@@ -145,6 +151,8 @@ class MessageScreen extends StatelessWidget {
 
         messageController.currentService.value = business;
         messageController.currentCate.value = service;
+        messageController.currentCateId.value = categoryId;
+        messageController.currentZipcode.value = zipcode;
 
         var noti = Get.put(NotiController());
         await noti.putNotiChat();
@@ -165,12 +173,12 @@ class MessageScreen extends StatelessWidget {
           children: [
             getImage(
               img,
-              height: getHeight(56),
-              width: getHeight(56),
+              height: getHeight(50),
+              width: getWidth(50),
             ),
             SizedBox(
-              height: getHeight(56),
-              width: getWidth(200),
+              height: getHeight(50),
+              width: getWidth(180),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -191,15 +199,18 @@ class MessageScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              width: getWidth(50),
-            ),
+            // SizedBox(
+            //   width: getWidth(20),
+            // ),
             Text(
               time,
               style: TextStyle(
                 color: Color(0xFF999999),
               ),
-            )
+            ),
+            SizedBox(
+              width: getWidth(5),
+            ),
           ],
         ),
       ),

@@ -15,6 +15,8 @@ import 'package:untitled/service/response_validator.dart';
 import '../global_controller.dart';
 
 class LoginPageController extends GetxController {
+
+  GlobalController globalController = Get.put(GlobalController());
   Rx<LoginOption> loginOption = LoginOption.customer.obs;
 
   TextEditingController username = TextEditingController();
@@ -39,6 +41,22 @@ class LoginPageController extends GetxController {
   void onClearData() {
     username.text = "";
     password.text = "";
+  }
+  Future<int> getProcessRegistration() async {
+    try {
+      CustomDio customDio = CustomDio();
+      customDio.dio.options.headers["Authorization"] = globalController.user.value.certificate.toString();
+
+      var response = await customDio.post(
+        "/auth/ping",
+        jsonDecode(globalController.user.value.certificate.toString()),
+      );
+      var json = jsonDecode(response.toString());
+      return json["data"]["process"] ?? 0;
+    } catch (e, s) {
+      print(e);
+      return 0;
+    }
   }
 
   Future getPing(List<String> certificateList) async {
@@ -155,6 +173,9 @@ class LoginPageController extends GetxController {
               // userInfo.fullName = firstName + " " + lastName;
               userInfo.name = jsonResponse["data"]["user"]["name"];
               userInfo.fullName = jsonResponse["data"]["user"]["name"];
+              userInfo.phone = jsonResponse["data"]["user"]["phone"];
+              userInfo.mail = jsonResponse["data"]["user"]["mail"];
+              userInfo.zipcode = jsonResponse["data"]["user"]["zipcode"];
             }
             if (userInfo.role == 1) {
               userInfo.name = jsonResponse["data"]["business"]["name"];

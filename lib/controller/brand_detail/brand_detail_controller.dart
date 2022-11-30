@@ -20,7 +20,7 @@ class Comments {
 }
 
 class BrandDetailController extends GetxController {
-  Business business = new Business();
+  Business business = Business();
   List<Category> services = <Category>[];
   List<Rating> ratings = <Rating>[];
   List<dynamic> comments = <Comments>[];
@@ -31,6 +31,7 @@ class BrandDetailController extends GetxController {
   RxInt threeStar = 0.obs;
   RxInt twoStar = 0.obs;
   RxInt oneStar = 0.obs;
+
 
   Future getBusinessDetail({String id = ""}) async {
     try {

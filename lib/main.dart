@@ -41,7 +41,7 @@ Future<void> main() async {
   await initDB();
   await dotenv.load(fileName: ".env");
   await globalController.getStates();
-  ZipcodeUser.determinePosition();
+  // ZipcodeUser.determinePosition();
   if (globalController.db.get("user") != null) {
     globalController.user.value = globalController.db.get("user");
   }

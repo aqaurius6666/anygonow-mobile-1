@@ -83,7 +83,7 @@ class HandymanUserScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          await globalController.getCategories();
+                          // await globalController.getCategories();
                           Get.to(BusinessManagementScreen());
                         },
                         child: Container(

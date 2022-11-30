@@ -44,7 +44,6 @@ class MyRequestUserController extends GetxController {
       if (json["data"]["result"] != null) {
         completedRequests.value = json["data"]["result"];
       }
-
       return true;
     } catch (e) {
       return false;

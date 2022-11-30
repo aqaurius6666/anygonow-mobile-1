@@ -26,6 +26,8 @@ class MessageController extends GetxController {
   RxString currentService = "".obs;
 
   RxString currentCate = "".obs;
+  RxString currentCateId = "".obs;
+  RxString currentZipcode = "".obs;
 
   Map<String, dynamic> currentConversation = {};
   late Timer timer;

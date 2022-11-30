@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/location/location.dart';
 import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/main/main_screen_model.dart';
@@ -20,8 +21,17 @@ import 'package:untitled/widgets/input.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreenController mainScreenController = Get.put(MainScreenController());
+
   @override
   Widget build(BuildContext context) {
+    if (mainScreenController.categories.isEmpty) {
+      mainScreenController.getCategories();
+    }
+    if (globalController.user.value.zipcode == "") {
+      ZipcodeUser.determinePosition().then((value) {
+        globalController.zipcodeUser.value = value;
+      });
+    }
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -197,8 +207,12 @@ class MainScreen extends StatelessWidget {
                                 flex: 30,
                                 child: inputSearch(context,
                                     hintText: Get.put(GlobalController())
-                                        .zipcodeUser
-                                        .value,
+                                            .user
+                                            .value
+                                            .zipcode ??
+                                        Get.put(GlobalController())
+                                            .zipcodeUser
+                                            .value,
                                     textEditingController: mainScreenController
                                         .searchZipcode, onSearch: () async {
                                   var res = await mainScreenController
@@ -213,7 +227,7 @@ class MainScreen extends StatelessWidget {
                                     options: [],
                                     prefixIcon: "assets/icons/location.svg",
                                     maxLength: 6,
-                                    numberOnly: true),
+                                    numberOnly: false),
                               ),
                             )
                           ],

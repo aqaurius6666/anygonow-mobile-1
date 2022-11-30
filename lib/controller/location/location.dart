@@ -31,9 +31,7 @@ class ZipcodeUser {
         'Location permissions are permanently denied, we cannot request permissions.');
     } 
     Position position = await Geolocator.getCurrentPosition();
-    print("position");
-    print(position.latitude);
-    print(position.longitude);
+
 
      List<Placemark> placemarks = await placemarkFromCoordinates(
         position.latitude,
@@ -41,17 +39,14 @@ class ZipcodeUser {
       );
 
       Placemark place = placemarks[0];
-
-      print(place);
-
- 
-      Get.put(GlobalController()).zipcodeUser.value = place.postalCode!;
+      //
+      // Get.put(GlobalController()).zipcodeUser.value = place.postalCode!;
 
       // setState(() {
       //   _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
       // });
 
 
-    return position;
+    return place.postalCode!;
   }
 }

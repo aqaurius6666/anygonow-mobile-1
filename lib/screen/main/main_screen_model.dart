@@ -165,7 +165,7 @@ GestureDetector handymanItem({
                                             var mainScreenController =
                                                 Get.put(MainScreenController());
                                             if (!mainScreenController
-                                                .listBussinessOrder
+                                                .listBusinessOrder
                                                 .contains(id)) {
                                               controller?.requests.add(id);
                                             }

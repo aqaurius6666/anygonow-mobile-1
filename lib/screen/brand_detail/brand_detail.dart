@@ -21,7 +21,7 @@ class BrandDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: bottomBrandDetail(),
+      bottomNavigationBar: bottomBrandDetail(id: brandDetailController.business.bussiness["id"]),
       resizeToAvoidBottomInset: true,
       appBar: appBar(),
       body: Container(
