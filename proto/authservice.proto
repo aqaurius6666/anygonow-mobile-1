@@ -1,26 +1,35 @@
 syntax = "proto3";
 package authservice;
 
-option go_package = "./pb";
+import "const.proto";
+
+option go_package = "./pb/authpb";
 
 service AuthService {
   rpc GetCredential(GetCredentialRequest) returns (GetCredentialResponse) {}
   rpc CheckAuth(CheckAuthRequest) returns (CheckAuthResponse) {}
   rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
+  rpc ChangeMail(ChangeMailRequest) returns (ChangeMailResponse) {}
   rpc BanUser(BanUserRequest) returns (BanUserResponse) {}
-  // rpc RegisterAdmin(RegisterAdminRequest) returns (RegisterAdminResponse) {}
-  // rpc RegisterAdminOTP(RegisterAdminOTPRequest) returns (RegisterAdminOTPResponse) {}
-
-  // rpc DeleteAdmin(DeleteAdminRequest) returns (DeleteAdminResponse) {}
   
   rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse) {}
   rpc ResendOTP(ResendOTPRequest) returns (ResendOTPResponse) {}
   
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
-  rpc RegisterNoOTP(RegisterNoOTPRequest) returns (RegisterNoOTPResponse) {}
+  rpc RegisterOTP(RegisterOTPRequest) returns (RegisterOTPResponse) {}
+
+  rpc ChangeMailAndPass(ChangeMailAndPassRequest) returns(ChangeMailAndPassResponse) {}
+  rpc ChangeMailAndPassOTP(ChangeMailAndPassOTPRequest) returns(ChangeMailAndPassOTPResponse) {}
+
+  rpc RegisterNoOTP(RegisterNoOTPRequest) returns(RegisterNoOTPResponse) {}
   
-  // rpc ForgotPasswordOTP(ForgotPasswordOTPRequest) returns (ForgotPasswordOTPResponse) {}
-  // rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {}
+  rpc ChangeMailOTP(ChangeMailOTPRequest) returns (ChangeMailOTPResponse) {}
+  rpc ForgotPasswordOTP(ForgotPasswordOTPRequest) returns (ForgotPasswordOTPResponse) {}
+  rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {}
+  rpc CheckCredential(CheckCredentialRequest) returns (CheckCredentialResponse) {}
+
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+
 
   // rpc ChangeMail(ChangeMailRequest) returns (ChangeMailResponse) {}
   // rpc ChangeMailOTP(ChangeMailOTPRequest) returns (ChangeMailOTPResponse) {}
@@ -33,108 +42,91 @@ message Credential {
   string publicKey = 1;
   string encryptedPrivateKey = 2;
   string id = 3;
+  const.ROLE role = 4;
+  bool isDefaultPassword = 5;
 }
 
-message UserChangePhoneRequest {
-  bytes id = 1;
-  string phone = 2;
+message DeleteUserRequest {
+  string id = 1;
 }
-message UserChangePhoneResponse {
-  bytes id = 1;
-  string phone = 2;
-}
-
-
-message AdminChangeInfoRequest {
-  bytes id = 1;
-  string mail = 2;
-  string phone = 3;
-}
-message AdminChangeInfoResponse {
-  bytes id = 1;
-  string mail = 2;
-  string phone = 3;
-}
-
-message RegisterAdminOTPRequest {
-  bytes otpId = 1;
-  string otp = 2;
-  string publicKey = 3;
-  string encryptedPrivateKey = 4;
-}
-message RegisterAdminOTPResponse {
-  bytes id = 1;
-  string mail = 2;
-  string role = 3;
-  string name = 4;
-  string jobTile = 5;
-}
-
-message ChangeRoleRequest {
-  bytes id = 1;
-  string role = 2;
-}
-message ChangeRoleResponse {
-  bytes id = 1;
-  string role = 2;
-}
-message ForgotPasswordOTPRequest {
-  bytes otpId = 1;
-  string otp = 2;
-  string encryptedPrivateKey = 3;
-  string publicKey = 4;
-}
-message ForgotPasswordOTPResponse {
-  bytes id = 1;
-  string encryptedPrivateKey = 2;
-  string publicKey = 3;
+message DeleteUserResponse {
+  string id = 1;
+  const.ROLE role = 2;
 }
 
 message ChangeMailRequest {
-  string mail = 1;
-  bytes id = 2;
+  string id = 1;
+  string mail = 2;
 }
 message ChangeMailResponse {
-  bytes otpId = 2;
-  bytes id = 1;
-  string mail = 3;
+  string otpId = 1;
 }
+
+
 message ChangeMailOTPRequest {
-  string mail = 1;
-  bytes otpId = 2;
-  string otp = 3;
+  string otpId = 1;
 }
 message ChangeMailOTPResponse {
-  bytes id = 1;
-  string mail = 3;
+  string id = 1;
+  string mail = 2;
+  const.ROLE role = 3;
+}
+
+message ChangeMailAndPassOTPRequest {
+  string otpId = 1;
+}
+message ChangeMailAndPassOTPResponse {
+  string id = 1;
+  string mail = 2;
+  const.ROLE role = 3;
+}
+
+message ChangeMailAndPassRequest {
+  string mail = 1;
+  string encryptedPrivateKey = 2;
+  string userId = 3;
+  string publicKey = 4;
+}
+
+message ChangeMailAndPassResponse {
+}
+
+
+message ForgotPasswordOTPRequest {
+  string otpId = 1;
+  string encryptedPrivateKey = 2;
+  string publicKey = 3;
+}
+message ForgotPasswordOTPResponse {
+}
+
+
+
+message CheckCredentialRequest {
+  string identifier = 1;
+}
+message CheckCredentialResponse {
+  bool existed = 1;
+}
+
+
+message BanUserRequest {
+  string id = 1;
+  bool status = 2;
+}
+
+message BanUserResponse {
+  string id = 1;
+  bool status = 2;
+  const.ROLE role = 3;
 }
 
 message ForgotPasswordRequest {
   string mail = 1;
 }
 message ForgotPasswordResponse {
-  bytes otpId = 2;
-  bytes id = 1;
-}
-
-
-message DeleteAdminRequest {
-  bytes id = 1;
-}
-message DeleteAdminResponse {
-  bytes id = 1;
-}
-
-message RegisterAdminRequest {
-  string mail = 1;
-  string encryptedPrivateKey = 2;
-  string publicKey = 3;
-  string role = 4;
-  string jobTitle = 5;
-  string name = 6;
-}
-message RegisterAdminResponse {
-  bytes id = 1;
+  string id = 1;
+  string otpId = 2;
 }
 
 message ResendOTPRequest {
@@ -145,24 +137,27 @@ message ResendOTPResponse {
 
 
 message RegisterOTPRequest {
-  bytes id = 1;
-  string otp = 2;
-  bytes otpId = 3;
+  string otpId = 1;
 }
-message RegisterOTPReposne {
-  bytes id = 1;
-  bool ok = 2;
+
+
+message RegisterOTPResponse {
+  string id = 1;
+  string mail = 2;
+  string phone = 3;
+  const.ROLE role = 4;
+  string refCode = 5;
 }
+
+
 message VerifyOTPRequest {
   string otpId = 1;
   string otp = 2;
 }
 message VerifyOTPResponse {
-  string userId = 1;
-  bool ok = 2;
-  string type = 3;
-  string mail = 4;
-  string username = 5;
+  bool ok = 1;
+  const.OTP_TYPE type = 2;
+  string otpId = 3;
 }
 
 
@@ -174,13 +169,6 @@ message ChangePasswordRequest {
 message ChangePasswordResponse {
 }
 
-
-message BanUserRequest {
-  string id = 1;
-  bool status = 2;
-}
-message BanUserResponse {
-}
 
 message GetCredentialRequest {
   string identifier = 1;
@@ -199,7 +187,7 @@ message CheckAuthRequest {
 
 message CheckAuthResponse {
   string id = 1;
-  string role = 2;
+  const.ROLE role = 2;
 }
 
 message RegisterNoOTPRequest {
@@ -222,14 +210,13 @@ message RegisterRequest {
   string encryptedPrivateKey = 3;
   string mail = 4;
   string phone = 5;
+  const.ROLE role = 6;
+  string refCode = 7;
 }
+
 
 message RegisterResponse {
   string publicKey = 1;
   string encryptedPrivateKey = 2;
   string otpId = 3;
-}
-
-message Body {
-  
 }

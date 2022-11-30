@@ -16,36 +16,58 @@ class Messages extends Translations {
           'continue': "Continue",
           "signinNow": "Sign-in now",
 
+          // brand detail
+          "brand_detail.request_has_been_sent": "Request has already been sent",
+          "brand_detail.request_sent_successfully":
+              "Request has been sent successfully",
+          "brand_detail.message": "Message",
+          "brand_detail.send_request": "Send request",
+          "brand_detail.cancel": "Cancel",
+          "brand_detail.view_detail": "View detail",
+          "brand_detail.uncheck_all": "Uncheck all",
+
+          // chat screen
+          "chat_screen.send_message" : "Send message",
+          "chat_screen.write_review" : "Write review",
+          // navigator
+          "navigator.message": "Message",
+          "navigator.my_request": "My requests",
+          "navigator.advertise": "Advertise",
+          "navigator.profile": "Profile",
+          "navigator.home": "Home",
           // dialog
-          "dialog.update_information" : "You need to update information",
-          
+          "dialog.update_information": "You need to update information",
+          "dialog.unexpected_error": "Unexpected error occurred, please try again later!",
+
           // hint
-          "hint.phone_number" : "Enter your phone number",
-          "hint.email_address" : "Enter your email address",
-          "hint.password" : "Enter your password",
-          "hint.cf_password" : "Re-enter your password",
-          "hint.referral_code" : "Enter you referral code",
+          "hint.phone_number": "Enter your phone number",
+          "hint.email_address": "Enter your email address",
+          "hint.password": "Enter your password",
+          "hint.cf_password": "Re-enter your password",
+          "hint.referral_code": "Enter you referral code",
 
           // sign in
           "signin": "Sign in",
-          "signin.invalid" : "Your credential is invalid!",
-          "signin.email_required" : "Please fill in your email address!",
-          "signin.password_required" : "Please fill in your password!",
+          "signin.invalid": "Your credential is invalid!",
+          "signin.email_required": "Please fill in your email address!",
+          "signin.password_required": "Please fill in your password!",
           "invalid_username": "Your credential is invalid !",
           "invalid_password": "Your credential is invalid !",
 
           // account text
-          "account.fill_required" : "You must fill in all required fields!",
+          "account.fill_required": "You must fill in all required fields!",
           "account.zipcode_invalid": "Zipcode is invalid!",
           "account.phone_number_invalid": "Phone number is invalid!",
-          "account.update_success" : "Update information successfully!",
+          "account.update_success": "Update information successfully!",
           // sign up text
-          "signup.phone_number_invalid" : "Phone number is invalid!",
-          "signup.email_invalid" : "Email address is invalid!",
-          "signup.terms_not_check" : "You do not agree to the terms of use",
-          "signup.email_phone_existed" : "Email address or phone number is existed!",
-          "signup.re_password_wrong" : "Re-entered password is incorrect",
-          "signup.password_rule" : "Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number",
+          "signup.phone_number_invalid": "Phone number is invalid!",
+          "signup.email_invalid": "Email address is invalid!",
+          "signup.terms_not_check": "You do not agree to the terms of use",
+          "signup.email_phone_existed":
+              "Email address or phone number is existed!",
+          "signup.re_password_wrong": "Re-entered password is incorrect",
+          "signup.password_rule":
+              "Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number",
           "error_server": "Server is not working !",
           "close": "Close",
           "confirm": "Confirm",

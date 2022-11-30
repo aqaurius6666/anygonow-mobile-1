@@ -191,9 +191,9 @@ class MessageScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              width: getWidth(50),
-            ),
+            // SizedBox(
+            //   width: getWidth(20),
+            // ),
             Text(
               time,
               style: TextStyle(

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:untitled/config.dart';
 import 'package:untitled/controller/brand_detail/brand_detail_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/handyman/manage_advertise/manage_advertise.dart';
@@ -24,12 +25,12 @@ Container bottomNavigator() {
   return Container(
     height: getHeight(80),
     width: double.infinity,
-    color: Colors.white,
+    color: Config.white_0,
     child: Stack(
       children: [
         Container(
           height: 1,
-          color: Color(0xFFE5E5E5),
+          color: Config.gray_1,
         ),
         Align(
           alignment: Alignment.center,
@@ -47,7 +48,7 @@ Container bottomNavigator() {
                         globalController.onChangeTab(0);
                       },
                       child: Container(
-                        color: Colors.white,
+                        color: Config.white_0,
                         width: getWidth(60),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -56,16 +57,16 @@ Container bottomNavigator() {
                               "assets/icons/home.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 0
-                                  ? Color(0xFFFF511A)
-                                  : Color(0xFF999999),
+                                  ? Config.orange_1
+                                  : Config.gray_0,
                             ),
                             Text(
-                              "Home",
+                              "navigator.home".tr,
                               style: TextStyle(
                                   fontSize: getWidth(12),
                                   color: globalController.currentPage.value == 0
-                                      ? Color(0xFFFF511A)
-                                      : Color(0xFF999999)),
+                                      ? Config.orange_1
+                                      : Config.gray_0),
                             )
                           ],
                         ),
@@ -123,7 +124,7 @@ Container bottomNavigator() {
                                   width: getWidth(8),
                                   height: getWidth(8),
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 240, 76, 64),
+                                    color: Config.orange_2,
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                 ),
@@ -133,16 +134,16 @@ Container bottomNavigator() {
                               "assets/icons/chat.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 1
-                                  ? Color(0xFFFF511A)
-                                  : Color(0xFF999999),
+                                  ? Config.orange_1
+                                  : Config.gray_0,
                             ),
                             Text(
-                              "Message",
+                              "navigator.message".tr,
                               style: TextStyle(
                                 fontSize: getWidth(12),
                                 color: globalController.currentPage.value == 1
-                                    ? Color(0xFFFF511A)
-                                    : Color(0xFF999999),
+                                    ? Config.orange_1
+                                    : Config.gray_0,
                               ),
                             )
                           ],
@@ -164,18 +165,18 @@ Container bottomNavigator() {
                               "assets/icons/user.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 2
-                                  ? Color(0xFFFF511A)
-                                  : Color(0xFF999999),
+                                  ? Config.orange_1
+                                  : Config.gray_0,
                             ),
                             FittedBox(
                               child: Text(
-                                "Profile",
+                                "navigator.profile".tr,
                                 style: TextStyle(
                                     fontSize: getWidth(12),
                                     color:
                                         globalController.currentPage.value == 2
-                                            ? Color(0xFFFF511A)
-                                            : Color(0xFF999999)),
+                                            ? Config.orange_1
+                                            : Config.gray_0),
                               ),
                             )
                           ],
@@ -198,12 +199,12 @@ Container bottomNavigatorHandyman() {
   return Container(
     height: getHeight(80),
     width: double.infinity,
-    color: Colors.white,
+    color: Config.white_0,
     child: Stack(
       children: [
         Container(
           height: 1,
-          color: Color(0xFFE5E5E5),
+          color: Config.gray_1,
         ),
         Align(
           alignment: Alignment.center,
@@ -220,7 +221,7 @@ Container bottomNavigatorHandyman() {
                         globalController.onChangeTab(0);
                       },
                       child: Container(
-                        color: Colors.white,
+                        color: Config.white_0,
                         width: getWidth(60),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -229,16 +230,16 @@ Container bottomNavigatorHandyman() {
                               "assets/icons/request-icon.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 0
-                                  ? Color(0xFFFF511A)
-                                  : Color(0xFF999999),
+                                  ? Config.orange_1
+                                  : Config.gray_0,
                             ),
                             Text(
-                              "My request",
+                              "navigator.my_request".tr,
                               style: TextStyle(
                                   fontSize: getWidth(10),
                                   color: globalController.currentPage.value == 0
-                                      ? Color(0xFFFF511A)
-                                      : Color(0xFF999999)),
+                                      ? Config.orange_1
+                                      : Config.gray_0),
                             )
                           ],
                         ),
@@ -289,7 +290,7 @@ Container bottomNavigatorHandyman() {
                                   width: getWidth(8),
                                   height: getWidth(8),
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    color: Config.white_0,
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                 ),
@@ -297,7 +298,7 @@ Container bottomNavigatorHandyman() {
                                   width: getWidth(8),
                                   height: getWidth(8),
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 240, 76, 64),
+                                    color: Config.orange_2,
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                 ),
@@ -307,16 +308,16 @@ Container bottomNavigatorHandyman() {
                               "assets/icons/message.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 1
-                                  ? Color(0xFFFF511A)
-                                  : Color(0xFF999999),
+                                  ? Config.orange_1
+                                  : Config.gray_0,
                             ),
                             Text(
-                              "Message",
+                              "navigator.message".tr,
                               style: TextStyle(
                                   fontSize: getWidth(10),
                                   color: globalController.currentPage.value == 1
-                                      ? Color(0xFFFF511A)
-                                      : Color(0xFF999999)),
+                                      ? Config.orange_1
+                                      : Config.gray_0),
                             )
                           ],
                         ),
@@ -339,16 +340,16 @@ Container bottomNavigatorHandyman() {
                               "assets/icons/advertise-icon.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 2
-                                  ? Color(0xFFFF511A)
-                                  : Color(0xFF999999),
+                                  ? Config.orange_1
+                                  : Config.gray_0,
                             ),
                             Text(
-                              "Advertise",
+                              "navigator.advertise".tr,
                               style: TextStyle(
                                   fontSize: getWidth(10),
                                   color: globalController.currentPage.value == 2
-                                      ? Color(0xFFFF511A)
-                                      : Color(0xFF999999)),
+                                      ? Config.orange_1
+                                      : Config.gray_0),
                             )
                           ],
                         ),
@@ -369,18 +370,18 @@ Container bottomNavigatorHandyman() {
                               "assets/icons/user.svg",
                               width: getWidth(24),
                               color: globalController.currentPage.value == 3
-                                  ? Color(0xFFFF511A)
-                                  : Color(0xFF999999),
+                                  ? Config.orange_1
+                                  : Config.gray_0,
                             ),
                             FittedBox(
                               child: Text(
-                                "Profile",
+                                "navigator.profile".tr,
                                 style: TextStyle(
                                     fontSize: getWidth(10),
                                     color:
                                         globalController.currentPage.value == 3
-                                            ? Color(0xFFFF511A)
-                                            : Color(0xFF999999)),
+                                            ? Config.orange_1
+                                            : Config.gray_0),
                               ),
                             )
                           ],
@@ -408,9 +409,9 @@ Container bottomBrandDetail({String id = ""}) {
         Expanded(
           child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.white,
+                backgroundColor: Config.white_0,
                 side: const BorderSide(
-                  color: Color(0xffff511a),
+                  color: Config.orange_1,
                 ),
               ),
               onPressed: () async {
@@ -443,8 +444,8 @@ Container bottomBrandDetail({String id = ""}) {
                   SizedBox(
                     width: getWidth(4),
                   ),
-                  Text("Message".tr,
-                      style: const TextStyle(color: Color(0xffff511a))),
+                  Text("brand_detail.message".tr,
+                      style: const TextStyle(color: Config.orange_1)),
                 ],
               )),
         ),
@@ -454,9 +455,9 @@ Container bottomBrandDetail({String id = ""}) {
         Expanded(
           child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor: const Color(0xffff511a),
+                backgroundColor: Config.orange_1,
                 side: const BorderSide(
-                  color: Color(0xffff511a),
+                  color: Config.orange_1,
                 ),
               ),
               onPressed: () async {
@@ -466,15 +467,15 @@ Container bottomBrandDetail({String id = ""}) {
                 var res = await mainScreenController.sendRequest();
                 if (res) {
                   showPopUp(
-                    message: "Request has been sent successfully",
-                    cancel: "Cancel",
-                    confirm: "View detail",
+                    message: "brand_detail.request_sent_successfully".tr,
+                    cancel: "brand_detail.cancel".tr,
+                    confirm: "brand_detail.view_detail".tr,
                   );
                 } else {
                   showPopUp(
-                    message: "Request has already been sent",
+                    message: "brand_detail.request_has_been_sent".tr,
                     success: false,
-                    cancel: "Cancel",
+                    cancel: "brand_detail.cancel".tr,
                   );
                 }
                 mainScreenController.requests.clear();
@@ -487,8 +488,8 @@ Container bottomBrandDetail({String id = ""}) {
                   SizedBox(
                     width: getWidth(4),
                   ),
-                  Text("Send request".tr,
-                      style: const TextStyle(color: Colors.white)),
+                  Text("brand_detail.send_request".tr,
+                      style: const TextStyle(color: Config.white_0)),
                 ],
               )),
         ),
@@ -507,9 +508,9 @@ Container bottomSearchResult() {
         Expanded(
           child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.white,
+                backgroundColor: Config.white_0,
                 side: const BorderSide(
-                  color: Color(0xffff511a),
+                  color: Config.orange_1,
                 ),
               ),
               onPressed: () async {
@@ -518,8 +519,8 @@ Container bottomSearchResult() {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Uncheck all".tr,
-                      style: const TextStyle(color: Color(0xffff511a))),
+                  Text("brand_detail.uncheck_all".tr,
+                      style: const TextStyle(color: Config.orange_1)),
                 ],
               )),
         ),
@@ -529,20 +530,20 @@ Container bottomSearchResult() {
         Expanded(
           child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor: const Color(0xffff511a),
+                backgroundColor: Config.orange_1,
                 side: const BorderSide(
-                  color: Color(0xffff511a),
+                  color: Config.orange_1,
                 ),
               ),
               onPressed: () async {
                 var res = await mainScreenController.sendRequest();
                 if (res) {
                   showPopUp(
-                    message: "Request has been sent successfully",
+                    message: "brand_detail.request_sent_successfully".tr,
                   );
                 } else {
                   showPopUp(
-                    message: "Request has already been sent",
+                    message: "brand_detail.request_has_been_sent".tr,
                     success: false,
                   );
                 }
@@ -556,8 +557,8 @@ Container bottomSearchResult() {
                   SizedBox(
                     width: getWidth(4),
                   ),
-                  Text("Send request".tr,
-                      style: const TextStyle(color: Colors.white)),
+                  Text("brand_detail.send_request".tr,
+                      style: const TextStyle(color: Config.white_0)),
                 ],
               )),
         ),

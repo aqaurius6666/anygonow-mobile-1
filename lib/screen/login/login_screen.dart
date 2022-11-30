@@ -229,7 +229,6 @@ Container confirmButtonContainer(
                       controller.isLoading.value = true;
                       var result = await controller.login();
                       if (result) {
-                        controller.isLoading.value = false;
 
                         Get.delete<MainScreenController>();
                         Get.put(GlobalController()).currentPage.value = 0;
@@ -243,31 +242,35 @@ Container confirmButtonContainer(
                         if (controller.shouldChangeMail.value == true &&
                             controller.username.text
                                 .contains("@anygonow.com")) {
+                          controller.isLoading.value = false;
                           Get.to(() => ResetMailAccount());
                           return;
                         }
                         if (controller.isDefaultPassword.value == true &&
                             !controller.username.text
                                 .contains("@anygonow.com")) {
+                          controller.isLoading.value = false;
                           Get.to(() => ResetPasswordAccount());
                           return;
                         }
                         controller.onClearData();
                         if (role == null || role == 0) {
-                          controller.isLoading.value = false;
                           if (process == 1) {
                             await Get.put(AccountController()).getUserInfo();
                             Get.put(AccountController()).isEditting.value =
                                 true;
+                            controller.isLoading.value = false;
                             Get.to(() => HomePageScreen());
                             Get.to(() => AccountScreen());
                             CustomDialog(context, "SUCCESS").show(
                                 {"message": "dialog.update_information".tr});
                             return;
                           }
+                          controller.isLoading.value = false;
                           Get.to(() => HomePageScreen());
                           return;
                         }
+                        controller.isLoading.value = false;
                         Get.to(() => HandymanHomePageScreen());
                         switch (process) {
                           case 0:

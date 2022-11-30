@@ -260,13 +260,19 @@ class MainScreenController extends GetxController {
       CustomDio customDio = CustomDio();
       customDio.dio.options.headers["Authorization"] =
           globalController.user.value.certificate.toString();
+      print({
+        "data": {
+          "businessIds": requests.toList(),
+          "zipcode": searchZipcode.text != "" ? searchZipcode.text : "100",
+          "categoryId": categoryId != "" ? categoryId : categories[0].id,
+        },
+      });
       var response = await customDio.post(
         "/orders",
         {
           "data": {
-            "businessIds": requests,
+            "businessIds": requests.toList(),
             "zipcode": searchZipcode.text != "" ? searchZipcode.text : "100",
-            "UserId": globalController.user.value.id.toString(),
             "categoryId": categoryId != "" ? categoryId : categories[0].id,
           },
         },
