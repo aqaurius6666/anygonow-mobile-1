@@ -27,6 +27,7 @@ class AccountController extends GetxController {
   GlobalController globalController = Get.put(GlobalController());
   CategoryController categoryController = Get.put(CategoryController());
   final textFieldTagsController = TextFieldTagsController();
+
   RxList<dynamic> tags = [].obs;
 
   RxBool isEditting = false.obs;
@@ -168,19 +169,13 @@ class AccountController extends GetxController {
           "data": {
             "id": userID,
             "categoryIds": categoryController.curCategory.value.map((tag) {
-              print(tag.id);
-              print(tag.name);
               return tag.id;
             }).toList(),
           }
         },
       );
-
-      category.text = tags.value.map((e) {
-        return e.name;
-      }).join(", ");
-
       var json = jsonDecode(response.toString());
+
       return json["data"];
     } catch (e, s) {
       print(e);

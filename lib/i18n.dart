@@ -15,6 +15,10 @@ class Messages extends Translations {
           "cfPassword": "Confirm password",
           'continue': "Continue",
           "signinNow": "Sign-in now",
+
+          // dialog
+          "dialog.update_information" : "You need to update information",
+          
           // hint
           "hint.phone_number" : "Enter your phone number",
           "hint.email_address" : "Enter your email address",

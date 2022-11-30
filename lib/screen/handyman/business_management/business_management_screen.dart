@@ -8,6 +8,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:untitled/controller/account/account_controller.dart';
 import 'package:untitled/controller/category/category_controller.dart';
 import 'package:untitled/controller/global_controller.dart';
+import 'package:untitled/controller/login/login_controller.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/utils/config.dart';
@@ -25,15 +26,33 @@ class BusinessManagementScreen extends StatefulWidget {
       _BusinessManagementScreenState();
 }
 
-class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
+class _BusinessManagementScreenState extends State<BusinessManagementScreen>
+    with SingleTickerProviderStateMixin {
   File logoFile = File("");
   File bannerFile = File("");
+  TabController? tabController;
+
+  AccountController accountController = Get.put(AccountController());
+  CategoryController categoryController = Get.put(CategoryController());
+  LoginPageController loginController = Get.put(LoginPageController());
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+    if (accountController.isEditting.value) {
+      if (!accountController.isBusinessScreen.value) {
+        tabController!.animateTo(1);
+      }
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    AccountController accountController = Get.put(AccountController());
-    CategoryController categoryController = Get.put(CategoryController());
-    accountController.getBusinessInfo();
+
 
     return DefaultTabController(
       length: 2,
@@ -47,67 +66,114 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
           actions: [
             GestureDetector(
               onTap: () async {
-                if (accountController.isEditting.value) {
-                  if (accountController.isBusinessScreen.value) {
-                    if (accountController.business.text == "" ||
-                        categoryController.curCategory.isEmpty) {
-                      CustomDialog(context, "FAILED")
-                          .show({"message": "missing_field"});
-                      return;
-                    }
-                    accountController.isLoading.value = true;
-                    if (logoFile.path != "") {
-                      var contentLength = await logoFile.length();
-                      var filename = logoFile.path.split("/").last;
-                      var logoUrl = await ImageService.handleUploadImage(
-                          filename, contentLength, logoFile);
-                      accountController.logoImage.value = logoUrl;
-                    }
-                    if (bannerFile.path != "") {
-                      var contentLength = await bannerFile.length();
-                      var filename = bannerFile.path.split("/").last;
-                      var bannerUrl = await ImageService.handleUploadImage(
-                          filename, contentLength, bannerFile);
-                      accountController.bannerImage.value = bannerUrl;
-                    }
-
-                    var result = await accountController.editBusinessInfo();
-                    accountController.isLoading.value = false;
-                    print({"adsasdasd": result});
-                    if (result != null) {
-                      accountController.getBusinessInfo();
-                      // accountController.isBusinessScreen.value = false;
+                if (!accountController.isEditting.value) {
+                  accountController.isEditting.value =
+                      !accountController.isEditting.value;
+                  return;
+                }
+                if (accountController.isBusinessScreen.value) {
+                  // update business info
+                  if (accountController.business.text == "" ||
+                      (accountController.logoImage.isEmpty &&
+                          logoFile.path == "") ||
+                      (accountController.bannerImage.isEmpty &&
+                          bannerFile.path == "") ||
+                      categoryController.curCategory.isEmpty) {
+                    CustomDialog(context, "FAILED")
+                        .show({"message": "missing_field"});
+                    return;
+                  }
+                  accountController.isLoading.value = true;
+                  String imagePrefix =
+                      globalController.user.value.id!.toString();
+                  var uploadUrls =
+                      await Future.wait([logoFile, bannerFile].map((e) async {
+                    if (e.path == "") return null;
+                    var filename =
+                        [imagePrefix, e.path.split("/").last].join("/");
+                    var contentLength = await e.length();
+                    return ImageService.handleUploadImage(
+                        filename, contentLength, e);
+                  }));
+                  if (uploadUrls[0] != null) {
+                    accountController.logoImage.value = uploadUrls[0]!;
+                  }
+                  if (uploadUrls[1] != null) {
+                    accountController.bannerImage.value = uploadUrls[1]!;
+                  }
+                  var result = await accountController.editBusinessInfo();
+                  accountController.isLoading.value = false;
+                  if (result == null) {
+                    CustomDialog(context, "FAILED")
+                        .show({"message": "Update profile failed"});
+                    return;
+                  }
+                  await accountController.getBusinessInfo();
+                  var process = await loginController.getProcessRegistration();
+                  switch (process) {
+                    case 0:
                       CustomDialog(context, "SUCCESS")
                           .show({"message": "Update profile successfully"});
-                    } else {
+                      accountController.isEditting.value =
+                          !accountController.isEditting.value;
+                      return;
+                    case 1:
                       CustomDialog(context, "FAILED")
                           .show({"message": "Update profile failed"});
-                    }
-                  } else {
-                    if (accountController.phoneNumber.text == "" ||
-                        accountController.city.text == "" ||
-                        accountController.address1.text == "" ||
-                        accountController.zipcode.text == "") {
-                      CustomDialog(context, "FAILED")
-                          .show({"message": "missing_field"});
                       return;
-                    }
-                    accountController.isLoading.value = true;
-                    var result = await accountController.editBusinessContact();
-                    print(result);
-                    print("123result");
-                    accountController.isLoading.value = false;
-                    if (result != null) {
-                      accountController.getBusinessInfo();
-                      // accountController.isBusinessScreen.value = false;
+                    case 2:
+                      accountController.isBusinessScreen.value = false;
+                      tabController!.animateTo(1);
+                      return;
+                    case 3:
+                      accountController.isEditting.value =
+                          !accountController.isEditting.value;
+                      Get.to(() => ServiceAreaScreen());
+                      return;
+                    default:
+                  }
+                } else {
+                  // update contact info
+                  if (accountController.phoneNumber.text == "" ||
+                      accountController.city.text == "" ||
+                      accountController.address1.text == "" ||
+                      accountController.zipcode.text == "") {
+                    CustomDialog(context, "FAILED")
+                        .show({"message": "missing_field"});
+                    return;
+                  }
+                  accountController.isLoading.value = true;
+                  var result = await accountController.editBusinessContact();
+                  accountController.isLoading.value = false;
+                  if (result == null) {
+                    CustomDialog(context, "FAILED")
+                        .show({"message": "Update profile failed"});
+                    return;
+                  }
+                  accountController.getBusinessInfo();
+                  var process = await loginController.getProcessRegistration();
+                  switch (process) {
+                    case 0:
                       CustomDialog(context, "SUCCESS")
                           .show({"message": "Update profile successfully"});
+                      accountController.isEditting.value =
+                          !accountController.isEditting.value;
+                      return;
+                    case 1:
+                      tabController!.animateTo(0);
+                      return;
+                    case 2:
+                      CustomDialog(context, "FAILED")
+                          .show({"message": "Update profile failed"});
+                      return;
+                    case 3:
+                      accountController.isEditting.value =
+                          !accountController.isEditting.value;
                       Get.to(() => ServiceAreaScreen());
-                    }
+                      return;
+                    default:
                   }
                 }
-                accountController.isEditting.value =
-                    !accountController.isEditting.value;
               },
               child: Obx(
                 () => Container(
@@ -142,14 +208,16 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
             ),
           ],
           bottom: TabBar(
+            controller: tabController,
             onTap: (index) {
+              tabController!.animateTo(index);
               accountController.isEditting.value = false;
               if (index == 0) {
                 accountController.isBusinessScreen.value = true;
-                print(accountController.isBusinessScreen.value);
+                // print(accountController.isBusinessScreen.value);
               } else {
                 accountController.isBusinessScreen.value = false;
-                print(accountController.isBusinessScreen.value);
+                // print(accountController.isBusinessScreen.value);
               }
               // accountController.isBusinessScreen.value = !accountController.isBusinessScreen.value;
             },
@@ -162,7 +230,7 @@ class _BusinessManagementScreenState extends State<BusinessManagementScreen> {
             ],
           ),
         ),
-        body: TabBarView(children: [
+        body: TabBarView(controller: tabController, children: [
           Container(
             color: Colors.white,
             child: ListView(

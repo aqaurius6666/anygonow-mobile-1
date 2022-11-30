@@ -44,7 +44,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     accountController.isLoading.value = true;
                     if (logoFile.path != "") {
                       var contentLength = await logoFile.length();
-                      var filename = logoFile.path.split("/").last;
+                      var filename = globalController.user.value.id.toString() + "/" + logoFile.path.split("/").last;
                       var logoUrl = await ImageService.handleUploadImage(
                           filename, contentLength, logoFile);
                       accountController.logoImage.value = logoUrl;
@@ -56,17 +56,18 @@ class _AccountScreenState extends State<AccountScreen> {
                         accountController.address1.text == "" ||
                         accountController.state.text == "" ||
                         accountController.city.text == "" ||
+                        accountController.logoImage.value == "" ||
                         accountController.zipcode.text == "") {
                       CustomDialog(context, "FAILED").show({
                         "message": "account.fill_required".tr,
-                        "height": 200.0
+                        "height": getHeight(200),
                       });
                       return;
                     }
                     if (accountController.zipcode.text.isEmpty) {
                       CustomDialog(context, "FAILED").show({
                         "message": "account.zipcode_invalid".tr,
-                        "height": 200.0
+                        "height": getHeight(200),
                       });
                       return;
                     }
@@ -74,7 +75,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         .hasMatch(accountController.phoneNumber.text)) {
                       CustomDialog(context, "FAILED").show({
                         "message": "account.phone_number_invalid".tr,
-                        "height": 200.0
+                        "height": getHeight(200),
                       });
                       return;
                     }
@@ -219,31 +220,31 @@ class _AccountScreenState extends State<AccountScreen> {
                 height: getHeight(16),
               ),
               inputRegular(
-                    context,
-                    label: "Email Address",
-                    hintText: "",
-                    textEditingController: accountController.email,
-                    // enabled: accountController.isEditting.value,
-                    required: true,
-                    enabled: false,
-                  ),
+                context,
+                label: "Email Address",
+                hintText: "",
+                textEditingController: accountController.email,
+                // enabled: accountController.isEditting.value,
+                required: true,
+                enabled: false,
+              ),
               SizedBox(
                 height: getHeight(16),
               ),
               inputRegular(
-                    context,
-                    label: "Phone number",
-                    hintText: "",
-                    textEditingController: accountController.phoneNumber,
-                    required: true,
-                    // enabled: accountController.isEditting.value,
-                    keyboardType: TextInputType.number,
-                    enabled: false,
-                    maxLength: 12,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                    ],
-                  ),
+                context,
+                label: "Phone number",
+                hintText: "",
+                textEditingController: accountController.phoneNumber,
+                required: true,
+                // enabled: accountController.isEditting.value,
+                keyboardType: TextInputType.number,
+                enabled: false,
+                maxLength: 12,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                ],
+              ),
               SizedBox(
                 height: getHeight(24),
               ),

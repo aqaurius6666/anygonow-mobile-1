@@ -17,7 +17,9 @@ import 'package:untitled/screen/forgot_password/forgot_password_screen.dart';
 import 'package:untitled/screen/handyman/advertise_manage/buy_advertise.dart';
 import 'package:untitled/screen/handyman/business_management/business_management_screen.dart';
 import 'package:untitled/screen/handyman/home_page/home_page_screen.dart';
+import 'package:untitled/screen/handyman/service_area/service_area_screen.dart';
 import 'package:untitled/screen/home_page/home_page_screen.dart';
+import 'package:untitled/screen/main/main_screen.dart';
 import 'package:untitled/screen/reset_password/reset_password_screen.dart';
 import 'package:untitled/screen/signup/reset_mail_account.dart';
 import 'package:untitled/screen/signup/reset_password_account.dart';
@@ -32,6 +34,7 @@ import 'package:untitled/widgets/layout.dart';
 enum LoginOption { customer, professional }
 
 bool _initialUriIsHandled = false;
+
 class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -39,9 +42,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   StreamSubscription? _sub;
-  ResetPasswordController resetPasswordController = Get.put(ResetPasswordController());
+  ResetPasswordController resetPasswordController =
+      Get.put(ResetPasswordController());
   SignupController signupController = Get.put(SignupController());
-  
+
   Future<void> _handleInitialUri() async {
     // In this example app this is an almost useless guard, but it is here to
     // show we are not going to call getInitialUri multiple times, even if this
@@ -74,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -224,10 +229,8 @@ Container confirmButtonContainer(
                       controller.isLoading.value = true;
                       var result = await controller.login();
                       if (result) {
-                        // print("123login");
-                        // print(result);
                         controller.isLoading.value = false;
-                        
+
                         Get.delete<MainScreenController>();
                         Get.put(GlobalController()).currentPage.value = 0;
                         Get.delete<BuyAdvertiseScreen>();
@@ -237,55 +240,69 @@ Container confirmButtonContainer(
                         int? process = globalController.user.value.process;
                         await Get.put(GlobalController()).getCategories();
                         await Get.put(MainScreenController()).getCategories();
-                        print("123 username");
-                        print(controller.username.text);
-                        if (controller.shouldChangeMail.value == true && controller.username.text.contains("@anygonow.com")) {
-                            Get.to(() => ResetMailAccount());
-                            return;
+                        if (controller.shouldChangeMail.value == true &&
+                            controller.username.text
+                                .contains("@anygonow.com")) {
+                          Get.to(() => ResetMailAccount());
+                          return;
                         }
-                        if (controller.isDefaultPassword.value == true && !controller.username.text.contains("@anygonow.com")) {
-                            Get.to(() => ResetPasswordAccount());
-                            return;
+                        if (controller.isDefaultPassword.value == true &&
+                            !controller.username.text
+                                .contains("@anygonow.com")) {
+                          Get.to(() => ResetPasswordAccount());
+                          return;
                         }
                         controller.onClearData();
                         if (role == null || role == 0) {
-                          Get.to(HomePageScreen());
+                          controller.isLoading.value = false;
                           if (process == 1) {
                             await Get.put(AccountController()).getUserInfo();
+                            Get.put(AccountController()).isEditting.value =
+                                true;
+                            Get.to(() => HomePageScreen());
                             Get.to(() => AccountScreen());
-                            CustomDialog(context, "SUCCESS").show({
-                              "message": "You need to complete your information"
-                            });
-                            Get.put(AccountController()).isEditting.value =
-                                true;
+                            CustomDialog(context, "SUCCESS").show(
+                                {"message": "dialog.update_information".tr});
+                            return;
                           }
-                        } else {
-                          Get.to(() => HandymanHomePageScreen());
-                          if (process == 1) {
-                            await Get.put(AccountController())
-                                .getBusinessInfo();
-                            Get.to(() => BusinessManagementScreen());
-                            CustomDialog(context, "SUCCESS").show(
-                                {"message": "You need to update information"});
-                            AccountController().isBusinessScreen.value = true;
-                            Get.put(AccountController()).isEditting.value =
-                                true;
-                          } else if (process == 2) {
-                            await Get.put(AccountController())
-                                .getBusinessInfo();
-                            Get.to(() => BusinessManagementScreen());
-                            CustomDialog(context, "SUCCESS").show(
-                                {"message": "You need to update information"});
-                            AccountController().isBusinessScreen.value = false;
-                            Get.put(AccountController()).isEditting.value =
-                                true;
-                          } else {
-                            await Get.put(MyRequestController()).getRequests();
+                          Get.to(() => HomePageScreen());
+                          return;
+                        }
+                        Get.to(() => HandymanHomePageScreen());
+                        switch (process) {
+                          case 0:
                             await Get.put(ManageAdvertiseController())
                                 .getListAdvertise();
-                            Get.to(() => HandymanHomePageScreen());
-                          }
-                          // Get.to(() => HandymanHomePageScreen());
+                            await Get.put(MyRequestController()).getRequests();
+                            return;
+                          case 1:
+                            await Get.put(AccountController())
+                                .getBusinessInfo();
+                            Get.put(AccountController()).isEditting.value =
+                                true;
+                            Get.put(AccountController())
+                                .isBusinessScreen
+                                .value = true;
+                            Get.to(() => BusinessManagementScreen());
+                            CustomDialog(context, "SUCCESS").show(
+                                {"message": "dialog.update_information".tr});
+                            return;
+                          case 2:
+                            await Get.put(AccountController())
+                                .getBusinessInfo();
+                            Get.put(AccountController()).isEditting.value =
+                                true;
+                            Get.put(AccountController())
+                                .isBusinessScreen
+                                .value = false;
+                            Get.to(() => BusinessManagementScreen());
+                            CustomDialog(context, "SUCCESS").show(
+                                {"message": "dialog.update_information".tr});
+                            return;
+                          case 3:
+                            Get.to(() => ServiceAreaScreen());
+                            return;
+                          default:
                         }
                       }
                       controller.isLoading.value = false;
