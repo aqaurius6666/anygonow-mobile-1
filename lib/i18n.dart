@@ -38,6 +38,13 @@ class Messages extends Translations {
           // dialog
           "dialog.update_information": "You need to update information",
           "dialog.unexpected_error": "Unexpected error occurred, please try again later!",
+          "dialog.user_profile" : "User profile",
+          "dialog.start_time" : "Start time",
+          "dialog.service_orders" : "Service orders",
+          "dialog.zipcode" : "Zipcode",
+          "dialog.email" : "Email",
+          "dialog.phone_number" : "Phone number",
+          "dialog.close" : "Close",
 
           // hint
           "hint.phone_number": "Enter your phone number",

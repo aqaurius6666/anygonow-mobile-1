@@ -52,6 +52,30 @@ class ConnectedHandymanChatScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
+                        SizedBox(
+                          width: getWidth(150),
+                        ),
+                        Bouncing(
+                          child: Text(
+                            "Detail profile",
+                            style: TextStyle(
+                                color: Color(0xFFFF511A), fontSize: getWidth(16)),
+                          ),
+                          onPress: () {
+                            customerDetailPopup(
+                              startTime: messageController
+                                  .currentConversation["startDate"],
+                              serviceName: messageController
+                                  .currentConversation["serviceName"],
+                              zipcode: messageController
+                                  .currentConversation["customerZipcode"],
+                              email: messageController
+                                  .currentConversation["customerMail"],
+                              phone: messageController
+                                  .currentConversation["customerPhone"],
+                            );
+                          },
+                        )
                       ],
                     ),
                     Row(
@@ -135,33 +159,36 @@ class ConnectedHandymanChatScreen extends StatelessWidget {
               ),
             ),
             actions: [
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(
-                  right: getWidth(16),
-                ),
-                child: Bouncing(
-                  child: Text(
-                    "Detail profile",
-                    style: TextStyle(
-                        color: Color(0xFFFF511A), fontSize: getWidth(16)),
-                  ),
-                  onPress: () {
-                    customerDetailPopup(
-                      startTime: messageController
-                          .currentConversation["startDate"],
-                      serviceName: messageController
-                          .currentConversation["serviceName"],
-                      zipcode: messageController
-                          .currentConversation["customerZipcode"],
-                      email: messageController
-                          .currentConversation["customerMail"],
-                      phone: messageController
-                          .currentConversation["customerPhone"],
-                    );
-                  },
-                ),
-              )
+              // Container(
+              //   child: Text("hello"),
+              // ),
+              // Container(
+              //   alignment: Alignment.center,
+              //   margin: EdgeInsets.only(
+              //     right: getWidth(16),
+              //   ),
+              //   child: Bouncing(
+              //     child: Text(
+              //       "Detail profile",
+              //       style: TextStyle(
+              //           color: Color(0xFFFF511A), fontSize: getWidth(16)),
+              //     ),
+              //     onPress: () {
+              //       customerDetailPopup(
+              //         startTime: messageController
+              //             .currentConversation["startDate"],
+              //         serviceName: messageController
+              //             .currentConversation["serviceName"],
+              //         zipcode: messageController
+              //             .currentConversation["customerZipcode"],
+              //         email: messageController
+              //             .currentConversation["customerMail"],
+              //         phone: messageController
+              //             .currentConversation["customerPhone"],
+              //       );
+              //     },
+              //   ),
+              // )
             ],
             elevation: 4),
         body: Column(

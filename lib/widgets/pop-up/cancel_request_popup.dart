@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:untitled/config.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
 import 'package:untitled/model/custom_dio.dart';
 import 'package:untitled/service/date_format.dart';
@@ -47,13 +48,13 @@ Future cancelRequestPopup(VoidCallback callback) {
               height: getHeight(48),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFFF0000),
+                color: Config.red_0,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 "Yes I do",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Config.white_0,
                 ),
               ),
             ),
@@ -68,16 +69,16 @@ Future cancelRequestPopup(VoidCallback callback) {
               height: getHeight(48),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Config.white_0,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: Color(0xFFFF0000),
+                    color: Config.red_0,
                     width: getWidth(1),
                   )),
               child: Text(
                 "No, keep service",
                 style: TextStyle(
-                  color: Color(0xFFFF0000),
+                  color: Config.red_0,
                 ),
               ),
             ),
@@ -171,13 +172,13 @@ Future feedbackPopup({
               height: getHeight(48),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFFF0000),
+                color: Config.red_0,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Text(
                 "Send feedback",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Config.white_0,
                 ),
               ),
             ),
@@ -205,16 +206,16 @@ Future feedbackPopup({
               height: getHeight(48),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Config.white_0,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: Color(0xFFFF0000),
+                    color: Config.red_0,
                     width: getWidth(1),
                   )),
               child: Text(
                 "Close",
                 style: TextStyle(
-                  color: Color(0xFFFF0000),
+                  color: Config.red_0,
                 ),
               ),
             ),
@@ -249,7 +250,7 @@ Future customerDetailPopup({
       fontWeight: FontWeight.w700,
     ),
     radius: 8,
-    title: "User profile",
+    title: "dialog.user_profile".tr,
     content: Container(
       width: getWidth(400),
       height: getHeight(300),
@@ -257,69 +258,56 @@ Future customerDetailPopup({
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Start time:"),
-              Text(TimeService.stringToDateTime4(startTime)!),
-            ],
-          ),
+          dialogRow(
+              title: "dialog.start_time".tr,
+              content: TimeService.stringToDateTime4(startTime)!,
+              flex1: 40,
+              flex2: 60),
           Container(
             height: 1,
-            color: Color(0xFFE6E6E6),
+            color: Config.gray_1,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Service orders:"),
-              Text("$serviceName"),
-            ],
-          ),
+          dialogRow(
+              title: "dialog.service_orders".tr,
+              content: serviceName,
+              flex1: 45,
+              flex2: 55),
           Container(
             height: 1,
-            color: Color(0xFFE6E6E6),
+            color: Config.gray_1,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Zip code:"),
-              Text("$zipcode"),
-            ],
-          ),
+          dialogRow(
+              title: "dialog.zipcode".tr,
+              content: zipcode,
+              flex1: 40,
+              flex2: 60),
           Container(
             height: 1,
-            color: Color(0xFFE6E6E6),
+            color: Config.gray_1,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Email:"),
-              Text("$email"),
-            ],
-          ),
+          dialogRow(
+              title: "dialog.email".tr, content: email, flex1: 40, flex2: 60),
           Container(
             height: 1,
-            color: Color(0xFFE6E6E6),
+            color: Config.gray_1,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Phone number:"),
-              Text("$phone"),
-            ],
-          ),
+          dialogRow(
+              title: "dialog.phone_number".tr,
+              content: phone,
+              flex1: 50,
+              flex2: 50),
           Bouncing(
             child: Container(
               alignment: Alignment.center,
               height: getHeight(48),
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: Config.white_0,
               ),
-              child: const Text(
-                "Close",
+              child: Text(
+                "dialog.close".tr,
                 style: TextStyle(
-                  color: Color(0xFFFF0000),
+                  color: Config.red_0,
                 ),
               ),
             ),
@@ -330,5 +318,34 @@ Future customerDetailPopup({
         ],
       ),
     ),
+  );
+}
+
+Widget dialogRow({
+  required String title,
+  required String content,
+  required int flex1,
+  required int flex2,
+}) {
+  return Flex(
+    direction: Axis.horizontal,
+    children: [
+      Expanded(
+        child: Text("$title:", textAlign: TextAlign.left),
+        flex: flex1,
+      ),
+      Expanded(
+        child: Tooltip(
+          message: content,
+          triggerMode: TooltipTriggerMode.tap,
+          child: Text(
+            content,
+            textAlign: TextAlign.right,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        flex: flex2,
+      ),
+    ],
   );
 }
