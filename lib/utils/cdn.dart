@@ -7,6 +7,6 @@ String getCDN(String s) {
   }
   String cdnUrl = dotenv.env["CDN_URL"].toString();
   return cdnUrl != "" && cdnUrl != "null"
-      ? cdnUrl
+      ? cdnUrl + s
       : 'http://d26p4pe0nfrg62.cloudfront.net/' + s;
 }

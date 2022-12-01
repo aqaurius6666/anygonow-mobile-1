@@ -173,8 +173,9 @@ class MessageScreen extends StatelessWidget {
           children: [
             getImage(
               img,
-              height: getHeight(50),
-              width: getWidth(50),
+              height: getHeight(60),
+              width: getWidth(60),
+              fit: BoxFit.fitHeight
             ),
             SizedBox(
               height: getHeight(50),

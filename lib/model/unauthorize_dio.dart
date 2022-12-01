@@ -42,6 +42,7 @@ class UnauthorizedDio {
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           print({"onRequest": options.uri});
+          print({"hello"});
           return handler.next(options); //continue
         },
         onResponse:

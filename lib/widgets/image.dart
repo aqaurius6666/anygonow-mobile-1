@@ -16,12 +16,15 @@ Container getImage(String? src,
               "assets/default.png",
               height: height,
               width: width,
+              fit: fit ?? BoxFit.contain
             )
           : src.contains(".svg")
               ? SvgPicture.network(getCDN(src),
                   height: height, fit: fit ?? BoxFit.contain)
               : Image.network(getCDN(src),
-                  height: height, fit: fit ?? BoxFit.contain));
+                  height: height,
+                  width: width,
+          fit: fit ?? BoxFit.contain));
 }
 
 class ImageService {
