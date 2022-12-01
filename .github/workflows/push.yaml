@@ -1,0 +1,51 @@
+name: Android Build ## name of the workflow
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch: # To trigger manual build
+
+jobs:
+  android-build:
+    name: Android Build
+    runs-on: ubuntu-latest # using ubuntu latest version / or you can use a specific version
+
+    steps:
+      - name: Check out Git repository # clone the repo to local ci workspace
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 20
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # or: 'beta', 'dev' or 'master'
+          cache: true
+          flutter-version: '2.10.1'
+      
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Start release build
+        run: flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --no-sound-null-safety --debug
+      
+      - uses: paulhatch/semantic-version@v4.0.2
+        id: version
+        with:
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          format: "${major}.${minor}.${patch}"
+          bump_each_commit: true
+          major_pattern: "(major)"
+          # A string which indicates the flags used by the `major_pattern` regular expression. Supported flags: idgs
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+          minor_pattern: "(minor)"
+          # A string which indicates the flags used by the `minor_pattern` regular expression. Supported flags: idgs
+          search_commit_body: true
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: ${{ steps.version.outputs.version }}
+          files: |
+            build/app/outputs/flutter-apk/*
