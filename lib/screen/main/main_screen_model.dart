@@ -30,6 +30,7 @@ GestureDetector handymanItem({
       var serviceRes = await brandDetailController.getBusinessServices(id: id);
       var ratingRes = await brandDetailController.getBusinessRating(id: id);
       await brandDetailController.getBusinessFeedback(id: id);
+
       if (res != null && serviceRes && ratingRes) {
         Get.to(() => BrandDetailScreen());
       }

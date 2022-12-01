@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/account/account_controller.dart';
+import 'package:untitled/controller/global_controller.dart';
 import 'package:untitled/controller/handyman/my_request/my_request_controller.dart';
+import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/controller/message/message_controller.dart';
 import 'package:untitled/controller/message/noti_controller.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
@@ -47,6 +50,7 @@ class MessageScreen extends StatelessWidget {
   Container connectedTab(
       List<dynamic> requests, MessageController messageController) {
     // print(requests);
+    var globalController = Get.put(GlobalController());
     return Container(
       child: Obx(() {
         if (requests.isEmpty) return Container();
@@ -60,7 +64,7 @@ class MessageScreen extends StatelessWidget {
                 message: messages.isNotEmpty
                     ? messages[messages.length - 1]["payload"]
                     : "Service request: " + requests[index]["serviceName"],
-                business: requests[index]["businessName"],
+                business: globalController.user.value.role == 0 ? requests[index]["businessName"] : requests[index]["customerName"],
                 service: requests[index]["serviceName"],
                 img: requests[index]["businessLogo"],
                 time: messages.isNotEmpty
@@ -82,7 +86,7 @@ class MessageScreen extends StatelessWidget {
 
   Container completedTab(
       List<dynamic> requests, MessageController messageController) {
-    // print(requests);
+    var globalController = Get.put(GlobalController());
     return Container(
       child: Obx(() {
         if (requests.isEmpty) return Container();
@@ -96,7 +100,7 @@ class MessageScreen extends StatelessWidget {
                 message: messages.isNotEmpty
                     ? messages[messages.length - 1]["payload"]
                     : "Service request: " + requests[index]["serviceName"],
-                business: requests[index]["businessName"],
+                business: globalController.user.value.role == 0 ? requests[index]["businessName"] : requests[index]["customerName"],
                 service: requests[index]["serviceName"],
                 img: requests[index]["businessLogo"],
                 time: messages.isNotEmpty

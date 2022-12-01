@@ -40,7 +40,6 @@ class MessageController extends GetxController {
   }
   @override
   void onClose() {
-    print("close");
     timer.cancel();
     super.onClose();
   }

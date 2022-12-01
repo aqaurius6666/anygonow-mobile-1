@@ -42,6 +42,7 @@ class AccountController extends GetxController {
     zipcode.addListener(() {
       _onZipCodeChange();
     });
+    this.getBusinessInfo();
     super.onInit();
   }
 

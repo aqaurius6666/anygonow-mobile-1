@@ -35,7 +35,8 @@ class ConnectedHandymanChatScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Row(
+                    Flex(
+                      direction: Axis.horizontal,
                       children: [
                         IconButton(
                             onPressed: () {
@@ -45,21 +46,23 @@ class ConnectedHandymanChatScreen extends StatelessWidget {
                         GestureDetector(
                           onTap: () {},
                           child: Text(
-                            messageController.currentService.value,
+                            messageController.currentConversation["customerName"],
                             style: TextStyle(
                                 fontSize: getWidth(20),
                                 fontFamily: 'TTNorm',
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
-                        SizedBox(
-                          width: getWidth(150),
+                        Expanded(
+                          child: Container(),
+                          flex: 1,
                         ),
                         Bouncing(
                           child: Text(
                             "Detail profile",
                             style: TextStyle(
-                                color: Color(0xFFFF511A), fontSize: getWidth(16)),
+                                color: Color(0xFFFF511A),
+                                fontSize: getWidth(16)),
                           ),
                           onPress: () {
                             customerDetailPopup(
@@ -96,8 +99,7 @@ class ConnectedHandymanChatScreen extends StatelessWidget {
                               ),
                             ),
                             onPress: () async {
-                              var res =
-                              await Get.put(MyRequestController())
+                              var res = await Get.put(MyRequestController())
                                   .rejectRequest();
                               if (res) {
                                 messageController.connectedMessageList
@@ -133,15 +135,12 @@ class ConnectedHandymanChatScreen extends StatelessWidget {
                               ),
                             ),
                             onPress: () async {
-                              var res =
-                              await Get.put(MyRequestController())
+                              var res = await Get.put(MyRequestController())
                                   .completeRequest();
                               if (res) {
-                                messageController.completedMessageList
-                                    .add(messageController
-                                    .connectedMessageList
-                                    .elementAt(
-                                    messageController.index));
+                                messageController.completedMessageList.add(
+                                    messageController.connectedMessageList
+                                        .elementAt(messageController.index));
                                 // Get.put(MyRequestUserController()).completedRequests.add(Get.put(MyRequestUserController()).connectedRequests.elementAt(messageController.index);
 
                                 messageController.connectedMessageList

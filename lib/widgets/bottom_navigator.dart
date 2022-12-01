@@ -13,6 +13,7 @@ import 'package:untitled/controller/main/main_screen_controller.dart';
 import 'package:untitled/controller/message/message_controller.dart';
 import 'package:untitled/controller/message/noti_controller.dart';
 import 'package:untitled/controller/my_request/my_request_user_controller.dart';
+import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/screen/main/main_screen_model.dart';
 import 'package:untitled/utils/config.dart';
 import 'package:untitled/widgets/layout.dart';
@@ -401,7 +402,7 @@ Container bottomNavigatorHandyman() {
 }
 
 Container bottomBrandDetail({String id = ""}) {
-  // MainScreenController mainScreenController = Get.put(MainScreenController());
+  MainScreenController mainScreenController = Get.put(MainScreenController());
   CustomerOrderController customerOrderController = Get.put(CustomerOrderController());
   return bottomContainerLayout(
     height: 100,
@@ -464,6 +465,10 @@ Container bottomBrandDetail({String id = ""}) {
               ),
               onPressed: () async {
                 customerOrderController.businessIds.add(id);
+                if (mainScreenController.searchZipcode.text != "") {
+                  customerOrderController.selectedZipcode.value = mainScreenController.searchZipcode.text;
+                }
+                customerOrderController.category.value = mainScreenController.categoryId;
                 var res = await customerOrderController.sendRequest();
                 if (res) {
                   showPopUp(

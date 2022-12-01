@@ -23,8 +23,8 @@ class CompletedHandymanChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: appBar(
-          // title: messageController.currentService.value,
-            hideBackButton: true,
+          title: messageController.currentConversation["customerName"],
+            hideBackButton: false,
             bottom: null,
             actions: null,
             elevation: 4),

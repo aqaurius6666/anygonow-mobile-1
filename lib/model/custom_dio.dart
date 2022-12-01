@@ -61,7 +61,6 @@ class CustomDio {
             return handler.next(options);
           }
           print({"onRequest": options.uri});
-          print({"authorization" : options.headers["Authorization"]});
           return handler.next(options); //continue
         },
         onResponse:

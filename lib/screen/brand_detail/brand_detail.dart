@@ -17,7 +17,6 @@ import 'package:untitled/widgets/image.dart';
 class BrandDetailScreen extends StatelessWidget {
   BrandDetailController brandDetailController =
       Get.put(BrandDetailController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

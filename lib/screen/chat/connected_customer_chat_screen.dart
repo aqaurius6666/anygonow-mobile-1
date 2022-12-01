@@ -23,9 +23,140 @@ class ConnectedCustomerChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: appBar(
-          title: messageController.currentService.value,
+          // title: messageController.currentService.value,
             hideBackButton: false,
-            bottom: null,
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(getHeight(40)),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: getHeight(0),
+                  left: getWidth(16),
+                  right: getWidth(16),
+                ),
+                child: Column(
+                  children: [
+                    Flex(
+                      direction: Axis.horizontal,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: Icon(Icons.arrow_back_ios)),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            messageController.currentConversation["customerName"],
+                            style: TextStyle(
+                                fontSize: getWidth(20),
+                                fontFamily: 'TTNorm',
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(),
+                          flex: 1,
+                        ),
+                        Bouncing(
+                          child: Text(
+                            "Detail profile",
+                            style: TextStyle(
+                                color: Color(0xFFFF511A),
+                                fontSize: getWidth(16)),
+                          ),
+                          onPress: () {
+                            customerDetailPopup(
+                              startTime: messageController
+                                  .currentConversation["startDate"],
+                              serviceName: messageController
+                                  .currentConversation["serviceName"],
+                              zipcode: messageController
+                                  .currentConversation["customerZipcode"],
+                              email: messageController
+                                  .currentConversation["customerMail"],
+                              phone: messageController
+                                  .currentConversation["customerPhone"],
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 50,
+                          child: Bouncing(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Reject",
+                                style: TextStyle(
+                                  color: Color(0xFFFF511A),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: getWidth(16),
+                                ),
+                              ),
+                            ),
+                            onPress: () async {
+                              var res = await Get.put(MyRequestController())
+                                  .rejectRequest();
+                              if (res) {
+                                messageController.connectedMessageList
+                                    .removeAt(messageController.index);
+                                Get.put(MyRequestUserController())
+                                    .connectedRequests
+                                    .removeAt(messageController.index);
+                                Get.back();
+                              }
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          flex: 0,
+                          child: Container(
+                            width: 1,
+                            height: getHeight(40),
+                            color: Color(0xFFE6E6E6),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 50,
+                          child: Bouncing(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Complete",
+                                style: TextStyle(
+                                  color: Color(0xFFFF511A),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: getWidth(16),
+                                ),
+                              ),
+                            ),
+                            onPress: () async {
+                              var res = await Get.put(MyRequestController())
+                                  .completeRequest();
+                              if (res) {
+                                messageController.completedMessageList.add(
+                                    messageController.connectedMessageList
+                                        .elementAt(messageController.index));
+                                // Get.put(MyRequestUserController()).completedRequests.add(Get.put(MyRequestUserController()).connectedRequests.elementAt(messageController.index);
+
+                                messageController.connectedMessageList
+                                    .removeAt(messageController.index);
+                                // Get.put(MyRequestUserController()).connectedRequests.removeAt(messageController.index);
+                                Get.back();
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
             actions: null,
             elevation: 4),
         body: Column(
