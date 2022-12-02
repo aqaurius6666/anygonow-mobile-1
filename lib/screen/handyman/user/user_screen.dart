@@ -428,6 +428,7 @@ class HandymanUserScreen extends StatelessWidget {
                                         .logout();
                                         Get.offAll(() => LoginScreen());
                                       },
+
                                       child: SizedBox(
                                         width: getWidth(200),
                                         child: Text(
