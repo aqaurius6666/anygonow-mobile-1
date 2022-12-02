@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controller/login/login_controller.dart';
 import 'package:untitled/controller/message/message_controller.dart';
 import 'package:untitled/controller/message/noti_controller.dart';
 import 'package:untitled/model/User.dart';
@@ -79,6 +81,14 @@ class GlobalController extends GetxController {
   // void onClose() {
   //   timer.cancel();
   // }
+
+  void logout() async {
+    var loginController = Get.put(LoginPageController());
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token == null) return;
+    loginController.unsubscribe(token: token);
+    db.deleteFromDisk();
+  }
 
   void onChangeTab(int value) {
     try {

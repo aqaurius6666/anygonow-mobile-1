@@ -297,8 +297,7 @@ class UserScreen extends StatelessWidget {
                                           GestureDetector(
                                             onTap: () {
                                               Get.put(GlobalController())
-                                                  .db
-                                                  .deleteFromDisk();
+                                              .logout();
                                               Get.offAll(() => LoginScreen());
                                             },
                                             child: Container(

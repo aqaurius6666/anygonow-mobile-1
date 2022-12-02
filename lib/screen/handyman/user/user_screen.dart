@@ -425,8 +425,7 @@ class HandymanUserScreen extends StatelessWidget {
                                     GestureDetector(
                                       onTap: () {
                                         Get.put(GlobalController())
-                                            .db
-                                            .deleteFromDisk();
+                                        .logout();
                                         Get.offAll(() => LoginScreen());
                                       },
                                       child: SizedBox(
